@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="0" size="3" feel_guild_tags_as_enemies_state="false" guild_tags_as_enemies="">
+    <enemy id="0x00019F26" name="New enemy" enabled="true"/>
+    <enemy id="0x000AFB81" name="a brown bear" enabled="true"/>
+    <enemy id="0x000B018A" name="a brown bear" enabled="true"/>
+</data>

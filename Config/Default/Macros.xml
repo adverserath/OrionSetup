@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data cast_spells_from_book_if_not_scrolls="false">
+    <macro name="macro" looped="false" delay="1">
+        <action type="16" convert_type="0" waiting_time="1000" serial="0x00002584" graphic="0x0000" color="0x0000"/>
+        <action type="17" convert_type="0" waiting_time="1000" serial="0x00002584" graphic="0x0001" color="0x0000"/>
+        <action type="16" convert_type="0" waiting_time="1000" serial="0x00002584" graphic="0x0000" color="0x0000"/>
+        <action type="17" convert_type="0" waiting_time="1000" serial="0x00002584" graphic="0x0002" color="0x0000"/>
+    </macro>
+</data>
