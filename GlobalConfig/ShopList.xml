@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="0" show_shopping_progress_bar="true" max_shop_items="10" max_sell_price="0" shop_delay="450" shop_timeout="5" buy_command="buy" sell_command="sell">
+    <shoplist name="Wood">
+        <shopitem graphic="0x1BD7" color="0x0000" name="Board" count="100" price="0" comment=""/>
+    </shoplist>
+    <shoplist name="Jewel">
+        <shopitem graphic="0x0F21" color="0x0000" name="Star Sapphire" count="0" price="0" comment=""/>
+        <shopitem graphic="0x0F10" color="0x0000" name="Emerald" count="0" price="0" comment=""/>
+        <shopitem graphic="0x0F19" color="0x0000" name="Sapphire" count="0" price="0" comment=""/>
+        <shopitem graphic="0x0F13" color="0x0000" name="Ruby" count="0" price="0" comment=""/>
+        <shopitem graphic="0x0F15" color="0x0000" name="Citrine" count="0" price="0" comment=""/>
+        <shopitem graphic="0x0F16" color="0x0000" name="Amethyst" count="0" price="0" comment=""/>
+        <shopitem graphic="0x0F2D" color="0x0000" name="Tourmaline" count="0" price="0" comment=""/>
+        <shopitem graphic="0x0F25" color="0x0000" name="Amber" count="0" price="0" comment=""/>
+        <shopitem graphic="0x0F26" color="0x0000" name="Diamond" count="0" price="0" comment=""/>
+    </shoplist>
+    <shoplist name="bInscribe">
+        <shopitem graphic="0x0EF3" color="0x0000" name="Blank Scroll" count="200" price="0" comment=""/>
+        <shopitem graphic="0x0F8C" color="0x0000" name="Sulfurous Ash" count="200" price="0" comment=""/>
+        <shopitem graphic="0x0F8D" color="any" name="Spider Silk" count="200" price="0" comment=""/>
+        <shopitem graphic="0x0FBF" color="0x0000" name="Pen And Ink" count="4" price="0" comment=""/>
+    </shoplist>
+    <shoplist name="sInscribe">
+        <shopitem graphic="0x1F4A" color="0x0000" name="Lightning" count="0" price="0" comment=""/>
+        <shopitem graphic="0x1F5F" color="0x0000" name="Flamestrike" count="0" price="0" comment=""/>
+    </shoplist>
+</data>

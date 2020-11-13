@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="0">
+    <tile name="mine|crag" land="true" start="220" end="231"/>
+    <tile name="mine|crag" land="true" start="236" end="239"/>
+    <tile name="mine|crag" land="true" start="240" end="243"/>
+    <tile name="mine|crag" land="true" start="244" end="247"/>
+    <tile name="mine|crag" land="true" start="252" end="263"/>
+    <tile name="mine|crag" land="true" start="272" end="279"/>
+    <tile name="mine|crag" land="true" start="286" end="289"/>
+    <tile name="mine|crag" land="true" start="290" end="297"/>
+    <tile name="mine|crag" land="true" start="302" end="305"/>
+    <tile name="mine|crag" land="true" start="312" end="324"/>
+    <tile name="mine|crag" land="true" start="537" end="579"/>
+    <tile name="mine|crag" land="true" start="0" end="0"/>
+    <tile name="mine|cave" land="false" start="1339" end="1359"/>
+    <tile name="mine|cave" land="false" start="1361" end="1363"/>
+    <tile name="mine|rock" land="false" start="616" end="618"/>
+    <tile name="mine|rock" land="false" start="2272" end="2282"/>
+    <tile name="mine|rock" land="false" start="4963" end="4973"/>
+    <tile name="mine|rock" land="false" start="6001" end="6012"/>
+    <tile name="mine|rock" land="false" start="13121" end="13369"/>
+    <tile name="mine|rock" land="false" start="13446" end="13455"/>
+    <tile name="mine|rock" land="false" start="13484" end="13492"/>
+    <tile name="mine|rock" land="false" start="13625" end="13628"/>
+    <tile name="tree" land="false" start="3274"/>
+    <tile name="tree" land="false" start="3275"/>
+    <tile name="tree" land="false" start="3277"/>
+    <tile name="tree" land="false" start="3280"/>
+    <tile name="tree" land="false" start="3283"/>
+    <tile name="tree" land="false" start="3286"/>
+    <tile name="tree" land="false" start="3288"/>
+    <tile name="tree" land="false" start="3290"/>
+    <tile name="tree" land="false" start="3293"/>
+    <tile name="tree" land="false" start="3296"/>
+    <tile name="tree" land="false" start="3299"/>
+    <tile name="tree" land="false" start="3302"/>
+    <tile name="tree" land="false" start="3320"/>
+    <tile name="tree" land="false" start="3323"/>
+    <tile name="tree" land="false" start="3326"/>
+    <tile name="tree" land="false" start="3329"/>
+    <tile name="tree" land="false" start="3393"/>
+    <tile name="tree" land="false" start="3394"/>
+    <tile name="tree" land="false" start="3395"/>
+    <tile name="tree" land="false" start="3396"/>
+    <tile name="tree" land="false" start="3415"/>
+    <tile name="tree" land="false" start="3416"/>
+    <tile name="tree" land="false" start="3417"/>
+    <tile name="tree" land="false" start="3418"/>
+    <tile name="tree" land="false" start="3419"/>
+    <tile name="tree" land="false" start="3438"/>
+    <tile name="tree" land="false" start="3439"/>
+    <tile name="tree" land="false" start="3440"/>
+    <tile name="tree" land="false" start="3441"/>
+    <tile name="tree" land="false" start="3442"/>
+    <tile name="tree" land="false" start="3460"/>
+    <tile name="tree" land="false" start="3461"/>
+    <tile name="tree" land="false" start="3462"/>
+    <tile name="tree" land="false" start="3476"/>
+    <tile name="tree" land="false" start="3478"/>
+    <tile name="tree" land="false" start="3480"/>
+    <tile name="tree" land="false" start="3482"/>
+    <tile name="tree" land="false" start="3484"/>
+    <tile name="tree" land="false" start="3492"/>
+    <tile name="tree" land="false" start="3496"/>
+    <tile name="tree" land="false" start="3276"/>
+    <tile name="tree" land="false" start="3289"/>
+    <tile name="tree" land="false" start="3291"/>
+    <tile name="tree" land="false" start="3292"/>
+    <tile name="tree" land="false" start="3294"/>
+    <tile name="tree" land="false" start="3295"/>
+    <tile name="water" land="false" start="6038" end="6066"/>
+</data>
