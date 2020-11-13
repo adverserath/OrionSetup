@@ -1,64 +1,11 @@
 //#include helpers/Helper.js
 
-function TestLumber() {
-  Orion.Wait(1000);
-  var n = 'There\'s not enough wood here to harvest.'.localeCompare('There\'s not enough wood here to harvest.'==0);
-  var range = 20;
-  //var trees = '0x0CCD|0x0CDD|0x0CD3'
-  Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range).
-    forEach(function (treeTile) {
-
-      //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
-      //Orion.WalkTo(treeTile.X, treeTile.Y(), treeTile.Z(), 1, 255, 1, 0);
-      Orion.WalkTo(treeTile.X(), treeTile.Y(), treeTile.Z(), 1, Player.Z(), 1, 1);
-      TextWindow.Print('Walking');
-	Chop(treeTile.Graphic(),treeTile.X(),treeTile.Y().treeTile,Player.Z());
-
-    });
-}
-
-function Chop(id, x, y, z) {
-while('There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage().Text())!=0)
-{
-TextWindow.Print('There\'s not enough wood here to harvest.')
-
-TextWindow.Print(Orion.LastJournalMessage().Text())
-
-TextWindow.Print('There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage()))
-  Orion.GetTilesInRect(
-'tree', Player.X() + 1, Player.Y() + 1, Player.X() - 1, Player.Y() - 1)
-    .forEach(function (tile) {
-TextWindow.Print(tile.Graphic());
-//CHECK IF RIGHT HAND IS EMPTY
-  //N//IS AXE IN BACKPACK
-    //Y//EQUIP NEW AXE
-    //N//GO GET ONE THEN EQUIP
-  
-//CHECK WEIGHT
-  //IF WEIGHT>MAX-30
-      //Y//GO STORE IT
-      
-      //SELECT AXE
-      Orion.UseObject('0x462D1383');
-      Orion.Wait(300);
-
-      if (Orion.WaitForTarget(1000)) {
-        TextWindow.Print(tile.Flags());
-        Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
-        Orion.Wait(2000);
-      }
-      //IF LOGS EXIST
-        //Y//CUT THEM TO BOARDS
-
-    });
-}
-  //0x0CCD 3492 2718 6
-}
+var debug=true;
 
 function GetTargetAndPrint() {
-  TextWindow.Print('not : ' + (3 & 15));
-  var obj = SelectTarget();
   TextWindow.Open();
+
+  var obj = SelectTarget();
   //  Orion.GetProfile('myTarget',2000)
   TextWindow.Print(obj.Name());
   TextWindow.Print(obj.FullName());
