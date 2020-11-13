@@ -4,8 +4,8 @@ function TestLumber() {
   Orion.Wait(1000);
   var n = 'There\'s not enough wood here to harvest.'.localeCompare('There\'s not enough wood here to harvest.'==0);
   var range = 20;
-  var trees = '0x0CCD|0x0CDD|0x0CD3'
-  Orion.GetTilesInRect(trees, Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range).
+  //var trees = '0x0CCD|0x0CDD|0x0CD3'
+  Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range).
     forEach(function (treeTile) {
 
       //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
@@ -25,19 +25,30 @@ TextWindow.Print('There\'s not enough wood here to harvest.')
 TextWindow.Print(Orion.LastJournalMessage().Text())
 
 TextWindow.Print('There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage()))
-  Orion.GetTilesInRect(any, Player.X() + 1, Player.Y() + 1, Player.X() - 1, Player.Y() - 1)
+  Orion.GetTilesInRect(
+'tree', Player.X() + 1, Player.Y() + 1, Player.X() - 1, Player.Y() - 1)
     .forEach(function (tile) {
 TextWindow.Print(tile.Graphic());
-
+//CHECK IF RIGHT HAND IS EMPTY
+  //N//IS AXE IN BACKPACK
+    //Y//EQUIP NEW AXE
+    //N//GO GET ONE THEN EQUIP
+  
+//CHECK WEIGHT
+  //IF WEIGHT>MAX-30
+      //Y//GO STORE IT
+      
+      //SELECT AXE
       Orion.UseObject('0x462D1383');
       Orion.Wait(300);
 
       if (Orion.WaitForTarget(1000)) {
         TextWindow.Print(tile.Flags());
         Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
-        Orion.Wait(3000);
+        Orion.Wait(2000);
       }
-
+      //IF LOGS EXIST
+        //Y//CUT THEM TO BOARDS
 
     });
 }
