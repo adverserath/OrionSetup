@@ -1,13 +1,4 @@
 ///#include helpers/TestScripts.js
-
-function BotPush(){
-    var bot = "https://discordapp.com/api/webhooks/776482027423137792/-NRLMu49p8YsblDA8duSXXMBEH0mLTsnr8QpboGltdwh-mthWK5q8w4_m2JYOO7tGIqB"; // Webhook url
-var paramText = "content=test";
-
-Orion.HttpPost(bot, paramText + "Test message")
-}
-
-
 function Restock(listName) {
     var requiredItems = Orion.GetFindList(listName).Items();
     requiredItems.forEach(function (reqItem) {
