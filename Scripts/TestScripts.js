@@ -10,6 +10,10 @@ function GetTargetAndPrint() {
   TextWindow.Print(obj.Name());
   TextWindow.Print(obj.FullName());
   TextWindow.Print(obj.Notoriety());
+ TextWindow.Print('player'+obj.IsPlayer());
+  TextWindow.Print('color'+ obj.NameColor());
+
+ TextWindow.Print('yellow'+obj.YellowHits());
 
   TextWindow.Print(obj.Race());
   TextWindow.Print(obj.ProfileReceived());
@@ -20,10 +24,9 @@ function GetTargetAndPrint() {
 }
 
 function getFlags() {
-  Orion.WaitForAddObject('myTarget');
-  Orion.TargetObject('myTarget');
-  var target = Orion.FindObject('myTarget');
-  TextWindow.Print(Orion.B);
+var a = Orion.InfoContextMenu()
+TextWindow.Print(a.trim());
+
 
 }
 

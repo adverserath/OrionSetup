@@ -1,11 +1,12 @@
 //#include helpers/Helper.js
 
 var debug = true;
+var axes = '0xF47|0xF4B|0xF45|0xF43|0x13FB|0x1443|0x13B0|0xF49'
+var storageBox;
 function TestLumber() {
- 
-    var range = 20;
+storageBox = SelectTarget();
+    var range = 8;
     var pickaxe = '0xE86';
- var axes = '0xF47|0xF4B|0xF45|0xF43|0x13FB|0x1443|0x13B0|0xF49'
     Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range).
         forEach(function (treeTile) {
             Orion.WalkTo(treeTile.X(), treeTile.Y(), treeTile.Z(), 1, Player.Z(), 1, 1);
@@ -35,7 +36,25 @@ function Chop(id, x, y, z) {
                 //Y//GO STORE IT
 
                 //SELECT AXE
-                Orion.UseObject('0x462D1383');
+                var righthand = Orion.ObjAtLayer('LeftHand');
+                if (righthand == null) {
+                    axes.split('|').forEach(function (graphic) {
+                        Orion.EquipT(graphic);
+                    });
+                }
+                if (Player.Weight() > (Player.MaxWeight() - 30)) {
+                    Orion.FindTypeEx('0x1BDD', any, backpack).forEach(function (wood) {
+                        Orion.UseObject(righthand.Serial());
+                        Orion.Wait(300);
+
+                        if (Orion.WaitForTarget(1000)) {
+                            Orion.TargetObject(wood.Serial());
+                            Orion.Wait(1000);
+                        }
+
+                    });
+                }
+                Orion.UseObject(righthand.Serial());
                 Orion.Wait(300);
 
                 if (Orion.WaitForTarget(1000)) {
