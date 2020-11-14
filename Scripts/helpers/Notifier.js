@@ -10,7 +10,7 @@ function callBot() {
 function BotPush(message) {
     if (hook == null && key == null) {
         var file = Orion.NewFile();
-        open = file.Open('discordkey.conf', true);
+        open = file.Open('discordkey.conf');
         if (!file.Opened()) {
             return;
         }

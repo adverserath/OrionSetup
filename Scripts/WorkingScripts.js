@@ -1,4 +1,5 @@
-///#include helpers/TestScripts.js
+//#include helpers/Notifier.js
+
 function Restock(listName) {
     var requiredItems = Orion.GetFindList(listName).Items();
     requiredItems.forEach(function (reqItem) {
@@ -199,6 +200,7 @@ function HealingSelfAndFriendLoop() {
 
 function TrainMagery() {
     var notified = false;
+    var skillLevel =Orion.SkillValue('Magery');
     while (Player.IsHuman()) {
         if ((Orion.SkillValue('Magery') % 1 == 100) && notified == false) {
             Orion.HttpPost('https://maker.ifttt.com/trigger/Seed/with/key/dL1ugCFG4KbaRG5KPR5lXF/?value1=MAGING' + Orion.SkillValue('Magery','base'), '');
@@ -207,6 +209,10 @@ function TrainMagery() {
         else if (notified == true) {
             notified = false;
         }
+        if(skillLevel!=Orion.SkillValue('Magery'))
+        {
+            BotPush("Magery: " + Orion.SkillValue('Magery') );
+}
         if (Player.Mana() < 40) {
             Orion.UseSkill('Meditation');
 
@@ -214,7 +220,7 @@ function TrainMagery() {
                 Orion.Wait(2000);
             }
         }
-
+skillLevel =Orion.SkillValue('Magery');
         if (Orion.SkillValue('Magery','base') < 600) {
             Orion.Cast('31');
             if (Orion.WaitForTarget(5000))
@@ -239,6 +245,7 @@ function TrainMagery() {
             Orion.ShutdownWindows('forced');
             Orion.Wait(2000);
         }
+        
     }
 
 }
