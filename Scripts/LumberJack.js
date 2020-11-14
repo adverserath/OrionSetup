@@ -4,24 +4,28 @@ var debug = true;
 var axes = '0xF47|0xF4B|0xF45|0xF43|0x13FB|0x1443|0x13B0|0xF49'
 var storageBox;
 function TestLumber() {
+            Orion.Say('Chop Chop');
 storageBox = SelectTarget();
-    var range = 8;
+Orion.Wait(10000);
+    var range = 20;
     var pickaxe = '0xE86';
-    Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range).
+    Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
+    .sort(function (t1, t2) {
+                return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
+            }).
         forEach(function (treeTile) {
             Orion.WalkTo(treeTile.X(), treeTile.Y(), treeTile.Z(), 1, Player.Z(), 1, 1);
             DebugText('Walking to ' + treeTile.Graphic() + 'X:' + treeTile.X() + 'Y:' + treeTile.Y() + 'Z:' + treeTile.Z());
-            Chop(treeTile.Graphic(), treeTile.X(), treeTile.Y().treeTile, Player.Z());
+            Chop(treeTile.Graphic(), treeTile.X(), treeTile.Y(), Player.Z());
+Orion.ClearJournal();
         });
 }
 
 function Chop(id, x, y, z) {
-    while ('There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage().Text()) != 0) {
-        TextWindow.Print('There\'s not enough wood here to harvest.')
 
-        TextWindow.Print(Orion.LastJournalMessage().Text())
+    while (Orion.LastJournalMessage() == null || 
+    'There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage().Text()) != 0) {
 
-        TextWindow.Print('There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage()))
         Orion.GetTilesInRect(
             'tree', Player.X() + 1, Player.Y() + 1, Player.X() - 1, Player.Y() - 1)
             .forEach(function (tile) {
@@ -42,7 +46,7 @@ function Chop(id, x, y, z) {
                         Orion.EquipT(graphic);
                     });
                 }
-                if (Player.Weight() > (Player.MaxWeight() - 30)) {
+                if (Player.Weight() > (Player.MaxWeight() - 50)) {
                     Orion.FindTypeEx('0x1BDD', any, backpack).forEach(function (wood) {
                         Orion.UseObject(righthand.Serial());
                         Orion.Wait(300);
@@ -51,8 +55,18 @@ function Chop(id, x, y, z) {
                             Orion.TargetObject(wood.Serial());
                             Orion.Wait(1000);
                         }
-
+					TextWindow.Print('ChoppingLogs');
                     });
+                     if (Player.Weight() > (Player.MaxWeight() - 50)) {
+                     TextWindow.Print('Going Home');
+                Orion.WalkTo(storageBox.X(), storageBox.Y(), storageBox.Z(), 2, 1, 1, 1);
+                Orion.FindTypeEx('0x1BD7', any, backpack).forEach(function (planks) {
+                Orion.MoveItem(planks.Serial(), 0, storageBox.Serial());
+                 Orion.Wait(800);
+                    });
+                    Orion.Wait(1000);
+                Orion.WalkTo(x,y,z, 1, Player.Z(), 1, 1);
+                     }
                 }
                 Orion.UseObject(righthand.Serial());
                 Orion.Wait(300);

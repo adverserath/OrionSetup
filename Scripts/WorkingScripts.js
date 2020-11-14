@@ -210,13 +210,13 @@ function TrainMagery() {
     var notified = false;
     while (Player.IsHuman()) {
         if ((Orion.SkillValue('Magery') % 1 == 100) && notified == false) {
-            Orion.HttpPost('https://maker.ifttt.com/trigger/Seed/with/key/dL1ugCFG4KbaRG5KPR5lXF/?value1=MAGING' + Orion.SkillValue('Magery'), '');
+            Orion.HttpPost('https://maker.ifttt.com/trigger/Seed/with/key/dL1ugCFG4KbaRG5KPR5lXF/?value1=MAGING' + Orion.SkillValue('Magery','base'), '');
 
         }
         else if (notified == true) {
             notified = false;
         }
-        if (Player.Mana() < 10) {
+        if (Player.Mana() < 40) {
             Orion.UseSkill('Meditation');
 
             while (Player.Mana() < Player.MaxMana()) {
@@ -224,19 +224,19 @@ function TrainMagery() {
             }
         }
 
-        if (Orion.SkillValue('Magery') < 600) {
+        if (Orion.SkillValue('Magery','base') < 600) {
             Orion.Cast('31');
             if (Orion.WaitForTarget(5000))
                 Orion.TargetObject('self');
             Orion.Wait(2000);
         }
-        else if (Orion.SkillValue('Magery') < 700) {
+        else if (Orion.SkillValue('Magery','base') < 700) {
             Orion.Cast('Invisibility');
             if (Orion.WaitForTarget(3000))
                 Orion.TargetObject('self');
             Orion.Wait(2000);
         }
-        else if (Orion.SkillValue('Magery') < 1000) {
+        else if (Orion.SkillValue('Magery','base') < 1000) {
             Orion.Cast('Mana Vampire');
             if (Orion.WaitForTarget(3000))
                 Orion.TargetObject('self');
