@@ -1,6 +1,6 @@
 function SelectTarget(itemUsage) {
   if (itemUsage != null) {
-    Orion.Print("Select your" + itemName);
+    Orion.Print("Select your" + itemUsage);
   }
   Orion.WaitForAddObject('myTarget');
   Orion.TargetObject('myTarget');
@@ -11,7 +11,7 @@ function SelectTarget(itemUsage) {
 
 function DebugText(message) {
   if (debug) {
-    TextWindow.Print(message);
+    TextWindow.Print(Orion.Time() + ' : ' + message);
   }
 }
 
@@ -29,9 +29,9 @@ function DebugObject(object) {
 }
 
 function MoveItems(containerItem, graphicIDs) {
-  Orion.WalkTo(container.X(), container.Y(), container.Z(), 2, 1, 1, 1);
+  Orion.WalkTo(containerItem.X(), containerItem.Y(), containerItem.Z(), 2, 1, 1, 1);
   Orion.FindTypeEx(graphicIDs, any, backpack).forEach(function (items) {
-    Orion.MoveItem(items.Serial(), 0, container.Serial());
+    Orion.MoveItem(items.Serial(), 0, containerItem.Serial());
     Orion.Wait(800);
   });
 }

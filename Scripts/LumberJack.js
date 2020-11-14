@@ -9,11 +9,25 @@ var lastLocationRune;
 var useMagic = true;
 function TestLumber() {
     Orion.Say('Chop Chop');
-    storageBox = SelectTarget('Storage Box');
-    storageRune = SelectTarget('Storage location Rune');
-    lastLocationRune = SelectTarget('Rune to continue the job');
+    storageBox = SelectTarget(' Storage Box');
+    storageRune = SelectTarget(' Storage location Rune');
+    lastLocationRune = SelectTarget(' Rune to continue the job');
 
-    Orion.Wait(10000);
+
+    Orion.Unequip('LeftHand');
+    Orion.Unequip('RightHand');
+    Orion.Wait(1000);
+    var axe = Orion.FindTypeEx(axes, any, backpack).shift();
+    if (axe == null) {
+        Orion.Print("Cannot find an axe")
+    }
+    else {
+        Orion.Print(axe.Name() + axe.Graphic())
+
+        Orion.Equip(axe.Serial());
+
+    }
+    Orion.Wait(1000);
     var range = 20;
     var pickaxe = '0xE86';
     Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
@@ -29,28 +43,23 @@ function TestLumber() {
 }
 
 function Chop(id, x, y, z) {
+    DebugText('StartChopMethod');
 
     while (Orion.LastJournalMessage() == null ||
         'There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage().Text()) != 0) {
-
+        DebugText('In While');
+        Orion.Wait(200);
         Orion.GetTilesInRect(
             'tree', Player.X() + 1, Player.Y() + 1, Player.X() - 1, Player.Y() - 1)
             .forEach(function (tile) {
                 TextWindow.Print(tile.Graphic());
-                //CHECK IF RIGHT HAND IS EMPTY
-                //N//IS AXE IN BACKPACK
-                //Y//EQUIP NEW AXE
-                //N//GO GET ONE THEN EQUIP
 
-                //CHECK WEIGHT
-                //IF WEIGHT>MAX-30
-                //Y//GO STORE IT
-
-                //SELECT AXE
                 var righthand = Orion.ObjAtLayer('LeftHand');
                 if (righthand == null) {
                     axes.split('|').forEach(function (graphic) {
                         Orion.EquipT(graphic);
+                        Orion.Wait(1000);
+                        righthand = Orion.ObjAtLayer('LeftHand');
                     });
                 }
                 if (Player.Weight() > (Player.MaxWeight() - 50)) {

@@ -1,5 +1,7 @@
 function CastSpellOnTarget(spellName, targetID) {
-	Orion.CastTarget(spellName, targetID);
+	Orion.Cast(spellName);
+	if (Orion.WaitForTarget(3000))
+		Orion.TargetObject(targetID);
 }
 
 function MarkRune(runeItem) {
