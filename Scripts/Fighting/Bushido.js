@@ -75,17 +75,30 @@ function HealingSelfAndFriendLoop() {
 
 function CutCorpses() {
 
-    do {
-        var corpses = Orion.FindType('0x2006', any, ground, 'near', '2');
-        if (corpses.length) {
-            Orion.Wait(100);
-            Orion.Print('skinning')
-            Orion.UseObject(Orion.FindType('0x0EC4', any, backpack, 'near', '3').shift());
-            Orion.TargetObject(corpses[0]);
+    while (!Player.Dead()) {
+        while (!Player.WarMode()) {
+            var corpses = Orion.FindType('0x2006', any, ground, 'near', 2);
+            if (corpses.length > 0) {
+                Orion.Wait(100);
+                Orion.Print('skinning');
+                corpses.forEach(function (corpse) {
+                    Orion.UseObject(Orion.FindType('0x0EC4', any, backpack, 'near', '3').shift());
+                    if (Orion.WaitForTarget(1000)) {
+                        Orion.TargetObject(corpse);
+                                           Orion.Wait(200);
+ Orion.OpenContainer(Orion.FindObject(corpse).Container());
+                        
+                        Orion.Ignore(corpse);
+                    }
+                    Orion.Wait(300);
+                });
+
+            }
             //    Orion.UseObject(corpses[0]);
-            Orion.Ignore(corpses[0]);
         }
-        Orion.Wait(400);
-    } while (true);
+        Orion.Wait(600);
+    }
+    Orion.Wait(600);
 }
+
 
