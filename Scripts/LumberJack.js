@@ -7,12 +7,37 @@ var storageBox;
 var storageRune;
 var lastLocationRune;
 var useMagic = true;
-function TestLumber() {
+function AutoLumberJack() {
     Orion.Say('Chop Chop');
-    storageBox = SelectTarget(' Storage Box');
-    storageRune = SelectTarget(' Storage location Rune');
-    lastLocationRune = SelectTarget(' Rune to continue the job');
+        Orion.Print("Go into war mode to stop the script at any point");
+        var file = Orion.NewFile();
+      
+        file.Open('lumberjack.conf');
+        storageFile = file.Read();
+       storageRuneFile = file.Read();
+              lastLocationRuneFile = file.Read();
+file.Close();
+    storageBox = SelectTarget(' Storage Box. Press Escape to use the previous saved value');
+    if(storageBox!=null)
+    {
+    Orion.Wait(200);
+    var newFile = Orion.NewFile();
+     newFile.Open('lumberjack.conf');
 
+    newFile.Write(storageBox.Serial()+ ' ');
+        storageRune = SelectTarget(' Storage location Rune.');
+            newFile.Write(storageRune.Serial()+ ' ');
+    lastLocationRune = SelectTarget(' Rune to continue the job. ');
+                newFile.Write(lastLocationRune.Serial()+ ' ');
+                newFile.Close();
+    }
+    else{
+    storageBox = Orion.FindObject(storageFile);
+        storageRune = Orion.FindObject(storageRuneFile);
+    lastLocationRune = Orion.FindObject(lastLocationRuneFile);
+    }
+
+      
 
     Orion.Unequip('LeftHand');
     Orion.Unequip('RightHand');
@@ -37,21 +62,26 @@ function TestLumber() {
         forEach(function (treeTile) {
             Orion.WalkTo(treeTile.X(), treeTile.Y(), treeTile.Z(), 1, Player.Z(), 1, 1);
             DebugText('Walking to ' + treeTile.Graphic() + 'X:' + treeTile.X() + 'Y:' + treeTile.Y() + 'Z:' + treeTile.Z());
-            Chop(treeTile.Graphic(), treeTile.X(), treeTile.Y(), Player.Z());
+            Chop(treeTile);
             Orion.ClearJournal();
         });
 }
 
-function Chop(id, x, y, z) {
+function Chop(tile) {
     DebugText('StartChopMethod');
 
     while (Orion.LastJournalMessage() == null ||
         'There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage().Text()) != 0) {
+        if(Player.WarMode())
+        {
+          Orion.Print("STOPPING");
+        Orion.ToggleScript('AutoLumberJack');
+        }
         DebugText('In While');
         Orion.Wait(200);
-        Orion.GetTilesInRect(
-            'tree', Player.X() + 1, Player.Y() + 1, Player.X() - 1, Player.Y() - 1)
-            .forEach(function (tile) {
+     //   Orion.GetTilesInRect(
+      //      'tree', Player.X() + 1, Player.Y() + 1, Player.X() - 1, Player.Y() - 1)
+     //       .forEach(function (tile) {
                 TextWindow.Print(tile.Graphic());
 
                 var righthand = Orion.ObjAtLayer('LeftHand');
@@ -77,9 +107,10 @@ function Chop(id, x, y, z) {
                         TextWindow.Print('Going Home');
                         if (useMagic) {
                             MarkRune(lastLocationRune);
+                            Orion.Wait(3000);
                             RecallRune(storageRune);
+                            Orion.Wait(500);
                             MoveItems(storageBox, '0x1BD7');
-
                             RecallRune(lastLocationRune);
 
                         }
@@ -87,7 +118,7 @@ function Chop(id, x, y, z) {
                             MoveItems(storageBox, '0x1BD7');
 
                             Orion.Wait(1000);
-                            Orion.WalkTo(x, y, z, 1, Player.Z(), 1, 1);
+                            Orion.WalkTo(tile.X(), tile.Y(), Player.Z(), 1, Player.Z(), 1, 1);
                         }
 
                     }
@@ -103,7 +134,7 @@ function Chop(id, x, y, z) {
                 //IF LOGS EXIST
                 //Y//CUT THEM TO BOARDS
 
-            });
+           // });
     }
     //0x0CCD 3492 2718 6
 }
