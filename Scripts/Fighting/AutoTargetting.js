@@ -175,7 +175,6 @@ function HonorTarget(mobile) {
         Orion.InvokeVirtue('Honor');
         if (Orion.WaitForTarget(500)) {
             Orion.TargetObject(mobile.Serial());
-
         }
     }
 }

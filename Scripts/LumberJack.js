@@ -57,16 +57,23 @@ file.Close();
     Orion.Wait(1000);
     var range = 20;
     var pickaxe = '0xE86';
-    Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
+    var trees = Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
         .sort(function (t1, t2) {
             return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
-        }).
-        forEach(function (treeTile) {
+        });
+        while (trees.length > 0) {
+            var treeTile = trees.shift();
             Orion.WalkTo(treeTile.X(), treeTile.Y(), treeTile.Z(), 1, Player.Z(), 1, 1);
             DebugText('Walking to ' + treeTile.Graphic() + 'X:' + treeTile.X() + 'Y:' + treeTile.Y() + 'Z:' + treeTile.Z());
             Chop(treeTile);
             Orion.ClearJournal();
-        });
+
+            trees.sort(function (treeA, treeB) {
+                return  Orion.GetDistance(treeA.X(), treeA.Y()) - Orion.GetDistance(treeB.X(), treeB.Y());
+            });        }
+
+
+
 }
 
 function Chop(tile) {
@@ -87,20 +94,20 @@ function Chop(tile) {
 
                 var righthand = Orion.ObjAtLayer('LeftHand');
                 if (righthand == null) {
-                    axes.split('|').forEach(function (graphic) {
-                        Orion.EquipT(graphic);
-                        Orion.Wait(1000);
+                 Orion.FindType(axes, any, backpack).forEach(function (serial) {
+                        Orion.Equip(serial);
+                        Orion.Wait(500);
                         righthand = Orion.ObjAtLayer('LeftHand');
                     });
                 }
                 if (Player.Weight() > (Player.MaxWeight() - 50)) {
                     Orion.FindTypeEx('0x1BDD', any, backpack).forEach(function (wood) {
                         Orion.UseObject(righthand.Serial());
-                        Orion.Wait(300);
+                      //  Orion.Wait(300);
 
                         if (Orion.WaitForTarget(1000)) {
                             Orion.TargetObject(wood.Serial());
-                            Orion.Wait(1000);
+                            Orion.Wait(200);
                         }
                         TextWindow.Print('ChoppingLogs');
                     });
@@ -125,12 +132,12 @@ function Chop(tile) {
                     }
                 }
                 Orion.UseObject(righthand.Serial());
-                Orion.Wait(300);
+             //   Orion.Wait(200);
 
                 if (Orion.WaitForTarget(1000)) {
                     TextWindow.Print(tile.Flags());
                     Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
-                    Orion.Wait(2000);
+                    Orion.Wait(400);
                 }
                 //IF LOGS EXIST
                 //Y//CUT THEM TO BOARDS
