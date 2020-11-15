@@ -1,5 +1,7 @@
-//#include helpers/Helper.js
+//#include helpers/Target.js
 //#include helpers/Magic.js
+//#include helpers/Debug.js
+//#include helpers/ItemManager.js
 
 var debug = true;
 var axes = '0xF47|0xF4B|0xF45|0xF43|0x13FB|0x1443|0x13B0|0xF49'
@@ -72,13 +74,12 @@ function Chop(tile) {
 
     while (Orion.LastJournalMessage() == null ||
         'There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage().Text()) != 0) {
-        if(Player.WarMode())
+        while(Player.WarMode())
         {
-          Orion.Print("STOPPING");
-        Orion.ToggleScript('AutoLumberJack');
+        Orion.Wait(2000);  
         }
-        DebugText('In While');
-        Orion.Wait(200);
+		Orion.WalkTo(tile.X(), tile.Y(), tile.Z(), 1, Player.Z(), 1, 1);
+        
      //   Orion.GetTilesInRect(
       //      'tree', Player.X() + 1, Player.Y() + 1, Player.X() - 1, Player.Y() - 1)
      //       .forEach(function (tile) {
@@ -109,7 +110,7 @@ function Chop(tile) {
                             MarkRune(lastLocationRune);
                             Orion.Wait(3000);
                             RecallRune(storageRune);
-                            Orion.Wait(500);
+                            Orion.Wait(1500);
                             MoveItems(storageBox, '0x1BD7');
                             RecallRune(lastLocationRune);
 
