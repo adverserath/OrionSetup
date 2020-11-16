@@ -1,5 +1,5 @@
-//#include Crafting/LumberJack.js
-//#include Crafting/Carpentry.js
+//#include Scripts/Crafting/LumberJack.js
+//#include Scripts/Crafting/Carpentry.js
 
 //Cut trees within a defined range of Player.
 //Once all trees are cut in the grid, the script will terminate!
