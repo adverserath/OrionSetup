@@ -23,5 +23,9 @@ function AutoTargetter() {
 }
 
 function HealSelf(){
+    BandageSelf();
+}
 
+function BandageNearbyFriend(){
+    BandageSelfAndFriendLoop();
 }
