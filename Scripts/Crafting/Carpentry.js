@@ -17,7 +17,9 @@ function Carpentry() {
 Orion.Print("out:" + needToBuy);
         if (needToBuy && !triedToBuy) {
             Restock(listName);
-            triedToBuy = !listHasEmptyInBackpack(listName);;
+            triedToBuy = !listHasEmptyInBackpack(listName);
+            Orion.Print("ttb:" + triedToBuy);
+
         }
         else if (needToBuy && triedToBuy) {
             Orion.Wait(60000);

@@ -3,6 +3,7 @@
 //#include helpers/Debug.js
 //#include helpers/ItemManager.js
 
+
 var debug = true;
 var axes = '0xF47|0xF4B|0xF45|0xF43|0x13FB|0x1443|0x13B0|0xF49'
 var storageBox;
@@ -112,19 +113,20 @@ function Chop(tile) {
 
                         if (Orion.WaitForTarget(1000)) {
                             Orion.TargetObject(wood.Serial());
-                            Orion.Wait(200);
+                            Orion.Wait(700);
                         }
                         TextWindow.Print('ChoppingLogs');
                     });
                     if (Player.Weight() > (Player.MaxWeight() - 50)) {
                         TextWindow.Print('Going Home');
                         if (useMagic) {
-                        Orion.Wait(300);
+                        Orion.Wait(500);
                             MarkRune(lastLocationRune);
                             Orion.Wait(3000);
                             RecallRune(storageRune);
                             Orion.Wait(1500);
                             MoveItems(storageBox, '0x1BD7');
+                            Orion.Wait(1500);
                             RecallRune(lastLocationRune);
 
                         }
@@ -150,5 +152,7 @@ function Chop(tile) {
 
            // });
     }
+    //HIDE TREE
+    Orion.AddFakeMapObject(SelectedTile.Serial() , '0x0E56', tile.Color(), tile.X(), tile.Y(), tile.Z());
     //0x0CCD 3492 2718 6
 }
