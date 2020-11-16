@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="macro" looped="true" delay="1">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x43E2EFF4" graphic="0x1034" color="0x0000"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x004A95B5" id="0x38920ABD" button="21"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x004A96D1" id="0x38920ABD" button="0"/>
+    <macro name="macro" looped="true" delay="0.1">
+        <action type="10" convert_type="0" waiting_time="300" serial="0x462D1384" graphic="0x1443" color="0x0000" count="1"/>
+        <action type="12" convert_type="0" waiting_time="300" layer="2" container="0x001CD12E"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x462D1384" graphic="0x1443" color="0x0000"/>
+        <action type="4" convert_type="0" waiting_time="1000" graphic="0x0CE6" x="1288" y="1491" z="0" relative_x="1" relative_y="0" relative_z="0"/>
+        <action type="10" convert_type="0" waiting_time="300" serial="0x462D1384" graphic="0x1443" color="0x0000" count="0"/>
+        <action type="11" convert_type="0" waiting_time="500" x="142" y="121" z="0" slot="0" container="0x462A1A41" relative_x="-121" relative_y="-90" relative_z="0"/>
+        <action type="10" convert_type="0" waiting_time="300" serial="0x40066E6C" graphic="0x1443" color="0x0000" count="1"/>
+        <action type="12" convert_type="0" waiting_time="300" layer="2" container="0x001CD12E"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x40066E6C" graphic="0x1443" color="0x0000"/>
+        <action type="4" convert_type="0" waiting_time="1000" graphic="0x0CE6" x="1288" y="1491" z="0" relative_x="1" relative_y="0" relative_z="0"/>
+        <action type="10" convert_type="0" waiting_time="300" serial="0x40066E6C" graphic="0x1443" color="0x0000" count="0"/>
+        <action type="11" convert_type="0" waiting_time="500" x="89" y="121" z="0" slot="0" container="0x462A1A41" relative_x="82" relative_y="-90" relative_z="0"/>
     </macro>
 </data>

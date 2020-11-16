@@ -8,12 +8,13 @@ function Carpentry() {
     TextWindow.Open();
     var triedToBuy = false;
     var listName = 'Carpentry';
+    var toolSet = '0x1034';
     while (!Player.Dead()) {
     Orion.Wait(400);
         TextWindow.Clear();
-         DebugWrite('Carpentry :' + Orion.SkillValue(listName));
-        var needToBuy = listHasEmptyInBackpack(listName);
-
+        DebugText('Carpentry :' + Orion.SkillValue(listName));
+        var needToBuy = NotEnoughResourcesGump();
+Orion.Print("out:" + needToBuy);
         if (needToBuy && !triedToBuy) {
             Restock(listName);
             triedToBuy = !listHasEmptyInBackpack(listName);;
@@ -26,29 +27,6 @@ function Carpentry() {
             triedToBuy = false;
             Orion.Print('make');
 
-                Orion.UseObject('0x43E2EFF4');
-                if (Orion.WaitForGump(1000))
-                {
-                    var gump0 = Orion.GetGump('last');
-                    if ((gump0 !== null) && (gump0.ID() === '0x38920ABD'))
-                    {
-                        gump0.Select(Orion.CreateGumpHook(21));
-                        Orion.Wait(100);
-                    }
-                }
-                if (Orion.WaitForGump(1000))
-                {
-                    var gump1 = Orion.GetGump('last');
-                    if ((gump1 !== null) && (gump1.ID() === '0x38920ABD'))
-                    {
-                        gump1.Select(Orion.CreateGumpHook(0));
-                        Orion.Wait(100);
-                    }
-                }
-
-
-
-
             if (Orion.WaitForGump(1000)) {
                 var gump0 = Orion.GetGump('last');
                 if ((gump0 !== null) && (gump0.ID() === '0x38920ABD')) {
@@ -57,8 +35,8 @@ function Carpentry() {
                 }
             }
             else {
-                var pens = Orion.FindTypeEx('0x0FBF', 'any', 'backpack');
-                Orion.UseObject(pens[0].Serial());
+                var tools = Orion.FindTypeEx(toolSet, 'any', 'backpack');
+                Orion.UseObject(tools[0].Serial());
             }
 
             Orion.Wait(1000);

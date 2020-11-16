@@ -10,6 +10,7 @@ var storageRune;
 var lastLocationRune;
 var useMagic = true;
 function AutoLumberJack() {
+DebugStart();
     Orion.Say('Chop Chop');
         Orion.Print("Go into war mode to stop the script at any point");
         var file = Orion.NewFile();
@@ -81,6 +82,10 @@ function Chop(tile) {
 
     while (Orion.LastJournalMessage() == null ||
         'There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage().Text()) != 0) {
+        if(Player.WarMode())
+        {
+        Orion.Print('In War Mode');
+        }
         while(Player.WarMode())
         {
         Orion.Wait(2000);  
@@ -114,6 +119,7 @@ function Chop(tile) {
                     if (Player.Weight() > (Player.MaxWeight() - 50)) {
                         TextWindow.Print('Going Home');
                         if (useMagic) {
+                        Orion.Wait(300);
                             MarkRune(lastLocationRune);
                             Orion.Wait(3000);
                             RecallRune(storageRune);
@@ -137,7 +143,7 @@ function Chop(tile) {
                 if (Orion.WaitForTarget(1000)) {
                     TextWindow.Print(tile.Flags());
                     Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
-                    Orion.Wait(400);
+                    Orion.Wait(600);
                 }
                 //IF LOGS EXIST
                 //Y//CUT THEM TO BOARDS

@@ -4,7 +4,7 @@ function Inscribe() {
     while (!Player.Dead()) {
     Orion.Wait(400);
         TextWindow.Clear();
-         DebugWrite('inscription :' + Orion.SkillValue('inscription'));
+         DebugText('inscription :' + Orion.SkillValue('inscription'));
         var needToBuy = listHasEmptyInBackpack('Inscribe');
 
         if (needToBuy && !triedToBuy) {
@@ -27,7 +27,7 @@ function Inscribe() {
 
                 while (Player.Mana() < Player.MaxMana()) {
                     if (!Orion.BuffExists('meditation')) {
-                            DebugWrite('meditating');
+                        DebugText('meditating');
                         Orion.UseSkill('Meditation');
                     }
                     Orion.Wait(4000);
