@@ -4,10 +4,8 @@
 //#include helpers/ItemManager.js
 
 
-function Carpentry() {
-    TextWindow.Open();
+function CarpentryCreateLoop(listName) {
     var triedToBuy = false;
-    var listName = 'Carpentry';
     var toolSet = '0x1034';
     while (!Player.Dead()) {
     Orion.Wait(400);
