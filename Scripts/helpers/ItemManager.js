@@ -1,28 +1,22 @@
-function MoveItems(containerItem, graphicIDs, color) {
-if(color==null)
-{
-color = any;
-}
-    Orion.WalkTo(containerItem.X(), containerItem.Y(), containerItem.Z(), 0, 1, 1, 1);
-    Orion.FindTypeEx(graphicIDs, color, backpack).forEach(function (items) {
-      Orion.MoveItem(items.Serial(), 0, containerItem.Serial());
-      Orion.Wait(800);
+function MoveItems(fromContainer, toContainer, graphicIDs, color) {
+    DebugText('Sorting');
+    if (color == null) {
+        DebugText('Any color');
+        color = any;
+    }
+    DebugText('Walking');
+    Orion.WalkTo(fromContainer.X(), fromContainer.Y(), fromContainer.Z(), 0, 1, 1, 1);
+    DebugText('Here');
+    Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial()).forEach(function (items) {
+        DebugText('Moving:' + items.Name());
+        Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
+        Orion.Wait(500);
     });
-  }
-  
-function MoveItemsToBackpack(graphicIDs, containerFrom,  color) {
-if(color==null)
-{
-color = any;
 }
-    Orion.FindTypeEx(graphicIDs, color, containerFrom).forEach(function (items) {
-    Orion.Print(items.Name());
-      Orion.MoveItem(items.Serial(), 0);
-      Orion.Wait(800);
-    });
-  }
-  
-  function Restock(listName) {
+
+
+
+function Restock(listName) {
     var requiredItems = Orion.GetFindList(listName).Items();
     requiredItems.forEach(function (reqItem) {
         var neededAmount = (reqItem.Count() - Orion.Count(reqItem.Graphic(), reqItem.Color(), backpack, '', '', true));
@@ -33,12 +27,18 @@ color = any;
                 return container.Serial() != Player.Serial();
             })
                 .forEach(function (outside) {
-                    Orion.FindTypeEx(reqItem.Graphic(), any, outside.Serial(), '', 2, '', true).forEach(function (item) {
+                    DebugText('finding:' + reqItem.Comment());
+
+                    Orion.FindTypeEx(reqItem.Graphic(), reqItem.Color(), outside.Serial(), '', 4, '', true).forEach(function (item) {
+                        DebugText('Getting:' + reqItem.Comment());
+
                         neededAmount = (reqItem.Count() - Orion.Count(reqItem.Graphic(), reqItem.Color(), backpack, '', '', true));
                         if (item.Container() != Player.Serial() && neededAmount > 0) {
                             DebugText(item.Container() + '   ' + neededAmount);
-                            Orion.MoveItem(item.Serial(), neededAmount,reqItem.Color());
-                            Orion.Wait(300);
+                            Orion.WalkTo(item.X(), item.Y(), item.Z(), 0, 1, 1, 1);
+                            DebugText('Here');
+                            Orion.MoveItem(item.Serial(), reqItem.Count());
+                            Orion.Wait(1000);
                         }
                     });
                 });
@@ -53,13 +53,13 @@ color = any;
 
 function CountAroundPlayer(graphicId) {
     var boxes = Orion.FindTypeEx(any, any, ground, '', '', '', true).filter(function (container) {
-        return container.Serial() != Player.Serial() && container.Serial()!=0;
+        return container.Serial() != Player.Serial() && container.Serial() != 0;
     });
-   
-    var count = boxes.reduce(function (box,box2) {
-    return box + Orion.Count(graphicId, any, box2.Serial(), any, 2, true)
-    },0);
-return count;
+
+    var count = boxes.reduce(function (box, box2) {
+        return box + Orion.Count(graphicId, any, box2.Serial(), any, 2, true)
+    }, 0);
+    return count;
 }
 
 function GetEmptyFromListInBackpack(listName) {
@@ -76,10 +76,10 @@ function listHasEmptyInBackpack(listName) {
     return GetEmptyFromListInBackpack(listName).length > 0;
 }
 
-function NotEnoughResourcesGump(){
+function NotEnoughResourcesGump() {
     var output = Orion.GetLastGump();//.foreach(function (cmd){
-return output.CommandList().filter(function(text){
-         return text.search('502925')>=0;
+    return output.CommandList().filter(function (text) {
+        return text.search('502925') >= 0;
 
-}).length>0;
-    }
+    }).length > 0;
+}

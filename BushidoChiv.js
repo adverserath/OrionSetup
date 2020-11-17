@@ -1,6 +1,7 @@
 //#include Scripts/Fighting/AutoTargetting.js
 //#include Scripts/Fighting/Bushido.js
 //#include Scripts/Fighting/Corpses.js
+//#include Scripts/Fighting/Healing.js
 
 function AutoTargetter() {
     var range = 20; //How far to load statusbars from

@@ -1,5 +1,11 @@
+//#include Scripts/helpers/Target.js
+//#include Scripts/helpers/Debug.js
+//#include Scripts/helpers/Magic.js
 //#include Scripts/Crafting/LumberJack.js
 //#include Scripts/Crafting/Carpentry.js
+//#include Scripts/helpers/ItemManager.js
+//#include Scripts/helpers/Notifier.js
+
 
 //Cut trees within a defined range of Player.
 //Once all trees are cut in the grid, the script will terminate!
@@ -23,4 +29,10 @@ function StartLumberJacking() {
 //WIP// 
 function StartCarpentryLoop() {
     CarpentryCreateLoop('Carpentry');
+}
+
+function RestackContainerItems() {
+Orion.Print('Select the container you would like to sort');
+var container = SelectTarget();
+MoveItems(container,container,'any','any');
 }

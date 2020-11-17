@@ -42,20 +42,7 @@ function AutoLumberJack(magicOption, range) {
         lastLocationRune = Orion.FindObject(lastLocationRuneFile);
     }
 
-    Orion.Unequip('LeftHand');
-    Orion.Unequip('RightHand');
-    Orion.Wait(1000);
-    var axe = Orion.FindTypeEx(axes, any, backpack).shift();
-    if (axe == null) {
-        Orion.Print("Cannot find an axe")
-    }
-    else {
-        Orion.Print(axe.Name() + axe.Graphic())
-
-        Orion.Equip(axe.Serial());
-
-    }
-    Orion.Wait(1000);
+    EquipAxe();
     var pickaxe = '0xE86';
     var trees = Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
         .sort(function (t1, t2) {
@@ -136,4 +123,17 @@ function Chop(tile) {
         }
 
     }
+}
+function EquipAxe() {
+    Orion.Unequip('LeftHand');
+    Orion.Unequip('RightHand');
+    Orion.Wait(1000);
+    var axe = Orion.FindTypeEx(axes, any, backpack).shift();
+    if (axe == null) {
+        Orion.Print("Cannot find an axe")
+    }
+    else {
+        Orion.Equip(axe.Serial());
+    }
+    Orion.Wait(1000);
 }

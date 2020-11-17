@@ -13,7 +13,7 @@ Orion.Print(hides.length);
 }
 
 function MoveHides(corpse) {
-MoveItemsToBackpack('0x1079',corpse);
+    MoveItems('0x1079',corpse, Player.Container(),any);
 }
 
 function CutCorpses() {
