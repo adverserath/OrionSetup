@@ -1,0 +1,48 @@
+//#include Scripts/helpers/Target.js
+
+ var unique;
+ function BinPicker()
+ {
+var bin = Orion.FindObject('0x40053E83');
+ TextWindow.Open();
+
+while(Player.WarMode()){
+Orion.Wait(500);	
+// TextWindow.Clear();
+
+SearchContainer(bin);
+}
+}
+
+function SearchContainer(container){
+	Orion.FindTypeEx('any', 'any', container.Serial(),'','','','true')
+	 .forEach(function (item){
+	 if(item.Graphic() =='0x0E75' || item.Name() == 'Backpack')
+	 {
+	// Orion.OpenContainer(item.Serial());
+	//  SearchContainer(item);
+	 }
+	 else{
+	 PrintItem(item);
+	 }
+ 
+	 });
+	}
+
+
+function PrintItem(item)
+{
+//Orion.Wait(300);
+  TextWindow.Print(item.Name() + '  ' + item.Graphic());
+ TextWindow.Print(item.Properties());
+ if(item.Name().toLowerCase().search('runic')>=0){
+ Orion.MoveItem(item.Serial());
+ }
+  if(item.Properties().toLowerCase().search('slayer')>=0){
+ //Orion.MoveItem(item.Serial())
+ }
+   if(item.Name().toLowerCase().search('Exceptional')>=0){
+ Orion.MoveItem(item.Serial())
+ }
+ TextWindow.Print(' ');
+}

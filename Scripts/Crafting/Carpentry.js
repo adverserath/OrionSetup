@@ -31,11 +31,11 @@ function CarpentryCreateLoop(listName) {
             }
             else {
                 var tools = Orion.FindTypeEx(toolSet, 'any', 'backpack');
-                if (tools.length == 0 || Orion.SkillValue('Carpentry') > 70) {
+                if (tools.length == 0 || Orion.SkillValue('Carpentry') > 700) {
                     BotPush("no saws left");
                     BotPush("Carp: " + Orion.SkillValue('Carpentry'));
 
-                    Orion.ShutdownWindows();
+                    Orion.ShutdownWindows('forced');
                 }
                 Orion.UseObject(tools[0].Serial());
             }
@@ -55,6 +55,12 @@ function CarpentryCreateLoop(listName) {
                 }
             });
         }
-
     }
+    BotPush("You Died");
+    Orion.FindTypeEx(any, any, ground,
+            'nothumanmobile|live|ignoreself|ignorefriends', 10, 4).forEach(function (mob){
+                    BotPush(mob.Name());
+            });
+              Orion.ShutdownWindows('forced');
+
 }

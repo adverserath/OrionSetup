@@ -1,3 +1,5 @@
+//#include Debug.js
+
 function SelectTarget(itemUsage) {
   if (itemUsage != null) {
     Orion.Print("Select your" + itemUsage);
