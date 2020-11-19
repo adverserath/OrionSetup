@@ -10,7 +10,7 @@ function StartMining() {
     var useMagicToMove = true;
 
     //How far to look for trees from the player
-    var vRange = 4;
+    var vRange = 16;
     AutoMiner(useMagicToMove, vRange);
 }
 var debug = true;
@@ -67,6 +67,7 @@ function AutoMiner(magicOption, _range) {
 
             if (outcome) {
                 Mine(rockTile)
+                Orion.RemoveFakeMapObject(tile.X().toString() + tile.Y().toString());
             }
             Orion.ClearJournal();
 
@@ -154,10 +155,6 @@ function Mine(tile) {
 
 
     }
-
-    Orion.RemoveFakeMapObject(tile.X().toString() + tile.Y().toString());
-
-
 }
 
 function GetRocks(oldRocks) {
@@ -173,7 +170,7 @@ function GetRocks(oldRocks) {
         });
     Orion.ClearFakeMapObjects();
     rocks.forEach(function (rock) {
-        Orion.AddFakeMapObject(rocks.indexOf(rock), '0x1BF7', '', rock.X(), rock.Y(), rock.Z());
+        Orion.AddFakeMapObject(rock.X().toString() + rock.Y().toString(), '0x1BF7', '', rock.X(), rock.Y(), rock.Z());
     });
     return rocks;
 }
