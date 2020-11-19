@@ -9,5 +9,11 @@ function MarkRune(runeItem) {
 }
 
 function RecallRune(runeItem) {
+	var x = Player.X();
+	var y = Player.Y();
 	CastSpellOnTarget("Recall", runeItem.Serial());
+	Orion.Wait(1500);
+	if(x==Player.X() && y==Player.Y()){
+		RecallRune(runeItem);
+	}
 }

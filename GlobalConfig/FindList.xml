@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="6">
+<data version="0" size="7">
     <findlist name="Gold/Arrows">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -21,162 +21,20 @@
         <item graphic="0x0F8C" color="0x0000" comment="Sulfurous Ash" count="100"/>
         <item graphic="0x0EED" color="any" comment="Gold" count="100"/>
     </findlist>
-    <findlist name="Trees">
-        <item graphic="0x4CCA" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CCB" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CCC" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CCD" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD0" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD3" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD6" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD8" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CDA" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CDD" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CE0" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CE3" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CE6" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CF8" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CFB" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CFE" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D01" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D41" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D42" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D43" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D44" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D57" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D58" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D59" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D5A" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D5B" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D6E" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D6F" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D70" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D71" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D72" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D84" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D85" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D86" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52B5" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52B6" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52B7" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52B8" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52B9" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52BA" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52BB" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52BC" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52BD" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CCE" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CCF" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD1" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD2" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD4" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD5" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD7" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CD9" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CDB" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CDC" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CDE" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CDF" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CE1" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CE2" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CE4" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CE5" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CE7" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CE8" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CF9" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CFA" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CFC" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CFD" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4CFF" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D00" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D02" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D03" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D45" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D46" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D47" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D48" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D49" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D4A" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D4B" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D4C" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D4D" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D4E" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D4F" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D50" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D51" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D52" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D53" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D5C" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D5D" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D5E" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D5F" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D60" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D61" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D62" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D63" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D64" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D65" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D66" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D67" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D68" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D69" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D73" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D74" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D75" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D76" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D77" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D78" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D79" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D7A" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D7B" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D7C" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D7D" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D7E" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D7F" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D87" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D88" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D89" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D8A" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D8B" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D8C" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D8D" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D8E" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D8F" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D90" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D95" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D96" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D97" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D99" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D9A" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D9B" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D9D" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D9E" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4D9F" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4DA1" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4DA2" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4DA3" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4DA5" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4DA6" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4DA7" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4DA9" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4DAA" color="any" comment="Tree" count="0"/>
-        <item graphic="0x4DAB" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52BE" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52BF" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52C0" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52C1" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52C2" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52C3" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52C4" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52C5" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52C6" color="any" comment="Tree" count="0"/>
-        <item graphic="0x52C7" color="any" comment="Tree" count="0"/>
-    </findlist>
     <findlist name="Carpentry">
         <item graphic="0x1034" color="0x0000" comment="Saw" count="0"/>
         <item graphic="0x1BD7" color="0x0000" comment="Board" count="150"/>
     </findlist>
     <findlist name="Leather">
         <item graphic="0x1079" color="0x0000" comment="Pile Of Hides" count="0"/>
+    </findlist>
+    <findlist name="Ores">
+        <item graphic="0x019B8" color="any" comment="Ore" count="0"/>
+        <item graphic="0x019B7" color="any" comment="ore" count="0"/>
+        <item graphic="0x019B9" color="any" comment="ore" count="0"/>
+        <item graphic="0x019BA" color="any" comment="ore" count="0"/>
+    </findlist>
+    <findlist name="Mining">
+        <item graphic="0x0E86" color="0x0000" comment="Pickaxe" count="5"/>
     </findlist>
 </data>

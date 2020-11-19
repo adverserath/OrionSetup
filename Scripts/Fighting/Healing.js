@@ -1,4 +1,4 @@
-function BandageSelf() {
+function Bandage() {
     while (!Player.Dead()) {
         Orion.Wait(200);
         if (Player.Hits() < Player.MaxHits()) {
@@ -8,6 +8,7 @@ function BandageSelf() {
             while (Orion.BuffExists('healing skill')) {
                 Orion.Wait(100);
             }
+
         }
     }
 }

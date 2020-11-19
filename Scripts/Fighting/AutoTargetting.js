@@ -16,17 +16,17 @@ var honor = false;
 var attackList = []; //
 var lastAttacker;
 var lastSearchMobsIds = [];
-
+var honorTargets = false;
 //////END OF CONFIG///////
 function ShowEnemiesByDistance(range,
     autoAttack,
-    honorTargets,
+    _honorTargets,
     delay,
     notorietyToShow,
     notorietyToAttack,
     pullTargetDistance,
     attackEverythingAtOnce) {
-
+honorTargets= _honorTargets;
     //Stop When Dead
     while (!Player.Dead()) {
         var mobileByDistance = [];
@@ -154,7 +154,7 @@ function HonorTarget(mobile) {
 }
 function AttackMobile(mobile) {
     if (attackList.indexOf(mobile)) {
-
+var mobId = mobile.Serial();
         Orion.AddHighlightCharacter(mobId, '0x0FBA', true);
         HonorTarget(mobile);
         Orion.Attack(mobId);

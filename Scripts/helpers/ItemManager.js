@@ -15,6 +15,10 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color) {
 }
 
 
+function MoveItemsFromPlayer(toContainer, graphicIDs) {
+    MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, any);
+}
+
 
 function Restock(listName) {
     var requiredItems = Orion.GetFindList(listName).Items();

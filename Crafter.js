@@ -2,6 +2,7 @@
 //#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/Magic.js
 //#include Scripts/Crafting/LumberJack.js
+//#include Scripts/Crafting/Miner.js
 //#include Scripts/Crafting/Carpentry.js
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/helpers/Notifier.js
@@ -22,6 +23,16 @@ function StartLumberJacking() {
     //How far to look for trees from the player
     var range = 20;
     AutoLumberJack(useMagicToMove, range);
+}
+
+function StartMining() {
+    //Use Mark and Recall spells to move to storage and back to last location
+    //Otherwise it will use Orions WalkTo functionality
+    var useMagicToMove = true;
+
+    //How far to look for trees from the player
+    var range = 20;
+    AutoMiner(useMagicToMove, range);
 }
 
 //Opens the carpentry window and created the last item
