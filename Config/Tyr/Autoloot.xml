@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="0" size="2">
-    <autoloot name="Gold and jewel" container="myTarget" find_list="Gold/Arrows" ignore_list="Not use" check_los="true" selected="true" autostart_on_login="true"/>
+    <autoloot name="Gold and jewel" container="myTarget" find_list="Gold/Arrows" ignore_list="Not use" check_los="true" selected="true" autostart_on_login="false"/>
     <autoloot name="Leather" container="0x4621D353" find_list="Leather" ignore_list="Not use" check_los="true" selected="false" autostart_on_login="false"/>
 </data>
