@@ -63,11 +63,12 @@ function AutoMiner(magicOption, _range) {
             var rockTile = rocks.shift();
             TextWindow.Print(rockTile.X(), rockTile.Y(), rockTile.Z(), 0, Player.Z(), 1, 1);
             TextWindow.Print('Orion.WalkTo(' + rockTile.X() + ', ' + rockTile.Y() + ', ' + rockTile.Z() + ', 1, ' + 255 + ', 1, 1);');
-            var outcome = Orion.WalkTo(rockTile.X(), rockTile.Y(), rockTile.Z(), 1, 255, 1, 1);
+            var outcome = (Orion.GetDistance(rockTile.X(),rockTile.Y())<range-4)&&
+            Orion.WalkTo(rockTile.X(), rockTile.Y(), rockTile.Z(), 1, 255, 1, 1);
 
             if (outcome) {
                 Mine(rockTile)
-                Orion.RemoveFakeMapObject(tile.X().toString() + tile.Y().toString());
+                Orion.RemoveFakeMapObject(rockTile.X().toString() + rockTile .Y().toString());
             }
             Orion.ClearJournal();
 
@@ -103,7 +104,7 @@ function Mine(tile) {
             Orion.WalkTo(tile.X(), tile.Y(), tile.Z(), 1, 255, 1, 1);
             walkBack = false;
         }
-        if (Player.Weight() > (Player.MaxWeight() - 50) || listHasEmptyInBackpack('Mining')) {
+        if (Player.Weight() > (Player.MaxWeight() - 15) || listHasEmptyInBackpack('Mining')) {
             TextWindow.Print('Going Home');
             if (useMagic) {
                 Orion.Wait(500);
@@ -131,7 +132,7 @@ function Mine(tile) {
 
         var pickaxe = Orion.FindType(pickAxe);
         pickaxe.forEach(function (pa) {
-            if (
+            if (Player.Weight() > (Player.MaxWeight() - 15) ||
                 Orion.GetDistance(tile.X(), tile.Y()) <= 1 &&
                 (Orion.LastJournalMessage() == null ||
                     (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)/gi) || []).length == 0)) {
@@ -144,7 +145,7 @@ function Mine(tile) {
 
 
                 if (Orion.WaitForTarget(1000)) {
-                    Orion.Wait(100);
+                    //Orion.Wait(100);
                     TextWindow.Print(tile.Flags());
                     Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
                     TextWindow.Print(Orion.LastJournalMessage().Text());
@@ -160,7 +161,7 @@ function Mine(tile) {
 function GetRocks(oldRocks) {
     var rocks = Orion.GetTilesInRect('crag', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
         .filter(function (rock) {
-            return (Player.Z() + 15) > rock.Z()
+            return (Player.Z() + 15) > rock.Z() || IsReachable(rock)
         })
         .filter(function (rock) {
             return oldRocks.indexOf(rock.X().toString() + rock.Y().toString()) == -1;
@@ -203,5 +204,10 @@ function Smelt1By1() {
 
         });
     }
+}
 
+function IsReachable(rock)
+{
+//Orion.GetTilesInRect('tileFlags', startX, startY, endX, endY);
+return Orion.GetTilesInRect('crag',rock.X()-1,rock.Y()-1,rock.X()+1,rock.Y()+1).length<6;
 }
