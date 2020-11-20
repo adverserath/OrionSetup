@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="0" feel_party_members_as_friends="false" feel_guild_tags_as_friends_state="false" guild_tags_as_friends="" feel_friendly_mobiles_as_friends="false"/>
+<data version="0" size="1" feel_party_members_as_friends="false" feel_guild_tags_as_friends_state="false" guild_tags_as_friends="" feel_friendly_mobiles_as_friends="false">
+    <friend id="0x002B81B6" name="Kain" enabled="true"/>
+</data>
