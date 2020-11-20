@@ -92,6 +92,10 @@ function Mine(tile) {
             TextWindow.Print(Orion.LastJournalMessage().Text());
 
         }
+        if(Player.Followers()<2)
+        {
+       // Orion.Cast('Earth Elemental');
+        }
         if (Player.WarMode()) {
             Orion.Print('In War Mode');
             walkBack = true;
@@ -104,9 +108,14 @@ function Mine(tile) {
             Orion.WalkTo(tile.X(), tile.Y(), tile.Z(), 1, 255, 1, 1);
             walkBack = false;
         }
-        if (Player.Weight() > (Player.MaxWeight() - 15) || listHasEmptyInBackpack('Mining')) {
+        if (Player.Weight() > (Player.MaxWeight() - 40) || listHasEmptyInBackpack('Mining')) {
             TextWindow.Print('Going Home');
             if (useMagic) {
+            if (Player.Weight() > Player.MaxWeight() ){
+            Orion.Cast('Bless','self');
+                            Orion.Wait(3500);
+
+            } 
                 Orion.Wait(500);
                 MarkRune(lastLocationRune);
                 Orion.Wait(3000);
@@ -132,7 +141,7 @@ function Mine(tile) {
 
         var pickaxe = Orion.FindType(pickAxe);
         pickaxe.forEach(function (pa) {
-            if (Player.Weight() > (Player.MaxWeight() - 15) ||
+            if (Player.Weight() < (Player.MaxWeight() - 30) &&
                 Orion.GetDistance(tile.X(), tile.Y()) <= 1 &&
                 (Orion.LastJournalMessage() == null ||
                     (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)/gi) || []).length == 0)) {
@@ -149,7 +158,10 @@ function Mine(tile) {
                     TextWindow.Print(tile.Flags());
                     Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
                     TextWindow.Print(Orion.LastJournalMessage().Text());
-                    Orion.Wait(300);
+                    Orion.Wait(400);
+                    if (Player.Weight() > (Player.MaxWeight() - 80)){
+                    Orion.Wait(400);
+                    }
                 }
             }
         });
@@ -159,7 +171,7 @@ function Mine(tile) {
 }
 
 function GetRocks(oldRocks) {
-    var rocks = Orion.GetTilesInRect('crag', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
+    var rocks = Orion.GetTilesInRect('crag|cave', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
         .filter(function (rock) {
             return (Player.Z() + 15) > rock.Z() || IsReachable(rock)
         })

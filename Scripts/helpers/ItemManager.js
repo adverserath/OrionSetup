@@ -10,7 +10,7 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color) {
     Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial()).forEach(function (items) {
         DebugText('Moving:' + items.Name());
         Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
-        Orion.Wait(500);
+        Orion.Wait(600);
     });
 }
 

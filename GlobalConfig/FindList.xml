@@ -38,7 +38,7 @@
         <item graphic="0x0E86" color="0x0000" comment="Pickaxe" count="5"/>
     </findlist>
     <findlist name="Tinkering">
-        <item graphic="0x1EBC" color="0x0000" comment="Tinker's Tools" count="3"/>
+        <item graphic="0x1EB8" color="0x0000" comment="Tinker's Tools" count="3"/>
         <item graphic="0x1BD7" color="0x0000" comment="Board" count="200"/>
         <item graphic="0x1BF2" color="0x0000" comment="Ingots" count="200"/>
     </findlist>
