@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="8">
+<data version="0" size="9">
     <findlist name="Gold/Arrows">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -41,5 +41,9 @@
         <item graphic="0x1EB8" color="0x0000" comment="Tinker's Tools" count="3"/>
         <item graphic="0x1BD7" color="0x0000" comment="Board" count="200"/>
         <item graphic="0x1BF2" color="0x0000" comment="Ingots" count="200"/>
+    </findlist>
+    <findlist name="Tailoring">
+        <item graphic="0x0F9D" color="0x0000" comment="Sewing Kit" count="3"/>
+        <item graphic="0x1766" color="0x0000" comment="Cut Cloth" count="200"/>
     </findlist>
 </data>
