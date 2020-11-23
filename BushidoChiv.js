@@ -7,7 +7,7 @@ function AutoTargetter() {
     var range = 15; //How far to load statusbars from
     var autoAttack = true; //Attack nearest targets automatically
     var honorTargets = true; //HonorTargets
-    var delay = 400; //Delay between loop cycle
+    var delay = 200; //Delay between loop cycle
     var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
     var notorietyToAttack = 3; //Attack targets with notoriety
     var pullTargetDistance = 6; //Distance of target to agro

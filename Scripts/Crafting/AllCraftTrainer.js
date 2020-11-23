@@ -11,7 +11,7 @@
 function StartTinkering() {
     var tinkerTool = '0x1EB8';
     CraftCreateLoop('Tinkering', 450, 8, 86, tinkerTool, '0x0FBB', trashBarrel); //makeTongs
-    CraftCreateLoop('Tinkering', 950, 8, 121, tinkerTool, '0x14FC', storageBox); //makeLockpicks
+    CraftCreateLoop('Tinkering', 940, 8, 121, tinkerTool, '0x14FC', storageBox); //makeLockpicks
     CraftCreateLoop('Tinkering', 1000, 29, 51, tinkerTool, '0x1849', trashBarrel); //makeHeatingStand
 }
 

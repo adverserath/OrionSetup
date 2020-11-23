@@ -87,7 +87,7 @@ function Mine(tile) {
     walkBack = false;
     //	else if ((itemProp.match(/Luck\s((9|10)(\d))/gi) || []).length >= 1) {
     while (Orion.LastJournalMessage() == null ||
-        (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)|(metal\sbefore)/gi) || []).length == 0) {
+        (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)|(metal\sbefore)|(far\saway)/gi) || []).length == 0) {
         if (Orion.LastJournalMessage() != null) {
             TextWindow.Print(Orion.LastJournalMessage().Text());
 
@@ -141,10 +141,10 @@ function Mine(tile) {
 
         var pickaxe = Orion.FindType(pickAxe);
         pickaxe.forEach(function (pa) {
-            if (Player.Weight() < (Player.MaxWeight() - 30) &&
+            if (Player.Weight() <= (Player.MaxWeight() - 40) &&
                 Orion.GetDistance(tile.X(), tile.Y()) <= 1 &&
                 (Orion.LastJournalMessage() == null ||
-                    (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)/gi) || []).length == 0)) {
+                    (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)|(far\saway)/gi) || []).length == 0)) {
                 if (Orion.LastJournalMessage() != null) {
                     TextWindow.Print(Orion.LastJournalMessage().Text());
 
@@ -221,5 +221,5 @@ function Smelt1By1() {
 function IsReachable(rock)
 {
 //Orion.GetTilesInRect('tileFlags', startX, startY, endX, endY);
-return Orion.GetTilesInRect('crag',rock.X()-1,rock.Y()-1,rock.X()+1,rock.Y()+1).length<6;
+return Orion.GetTilesInRect('mine',rock.X()-2,rock.Y()-2,rock.X()+2,rock.Y()+2).length<16;
 }

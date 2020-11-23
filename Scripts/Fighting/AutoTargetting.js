@@ -4,15 +4,15 @@
 ///#include helpers/ItemManager.js
 
 //////START OF CONFIG///////
-var range = 20; //How far to load status from
-var delay = 400; //Delay between loop cycle
+var range = 10; //How far to load status from
+var delay = 200; //Delay between loop cycle
 var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
 var notorietyToAttack = 3; //Attack targets with notoriety
-var pullTargetDistance = 15; //Distance of target to agro
+var pullTargetDistance = 5; //Distance of target to agro
 var attackEverythingAtOnce = true; //Initiate an attack on every target within range at once otherwise 1 target at a time
 
 var attack = true; //Enable attacking
-var honor = false;
+var honor = true;
 var attackList = []; //
 var lastAttacker;
 var lastSearchMobsIds = [];
