@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="0"/>
+<data version="0" size="1">
+    <scavenger name="Arrows/Bolts" container="myTarget" find_list="Gold/Arrows" ignore_list="Not use" selected="true" autostart_on_login="false"/>
+</data>

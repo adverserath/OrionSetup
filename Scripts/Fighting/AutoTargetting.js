@@ -4,29 +4,25 @@
 ///#include helpers/ItemManager.js
 
 //////START OF CONFIG///////
-var range = 10; //How far to load status from
+var range = 30; //How far to load status from
 var delay = 200; //Delay between loop cycle
 var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
 var notorietyToAttack = 3; //Attack targets with notoriety
-var pullTargetDistance = 5; //Distance of target to agro
+var pullTargetDistance = 30; //Distance of target to agro
 var attackEverythingAtOnce = true; //Initiate an attack on every target within range at once otherwise 1 target at a time
-
+var honorTargets = true;
+var autoAttack = true;
+var archer = true;
+//DO NOT CHANGE
 var attack = true; //Enable attacking
 var honor = true;
 var attackList = []; //
 var lastAttacker;
 var lastSearchMobsIds = [];
-var honorTargets = false;
+
 //////END OF CONFIG///////
-function ShowEnemiesByDistance(range,
-    autoAttack,
-    _honorTargets,
-    delay,
-    notorietyToShow,
-    notorietyToAttack,
-    pullTargetDistance,
-    attackEverythingAtOnce) {
-honorTargets= _honorTargets;
+function ShowEnemiesByDistance() {
+
     //Stop When Dead
     while (!Player.Dead()) {
         var mobileByDistance = [];
@@ -117,20 +113,34 @@ honorTargets= _honorTargets;
                     }
                 })
         };
-    }
+    
     AttackMobile(lastAttacker);
-
     //Attack Closest with lowest health
     if (autoAttack && Player.WarMode() && (attack || lastAttacker == null || lastAttacker.Distance() > 1)) {
+
+
         if (attackList.length > 0) {
+
             var vicinity = mobileByDistance[0].concat(mobileByDistance[1]);
-
+if(archer)
+{
+vicinity = vicinity.concat(mobileByDistance[2])
+.concat(mobileByDistance[3])
+.concat(mobileByDistance[4])
+.concat(mobileByDistance[5])
+.concat(mobileByDistance[6])
+.concat(mobileByDistance[7])
+.concat(mobileByDistance[8])
+.concat(mobileByDistance[9])
+.concat(mobileByDistance[10]);
+}
             if (vicinity != null && vicinity.length > 0) {
-
                 vicinity = vicinity.sort(function (mobSerialA, mobSerialB) {
                     return mobSerialA.Hits() - mobSerialB.Hits();
                 });
-                var newTarget = vicinity.shift();
+                var newTarget = vicinity[Orion.Random(vicinity.length)];
+           //     Orion.Print(newTarget.Serial())
+      //          var newTarget = vicinity.shift();
                 AttackMobile(newTarget);
             }
         }
@@ -153,9 +163,9 @@ function HonorTarget(mobile) {
     }
 }
 function AttackMobile(mobile) {
-    if (attackList.indexOf(mobile)) {
-var mobId = mobile.Serial();
-        Orion.AddHighlightCharacter(mobId, '0x0FBA', true);
+    if (mobile!=null && Orion.ObjectExists(mobile.Serial())) {
+    var mobId = mobile.Serial();
+            Orion.AddHighlightCharacter(mobId, '0x0FBA', true);
         HonorTarget(mobile);
         Orion.Attack(mobId);
         Orion.ClientLastAttack(mobId);
@@ -164,4 +174,5 @@ var mobId = mobile.Serial();
             attackList.push(mobId)
         }
     }
+}
 }
