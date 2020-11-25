@@ -1,7 +1,6 @@
 //#include Scripts/helpers/Target.js
 //#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/Magic.js
-//#include Scripts/Crafting/Miner.js
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/helpers/Notifier.js
 
@@ -10,18 +9,19 @@
 //WIP// 
 function StartTinkering() {
     var tool = '0x1EB8';
-    CraftCreateLoop('Tinkering', 450, 8, 86, tool, trashBarrel); //makeTongs
-    CraftCreateLoop('Tinkering', 940, 8, 121, tool, storageBox); //makeLockpicks
-    CraftCreateLoop('Tinkering', 1000, 29, 51, tool, trashBarrel); //makeHeatingStand
+    CraftCreateLoop('Tinkering', 'Tinkering', 450, 8, 86, tool, trashBarrel); //makeTongs
+    CraftCreateLoop('Tinkering', 'Tinkering', 940, 8, 121, tool, storageBox); //makeLockpicks
+    CraftCreateLoop('Tinkering', 'Tinkering', 1000, 29, 51, tool, trashBarrel); //makeHeatingStand
 }
 
 
 function StartFletching() {
     var tool = '0x1022';
-    CraftCreateLoop('FletchingShaft', 400, 1, 9, tool, storageBox); //shaft
-    CraftCreateLoop('Fletching', 500, 15, 2, tool, trashBarrel); //bow
-    CraftCreateLoop('Fletching', 900, 8, 16, tool, trashBarrel); //dart
-    CraftCreateLoop('Fletching', 1000, 15, 23, tool, trashBarrel); //composite
+    CraftCreateLoop('Bowcraft/Fletching', 'FletchingShaft', 400, 1, 9, tool, storageBox); //shaft
+    CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 500, 15, 2, tool, trashBarrel); //bow
+    CraftCreateLoop('Bowcraft/Fletching', 'FletchingShaft', 899, 8, 16, tool, trashBarrel); //dart
+    CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 1000, 15, 23, tool, trashBarrel); //composite
+    BotPush(Orion.Time() + "GM Fletching");
 }
 
 
@@ -30,30 +30,32 @@ var scissorsId;
 function StartTailoring() {
     scissorsId = Orion.FindType(scissorsGraphic).shift();
     var tool = '0x0F9D';
-    CraftCreateLoop('Tailoring', 480, 8, 16, tool, storageBox); //fancyshirt
-    CraftCreateLoop('Tailoring', 520, 8, 44, tool, storageBox); //fancydress
-    CraftCreateLoop('Tailoring', 600, 29, 9, tool, storageBox); //furboot
-    CraftCreateLoop('Tailoring', 720, 1, 100, tool, storageBox); //kasa
-    CraftCreateLoop('Tailoring', 780, 29, 16, tool, storageBox); //ninjatabi
-    CraftCreateLoop('Tailoring', 985, 22, 72, tool, storageBox); //oiledcloth
-    CraftCreateLoop('Tailoring', 1000, 8, 135, tool, storageBox); //elvenshirt
+    CraftCreateLoop('Tailoring', 'Tailoring', 480, 8, 16, tool, storageBox); //fancyshirt
+    CraftCreateLoop('Tailoring', 'Tailoring', 520, 8, 44, tool, storageBox); //fancydress
+    CraftCreateLoop('Tailoring', 'Tailoring', 600, 29, 9, tool, storageBox); //furboot
+    CraftCreateLoop('Tailoring', 'Tailoring', 720, 1, 100, tool, storageBox); //kasa
+    CraftCreateLoop('Tailoring', 'Tailoring', 780, 29, 16, tool, storageBox); //ninjatabi
+    CraftCreateLoop('Tailoring', 'Tailoring', 985, 22, 72, tool, storageBox); //oiledcloth
+    CraftCreateLoop('Tailoring', 'Tailoring', 1000, 8, 135, tool, storageBox); //elvenshirt
 }
 
 var trashBarrel = '0x4625B085';
 var storageBox = '0x43AB4185';
 
-function CraftCreateLoop(listName, trainToLevel, buttonMenuID, buttonItemID, toolSet, containerID) {
-    var toolSet;
-    if (listName === 'Carpentry') {
+function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, buttonItemID, toolSet, containerID) {
+    Orion.Print(skillName + ':' + Orion.SkillValue(skillName));
+    if (skillName === 'Carpentry') {
         EquipAxe();
         var righthand = Orion.ObjAtLayer('LeftHand');
     }
 
     var triedToBuy = false;
-    while (Orion.SkillValue(listName) < trainToLevel) {
-        Orion.Wait(400);
+    Orion.Wait(800);
+    Orion.Print('Training ' + skillName + ' : ' + Orion.SkillValue(skillName) + ' / ' + trainToLevel);
+
+    while (Orion.SkillValue(skillName) < trainToLevel) {
         TextWindow.Clear();
-        DebugText(listName + ':' + Orion.SkillValue(listName));
+        DebugText(skillName + ':' + Orion.SkillValue(skillName));
         var needToBuy = NotEnoughResourcesGump();
         DebugText("NeedToBuy:" + needToBuy);
         if (needToBuy && !triedToBuy) {
@@ -61,9 +63,8 @@ function CraftCreateLoop(listName, trainToLevel, buttonMenuID, buttonItemID, too
             triedToBuy = listHasEmptyInBackpack(listName);
         }
         if (needToBuy && triedToBuy) {
-            Orion.Print(triedToBuy);
-
             Orion.PauseScript();
+            triedToBuy = false;
         }
         else {
             triedToBuy = false;
@@ -72,59 +73,62 @@ function CraftCreateLoop(listName, trainToLevel, buttonMenuID, buttonItemID, too
 
             if (tools.length == 1) {
                 BotPush("no tools left");
-                BotPush(listName + ": " + Orion.SkillValue(listName));
-              //  Orion.PauseScript();
-             //         Orion.ShutdownWindows('forced');
+                BotPush(listName + ": " + Orion.SkillValue(skillName));
+                Orion.PauseScript();
+                //         Orion.ShutdownWindows('forced');
             }
-            var backpackBeforeMake = Orion.FindType('any','any','backpack')
+            var backpackBeforeMake = Orion.FindType('any', 'any', 'backpack')
+                   var successfulCraft = false;
 
             if (Orion.WaitForGump(1000)) {
                 var gump0 = Orion.GetGump('last');
                 if ((gump0 !== null) && (gump0.ID() === '0x38920ABD')) {
 
                     gump0.Select(Orion.CreateGumpHook(buttonMenuID));
-                    Orion.Wait(50);
                 }
             }
-            else{
-            Orion.UseObject(Orion.FindTypeEx(toolSet, 'any', 'backpack').shift().Serial());
-            }
-            
+
 
             if (Orion.WaitForGump(1000)) {
                 var gump1 = Orion.GetGump('last');
                 if ((gump1 !== null) && (gump1.ID() === '0x38920ABD')) {
                     gump1.Select(Orion.CreateGumpHook(buttonItemID));
-                    Orion.WaitForGump(1500);
-                    Orion.Wait(50);
+                    Orion.WaitForGump(2000);
+                    if(CreatedItemResourceGump()||CreatedExceptionalItemResourceGump())
+                    {
+                    successfulCraft = true;
+                                        Orion.Wait(300);
+
+                    }
                 }
             }
             else {
-                Orion.UseObject(tools[0].Serial());
+                Orion.UseObject(Orion.FindTypeEx(toolSet, 'any', 'backpack').shift().Serial());
             }
 
             //Find any newly created item.
-            var items = Orion.FindType('any','any','backpack').filter(function (itemId) {
-                return backpackBeforeMake.indexOf(itemId) === -1;
+            var items = Orion.FindType('any', 'any', 'backpack').filter(function (itemId) {
+                return (backpackBeforeMake.indexOf(itemId) == -1 && successfulCraft);
             });
 
+            Restock(listName);
+
             items.forEach(function (itemId) {
+                if (skillName === 'Tailoring') {
+                    var item = Orion.FindObject(itemId);
+                    if (item != null) {
+                        Orion.FindType(item.Graphic())
+                            .forEach(function (itemId) {
+                                Orion.UseObject(scissorsId);
 
-                if (listName === 'Tailoring') {
-                var item = Orion.FindObject(itemId);
-                if(item!=null){
-                    Orion.FindType(item.Graphic())
-                        .forEach(function (itemId) {
-                            Orion.UseObject(scissorsId);
-
-                            if (Orion.WaitForTarget(1000)) {
-                                Orion.TargetObject(itemId);
-                                Orion.Wait(600);
-                            }
-                        });
+                                if (Orion.WaitForTarget(1000)) {
+                                    Orion.TargetObject(itemId);
+                                    Orion.Wait(600);
+                                }
+                            });
+                    }
                 }
-}
-                if (listName === 'Carpentry') {
+                if (skillName === 'Carpentry') {
                     Orion.ObjAtLayer('LeftHand');
                     Orion.UseObject(righthand.Serial());
                     if (Orion.WaitForTarget(1000)) {
@@ -132,9 +136,20 @@ function CraftCreateLoop(listName, trainToLevel, buttonMenuID, buttonItemID, too
                         Orion.Wait(700);
                     }
                 }
-                if (Orion.ObjectExists(item)) {
-                    Orion.MoveItem(item, 1, containerID);
-                    Orion.Wait(700);
+                              var isFirst = true;
+
+                if (Orion.ObjectExists(itemId)) {
+                var obj = Orion.FindObject(itemId);
+                 Orion.FindType(obj.Graphic(), 'any', 'backpack').forEach(function (binItem){
+                                     Orion.MoveItem(itemId, 1, containerID);
+                    if(!isFirst){Orion.Wait(600);}
+                    else{
+                    Orion.Wait(300)
+                    }
+                    isFirst = false;
+                 
+                 })
+
                 }
             });
         }

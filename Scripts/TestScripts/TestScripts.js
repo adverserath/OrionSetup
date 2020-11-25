@@ -1,9 +1,31 @@
-//#include ../helpers/Debug.js
+//#include Scripts/helpers/Debug.js
 
 function openCorpse() {
 Orion.OpenContainer('0x4205AD94');
 }
 
+
+function NotEnoughResourcesGump() {
+  TextWindow.Open();
+    var output = Orion.GetLastGump();//.foreach(function (cmd){
+    var value =  output.CommandList().filter(function (text) {
+          TextWindow.Print( text.search('1044155|1044154') );
+
+        return text.search('1044155|1044154') >= 0;
+
+    })
+              TextWindow.Print(value);
+
+}
+
+function GumpText()
+{  
+  var output = Orion.GetLastGump();//.foreach(function (cmd){
+  TextWindow.Open();
+  TextWindow.Print(output.EntriesList());
+
+    
+}
 
 var debug=true;
 
