@@ -1,4 +1,4 @@
-//#include ../helpers/Debug.js
+//#include Scripts/helpers/Debug.js
 
 function openCorpse() {
 Orion.OpenContainer('0x4205AD94');

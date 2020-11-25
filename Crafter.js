@@ -35,13 +35,6 @@ function StartMining() {
     AutoMiner(useMagicToMove, range);
 }
 
-//Opens the carpentry window and created the last item
-//Uses a FindList for saws and boards, labelled Carpentry
-//WIP// 
-function StartCarpentryLoop() {
-    CarpentryCreateLoop('Carpentry');
-}
-
 function RestackContainerItems() {
 Orion.Print('Select the container you would like to sort');
 var container = SelectTarget();

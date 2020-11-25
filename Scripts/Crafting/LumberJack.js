@@ -1,7 +1,7 @@
-//#include helpers/Target.js
-//#include helpers/Magic.js
-//#include helpers/Debug.js
-//#include helpers/ItemManager.js
+//#include Scripts/helpers/Target.js
+//#include Scripts/helpers/Magic.js
+//#include Scripts/helpers/Debug.js
+//#include Scripts/helpers/ItemManager.js
 
 //Cut trees within a defined range of Player.
 //Once all trees are cut in the grid, the script will terminate!
@@ -30,7 +30,6 @@ var useMagic;
 
 function AutoLumberJack(magicOption, range) {
     useMagic = magicOption;
-    DebugStart();
     Orion.Say('Chop Chop');
     Orion.Print("Go into war mode to stop the script at any point");
     var file = Orion.NewFile();
@@ -119,7 +118,10 @@ function Chop(tile) {
                     Orion.Wait(3000);
                     RecallRune(storageRune);
                     Orion.Wait(1500);
-                    MoveItems(storageBox, '0x1BD7');
+                    Orion.FindTypeEx('0x1BD7|0x318F|0x2F5F|0x3191').forEach(function (woodStuff) {
+                        Orion.Print(woodStuff.Name())
+                        MoveItemsFromPlayer(storageBox, woodStuff.Graphic());
+                    })
                     Orion.Wait(1500);
                     RecallRune(lastLocationRune);
                 }

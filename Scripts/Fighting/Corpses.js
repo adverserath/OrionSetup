@@ -1,7 +1,7 @@
-//#include helpers/Target.js
-//#include helpers/ItemManager.js
-//#include helpers/Target.js
-//#include helpers/Debug.js
+//#include Scripts/helpers/Target.js
+//#include Scripts/helpers/ItemManager.js
+//#include Scripts/helpers/Target.js
+//#include Scripts/helpers/Debug.js
 
 function CutHides() {
 var scissors = Orion.FindTypeEx('0x0F9F').shift();

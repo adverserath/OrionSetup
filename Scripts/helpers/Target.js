@@ -1,4 +1,4 @@
-//#include Debug.js
+//#include Scripts/helpers/Debug.js
 
 function SelectTarget(itemUsage) {
   if (itemUsage != null) {

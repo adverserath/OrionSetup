@@ -10,7 +10,7 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color) {
     Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial()).forEach(function (items) {
         DebugText('Moving:' + items.Name());
         Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
-        Orion.Wait(600);
+        Orion.Wait(600+Orion.GetPing('average'));
     });
 }
 
@@ -76,7 +76,6 @@ function GetEmptyFromListInBackpack(listName) {
 }
 
 function listHasEmptyInBackpack(listName) {
-
     return GetEmptyFromListInBackpack(listName).length > 0;
 }
 

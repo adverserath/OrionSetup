@@ -1,6 +1,6 @@
 ///#include helpers/Target.js
 ///#include helpers/Magic.js
-//#include helpers/Debug.js
+//#include Scripts/helpers/Debug.js
 ///#include helpers/ItemManager.js
 
 //////START OF CONFIG///////

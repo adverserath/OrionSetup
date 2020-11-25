@@ -1,4 +1,4 @@
-//#include ../helpers/Notifier.js
+//#include Scripts/helpers/Notifier.js
 
 function TrainMagery() {
     var notified = false;
