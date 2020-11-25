@@ -84,15 +84,16 @@ function listHasEmptyInBackpack(listName) {
 }
 
 function NotEnoughResourcesGump() {
-    var output = Orion.GetLastGump();//.foreach(function (cmd){
+    var output = Orion.GetLastGump();
     return output.CommandList().filter(function (text) {
         return text.search('502925') >= 0;
 
     }).length > 0;
 }
 
+
 function CreatedItemResourceGump() {
-    var output = Orion.GetLastGump();//.foreach(function (cmd){
+    var output = Orion.GetLastGump();
     return output.CommandList().filter(function (text) {
         return text.search('1044154') >= 0;
 
@@ -100,7 +101,7 @@ function CreatedItemResourceGump() {
 }
 
 function CreatedExceptionalItemResourceGump() {
-    var output = Orion.GetLastGump();//.foreach(function (cmd){
+    var output = Orion.GetLastGump();
     return output.CommandList().filter(function (text) {
         return text.search('1044155') >= 0;
 
