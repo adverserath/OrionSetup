@@ -22,6 +22,7 @@ function MoveItemsFromPlayer(toContainer, graphicIDs) {
 
 function Restock(listName) {
     var requiredItems = Orion.GetFindList(listName).Items();
+    var first = false;
     requiredItems.forEach(function (reqItem) {
         var neededAmount = (reqItem.Count() - Orion.Count(reqItem.Graphic(), reqItem.Color(), backpack, '', '', true));
         DebugText('item:' + reqItem.Comment() + ' Needed: ' + neededAmount);
@@ -39,10 +40,12 @@ function Restock(listName) {
                         neededAmount = (reqItem.Count() - Orion.Count(reqItem.Graphic(), reqItem.Color(), backpack, '', '', true));
                         if (item.Container() != Player.Serial() && neededAmount > 0) {
                             DebugText(item.Container() + '   ' + neededAmount);
-                            Orion.WalkTo(item.X(), item.Y(), item.Z(), 0, 1, 1, 1);
-                            DebugText('Here');
+                       //     Orion.WalkTo(item.X(), item.Y(), item.Z(), 0, 1, 1, 1);
+                         //   DebugText('Here');
                             Orion.MoveItem(item.Serial(), reqItem.Count());
-                            Orion.Wait(1000);
+                            if(!first)
+                            {Orion.Wait(600);}
+                           first = false;
                         }
                     });
                 });
@@ -80,9 +83,29 @@ function listHasEmptyInBackpack(listName) {
 }
 
 function NotEnoughResourcesGump() {
-    var output = Orion.GetLastGump();//.foreach(function (cmd){
+    var output = Orion.GetLastGump();
     return output.CommandList().filter(function (text) {
         return text.search('502925') >= 0;
 
     }).length > 0;
 }
+
+
+function CreatedItemResourceGump() {
+    var output = Orion.GetLastGump();
+    return output.CommandList().filter(function (text) {
+        return text.search('1044154') >= 0;
+
+    }).length > 0;
+}
+
+function CreatedExceptionalItemResourceGump() {
+    var output = Orion.GetLastGump();
+    return output.CommandList().filter(function (text) {
+        return text.search('1044155') >= 0;
+
+    }).length > 0;
+}
+
+
+

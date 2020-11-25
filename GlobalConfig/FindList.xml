@@ -50,5 +50,8 @@
         <item graphic="0x1BD7" color="0x0000" comment="Board" count="200"/>
         <item graphic="0x1022" color="0x0000" comment="Fletching" count="3"/>
     </findlist>
-    <findlist name="FletchingShaft"/>
+    <findlist name="FletchingShaft">
+        <item graphic="0x1BD7" color="0x0000" comment="Board" count="1"/>
+        <item graphic="0x1022" color="0x0000" comment="Arrow Fletching" count="3"/>
+    </findlist>
 </data>

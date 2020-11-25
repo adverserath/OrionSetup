@@ -4,15 +4,15 @@
 ///#include helpers/ItemManager.js
 
 //////START OF CONFIG///////
-var range = 30; //How far to load status from
-var delay = 200; //Delay between loop cycle
+var range = 15; //How far to load status from
+var delay = 500; //Delay between loop cycle
 var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
-var notorietyToAttack = 3; //Attack targets with notoriety
-var pullTargetDistance = 30; //Distance of target to agro
-var attackEverythingAtOnce = true; //Initiate an attack on every target within range at once otherwise 1 target at a time
+var notorietyToAttack = 4; //Attack targets with notoriety
+var pullTargetDistance = 15; //Distance of target to agro
+var attackEverythingAtOnce = false; //Initiate an attack on every target within range at once otherwise 1 target at a time
 var honorTargets = true;
 var autoAttack = true;
-var archer = true;
+var archer = false;
 //DO NOT CHANGE
 var attack = true; //Enable attacking
 var honor = true;
@@ -138,9 +138,8 @@ vicinity = vicinity.concat(mobileByDistance[2])
                 vicinity = vicinity.sort(function (mobSerialA, mobSerialB) {
                     return mobSerialA.Hits() - mobSerialB.Hits();
                 });
-                var newTarget = vicinity[Orion.Random(vicinity.length)];
-           //     Orion.Print(newTarget.Serial())
-      //          var newTarget = vicinity.shift();
+              //  var newTarget = vicinity[Orion.Random(vicinity.length)];
+                var newTarget = vicinity.shift();
                 AttackMobile(newTarget);
             }
         }
