@@ -35,7 +35,7 @@
         <item graphic="0x019BA" color="any" comment="ore" count="0"/>
     </findlist>
     <findlist name="Mining">
-        <item graphic="0x0E86" color="0x0000" comment="Pickaxe" count="5"/>
+        <item graphic="0x0F39|0x0F39" color="0x0000" comment="Shovel" count="5"/>
     </findlist>
     <findlist name="Tinkering">
         <item graphic="0x1EB8" color="0x0000" comment="Tinker's Tools" count="3"/>

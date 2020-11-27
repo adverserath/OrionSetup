@@ -14,7 +14,7 @@ function StartMining() {
     AutoMiner(useMagicToMove, vRange);
 }
 var debug = true;
-var pickAxe = '0xE86'
+var pickAxe = '0xE86|0x0F39'
 var storageBox;
 var storageRune;
 var lastLocationRune;
@@ -160,7 +160,7 @@ function Mine(tile) {
                     TextWindow.Print(Orion.LastJournalMessage().Text());
                     Orion.Wait(400);
                     if (Player.Weight() > (Player.MaxWeight() - 80)){
-                    Orion.Wait(400);
+                    Orion.Wait(400+Orion.GetPing());
                     }
                 }
             }

@@ -5,5 +5,5 @@
     <hotkeys passhotkeys="false" commandprefix="_"/>
     <scripts sortscripts="true" showallscripts="false" pause_scripts_on_disconnect="true" scriptfile="A:\Orion Launcher\OA/NewScript2.oajs" script_load_mode="0" script_directory="A:/Orion Launcher/OA" script_directory_file="Scripts/Fighting/Bushido.js" wordwrap="false" helplang="EN"/>
     <shop autobuylistname="Wood" autoselllistname="Jewel" useautobuylist="false" useautoselllist="true" vendor_name=""/>
-    <macro looped="false" loop_delay="1"/>
+    <macro looped="true" loop_delay="2"/>
 </data>

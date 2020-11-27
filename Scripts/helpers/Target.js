@@ -1,5 +1,3 @@
-//#include Scripts/helpers/Debug.js
-
 function SelectTarget(itemUsage) {
   if (itemUsage != null) {
     Orion.Print("Select your" + itemUsage);
@@ -7,7 +5,6 @@ function SelectTarget(itemUsage) {
   Orion.WaitForAddObject('myTarget');
   Orion.TargetObject('myTarget');
   var target = Orion.FindObject('myTarget');
-  DebugObject(target);
   return target;
 }
 
@@ -20,8 +17,6 @@ function UseItemOnTarget(item, target) {
 
 function UseItemOnTargets(item, targets) {
   targets.forEach(function (target) {
-    DebugText(item);
-    DebugText(targets);
     UseItemOnTarget(item, target);
   });
 }

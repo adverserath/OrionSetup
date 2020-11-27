@@ -1,6 +1,8 @@
 //#include Scripts/helpers/Notifier.js
+//#include Scripts/helpers/Target.js
 
 function TrainMagery() {
+var trainingTarget = SelectTarget();
     var notified = false;
     var skillLevel = Orion.SkillValue('Magery');
     while (Player.IsHuman()) {
@@ -10,55 +12,48 @@ function TrainMagery() {
         else if (notified == true) {
             notified = false;
         }
-        if (skillLevel != Orion.SkillValue('Magery')) {
-            BotPush("Magery: " + Orion.SkillValue('Magery'));
-        }
 
         skillLevel = Orion.SkillValue('Magery');
-        if (Orion.SkillValue('Magery', 'base') < 600) {
+        if (skillLevel < 600) {
             if (Player.Mana() < 10) {
-                Orion.UseSkill('Meditation');
-    
-                while (Player.Mana() < Player.MaxMana()) {
-                    Orion.Wait(2000);
-                }
+                Meditate();
             }
             Orion.Cast('31');
             if (Orion.WaitForTarget(5000))
-                Orion.TargetObject('self');
+                Orion.TargetObject(trainingTarget.Serial());
             Orion.Wait(2000);
         }
-        else if (Orion.SkillValue('Magery', 'base') < 700) {
+        else if (Orion.SkillValue('Magery') < 700) {
             if (Player.Mana() < 20) {
-                Orion.UseSkill('Meditation');
-    
-                while (Player.Mana() < Player.MaxMana()) {
-                    Orion.Wait(2000);
-                }
+                Meditate();
             }
             Orion.Cast('Invisibility');
             if (Orion.WaitForTarget(3000))
                 Orion.TargetObject('self');
             Orion.Wait(2000);
         }
-        else if (Orion.SkillValue('Magery', 'base') < 1000) {
+        else if (Orion.SkillValue('Magery') < 1000) {
             if (Player.Mana() < 40) {
-                Orion.UseSkill('Meditation');
-    
-                while (Player.Mana() < Player.MaxMana()) {
-                    Orion.Wait(2000);
-                }
+                Meditate();
             }
             Orion.Cast('Mana Vampire');
             if (Orion.WaitForTarget(3000))
-                Orion.TargetObject('self');
+                Orion.TargetObject(trainingTarget.Serial());
             Orion.Wait(2000);
         }
         else {
-            Orion.HttpPost('https://maker.ifttt.com/trigger/Seed/with/key/dL1ugCFG4KbaRG5KPR5lXF/?value1=GM MAGING', '');
-
+BotPush("Player:"+Player.Name()+" GM Magery");
             Orion.ShutdownWindows('forced');
             Orion.Wait(2000);
         }
+    }
+}
+
+function Meditate(){
+    while (Player.Mana() < Player.MaxMana()) {
+        if (!Orion.BuffExists('Meditation')) {
+            Orion.UseSkill('Meditation');
+        }
+        Orion.Wait(4000);
     }
 }
