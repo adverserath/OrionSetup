@@ -21,9 +21,9 @@ function StartTinkering() {
 
 function StartInscription() {
     var tool = '0x0FBF';
-    CraftCreateLoop('Inscription', 'Inscription', 450, 8, 86, tool, scrollBox); //makeTongs
-    CraftCreateLoop('Inscription', 'Inscription', 940, 8, 121, tool, scrollBox); //makeLockpicks
-    CraftCreateLoop('Inscription', 'Inscription', 1000, 29, 51, tool, scrollBox); //makeHeatingStand
+    CraftCreateLoop('Inscription', 'Inscription', 520, 15, 23, tool, scrollBox); //makeTongs
+    CraftCreateLoop('Inscription', 'Inscription', 670, 22, 37, tool, scrollBox); //makeLockpicks
+    CraftCreateLoop('Inscription', 'Inscription', 1000, 43, 16, tool, scrollBox); //makeHeatingStand
 }
 
 

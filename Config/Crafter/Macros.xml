@@ -10,4 +10,13 @@
         <action type="3" convert_type="0" waiting_time="1000" serial="0x000A6252" graphic="0x00D9" color="0x08FE"/>
         <action type="1000" convert_type="0" waiting_time="2000"/>
     </macro>
+    <macro name="in" looped="false" delay="1">
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x02628D2B" id="0x38920ABD" button="15"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x02628FFE" id="0x38920ABD" button="23"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x0262910A" id="0x38920ABD" button="22"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x02629226" id="0x38920ABD" button="37"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x02629317" id="0x38920ABD" button="43"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x026293F8" id="0x38920ABD" button="16"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x02629446" id="0x38920ABD" button="0"/>
+    </macro>
 </data>
