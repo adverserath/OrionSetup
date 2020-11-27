@@ -14,12 +14,12 @@
         <item graphic="0x0F15" color="0x0000" comment="Citrine" count="0"/>
         <item graphic="0x0F13" color="0x0000" comment="Ruby" count="0"/>
     </findlist>
-    <findlist name="Inscribe">
+    <findlist name="Inscription">
         <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>
         <item graphic="0x0EF3" color="0x0000" comment="Blank Scroll" count="100"/>
         <item graphic="0x0F8D" color="0x0000" comment="Spiders' Silk" count="100"/>
         <item graphic="0x0F8C" color="0x0000" comment="Sulfurous Ash" count="100"/>
-        <item graphic="0x0EED" color="any" comment="Gold" count="100"/>
+        <item graphic="0x0F86" color="0x0000" comment="Mandrake Root" count="100"/>
     </findlist>
     <findlist name="Carpentry">
         <item graphic="0x1034" color="0x0000" comment="Saw" count="0"/>

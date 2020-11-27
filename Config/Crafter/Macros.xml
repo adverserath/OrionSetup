@@ -5,9 +5,9 @@
         <action type="5" convert_type="0" waiting_time="1000" value="15"/>
         <action type="3" convert_type="0" waiting_time="1000" serial="0x001023CF" graphic="0x00E4" color="0x0000"/>
     </macro>
-    <macro name="herd" looped="true" delay="0.5">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x431EE9F9" graphic="0x13F5" color="0x0000"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x0015CEB3" graphic="0x00ED" color="0x0000"/>
-        <action type="4" convert_type="0" waiting_time="1000" graphic="0x0000" x="1213" y="1506" z="0" relative_x="1" relative_y="-4" relative_z="0"/>
+    <macro name="AnimalLore" looped="true" delay="1">
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x4313138A" graphic="0x0E21" color="0x07D1"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x000A6252" graphic="0x00D9" color="0x08FE"/>
+        <action type="1000" convert_type="0" waiting_time="2000"/>
     </macro>
 </data>

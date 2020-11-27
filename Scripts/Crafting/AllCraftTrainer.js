@@ -7,11 +7,23 @@
 //Opens the carpentry window and created the last item
 //Uses a FindList for saws and boards, labelled Carpentry
 //WIP// 
+
+var trashBarrel = '0x4625B085';
+var storageBox = '0x43AB4185';
+var scrollBox = '0x43AB4185';
+
 function StartTinkering() {
     var tool = '0x1EB8';
     CraftCreateLoop('Tinkering', 'Tinkering', 450, 8, 86, tool, trashBarrel); //makeTongs
     CraftCreateLoop('Tinkering', 'Tinkering', 940, 8, 121, tool, storageBox); //makeLockpicks
     CraftCreateLoop('Tinkering', 'Tinkering', 1000, 29, 51, tool, trashBarrel); //makeHeatingStand
+}
+
+function StartInscription() {
+    var tool = '0x0FBF';
+    CraftCreateLoop('Inscription', 'Inscription', 450, 8, 86, tool, scrollBox); //makeTongs
+    CraftCreateLoop('Inscription', 'Inscription', 940, 8, 121, tool, scrollBox); //makeLockpicks
+    CraftCreateLoop('Inscription', 'Inscription', 1000, 29, 51, tool, scrollBox); //makeHeatingStand
 }
 
 
@@ -39,8 +51,6 @@ function StartTailoring() {
     CraftCreateLoop('Tailoring', 'Tailoring', 1000, 8, 135, tool, storageBox); //elvenshirt
 }
 
-var trashBarrel = '0x4625B085';
-var storageBox = '0x43AB4185';
 
 function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, buttonItemID, toolSet, containerID) {
     Orion.Print(skillName + ':' + Orion.SkillValue(skillName));

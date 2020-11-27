@@ -20,3 +20,13 @@ function UseItemOnTargets(item, targets) {
     UseItemOnTarget(item, target);
   });
 }
+
+function RandomTarget() {
+var nearby = Orion.FindTypeEx(any, any, ground,
+            'nothumanmobile|live|ignoreself|ignorefriends', 10, 3)
+            .filter(function (mob) {
+                return mob.Notoriety() >= 3
+                    && mob.Notoriety() < 7;
+            });
+            return nearby[Orion.Random(nearby.length)];
+}

@@ -2,10 +2,11 @@
 //#include Scripts/helpers/Target.js
 
 function TrainMagery() {
-var trainingTarget = SelectTarget();
     var notified = false;
     var skillLevel = Orion.SkillValue('Magery');
     while (Player.IsHuman()) {
+    var trainingTarget = RandomTarget();
+
         if ((Orion.SkillValue('Magery') % 1 == 100) && notified == false) {
             BotPush("Magery" + Orion.SkillValue('Magery', 'base'));
         }
@@ -49,11 +50,15 @@ BotPush("Player:"+Player.Name()+" GM Magery");
     }
 }
 
+
 function Meditate(){
+Orion.DragItem(Orion.ObjAtLayer('Pants').Serial());
     while (Player.Mana() < Player.MaxMana()) {
         if (!Orion.BuffExists('Meditation')) {
             Orion.UseSkill('Meditation');
         }
         Orion.Wait(4000);
     }
+    
+    Orion.EquipDraggedItem();
 }
