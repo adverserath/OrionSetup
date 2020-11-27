@@ -5,5 +5,5 @@
     <hotkeys passhotkeys="false" commandprefix="_"/>
     <scripts sortscripts="false" showallscripts="false" pause_scripts_on_disconnect="false" scriptfile="C:\Orion Launcher\OA/Autoload.oajs" script_load_mode="0" script_directory="A:/Orion Launcher/OA" script_directory_file="Scripts/Crafting/AllCraftTrainer.js" wordwrap="false" helplang="EN"/>
     <shop autobuylistname="Wood" autoselllistname="Wood" useautobuylist="false" useautoselllist="false" vendor_name=""/>
-    <macro looped="true" loop_delay="2"/>
+    <macro looped="false" loop_delay="1"/>
 </data>

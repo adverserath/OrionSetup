@@ -18,7 +18,7 @@ function RecallRune(runeItem) {
 	}
 }
 
-function TakeOfClothesAndMeditate() {
+function TakeOffClothesAndMeditate() {
 	var equipment = [];
 	equipment.push(Orion.ObjAtLayer('Pants'));
 	equipment.push(Orion.ObjAtLayer('Shirt'));
