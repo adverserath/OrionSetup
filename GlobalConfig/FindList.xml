@@ -20,6 +20,7 @@
         <item graphic="0x0F8D" color="0x0000" comment="Spiders' Silk" count="100"/>
         <item graphic="0x0F8C" color="0x0000" comment="Sulfurous Ash" count="100"/>
         <item graphic="0x0F86" color="0x0000" comment="Mandrake Root" count="100"/>
+        <item graphic="0x0F88" color="0x0000" comment="Nightshade" count="100"/>
     </findlist>
     <findlist name="Carpentry">
         <item graphic="0x1034" color="0x0000" comment="Saw" count="0"/>

@@ -24,6 +24,7 @@ function StartInscription() {
     CraftCreateLoop('Inscription', 'Inscription', 520, 15, 23, tool, scrollBox); //makeTongs
     CraftCreateLoop('Inscription', 'Inscription', 670, 22, 37, tool, scrollBox); //makeLockpicks
     CraftCreateLoop('Inscription', 'Inscription', 1000, 43, 16, tool, scrollBox); //makeHeatingStand
+    BotPush(Orion.Time() + "GM Inscription");
 }
 
 
@@ -68,15 +69,24 @@ function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, button
         DebugText(skillName + ':' + Orion.SkillValue(skillName));
         var needToBuy = NotEnoughResourcesGump();
         DebugText("NeedToBuy:" + needToBuy);
+
         if (needToBuy && !triedToBuy) {
             Restock(listName);
-            triedToBuy = listHasEmptyInBackpack(listName);
+            triedToBuy = true;
+            Orion.Print("getting")
         }
-        if (needToBuy && triedToBuy) {
+        else if (needToBuy && triedToBuy) {
+                    Orion.Print("failed")
+
+            BotPush("Out of "+skillName+" resources")
             Orion.PauseScript();
             triedToBuy = false;
         }
-        else {
+        else if(NeedMoreManaGump())
+        {
+            TakeOfClothesAndMeditate();
+        }
+
             triedToBuy = false;
             Orion.Print('making')
             var tools = Orion.FindTypeEx(toolSet, 'any', 'backpack');
@@ -163,7 +173,7 @@ function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, button
                 }
             });
         }
-    }
+    
 }
 
 function MakeItemGumpID(GumpBookId) {

@@ -49,16 +49,3 @@ BotPush("Player:"+Player.Name()+" GM Magery");
         }
     }
 }
-
-
-function Meditate(){
-Orion.DragItem(Orion.ObjAtLayer('Pants').Serial());
-    while (Player.Mana() < Player.MaxMana()) {
-        if (!Orion.BuffExists('Meditation')) {
-            Orion.UseSkill('Meditation');
-        }
-        Orion.Wait(4000);
-    }
-    
-    Orion.EquipDraggedItem();
-}

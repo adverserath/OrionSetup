@@ -107,5 +107,13 @@ function CreatedExceptionalItemResourceGump() {
     }).length > 0;
 }
 
-
+function NeedMoreManaGump() {
+    var output = Orion.GetLastGump();
+var response = false;
+        if(output.TextList().length>0)
+{
+response = output.TextList()[0].search("mana")!=-1;
+ }
+return response;
+}
 
