@@ -20,18 +20,25 @@ function RecallRune(runeItem) {
 
 function TakeOffClothesAndMeditate() {
 	var equipment = [];
+	Orion.Print(Orion.ObjAtLayer('Pants').Name())
+	Orion.Print(Orion.ObjAtLayer('InnerTorso').Name())
+	Orion.Print(Orion.ObjAtLayer('Helmet').Name())
+	//	Orion.Print(Orion.ObjAtLayer('Gloves').Name())
+	//		Orion.Print(Orion.ObjAtLayer('Necklace').Name())
+		//		Orion.Print(Orion.ObjAtLayer('Arms').Name())
+				
 	equipment.push(Orion.ObjAtLayer('Pants'));
-	equipment.push(Orion.ObjAtLayer('Shirt'));
+	equipment.push(Orion.ObjAtLayer('InnerTorso'));
 	equipment.push(Orion.ObjAtLayer('Helmet'));
-	equipment.push(Orion.ObjAtLayer('Gloves'));
-	equipment.push(Orion.ObjAtLayer('Necklace'));
-	equipment.push(Orion.ObjAtLayer('Arms'));
+	//equipment.push(Orion.ObjAtLayer('Gloves'));
+	//equipment.push(Orion.ObjAtLayer('Necklace'));
+	//equipment.push(Orion.ObjAtLayer('Arms'));
 
 	equipment.forEach(function (piece) {
 		if (piece != null) {
 			Orion.Print("bit")
 			Orion.MoveItem(piece.Serial());
-			Orion.Wait(600);
+			Orion.Wait(800);
 		}
 	})
 	while (Player.Mana() < Player.MaxMana()) {
@@ -44,7 +51,7 @@ function TakeOffClothesAndMeditate() {
 	equipment.forEach(function (piece) {
 		if (piece != null)
 			Orion.Equip(piece.Serial());
-		Orion.Wait(600);
+		Orion.Wait(800);
 
 	})
 }

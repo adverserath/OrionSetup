@@ -23,9 +23,8 @@ function VendorAction(action, npc, shopList, npcRange) {
     TextWindow.Print(npc);
     TextWindow.Print(action);
 
-    if(npcRange==null)
-    {
-        npcRange=defaultRange;
+    if (npcRange == null) {
+        npcRange = defaultRange;
     }
     var buy = 'buy';
     var sell = 'sell';

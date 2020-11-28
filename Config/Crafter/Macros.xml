@@ -5,10 +5,8 @@
         <action type="5" convert_type="0" waiting_time="1000" value="15"/>
         <action type="3" convert_type="0" waiting_time="1000" serial="0x001023CF" graphic="0x00E4" color="0x0000"/>
     </macro>
-    <macro name="AnimalLore" looped="true" delay="1">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x4313138A" graphic="0x0E21" color="0x07D1"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x000A6252" graphic="0x00D9" color="0x08FE"/>
-        <action type="1000" convert_type="0" waiting_time="2000"/>
+    <macro name="AnimalLore" looped="true" delay="8">
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00002172" id="0x909CC741" button="2"/>
     </macro>
     <macro name="in" looped="false" delay="1">
         <action type="15" convert_type="0" waiting_time="1000" serial="0x02628D2B" id="0x38920ABD" button="15"/>

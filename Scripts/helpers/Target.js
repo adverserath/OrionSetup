@@ -30,3 +30,10 @@ var nearby = Orion.FindTypeEx(any, any, ground,
             });
             return nearby[Orion.Random(nearby.length)];
 }
+function WalkTo(object, distance){
+if(distance==null)
+{
+distance=1;
+}
+Orion.WalkTo(object.X(), object.Y(), object.Z(), distance);
+}

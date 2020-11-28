@@ -10,7 +10,7 @@
 
 var trashBarrel = '0x4625B085';
 var storageBox = '0x43AB4185';
-var scrollBox = '0x43AB4185';
+var scrollBox = '0x46415E83';
 
 function StartTinkering() {
     var tool = '0x1EB8';
@@ -21,9 +21,9 @@ function StartTinkering() {
 
 function StartInscription() {
     var tool = '0x0FBF';
-    CraftCreateLoop('Inscription', 'Inscription', 520, 15, 23, tool, scrollBox); //makeTongs
-    CraftCreateLoop('Inscription', 'Inscription', 670, 22, 37, tool, scrollBox); //makeLockpicks
-    CraftCreateLoop('Inscription', 'Inscription', 1000, 43, 16, tool, scrollBox); //makeHeatingStand
+    CraftCreateLoop('Inscription', 'Inscription', 520, 15, 23, tool, scrollBox, '0x1F40'); //poison
+    CraftCreateLoop('Inscription', 'Inscription', 670, 22, 37, tool, scrollBox, '0x1F4A'); //lightening
+    CraftCreateLoop('Inscription', 'Inscription', 1000, 43, 16, tool, scrollBox, '0x1F5F'); //flamestrike
     BotPush(Orion.Time() + "GM Inscription");
 }
 
@@ -53,7 +53,8 @@ function StartTailoring() {
 }
 
 
-function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, buttonItemID, toolSet, containerID) {
+function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, buttonItemID, toolSet, containerID, createdItemGraphicId) {
+BotPush("Started "+ skillName + trainToLevel);
     Orion.Print(skillName + ':' + Orion.SkillValue(skillName));
     if (skillName === 'Carpentry') {
         EquipAxe();
@@ -76,104 +77,111 @@ function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, button
             Orion.Print("getting")
         }
         else if (needToBuy && triedToBuy) {
-                    Orion.Print("failed")
+            Orion.Print("failed")
 
-            BotPush("Out of "+skillName+" resources")
+            BotPush("Out of " + skillName + " resources")
             Orion.PauseScript();
             triedToBuy = false;
         }
-        else if(NeedMoreManaGump())
-        {
-            TakeOfClothesAndMeditate();
+        else if (NeedMoreManaGump()) {
+            TakeOffClothesAndMeditate();
         }
 
-            triedToBuy = false;
-            Orion.Print('making')
-            var tools = Orion.FindTypeEx(toolSet, 'any', 'backpack');
+        triedToBuy = false;
+        Orion.Print('making')
+        var tools = Orion.FindTypeEx(toolSet, 'any', 'backpack');
 
-            if (tools.length == 1) {
-                BotPush("no tools left");
-                BotPush(listName + ": " + Orion.SkillValue(skillName));
-                Orion.PauseScript();
-                //         Orion.ShutdownWindows('forced');
+        if (tools.length == 1) {
+            BotPush("no tools left");
+            BotPush(listName + ": " + Orion.SkillValue(skillName));
+            Orion.PauseScript();
+            //         Orion.ShutdownWindows('forced');
+        }
+        var backpackBeforeMake = Orion.FindType('any', 'any', 'backpack')
+        var successfulCraft = false;
+
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (gump0.ID() === '0x38920ABD')) {
+
+                gump0.Select(Orion.CreateGumpHook(buttonMenuID));
             }
-            var backpackBeforeMake = Orion.FindType('any', 'any', 'backpack')
-                   var successfulCraft = false;
-
-            if (Orion.WaitForGump(1000)) {
-                var gump0 = Orion.GetGump('last');
-                if ((gump0 !== null) && (gump0.ID() === '0x38920ABD')) {
-
-                    gump0.Select(Orion.CreateGumpHook(buttonMenuID));
-                }
-            }
+        }
 
 
-            if (Orion.WaitForGump(1000)) {
-                var gump1 = Orion.GetGump('last');
-                if ((gump1 !== null) && (gump1.ID() === '0x38920ABD')) {
-                    gump1.Select(Orion.CreateGumpHook(buttonItemID));
-                    Orion.WaitForGump(2000);
-                    if(CreatedItemResourceGump()||CreatedExceptionalItemResourceGump())
-                    {
+        if (Orion.WaitForGump(1000)) {
+            var gump1 = Orion.GetGump('last');
+            if ((gump1 !== null) && (gump1.ID() === '0x38920ABD')) {
+                gump1.Select(Orion.CreateGumpHook(buttonItemID));
+                Orion.WaitForGump(2000);
+                if (CreatedItemResourceGump() || CreatedExceptionalItemResourceGump()) {
                     successfulCraft = true;
-                                        Orion.Wait(300);
+                    Orion.Wait(300);
 
-                    }
                 }
             }
-            else {
-                Orion.UseObject(Orion.FindTypeEx(toolSet, 'any', 'backpack').shift().Serial());
-            }
+        }
+        else {
+            Orion.UseObject(Orion.FindTypeEx(toolSet, 'any', 'backpack').shift().Serial());
+        }
 
-            //Find any newly created item.
-            var items = Orion.FindType('any', 'any', 'backpack').filter(function (itemId) {
+        //Find any newly created item.
+        var items = [];
+        if (createdItemGraphicId == null) {
+            items = Orion.FindType('any', 'any', 'backpack').filter(function (itemId) {
                 return (backpackBeforeMake.indexOf(itemId) == -1 && successfulCraft);
             });
+        }
+        else {
+                    Orion.Print(createdItemGraphicId)
 
-            Restock(listName);
+            items = Orion.FindType(createdItemGraphicId,'any', 'backpack');
+            Orion.Print(items.length)
+        }
 
-            items.forEach(function (itemId) {
-                if (skillName === 'Tailoring') {
-                    var item = Orion.FindObject(itemId);
-                    if (item != null) {
-                        Orion.FindType(item.Graphic())
-                            .forEach(function (itemId) {
-                                Orion.UseObject(scissorsId);
+        Restock(listName);
 
-                                if (Orion.WaitForTarget(1000)) {
-                                    Orion.TargetObject(itemId);
-                                    Orion.Wait(600);
-                                }
-                            });
-                    }
+        items.forEach(function (itemId) {
+            if (skillName === 'Tailoring') {
+                var item = Orion.FindObject(itemId);
+                if (item != null) {
+                    Orion.FindType(item.Graphic())
+                        .forEach(function (itemId) {
+                            Orion.UseObject(scissorsId);
+
+                            if (Orion.WaitForTarget(1000)) {
+                                Orion.TargetObject(itemId);
+                                Orion.Wait(600);
+                            }
+                        });
                 }
-                if (skillName === 'Carpentry') {
-                    Orion.ObjAtLayer('LeftHand');
-                    Orion.UseObject(righthand.Serial());
-                    if (Orion.WaitForTarget(1000)) {
-                        Orion.TargetObject(itemId);
-                        Orion.Wait(700);
-                    }
+            }
+            if (skillName === 'Carpentry') {
+                Orion.ObjAtLayer('LeftHand');
+                Orion.UseObject(righthand.Serial());
+                if (Orion.WaitForTarget(1000)) {
+                    Orion.TargetObject(itemId);
+                    Orion.Wait(700);
                 }
-                              var isFirst = true;
+            }
+            var isFirst = true;
 
-                if (Orion.ObjectExists(itemId)) {
+            if (Orion.ObjectExists(itemId)) {
                 var obj = Orion.FindObject(itemId);
-                 Orion.FindType(obj.Graphic(), 'any', 'backpack').forEach(function (binItem){
-                                     Orion.MoveItem(itemId, 1, containerID);
-                    if(!isFirst){Orion.Wait(600);}
-                    else{
-                    Orion.Wait(300)
+                Orion.FindType(obj.Graphic(), 'any', 'backpack').forEach(function (binItem) {
+                    Orion.MoveItem(itemId, 0, containerID);
+                    if (!isFirst) { Orion.Wait(600); }
+                    else {
+                        Orion.Wait(300)
                     }
                     isFirst = false;
-                 
-                 })
 
-                }
-            });
-        }
-    
+                })
+
+            }
+        });
+    }
+
 }
 
 function MakeItemGumpID(GumpBookId) {
