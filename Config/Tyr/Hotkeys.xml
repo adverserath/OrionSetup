@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="9" action="402" key="114" modifiers="0"/>
-    <hotkey type="2" action="2" key="52" modifiers="0" meta="{&#10;    &quot;external_code&quot;: &quot;&quot;,&#10;    &quot;name&quot;: &quot;AnatomyLoop&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
-    <hotkey type="9" action="203" key="112" modifiers="0"/>
-    <hotkey type="9" action="204" key="113" modifiers="0"/>
-    <hotkey type="24" action="1" key="50" modifiers="0"/>
-    <hotkey type="27" action="1" key="76" modifiers="0" meta="{&#10;    &quot;name&quot;: &quot;Arrows&quot;&#10;}&#10;"/>
-    <hotkey type="41" action="1" key="51" modifiers="0"/>
-    <hotkey type="49" action="0" key="8" modifiers="64"/>
-    <hotkey type="24" action="0" key="49" modifiers="0"/>
-    <hotkey type="31" action="0" key="123" modifiers="0"/>
-    <hotkey type="6" action="2" key="120" modifiers="0"/>
     <hotkey type="31" action="1" key="121" modifiers="0"/>
+    <hotkey type="6" action="2" key="120" modifiers="0"/>
+    <hotkey type="2" action="2" key="52" modifiers="0" meta="{&#10;    &quot;external_code&quot;: &quot;&quot;,&#10;    &quot;name&quot;: &quot;AnatomyLoop&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="41" action="1" key="51" modifiers="0"/>
     <hotkey type="24" action="5" key="222" modifiers="0"/>
+    <hotkey type="24" action="1" key="50" modifiers="0"/>
+    <hotkey type="24" action="0" key="49" modifiers="0"/>
     <hotkey type="4" action="0" key="220" modifiers="0"/>
+    <hotkey type="49" action="0" key="8" modifiers="64"/>
+    <hotkey type="9" action="402" key="114" modifiers="0"/>
+    <hotkey type="9" action="204" key="113" modifiers="0"/>
+    <hotkey type="9" action="203" key="112" modifiers="0"/>
+    <hotkey type="27" action="1" key="76" modifiers="0" meta="{&#10;    &quot;name&quot;: &quot;Arrows&quot;&#10;}&#10;"/>
+    <hotkey type="31" action="0" key="123" modifiers="0"/>
 </data>

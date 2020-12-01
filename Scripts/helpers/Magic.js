@@ -20,38 +20,14 @@ function RecallRune(runeItem) {
 
 function TakeOffClothesAndMeditate() {
 	var equipment = [];
-	Orion.Print(Orion.ObjAtLayer('Pants').Name())
-	Orion.Print(Orion.ObjAtLayer('InnerTorso').Name())
-	Orion.Print(Orion.ObjAtLayer('Helmet').Name())
-	//	Orion.Print(Orion.ObjAtLayer('Gloves').Name())
-	//		Orion.Print(Orion.ObjAtLayer('Necklace').Name())
-		//		Orion.Print(Orion.ObjAtLayer('Arms').Name())
-				
-	equipment.push(Orion.ObjAtLayer('Pants'));
-	equipment.push(Orion.ObjAtLayer('InnerTorso'));
-	equipment.push(Orion.ObjAtLayer('Helmet'));
-	//equipment.push(Orion.ObjAtLayer('Gloves'));
-	//equipment.push(Orion.ObjAtLayer('Necklace'));
-	//equipment.push(Orion.ObjAtLayer('Arms'));
+				Orion.Undress();
 
-	equipment.forEach(function (piece) {
-		if (piece != null) {
-			Orion.Print("bit")
-			Orion.MoveItem(piece.Serial());
-			Orion.Wait(800);
-		}
-	})
 	while (Player.Mana() < Player.MaxMana()) {
 		if (!Orion.BuffExists('Meditation')) {
 			Orion.UseSkill('Meditation');
 		}
 		Orion.Wait(4000);
 	}
-
-	equipment.forEach(function (piece) {
-		if (piece != null)
-			Orion.Equip(piece.Serial());
-		Orion.Wait(800);
-
-	})
+Orion.Wait(4000);
+Orion.Dress("magery");
 }

@@ -11,6 +11,14 @@
 var trashBarrel = '0x4625B085';
 var storageBox = '0x43AB4185';
 var scrollBox = '0x46415E83';
+var moveItem = true;
+function StartAlchemy() {
+    var tool = '0x0E9B';
+    CraftCreateLoop('Alchemy', 'Alchemy', 550, 36, 9, tool, scrollBox, '0x0F0A'); //makeTongs
+    CraftCreateLoop('Alchemy', 'Alchemy', 900, 36, 16, tool, scrollBox, '0x0F0A'); //makeLockpicks
+    CraftCreateLoop('Alchemy', 'Alchemy', 1000, 36, 23, tool, scrollBox, '0x0F0A'); //makeHeatingStand
+}
+
 
 function StartTinkering() {
     var tool = '0x1EB8';
@@ -54,7 +62,10 @@ function StartTailoring() {
 
 
 function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, buttonItemID, toolSet, containerID, createdItemGraphicId) {
-BotPush("Started "+ skillName + trainToLevel);
+    DebugStart();
+    BotPush("Started " + skillName + trainToLevel);
+    Orion.UseObject(Orion.FindTypeEx(toolSet, 'any', 'backpack').shift().Serial());
+
     Orion.Print(skillName + ':' + Orion.SkillValue(skillName));
     if (skillName === 'Carpentry') {
         EquipAxe();
@@ -66,20 +77,28 @@ BotPush("Started "+ skillName + trainToLevel);
     Orion.Print('Training ' + skillName + ' : ' + Orion.SkillValue(skillName) + ' / ' + trainToLevel);
 
     while (Orion.SkillValue(skillName) < trainToLevel) {
+        if (Player.Dead()) {
+            BotPush("you died");
+            Orion.PauseScript();
+        }
         TextWindow.Clear();
         DebugText(skillName + ':' + Orion.SkillValue(skillName));
         var needToBuy = NotEnoughResourcesGump();
+        if (needToBuy == false) {
+            triedToBuy = false;
+        }
         DebugText("NeedToBuy:" + needToBuy);
 
         if (needToBuy && !triedToBuy) {
             Restock(listName);
             triedToBuy = true;
-            Orion.Print("getting")
+            Orion.Print("getting restock")
         }
         else if (needToBuy && triedToBuy) {
             Orion.Print("failed")
 
             BotPush("Out of " + skillName + " resources")
+           // Orion.ShutdownWindows('forced');
             Orion.PauseScript();
             triedToBuy = false;
         }
@@ -87,8 +106,8 @@ BotPush("Started "+ skillName + trainToLevel);
             TakeOffClothesAndMeditate();
         }
 
-        triedToBuy = false;
-        Orion.Print('making')
+        //triedToBuy = false;
+        Orion.Print('making items')
         var tools = Orion.FindTypeEx(toolSet, 'any', 'backpack');
 
         if (tools.length == 1) {
@@ -133,10 +152,7 @@ BotPush("Started "+ skillName + trainToLevel);
             });
         }
         else {
-                    Orion.Print(createdItemGraphicId)
-
-            items = Orion.FindType(createdItemGraphicId,'any', 'backpack');
-            Orion.Print(items.length)
+            items = Orion.FindType(createdItemGraphicId, 'any', 'backpack');
         }
 
         Restock(listName);
@@ -166,7 +182,7 @@ BotPush("Started "+ skillName + trainToLevel);
             }
             var isFirst = true;
 
-            if (Orion.ObjectExists(itemId)) {
+            if (Orion.ObjectExists(itemId) && moveItem == true) {
                 var obj = Orion.FindObject(itemId);
                 Orion.FindType(obj.Graphic(), 'any', 'backpack').forEach(function (binItem) {
                     Orion.MoveItem(itemId, 0, containerID);

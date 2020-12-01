@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="false" delay="0.1">
-        <action type="10" convert_type="0" waiting_time="300" serial="0x4585371D" graphic="0x19B9" color="0x0000" count="2"/>
-        <action type="11" convert_type="0" waiting_time="500" x="44" y="109" z="0" slot="0" container="0x462A1A41" relative_x="45" relative_y="-99" relative_z="-5"/>
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x4585371D" graphic="0x19B9" color="0x0000"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x451CFB1C" graphic="0x2DD8" color="0x0000"/>
+        <action type="5" convert_type="0" waiting_time="1000" value="30"/>
+        <action type="3" convert_type="1" waiting_time="1000" serial="0x42E514BB" graphic="0x0F0A" color="0x0000"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x463FB9ED" graphic="0x0F52" color="0x0000"/>
     </macro>
 </data>

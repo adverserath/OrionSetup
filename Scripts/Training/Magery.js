@@ -1,11 +1,15 @@
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Target.js
+//#include Scripts/helpers/Magic.js
 
 function TrainMagery() {
+    Orion.SetDress("magery");
+
     var notified = false;
     var skillLevel = Orion.SkillValue('Magery');
+    var trainingTarget = SelectTarget().Serial();
+
     while (Player.IsHuman()) {
-    var trainingTarget = RandomTarget();
 
         if ((Orion.SkillValue('Magery') % 1 == 100) && notified == false) {
             BotPush("Magery" + Orion.SkillValue('Magery', 'base'));
@@ -17,33 +21,28 @@ function TrainMagery() {
         skillLevel = Orion.SkillValue('Magery');
         if (skillLevel < 600) {
             if (Player.Mana() < 10) {
-                Meditate();
+                TakeOffClothesAndMeditate();
             }
-            Orion.Cast('31');
-            if (Orion.WaitForTarget(5000))
-                Orion.TargetObject(trainingTarget.Serial());
+            Orion.Cast('Mana Drain', trainingTarget);
+
             Orion.Wait(2000);
         }
         else if (Orion.SkillValue('Magery') < 700) {
             if (Player.Mana() < 20) {
-                Meditate();
+                TakeOffClothesAndMeditate();
             }
-            Orion.Cast('Invisibility');
-            if (Orion.WaitForTarget(3000))
-                Orion.TargetObject('self');
+            Orion.Cast('Invisibility', self);
             Orion.Wait(2000);
         }
         else if (Orion.SkillValue('Magery') < 1000) {
             if (Player.Mana() < 40) {
-                Meditate();
+                TakeOffClothesAndMeditate();
             }
-            Orion.Cast('Mana Vampire');
-            if (Orion.WaitForTarget(3000))
-                Orion.TargetObject(trainingTarget.Serial());
+            Orion.Cast('Mana Vampire', self);
             Orion.Wait(2000);
         }
         else {
-BotPush("Player:"+Player.Name()+" GM Magery");
+            BotPush("Player:" + Player.Name() + " GM Magery");
             Orion.ShutdownWindows('forced');
             Orion.Wait(2000);
         }

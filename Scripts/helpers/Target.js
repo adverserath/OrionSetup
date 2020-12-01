@@ -35,5 +35,6 @@ if(distance==null)
 {
 distance=1;
 }
-Orion.WalkTo(object.X(), object.Y(), object.Z(), distance);
+Orion.Print("walking to "+ object.Name())
+Orion.WalkTo(object.X(), object.Y(), object.Z(), distance,1,1,10000);
 }

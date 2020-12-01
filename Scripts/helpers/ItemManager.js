@@ -94,7 +94,7 @@ function NotEnoughResourcesGump() {
 function CreatedItemResourceGump() {
     var output = Orion.GetLastGump();
     return output.CommandList().filter(function (text) {
-        return text.search('1044154') >= 0;
+        return text.search('1044154|500315|502925') >= 0;
 
     }).length > 0;
 }

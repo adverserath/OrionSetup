@@ -1,18 +1,20 @@
-///#include helpers/Target.js
+//#include Scripts/helpers/Target.js
 ///#include helpers/Magic.js
 //#include Scripts/helpers/Debug.js
 ///#include helpers/ItemManager.js
 
 //////START OF CONFIG///////
-var range = 15; //How far to load status from
-var delay = 500; //Delay between loop cycle
+var range = 40; //How far to load status from
+var delay = 800; //Delay between loop cycle
 var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
-var notorietyToAttack = 4; //Attack targets with notoriety
-var pullTargetDistance = 15; //Distance of target to agro
+var notorietyToAttack = 3; //Attack targets with notoriety
+var pullTargetDistance = 40; //Distance of target to agro
 var attackEverythingAtOnce = false; //Initiate an attack on every target within range at once otherwise 1 target at a time
 var honorTargets = true;
 var autoAttack = true;
 var archer = false;
+var walkToNextTarget = true;
+
 //DO NOT CHANGE
 var attack = true; //Enable attacking
 var honor = true;
@@ -120,7 +122,15 @@ function ShowEnemiesByDistance() {
 
 
         if (attackList.length > 0) {
-
+        var vicinity = [];
+if(walkToNextTarget==true)
+{
+mobileByDistance.forEach(function (distanceGroup)
+{
+vicinity = vicinity.concat(distanceGroup);
+});
+}
+else{
             var vicinity = mobileByDistance[0].concat(mobileByDistance[1]);
 if(archer)
 {
@@ -134,6 +144,7 @@ vicinity = vicinity.concat(mobileByDistance[2])
 .concat(mobileByDistance[9])
 .concat(mobileByDistance[10]);
 }
+}
             if (vicinity != null && vicinity.length > 0) {
                 vicinity = vicinity.sort(function (mobSerialA, mobSerialB) {
                     return mobSerialA.Hits() - mobSerialB.Hits();
@@ -141,6 +152,12 @@ vicinity = vicinity.concat(mobileByDistance[2])
               //  var newTarget = vicinity[Orion.Random(vicinity.length)];
                 var newTarget = vicinity.shift();
                 AttackMobile(newTarget);
+                if(walkToNextTarget==true)
+{
+                Orion.Wait(2000);
+                WalkTo(newTarget, 1);
+                Orion.Follow(newTarget.Serial());
+                }
             }
         }
     }
