@@ -14,9 +14,11 @@ var scrollBox = '0x46415E83';
 var moveItem = true;
 function StartAlchemy() {
     var tool = '0x0E9B';
-    CraftCreateLoop('Alchemy', 'Alchemy', 550, 36, 9, tool, scrollBox, '0x0F0A'); //makeTongs
-    CraftCreateLoop('Alchemy', 'Alchemy', 900, 36, 16, tool, scrollBox, '0x0F0A'); //makeLockpicks
-    CraftCreateLoop('Alchemy', 'Alchemy', 1000, 36, 23, tool, scrollBox, '0x0F0A'); //makeHeatingStand
+    CraftCreateLoop('Alchemy', 'Alchemy', 1001, 36, 9, tool, scrollBox, '0x0F0A'); //poison
+    CraftCreateLoop('Alchemy', 'Alchemy', 950, 36, 16, tool, scrollBox, '0x0F0A'); //greaterpoison
+    //CraftCreateLoop('Alchemy', 'Alchemy', 950, 43, 16, tool, scrollBox, '0x0F0C'); //greatercure
+    CraftCreateLoop('Alchemy', 'Alchemy', 1000, 36, 23, tool, scrollBox, '0x0F0A'); //deadlypoison
+    BotPush(Orion.Time() + "GM Alchemy");
 }
 
 
@@ -25,6 +27,8 @@ function StartTinkering() {
     CraftCreateLoop('Tinkering', 'Tinkering', 450, 8, 86, tool, trashBarrel); //makeTongs
     CraftCreateLoop('Tinkering', 'Tinkering', 940, 8, 121, tool, storageBox); //makeLockpicks
     CraftCreateLoop('Tinkering', 'Tinkering', 1000, 29, 51, tool, trashBarrel); //makeHeatingStand
+        BotPush(Orion.Time() + "GM Tinkering");
+
 }
 
 function StartInscription() {
@@ -113,8 +117,7 @@ function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, button
         if (tools.length == 1) {
             BotPush("no tools left");
             BotPush(listName + ": " + Orion.SkillValue(skillName));
-            Orion.PauseScript();
-            //         Orion.ShutdownWindows('forced');
+           //          Orion.ShutdownWindows('forced');
         }
         var backpackBeforeMake = Orion.FindType('any', 'any', 'backpack')
         var successfulCraft = false;

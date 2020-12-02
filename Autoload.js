@@ -3,11 +3,10 @@
 
 //#include Scripts/helpers/ItemManager.js
 
-function test ()
-{
-TextWindow.Print('X '+Player.X()+' Y '+Player.Y()+ ' Z '+Player.Z())
-var out = Orion.WalkTo(1173, 1495, 29,0, 255, 1, 1);
-TextWindow.Print(out);
+function test() {
+	TextWindow.Print('X ' + Player.X() + ' Y ' + Player.Y() + ' Z ' + Player.Z())
+	var out = Orion.WalkTo(1173, 1495, 29, 0, 255, 1, 1);
+	TextWindow.Print(out);
 }
 var unique;
 var checkedIDs = [];
@@ -37,7 +36,7 @@ function SearchBin(container) {
 			//TextWindow.Print('Open ' + bagID);
 			checkedIDs.push(bagID);
 			if (!Orion.OpenContainer(bagID, 300)) {
-			//	TextWindow.Print('skip');
+				//	TextWindow.Print('skip');
 				skip = true;
 			}
 			Orion.Wait(200);
@@ -61,9 +60,8 @@ function SearchBin(container) {
 			}
 		});
 	}
-	if(skip)
-	{
-	checkedIDs=[];
+	if (skip) {
+		checkedIDs = [];
 	}
 }
 
@@ -80,7 +78,7 @@ function PrintItem(id) {
 		//TextWindow.Print('Runic: ' + (itemName.indexOf(/Ash Runic/gi) >= 0));
 
 		if ((itemProp.match(/(cooking)|(fletcher)/gi) || []).length >= 1) {
-		//	TextWindow.Print('no cooking');
+			//	TextWindow.Print('no cooking');
 		}
 		else if ((itemName.match(/Ash Runic/gi) || []).length >= 1) {
 			TextWindow.Print('--------TAKE  Ash');
@@ -132,7 +130,7 @@ function PrintItem(id) {
 
 			TakeItem(item)
 		}
-				else if ((itemProp.match(/Luck\s((9|10)(\d))/gi) || []).length >= 1) {
+		else if ((itemProp.match(/Luck\s((9|10)(\d))/gi) || []).length >= 1) {
 			TextWindow.Print('--------TAKE  luck');
 
 			TakeItem(item)
@@ -147,6 +145,93 @@ function TakeItem(item) {
 	TextWindow.Print(item.Properties());
 	Orion.Wait(300);
 	Orion.MoveItem(item.Serial());
-	BotPush('```'+item.Properties()+'```');
+	BotPush('```' + item.Properties() + '```');
 	Orion.Wait(100);
+}
+
+function ShowItemWorth() {
+	var item = SelectTarget();
+	var itemValue = 0;
+	if (item != null && item.Properties().length > 1) {
+		var itemName = item.Name();
+		var itemProp = item.Properties();
+
+		itemValue +=((itemProp.match(
+		/Intelligence\sBonus\s(\d)/i
+		)|| [])[1]||0)/8;
+		
+		itemValue +=((itemProp.match(
+		/Mana\sIncrease\s(\d)/i
+		)|| [])[1]||0)/8;
+			
+		itemValue +=((itemProp.match(
+		/Faster\sCast\s(\d)/i
+		)|| [])[1]||0)/1;	
+
+		itemValue +=((itemProp.match(
+		/Faster\sCast\sRecovery\s(\d)/i
+		)|| [])[1]||0)/3;	
+		
+		itemValue +=((itemProp.match(
+		/Spell\sDamage\sIncrease\s(\d*)/i
+		)|| [])[1]||0)/12;	
+
+		itemValue +=((itemProp.match(
+		/Magery\s\+(\d*)/i
+		)|| [])[1]||0)/15;	
+
+		itemValue +=((itemProp.match(
+		/Meditation\s\+(\d*)/i
+		)|| [])[1]||0)/15;	
+
+		itemValue +=((itemProp.match(
+		/Evaluating\sIntelligence\s\+(\d*)/i
+		)|| [])[1]||0)/15;	
+
+		itemValue +=((itemProp.match(
+		/Resisting\sSpells\s\+(\d*)/i
+		)|| [])[1]||0)/15;	
+
+		itemValue +=((itemProp.match(
+		/Lower\sReagent\sCost\s(\d*)/i
+		)|| [])[1]||0)/20;	
+
+		itemValue +=((itemProp.match(
+		/Lower\sMana\sCost\s(\d)/i
+		)|| [])[1]||0)/8;	
+
+		itemValue +=((itemProp.match(
+		/Mana\sRegeneration\s(\d*)/i
+		)|| [])[1]||0)/2;	
+
+		itemValue +=(itemProp.match(
+		/Repond\sSlayer/i
+		)|| []).length;	
+
+		itemValue +=(itemProp.match(
+		/Undead\sSlayer/i
+		)|| []).length;	
+
+		itemValue +=(itemProp.match(
+		/Elemental\sSlayer/i
+		)|| []).length;	
+
+		itemValue +=(itemProp.match(
+		/Demon\sSlayer/i
+		)|| []).length;	
+
+		itemValue +=(itemProp.match(
+		/Arachnid\sSlayer/i
+		)|| []).length;	
+
+		itemValue +=(itemProp.match(
+		/Reptile\sSlayer/i
+		)|| []).length;	
+
+		itemValue +=(itemProp.match(
+		/Dragon\sSlayer/i
+		)|| []).length;			
+
+Orion.Print(itemValue);
+	}
 }

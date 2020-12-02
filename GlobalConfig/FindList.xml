@@ -59,5 +59,6 @@
         <item graphic="0x0F0E" color="0x0000" comment="Empty Bottle" count="20"/>
         <item graphic="0x0F88" color="0x0000" comment="Nightshade" count="200"/>
         <item graphic="0x0E9B" color="0x0000" comment="Mortar And Pestle" count="3"/>
+        <item graphic="0x0F84" color="0x0000" comment="Garlic" count="200"/>
     </findlist>
 </data>
