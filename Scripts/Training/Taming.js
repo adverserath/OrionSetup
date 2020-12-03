@@ -43,7 +43,7 @@ function Discord(animal) {
     return isDiscorded;
 }
 
-var provokeMessage = 'you start a fight'
+var provokeMessage = 'you start a fight|cannot be seen'
 
 function Provoke(animal) {
     TextWindow.Print('Provo ' + animal.Name() + ' ' + animal.Serial());
@@ -72,9 +72,10 @@ function Provoke(animal) {
             .sort(function (mobA, mobB) {
                 return mobA.Distance() - mobB.Distance()
             });
-
-        Orion.TargetObject(closest.shift().Serial());
-
+        if (closest.length > 0)
+            Orion.TargetObject(closest.shift().Serial());
+        else
+            return false;
         while (Orion.DisplayTimerExists('SkillInUse')) {
             Orion.Wait(1000);
         }
@@ -90,11 +91,11 @@ function Provoke(animal) {
     return isProvoked;
 }
 
-var tamingPass = 'seems to accept|even challenging';
-var tamingFail = 'had too many owners|Cannot tame|Its already tame|tame already|too far|line of sight|be seen';
+var tamingPass = 'seems to accept|even challenging|tame already';
+var tamingFail = 'else is already|had too many owners|Cannot tame|Its already tame|too far|line of sight|be seen';
 function Tame(animal) {
     TextWindow.Print('Tame ' + animal.Name() + ' ' + animal.Serial());
-
+    var attempt = 0;
     if (animal == null) {
         animal = SelectTarget();
     }
@@ -104,28 +105,43 @@ function Tame(animal) {
     var isTame = false;
 
     while (animal.Notoriety() == 3) {
+        attempt++;
+        TextWindow.Print("Taming attempt:" + attempt)
         var startTime = Orion.Now();
         Orion.UseSkill('Animal Taming', animal.Serial());
         Orion.AddDisplayTimer('SkillInUse', 12000, 'AboveChar');
         Orion.Wait(500);
-        if (Orion.InJournal(tamingFail, '', '0', '-1', startTime, Orion.Now()) != null) {
+        var output = Orion.InJournal(tamingFail, '', '0', '-1', startTime, Orion.Now());
+        if (output != null) {
+                                       TextWindow.Print('Cannot Tame');
+                    TextWindow.Print(output);
+
             Orion.RemoveDisplayTimer('SkillInUse');
             Orion.Wait(500);
             return false;
         }
 
-        while (Orion.DisplayTimerExists('SkillInUse')) {
-            Orion.Wait(1000);
+        while (Orion.DisplayTimerExists('SkillInUse')
+            || Orion.InJournal('saving', '', '0', '-1', Orion.Now() - 10000, Orion.Now()) != null) {
+
+            TextWindow.Print('Waiting because timer is active')
+
+            Orion.Wait(12000);
         }
 
         if (Player.Followers() > pets || Orion.InJournal(tamingPass, '', '0', '-1', startTime, Orion.Now()) != null) {
-            return true;
+                                       TextWindow.Print('Tamed animal');
+           return true;
         }
-        if (Orion.InJournal(tamingFail, '', '0', '-1', startTime, Orion.Now()) != null) {
+        output = Orion.InJournal(tamingFail, '', '0', '-1', startTime, Orion.Now());
+        if (output != null) {
+                               TextWindow.Print('Taming Fail');
+                    TextWindow.Print(output);
 
             return false;
         }
     }
+                                   TextWindow.Print('Exit Tame');
     return Player.Followers() > pets;
 }
 
@@ -146,9 +162,11 @@ function Vetting() {
 }
 
 function TrainTaming() {
+    var tames = 0;
     if (Orion.ScriptRunning('TrainTaming') > 1) {
         Orion.ToggleScript('TrainTaming', true);
     }
+    var startingSkill = Orion.SkillValue('Animal Taming', 'real')
     var animals = [];
     while (!Player.Dead()) {
         Orion.IgnoreReset();
@@ -163,7 +181,7 @@ function TrainTaming() {
             animals = Orion.FindTypeEx('0x0041', any, 'ground', 'mobile', 30, 3); //SnowLeaopards
             Orion.Print('snow leaopards')
         }
-        else if (Orion.SkillValue('Animal Taming', 'base') < 831) {
+        else if (Orion.SkillValue('Animal Taming', 'base') < 950) {
             animals = Orion.FindTypeEx('0x00E8|0x00E9', any, 'ground', 'mobile', 40, 3); //bulls
             Orion.Print('bulls')
         }
@@ -180,6 +198,7 @@ function TrainTaming() {
 
         animals.forEach(function (animal) {
             TextWindow.Print('Taming ' + animal.Serial());
+            TextWindow.Print('Gained :' + (Orion.SkillValue('Animal Taming', 'real') - startingSkill))
             Orion.UseType('0x2805', -1);
             var startTime = Orion.Now();
 
@@ -201,7 +220,8 @@ function TrainTaming() {
                 var tameSuccess = Tame(animal);
 
                 if (tameSuccess) {
-
+                    tames++;
+                    TextWindow.Print("Tamed " + tames)
                     Orion.RenameMount(animalId, 'gaga');
                     Orion.Wait(1000);
                     Orion.Follow(animalId, false);
@@ -237,10 +257,10 @@ function TrainTaming() {
 
                                 Orion.Wait(1000);
                             }
-                            Orion.Say("all guard");
                         }
                     }
                 }
+                Orion.Say("all guard");
 
 
             }
