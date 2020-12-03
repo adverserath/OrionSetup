@@ -4,59 +4,48 @@
 //#include Scripts/helpers/Debug.js
 
 function CutHides() {
-var scissors = Orion.FindTypeEx('0x0F9F').shift();
-var hides = Orion.FindTypeEx('0x1079');
-Orion.Print(scissors.Name());
-Orion.Print(hides.length);
-       UseItemOnTargets(scissors, hides);
+    var scissors = Orion.FindTypeEx('0x0F9F').shift();
+    var hides = Orion.FindTypeEx('0x1079');
+    UseItemOnTargets(scissors, hides);
+
+}
+
+function BankLeather() {
+    Orion.Print("bank leather")
+    var leather = Orion.FindTypeEx('0x1081');
+    if (leather.length > 0) {
+        Orion.Wait(200);
+        MoveItems(Orion.FindObject(backpack), Orion.FindObject(Player.BankSerial()), '0x1081', any)
+    }
 
 }
 
 function MoveHides(corpse) {
-    MoveItems('0x1079',corpse, Player.Container(),any);
+    Orion.Print("move hide")
+    MoveItems(corpse, Orion.FindObject(backpack), '0x1079', any)
+    Orion.Wait(600);
 }
 
 function CutCorpses() {
+Orion.IgnoreReset();
+    var knife = Orion.FindType('0x0EC4', any, backpack).shift();
 
-    while (!Player.Dead()) {
-        while (!Player.WarMode()) {
-            var corpses = Orion.FindType('0x2006', any, ground, 'near', 2);
-            if (corpses.length > 0) {
-                Orion.Wait(100);
-                Orion.Print('skinning');
-                var foundCorpses = corpses;
-                while (corpses.length > 0) {
-                    var knife = Orion.FindType('0x0EC4', any, backpack).shift();
-                    Orion.Print('Found corpse');
-                    if (corpses.length != 0) {
-                        var corpse = corpses.shift();
-                       Orion.Wait(500);
-                        Orion.Print('use knife');
-                        Orion.UseObject(knife);
-                        Orion.Print('wait target');
-                        if (Orion.WaitForTarget(1000)) {
-                            Orion.Print('found target');
-                            Orion.TargetObject(corpse);
-                            Orion.Wait(1000);
-                            Orion.Print('Open Corpse');
-                       //    Orion.Wait(500);
-                            Orion.OpenContainer(corpse);
-                            Orion.Wait(1000);
-                                                        Orion.Print('Moving Items');
-
-                            MoveHides(corpse);
-                            Orion.Ignore(corpse);
-
-                        }
-                    }
-                    Orion.Wait(1000);
-                    Orion.Print('Snip snip');
-                    CutHides();
+            var corpses = Orion.FindTypeEx('0x2006', any, ground, 'near', 2);
+            corpses.forEach(function (corpse) {
+                Orion.Wait(400);
+                Orion.UseObject(knife);
+                if (Orion.WaitForTarget(1000)) {
+                    Orion.TargetObject(corpse.Serial());
                 }
-            }
-            //IF LEATHER NEEDS CUTTING
+            });
+            corpses.forEach(function (corpse) {
+                Orion.Wait(400);
+                Orion.OpenContainer(corpse);
+                Orion.Wait(600);
+                MoveHides(corpse);
+                CutHides();
+                BankLeather();
+                Orion.Ignore(corpse.Serial());
+            });
 
-        }
-                            Orion.Wait(1000);
-    }
 }

@@ -14,8 +14,8 @@ var scrollBox = '0x46415E83';
 var moveItem = true;
 function StartAlchemy() {
     var tool = '0x0E9B';
-    CraftCreateLoop('Alchemy', 'Alchemy', 1001, 36, 9, tool, scrollBox, '0x0F0A'); //poison
-    CraftCreateLoop('Alchemy', 'Alchemy', 950, 36, 16, tool, scrollBox, '0x0F0A'); //greaterpoison
+    CraftCreateLoop('Alchemy', 'Alchemy', 600, 36, 9, tool, scrollBox, '0x0F0A'); //poison
+    CraftCreateLoop('Alchemy', 'Alchemy', 1001, 36, 16, tool, scrollBox, '0x0F0A'); //greaterpoison
     //CraftCreateLoop('Alchemy', 'Alchemy', 950, 43, 16, tool, scrollBox, '0x0F0C'); //greatercure
     CraftCreateLoop('Alchemy', 'Alchemy', 1000, 36, 23, tool, scrollBox, '0x0F0A'); //deadlypoison
     BotPush(Orion.Time() + "GM Alchemy");
