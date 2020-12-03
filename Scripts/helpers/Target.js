@@ -38,3 +38,13 @@ distance=1;
 Orion.Print("walking to "+ object.Name())
 Orion.WalkTo(object.X(), object.Y(), object.Z(), distance,1,1,10000);
 }
+
+
+function InRange(p1, p2, range){
+
+			return ( p1.X() >= (p2.X() - range) )
+				&& ( p1.X() <= (p2.X() + range) )
+				&& ( p1.Y() >= (p2.Y() - range) )
+				&& ( p1.Y() <= (p2.Y() + range) );
+
+}

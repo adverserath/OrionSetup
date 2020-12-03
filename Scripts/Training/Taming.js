@@ -2,8 +2,9 @@
 //#include Scripts/helpers/Notifier.js
 
 function Rename() {
-
     var target = SelectTarget();
+    Orion.Print(target.Notoriety())
+
     Orion.RenameMount(target.Serial(), 'bull');
 }
 
@@ -46,27 +47,34 @@ function Provoke(animal) {
     Orion.Follow(animal.Serial());
     var startTime = Orion.Now();
     var isProvoked = false;
+    var bardRange = 8 + parseInt(Orion.SkillValue('Provocation') / 15);
 
     while (!isProvoked) {
         Orion.Wait(1000);
         Orion.AddDisplayTimer('SkillInUse', 4000, 'AboveChar');
         Orion.UseSkill('Provocation', animal.Serial());
         Orion.Wait(500);
-
         var closest = animals.filter(function (internalAnimal) {
-            return internalAnimal.Name() != 'a bull' && internalAnimal.Serial() != animal.Serial() && animal.InLOS()
+            return internalAnimal.Name() != 'a bull'
+                && internalAnimal.Serial() != animal.Serial()
+                && internalAnimal.InLOS()
+                && internalAnimal.Notoriety() == 3
+                && InRange(animal, internalAnimal, bardRange)
         })
-        .sort(function (mobA, mobB) {
-            return mobA.Distance() - mobB.Distance()
-        });
-
+            .sort(function (mobA, mobB) {
+                return mobA.Distance() - mobB.Distance()
+            });
+        if (closest == null) {
+            Orion.Print("No targets around to provoke");
+            return false;
+        }
         Orion.TargetObject(closest.shift().Serial());
 
         while (Orion.DisplayTimerExists('SkillInUse')) {
             Orion.Wait(1000);
         }
         Orion.Wait(1000);
-        
+
         Orion.Print(Orion.InJournal(provokeMessage, '', '0', '-1', startTime, Orion.Now()));
         if (Orion.InJournal(provokeMessage, '', '0', '-1', startTime, Orion.Now()) != null) {
             Orion.Print("Provoked");
@@ -77,39 +85,41 @@ function Provoke(animal) {
     return isProvoked;
 }
 
+var tamingPass = 'seems to accept|even challenging';
+var tamingFail = 'had too many owners|Cannot tame|Its already tame|tame already|too far|line of sight|be seen';
 function Tame(animal) {
     if (animal == null) {
         animal = SelectTarget();
     }
+    var pets = Player.Followers();
     TextWindow.Open();
 
     var isTame = false;
 
-    while (!isTame) {
+    while (animal.Notoriety() == 3) {
         var startTime = Orion.Now();
-        Orion.Print("Taming " + animal.Name());
         Orion.UseSkill('Animal Taming', animal.Serial());
         Orion.AddDisplayTimer('SkillInUse', 12000, 'AboveChar');
         Orion.Wait(500);
-        if (Orion.InJournal(tamingMessage, '', '0', '-1', startTime, Orion.Now()) != null) {
-            TextWindow.Print(Orion.InJournal(tamingMessage, '', '0', '-1', startTime, Orion.Now()) != null);
-            TextWindow.Print(Orion.InJournal(tamingMessage, '', '0', '-1', startTime, Orion.Now()).Text());
-            isTame = true;
+        if (Orion.InJournal(tamingFail, '', '0', '-1', startTime, Orion.Now()) != null) {
             Orion.RemoveDisplayTimer('SkillInUse');
             Orion.Wait(500);
+            return false;
         }
 
         while (Orion.DisplayTimerExists('SkillInUse')) {
             Orion.Wait(1000);
         }
 
-        if (Orion.InJournal(tamingMessage, '', '0', '-1', startTime, Orion.Now()) != null) {
+        if (Player.Followers() > pets || Orion.InJournal(tamingPass, '', '0', '-1', startTime, Orion.Now()) != null) {
+            return true;
+        }
+        if (Orion.InJournal(tamingFail, '', '0', '-1', startTime, Orion.Now()) != null) {
 
-            TextWindow.Print(Orion.InJournal(tamingMessage, '', '0', '-1', startTime, Orion.Now()).Text());
-            isTame = true;
+            return false;
         }
     }
-    return isTame;
+    return Player.Followers() > pets;
 }
 
 function Vetting() {
@@ -128,11 +138,13 @@ function Vetting() {
     }
 }
 
-var tamingMessage = 'had too many owners|It seems it accept|Cannot tame|Its already tame|tame already|too far|line of sight|be seen';
 function TrainTaming() {
+    if (Orion.ScriptRunning('TrainTaming') > 1) {
+        Orion.ToggleScript('TrainTaming', true);
+    }
     var animals = [];
     while (!Player.Dead()) {
-    Orion.IgnoreReset();
+        Orion.IgnoreReset();
         Orion.Wait(1000);
         TextWindow.Print("scanning");
 
@@ -152,11 +164,13 @@ function TrainTaming() {
         {
             animals = Orion.FindTypeEx('0x00D5', any, 'ground', 'mobile|near', 30, 3); //Ridgeback
         }
-        animals = animals.filter(function (animal) { 
-                    Orion.Print(animal.Hits()===animal.MaxHits())
+        animals = animals.filter(function (animal) {
+            return animal.Notoriety() == 3
+        })
+            .sort(function (mobA, mobB) {
+                return mobA.Distance() - mobB.Distance()
+            });
 
-        return animal.Notoriety() == 3  
-        });
         animals.forEach(function (animal) {
 
             Orion.UseType('0x2805', -1);
@@ -168,43 +182,53 @@ function TrainTaming() {
             Orion.WalkTo(animal.X(), animal.Y(), animal.Z(), 8, 1, 1, 2, 15000)
             //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
             Orion.RequestContextMenu(animal.Serial());
-            Orion.Print(animal.Hits()===animal.MaxHits())
-            if (Orion.WaitForContextMenu()  && Orion.WalkTo(animal.X(), animal.Y(), animal.Z(), 1, 1, 1, 2, 15000)) {
+            Orion.Print(animal.Hits() === animal.MaxHits())
+            if (Orion.WaitForContextMenu() && Orion.WalkTo(animal.X(), animal.Y(), animal.Z(), 1, 1, 1, 2, 15000)) {
                 var animalId = animal.Serial();
                 Orion.Wait(1000);
                 Orion.Follow(animalId);
                 Discord(animal);
-                Tame(animal);
+                Orion.Wait(4000);
 
-                if (Orion.InJournal('seems to accept|even challenging', '', '0', '-1', startTime, Orion.Now())) {
+                var tameSuccess = Tame(animal);
+
+                if (tameSuccess) {
 
                     Orion.RenameMount(animalId, 'gaga');
                     Orion.Wait(1000);
                     Orion.Follow(animalId, false);
-                    Orion.Say(animal.Name() + " release");
-                    Orion.Wait(500);
+                    while (animal.Notoriety() == 1) {
+                        Orion.Say(animal.Name() + " release");
+                        Orion.Wait(500);
 
-                    if (Orion.WaitForGump(10000)) {
-                        var gump0 = Orion.GetGump('last');
-                        TextWindow.Print(gump0.ID());
+                        if (Orion.WaitForGump(10000)) {
+                            var gump0 = Orion.GetGump('last');
+                            TextWindow.Print(gump0.ID());
 
-                        if ((gump0 !== null) && (gump0.ID() === '0x909CC741')) {
-                            gump0.Select(Orion.CreateGumpHook(2));
-                            Orion.Wait(400);
+                            if ((gump0 !== null) && (gump0.ID() === '0x909CC741')) {
+                                gump0.Select(Orion.CreateGumpHook(2));
+                                Orion.Wait(400);
+                            }
+                        }
+                        Orion.Wait(3000);
+                    }
+                }
+                if (animal.Notoriety() == 3) {
+                    Provoke(animal);
+                    if (Player.Followers() > 3) {
+                        Orion.Say("all kill");
+                        if (Orion.WaitForTarget(1000)) {
 
-                            Provoke(animal);
-                            // Orion.Say("all kill");
-                            //  if (Orion.WaitForTarget(1000)) {
-
-                            //         Orion.TargetObject(animalId);
-                            //        while (Orion.ObjectExists(animalId) || !animal.Dead()) {
-                            //              Orion.Wait(1000);
-                            //          }
-                            //          Orion.Say("all guard");
-                            //     }
+                            Orion.TargetObject(animalId);
+                            while (Orion.ObjectExists(animalId) || !animal.Dead()) {
+                                Orion.Wait(1000);
+                            }
+                            Orion.Say("all guard");
                         }
                     }
                 }
+
+
             }
         });
     }
