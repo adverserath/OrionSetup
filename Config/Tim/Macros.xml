@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="false" delay="0.1">
-        <action type="5" convert_type="0" waiting_time="1000" value="30"/>
-        <action type="3" convert_type="1" waiting_time="1000" serial="0x42E514BB" graphic="0x0F0A" color="0x0000"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x463FB9ED" graphic="0x0F52" color="0x0000"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E5133F" id="0x38920ABD" button="1"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E5149A" id="0x38920ABD" button="2"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E514D6" id="0x38920ABD" button="9"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E514F3" id="0x38920ABD" button="16"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E5150C" id="0x38920ABD" button="23"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E51527" id="0x38920ABD" button="30"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E51548" id="0x38920ABD" button="37"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E51562" id="0x38920ABD" button="44"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E5157D" id="0x38920ABD" button="51"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E51598" id="0x38920ABD" button="8"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E516DE" id="0x38920ABD" button="15"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E516F7" id="0x38920ABD" button="22"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E51711" id="0x38920ABD" button="29"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E51728" id="0x38920ABD" button="36"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E51749" id="0x38920ABD" button="43"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x01E51763" id="0x38920ABD" button="50"/>
     </macro>
 </data>

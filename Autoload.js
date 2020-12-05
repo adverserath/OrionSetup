@@ -3,10 +3,16 @@
 
 //#include Scripts/helpers/ItemManager.js
 
-function test() {
-	TextWindow.Print('X ' + Player.X() + ' Y ' + Player.Y() + ' Z ' + Player.Z())
-	var out = Orion.WalkTo(1173, 1495, 29, 0, 255, 1, 1);
-	TextWindow.Print(out);
+function PrintAllItemsInContainer() {
+var container = SelectTarget();
+Orion.Print(container.Serial())
+        var items = Orion.FindTypeEx(any, any, container.Serial());
+TextWindow.Open()
+
+        items.forEach(function (item) {
+        
+TextWindow.Print(item.Name())
+        });
 }
 var unique;
 var checkedIDs = [];

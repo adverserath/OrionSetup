@@ -107,6 +107,14 @@ function CreatedExceptionalItemResourceGump() {
     }).length > 0;
 }
 
+function InscribedScrollGump() {
+    var output = Orion.GetLastGump();
+    return output.CommandList().filter(function (text) {
+        return text.search('501629') >= 0;
+
+    }).length > 0;
+}
+
 function NeedMoreManaGump() {
     var output = Orion.GetLastGump();
 var response = false;
