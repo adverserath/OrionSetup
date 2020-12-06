@@ -1,6 +1,6 @@
-//#include Scripts/helpers/Notifier.js
+///#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Magic.js
+///#include Scripts/helpers/Magic.js
 
 function TrainMagery() {
     Orion.SetDress("magery");
@@ -9,7 +9,7 @@ function TrainMagery() {
     var skillLevel = Orion.SkillValue('Magery');
     var trainingTarget = SelectTarget().Serial();
 
-    while (Player.IsHuman()) {
+    while (!Player.Dead()) {
 
         if ((Orion.SkillValue('Magery') % 1 == 100) && notified == false) {
             BotPush("Magery" + Orion.SkillValue('Magery', 'base'));
@@ -19,7 +19,15 @@ function TrainMagery() {
         }
 
         skillLevel = Orion.SkillValue('Magery');
-        if (skillLevel < 600) {
+                if (skillLevel < 550) {
+            if (Player.Mana() < 10) {
+                TakeOffClothesAndMeditate();
+            }
+            Orion.Cast('Greater Heal', trainingTarget);
+
+            Orion.Wait(2000);
+        }
+        else if (skillLevel < 600) {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();
             }

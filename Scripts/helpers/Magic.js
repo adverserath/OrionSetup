@@ -1,5 +1,5 @@
 function CastSpellOnTarget(spellName, targetID) {
-	Orion.Cast(spellName);
+	Orion.Cast(spellName);	
 	if (Orion.WaitForTarget(10000))
 		Orion.TargetObject(targetID);
 }

@@ -133,7 +133,7 @@ function FindScrollAndMove(scrollId, scrollBox){
     var startTime = Orion.Now();
 
         var items = Orion.FindTypeEx(scrollId, any, backpack).concat(Orion.FindTypeEx(scrollId, any, storageBox));
-Orion.Print(items.)
+//Orion.Print(items.)
         items.forEach(function (item) {
                     DebugText('Found ' + item.Name());
             if (Orion.ObjectExists(item.Serial())) {
