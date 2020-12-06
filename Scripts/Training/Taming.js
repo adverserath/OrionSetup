@@ -185,10 +185,12 @@ function TrainTaming() {
 
     var startingSkill = Orion.SkillValue('Animal Taming', 'real')
     var animals = [];
-    Orion.IgnoreReset();
-    Orion.ResetIgnoreList();
+
 
     while (!Player.Dead()) {
+    var animals = [];
+        Orion.IgnoreReset();
+    Orion.ResetIgnoreList();
         Orion.Wait(200);
         TextWindow.Print("Looking for tamables");
 
@@ -209,7 +211,7 @@ function TrainTaming() {
 
         if (selectedTarget.length > 0) {
             selectedTarget.forEach(function (graphic) {
-                animals = animals.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 30, 3))
+                animals = animals.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 60, 3))
             })
 
         }
@@ -237,7 +239,8 @@ function TrainTaming() {
                 var animalId = animal.Serial();
                 Orion.Follow(animalId);
 
-                Tame(animal);
+                var successfulTame = Tame(animal);
+                TextWindow.Print('Taming ' + successfulTame);
             }
             Orion.Print("free them all")
             Orion.Say('all guard');
@@ -252,10 +255,11 @@ function ReleaseAllPets(animal,selectedTarget) {
 
     if (selectedTarget.length > 0) {
         selectedTarget.forEach(function (graphic) {
-            pets = pets.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 30, 3)).filter(function (animal) {
+            pets = pets.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 60, 3)).filter(function (animal) {
                 return animal.Notoriety() == 1
             });
         })
+        TextWindow.Print('Current pets: ' + pets.length);
 
     }
 
@@ -263,12 +267,14 @@ function ReleaseAllPets(animal,selectedTarget) {
         if (Player.Followers() > 1) {
             Orion.Print('free ' + pet.Name())
             TextWindow.Print('Releasing ' + pet.Name() + ' ' + pet.Serial());
+            Orion.WalkTo(pet.X(), pet.Y(), pet.Z(), 4, 1, 1, 2, 15000)
             Rename(pet.Serial());
-            Orion.Wait(300);
-            Orion.Say(pet.Name() + " release");
-            Orion.Wait(500);
+            Orion.Wait(1500);
+        //    Orion.Say(pet.Name() + " release");
+          	Orion.RequestContextMenu(pet.Serial());
+	Orion.WaitContextMenuID(pet.Serial(), 9);
 
-            if (Orion.WaitForGump(12000)) {
+            if (Orion.WaitForGump(3000)) {
                 var gump0 = Orion.GetGump('last');
                 TextWindow.Print(gump0.ID());
 
@@ -280,10 +286,15 @@ function ReleaseAllPets(animal,selectedTarget) {
             Orion.Ignore(pet.Serial());
         }
     });
-    Orion.Ignore(animal.Serial());
     if (Player.Followers() == 5) {
         BotPush("Too Many Pets");
         Orion.Wait(60000);
     }
 
+}
+
+
+function PrintNumberOfMobs()
+{
+Orion.Print(Orion.FindTypeEx(any, any, 'ground', 'mobile', 30, 3).length)
 }

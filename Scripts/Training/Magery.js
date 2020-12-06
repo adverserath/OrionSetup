@@ -19,7 +19,7 @@ function TrainMagery() {
         }
 
         skillLevel = Orion.SkillValue('Magery');
-                if (skillLevel < 550) {
+                if (skillLevel < 700) {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();
             }
@@ -27,7 +27,7 @@ function TrainMagery() {
 
             Orion.Wait(2000);
         }
-        else if (skillLevel < 600) {
+        else if (skillLevel < 700) {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();
             }

@@ -10,14 +10,14 @@ var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with
 var notorietyToAttack = 3; //Attack targets with notoriety
 var pullTargetDistance = 10; //Distance of target to agro
 var attackEverythingAtOnce = false; //Initiate an attack on every target within range at once otherwise 1 target at a time
-var honorTargets = true;
-var autoAttack = true;
-var archer = true;
+var honorTargets = false;
+var autoAttack = false;
+var archer = false;
 var walkToNextTarget = false;
 var retargetClosest = false;
 
 //DO NOT CHANGE
-var attack = true; //Enable attacking
+var attack = false; //Enable attacking
 var honor = false;
 var attackList = []; //
 var lastAttacker;
