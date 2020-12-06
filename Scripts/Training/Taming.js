@@ -171,22 +171,34 @@ function TrainTaming() {
         Orion.ToggleScript('TrainTaming', true);
     }
     Orion.Print("what are you taming");
-    var selectedTarget = SelectTarget();
-    var tamableGraphic;
-    if(selectedTarget ==null)
-	     tamableGraphic = selectedTarget .Graphic()
+    var selectedTarget = []
+    var selecting = true;
+    while(selecting)
+    {
+var animal = SelectTarget();
+    if(animal != null)
+    {
+        selectedTarget.push(animal.Graphic())
+    }
+    else{
+    selecting = false;
+    }
+    }
+    
     var startingSkill = Orion.SkillValue('Animal Taming', 'real')
     var animals = [];
     Orion.IgnoreReset();
 Orion.ResetIgnoreList();
-    Orion.CancelI
 
     while (!Player.Dead()) {
-        Orion.Wait(50);
+        Orion.Wait(200);
         TextWindow.Print("Looking for tamables");
-if(tamableGraphic!=null)
+if(selectedTarget.length>0)
 {
- animals = Orion.FindTypeEx(tamableGraphic, any, 'ground', 'mobile', 30, 3); //cow/horse
+selectedTarget.forEach(function (graphic){
+animals = animals.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 30, 3))
+})
+ 
 }
        else if (Orion.SkillValue('Animal Taming', 'base') < 600) {
             animals = Orion.FindTypeEx('0x00D8|0x00E2|0x00CC', any, 'ground', 'mobile', 30, 3); //cow/horse
@@ -202,6 +214,7 @@ if(tamableGraphic!=null)
             animals = Orion.FindTypeEx('0x00D5', any, 'ground', 'mobile|near', 30, 3); //Ridgeback
         }
         animals = animals.filter(function (animal) {
+        Orion.Print("found"+animal.Name())
             return animal.Notoriety() == 3 && animal.Name().length!=4
         })
             .sort(function (mobA, mobB) {
