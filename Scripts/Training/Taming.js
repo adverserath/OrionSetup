@@ -173,56 +173,57 @@ function TrainTaming() {
     Orion.Print("what are you taming");
     var selectedTarget = []
     var selecting = true;
-    while(selecting)
-    {
-var animal = SelectTarget();
-    if(animal != null)
-    {
-        selectedTarget.push(animal.Graphic())
+    while (selecting) {
+        var animal = SelectTarget();
+        if (animal != null) {
+            selectedTarget.push(animal.Graphic())
+        }
+        else {
+            selecting = false;
+        }
     }
-    else{
-    selecting = false;
-    }
-    }
-    
+
     var startingSkill = Orion.SkillValue('Animal Taming', 'real')
     var animals = [];
     Orion.IgnoreReset();
-Orion.ResetIgnoreList();
+    Orion.ResetIgnoreList();
 
     while (!Player.Dead()) {
         Orion.Wait(200);
         TextWindow.Print("Looking for tamables");
-if(selectedTarget.length>0)
-{
-selectedTarget.forEach(function (graphic){
-animals = animals.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 30, 3))
-})
- 
-}
-       else if (Orion.SkillValue('Animal Taming', 'base') < 600) {
-            animals = Orion.FindTypeEx('0x00D8|0x00E2|0x00CC', any, 'ground', 'mobile', 30, 3); //cow/horse
+
+        if (Orion.SkillValue('Animal Taming', 'base') < 600) {
+            selectedTarget.push('0x00D8|0x00E2|0x00CC');
         }
         else if (Orion.SkillValue('Animal Taming', 'base') < 651) {
-            animals = Orion.FindTypeEx('0x0041', any, 'ground', 'mobile', 30, 3); //SnowLeaopards
+            selectedTarget.push('0x0041');
+
         }
         else if (Orion.SkillValue('Animal Taming', 'base') < 950) {
-            animals = Orion.FindTypeEx('0x00E8|0x00E9', any, 'ground', 'mobile', 40, 3); //bulls
+            selectedTarget.push('0x00E8|0x00E9');
         }
         else if (Orion.SkillValue('Animal Taming', 'base') < 1000)//1200
         {
-            animals = Orion.FindTypeEx('0x00D5', any, 'ground', 'mobile|near', 30, 3); //Ridgeback
+            selectedTarget.push('0x00D5');
         }
+
+        if (selectedTarget.length > 0) {
+            selectedTarget.forEach(function (graphic) {
+                animals = animals.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 30, 3))
+            })
+
+        }
+
         animals = animals.filter(function (animal) {
-        Orion.Print("found"+animal.Name())
-            return animal.Notoriety() == 3 && animal.Name().length!=4
+            Orion.Print("found" + animal.Name())
+            return animal.Notoriety() == 3 && animal.Name().length != 4
         })
             .sort(function (mobA, mobB) {
                 return mobA.Distance() - mobB.Distance()
             });
 
         animals.forEach(function (animal) {
-            TextWindow.Print('Taming ' + animal.Serial());
+            TextWindow.Print('Taming ' + animal.Name());
             TextWindow.Print('Gained :' + (Orion.SkillValue('Animal Taming', 'real') - startingSkill))
             var startTime = Orion.Now();
 
@@ -239,17 +240,25 @@ animals = animals.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 30, 
                 Tame(animal);
             }
             Orion.Print("free them all")
-
-            ReleaseAllPets(animal);
+            Orion.Say('all guard');
+            ReleaseAllPets(animal,selectedTarget);
         });
     }
     BotPush("You died")
 }
 
-function ReleaseAllPets(animal) {
-    var pets = Orion.FindTypeEx(any, any, 'ground', 'mobile|near', 30, 1).filter(function (animal) {
-        return animal.Notoriety() == 1
-    });
+function ReleaseAllPets(animal,selectedTarget) {
+    var pets = [];
+
+    if (selectedTarget.length > 0) {
+        selectedTarget.forEach(function (graphic) {
+            pets = animals.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 30, 3)).filter(function (animal) {
+                return animal.Notoriety() == 1
+            });
+        })
+
+    }
+
     pets.forEach(function (pet) {
         if (Player.Followers() > 1) {
             Orion.Print('free ' + pet.Name())
