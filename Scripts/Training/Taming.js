@@ -252,7 +252,7 @@ function ReleaseAllPets(animal,selectedTarget) {
 
     if (selectedTarget.length > 0) {
         selectedTarget.forEach(function (graphic) {
-            pets = animals.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 30, 3)).filter(function (animal) {
+            pets = pets.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 30, 3)).filter(function (animal) {
                 return animal.Notoriety() == 1
             });
         })
