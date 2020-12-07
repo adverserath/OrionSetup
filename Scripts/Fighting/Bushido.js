@@ -1,4 +1,11 @@
 function BushKnight() {
+    var range = 2;
+    var bow = Orion.ObjAtLayer('LeftHand');
+    if (bow != null) {
+        range = (bow.Properties().match(/Range\s(\d*)/i)||[0,2])[1]
+    }
+Orion.Print(range)
+
     TextWindow.Open();
     while (Player.IsHuman()) {
         while (Player.WarMode()) {
@@ -10,7 +17,7 @@ function BushKnight() {
                 Orion.Wait(1000);
             }
             var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 2, 4)
+                'nothumanmobile|live|ignoreself|ignorefriends', range, 3)
                 .filter(function (mob) {
                     return mob.Notoriety() >= 3
                         && mob.Notoriety() < 7;
@@ -45,7 +52,7 @@ function BushKnight() {
               Orion.Print("Momentum Strike")
                 Orion.Cast('Momentum Strike');
             }
-            else if (
+            else if (range==2 &&
                 !Orion.BuffExists('Honorable Execution') &&
                 entireAreaMobs.length >= 3
             ) {
@@ -60,8 +67,8 @@ function BushKnight() {
              //   }
 
                 if (Player.Mana() > 10 && !Orion.BuffExists('divine fury')) {
-                    Orion.Cast('divine fury');
-                    Orion.Wait(1000);
+                 //   Orion.Cast('divine fury');
+                 //   Orion.Wait(1000);
                 }
             }
         }

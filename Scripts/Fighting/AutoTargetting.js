@@ -4,21 +4,21 @@
 ///#include helpers/ItemManager.js
 
 //////START OF CONFIG///////
-var range = 12; //How far to load status from
+var range = 16; //How far to load status from
 var delay = 300; //Delay between loop cycle
-var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
+var notorietyToShow =3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
 var notorietyToAttack = 3; //Attack targets with notoriety
 var pullTargetDistance = 10; //Distance of target to agro
 var attackEverythingAtOnce = false; //Initiate an attack on every target within range at once otherwise 1 target at a time
-var honorTargets = false;
-var autoAttack = false;
-var archer = false;
-var walkToNextTarget = false;
-var retargetClosest = false;
+var honorTargets = true;
+var autoAttack = true;
+var archer = true;
+var walkToNextTarget = true;
+var retargetClosest = true;
 
 //DO NOT CHANGE
-var attack = false; //Enable attacking
-var honor = false;
+var attack = true; //Enable attacking
+var honor = true;
 var attackList = []; //
 var lastAttacker;
 var lastSearchMobsIds = [];
@@ -106,14 +106,10 @@ function ShowEnemiesByDistance() {
                         && attackList.indexOf(mobId) < 0
                     ) {
                         Orion.Print("attacking " + mobile.Name())
-                        if (attackEverythingAtOnce) {
+
                             Orion.ClientLastAttack(mobId);
                             AttackMobile(mobile);
-                        }
-                        else {
-                            Orion.ClientLastAttack(mobId);
-                            AttackMobile(mobile);
-                        }
+                        
                     }
                 })
         };
@@ -157,8 +153,9 @@ function ShowEnemiesByDistance() {
                     AttackMobile(newTarget);
                     if (walkToNextTarget == true) {
                         Orion.Wait(2000);
-                        if (archer == true)
+                        if (archer == true){
                             WalkTo(newTarget, 8);
+                            }
                         else
                             WalkTo(newTarget, 1);
 
@@ -187,7 +184,7 @@ function ShowEnemiesByDistance() {
     function AttackMobile(mobile) {
         if (mobile != null && Orion.ObjectExists(mobile.Serial())) {
             var mobId = mobile.Serial();
-            Orion.AddHighlightCharacter(mobId, '0x0FBA', true);
+            Orion.Print("attacking "+mobile.Name())
             HonorTarget(mobile);
             Orion.Attack(mobId);
             Orion.ClientLastAttack(mobId);
@@ -215,11 +212,12 @@ function DrawRange() {
         Orion.ClearHighlightCharacters(true);
         Orion.FindTypeEx(any, any, ground,
             'nothumanmobile|live|ignoreself|ignorefriends', range, notorietyToShow)
-            .filter(function (mob) {
-                return mob.Distance() <= range;
-            })
             .forEach(function (mob) {
-                Orion.AddHighlightCharacter(mob.Serial(), '0x0AB0', true);
+            if(mob.Distance() <= range && mob.InLOS() == true)
+                Orion.AddHighlightCharacter(mob.Serial(), '0x0AB0', true)
+                else
+                  Orion.RemoveHighlightCharacter(mob.Serial(),true);
+
             })
         Orion.Wait(200);
     }
