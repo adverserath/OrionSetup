@@ -36,6 +36,10 @@ function AutoMiner(magicOption, _range) {
     file.Close();
     storageBox = SelectTarget(' Storage Box. Press Escape to use the previous saved value');
     if (storageBox != null) {
+        if(storageBox.Serial()===Player.Serial())
+    {
+    storageBox = Orion.FindObject(Player.BankSerial());
+    }
         Orion.Wait(200);
         var newFile = Orion.NewFile();
         newFile.Open('miner.conf');
@@ -122,6 +126,10 @@ function Mine(tile) {
                 RecallRune(storageRune);
                 Orion.Wait(1500);
                 Orion.FindListEx('Ores').forEach(function (oreGraphic) {
+                    if(Player.BankSerial()==storageBox.Serial())
+                    {
+                    Orion.Say('bank');
+                    }
                     MoveItemsFromPlayer(storageBox, oreGraphic.Graphic());
                 })
                 Restock('Mining');
