@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="0" size="1">
-    <scavenger name="Arrows" container="" find_list="Gold/Arrows" ignore_list="Not use" selected="true" autostart_on_login="false"/>
+    <scavenger name="Arrows" container="" find_list="Gold/Arrows" ignore_list="Not use" selected="true" autostart_on_login="true"/>
 </data>

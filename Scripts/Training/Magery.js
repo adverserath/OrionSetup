@@ -10,7 +10,7 @@ function TrainMagery() {
     var trainingTarget = SelectTarget().Serial();
 
     while (!Player.Dead()) {
-
+Orion.Wait(500);
         if ((Orion.SkillValue('Magery') % 1 == 100) && notified == false) {
             BotPush("Magery" + Orion.SkillValue('Magery', 'base'));
         }
@@ -19,39 +19,39 @@ function TrainMagery() {
         }
 
         skillLevel = Orion.SkillValue('Magery');
-                if (skillLevel < 700) {
+                if (skillLevel < 550) {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();
             }
             Orion.Cast('Greater Heal', trainingTarget);
 
-            Orion.Wait(2000);
+            Orion.Wait(500);
         }
-        else if (skillLevel < 700) {
+        else if (skillLevel < 650) {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();
             }
-            Orion.Cast('Mana Drain', trainingTarget);
+            Orion.Cast('Magic Reflection', trainingTarget);
 
-            Orion.Wait(2000);
+            Orion.Wait(500);
         }
-        else if (Orion.SkillValue('Magery') < 700) {
+        else if (Orion.SkillValue('Magery') < 790) {
             if (Player.Mana() < 20) {
                 TakeOffClothesAndMeditate();
             }
             Orion.Cast('Invisibility', self);
-            Orion.Wait(2000);
+            Orion.Wait(500);
         }
         else if (Orion.SkillValue('Magery') < 1000) {
             if (Player.Mana() < 40) {
                 TakeOffClothesAndMeditate();
             }
             Orion.Cast('Mana Vampire', self);
-            Orion.Wait(2000);
+            Orion.Wait(500);
         }
         else {
             BotPush("Player:" + Player.Name() + " GM Magery");
-            Orion.ShutdownWindows('forced');
+         //   Orion.ShutdownWindows('forced');
             Orion.Wait(2000);
         }
     }

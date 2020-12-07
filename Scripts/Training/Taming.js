@@ -124,9 +124,10 @@ function Tame(animal) {
             Orion.RemoveDisplayTimer('SkillInUse');
             Orion.Wait(200);
         }
-        while (Orion.DisplayTimerExists('SkillInUse')
-            || Orion.InJournal('saving', '', '0', '-1', Orion.Now() - 300, Orion.Now()) != null
-            && Orion.InJournal('fail to tame', '', '0', '-1', Orion.Now() - 300, Orion.Now()) == null) {
+        while ((Orion.DisplayTimerExists('SkillInUse')
+            || Orion.InJournal('saving', '', '0', '-1', Orion.Now() - 300, Orion.Now()) != null)
+            && Orion.InJournal('fail to tame', '', '0', '-1', startTime, Orion.Now()) == null
+            && Orion.InJournal(tamingPass, '', '0', '-1', startTime, Orion.Now()) == null) {
 
             //   TextWindow.Print('Waiting because timer is active')
 
@@ -173,10 +174,12 @@ function TrainTaming() {
     Orion.Print("what are you taming");
     var selectedTarget = []
     var selecting = true;
+    var manualSelect = false;
     while (selecting) {
         var animal = SelectTarget();
         if (animal != null) {
             selectedTarget.push(animal.Graphic())
+            manualSelect = true;
         }
         else {
             selecting = false;
@@ -188,23 +191,23 @@ function TrainTaming() {
 
 
     while (!Player.Dead()) {
-    var animals = [];
+        var animals = [];
         Orion.IgnoreReset();
-    Orion.ResetIgnoreList();
+        Orion.ResetIgnoreList();
         Orion.Wait(200);
         TextWindow.Print("Looking for tamables");
 
-        if (Orion.SkillValue('Animal Taming', 'base') < 600) {
+        if (!manualSelect && Orion.SkillValue('Animal Taming', 'base') < 600) {
             selectedTarget.push('0x00D8|0x00E2|0x00CC');
         }
-        else if (Orion.SkillValue('Animal Taming', 'base') < 651) {
+        else if (!manualSelect && Orion.SkillValue('Animal Taming', 'base') < 710) {
             selectedTarget.push('0x0041');
 
         }
-        else if (Orion.SkillValue('Animal Taming', 'base') < 950) {
+        else if (!manualSelect && Orion.SkillValue('Animal Taming', 'base') < 950) {
             selectedTarget.push('0x00E8|0x00E9');
         }
-        else if (Orion.SkillValue('Animal Taming', 'base') < 1000)//1200
+        else if (!manualSelect && Orion.SkillValue('Animal Taming', 'base') < 1000)//1200
         {
             selectedTarget.push('0x00D5');
         }
@@ -244,13 +247,13 @@ function TrainTaming() {
             }
             Orion.Print("free them all")
             Orion.Say('all guard');
-            ReleaseAllPets(animal,selectedTarget);
+            ReleaseAllPets(animal, selectedTarget);
         });
     }
     BotPush("You died")
 }
 
-function ReleaseAllPets(animal,selectedTarget) {
+function ReleaseAllPets(animal, selectedTarget) {
     var pets = [];
 
     if (selectedTarget.length > 0) {
@@ -264,37 +267,59 @@ function ReleaseAllPets(animal,selectedTarget) {
     }
 
     pets.forEach(function (pet) {
+        Orion.InvokeVirtue('Honor');
+        if (Orion.WaitForTarget(1000)) {
+            Orion.TargetObject(pet.Serial());
+        }
         if (Player.Followers() > 1) {
             Orion.Print('free ' + pet.Name())
             TextWindow.Print('Releasing ' + pet.Name() + ' ' + pet.Serial());
             Orion.WalkTo(pet.X(), pet.Y(), pet.Z(), 4, 1, 1, 2, 15000)
             Rename(pet.Serial());
             Orion.Wait(1500);
-        //    Orion.Say(pet.Name() + " release");
-          	Orion.RequestContextMenu(pet.Serial());
-	Orion.WaitContextMenuID(pet.Serial(), 9);
-
-            if (Orion.WaitForGump(3000)) {
-                var gump0 = Orion.GetGump('last');
-                TextWindow.Print(gump0.ID());
-
-                if ((gump0 !== null) && (gump0.ID() === '0x909CC741')) {
-                    gump0.Select(Orion.CreateGumpHook(2));
-                    Orion.Wait(800);
-                }
+            //    Orion.Say(pet.Name() + " release");
+            Release(pet);
+            //            Orion.Ignore(pet.Serial());
+            //KILL
+            while (Orion.ObjectExists(pet.Serial())) {
+                Orion.CastTarget('Flame Strike', pet.Serial())
+                Orion.Wait(1000);
             }
-            Orion.Ignore(pet.Serial());
         }
     });
     if (Player.Followers() == 5) {
         BotPush("Too Many Pets");
         Orion.Wait(60000);
     }
+    while (Player.Hits() < Player.MaxHits()) {
+        Orion.CastTarget('Greater Heal', self)
+        Orion.Wait(1000);
+    }
+}
+
+function Release(target) {
+    if (target == null)
+        target = SelectTarget();
+    while (target.Notoriety() < 3) {
+        Orion.Wait(1000);
+        Orion.RequestContextMenu(target.Serial());
+        Orion.WaitContextMenuID(target.Serial(), 9);
+
+
+        Orion.RequestContextMenu(target.Serial());
+        Orion.WaitContextMenuID(target.Serial(), 9);
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x909CC741')) {
+                gump0.Select(Orion.CreateGumpHook(2));
+                Orion.Wait(100);
+            }
+        }
+    }
 
 }
 
+function PrintNumberOfMobs() {
 
-function PrintNumberOfMobs()
-{
-Orion.Print(Orion.FindTypeEx(any, any, 'ground', 'mobile', 30, 3).length)
+    Orion.Print(Orion.FindTypeEx(any, any, 'ground', 'mobile', 30, 3).length)
 }
