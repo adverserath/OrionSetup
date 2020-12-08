@@ -30,8 +30,5 @@ function TakeOffClothesAndMeditate() {
 	}
 Orion.Wait(4000);
 
-if(Orion.ObjectExists('0x4011FF0D'))
-{
-Orion.Equip('0x4011FF0D');
-}
+
 }
