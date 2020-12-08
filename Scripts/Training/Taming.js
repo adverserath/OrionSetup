@@ -52,13 +52,14 @@ function TrainTaming() {
                 animals = animals.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 60, 3))
             })
         }
-
         animals = animals.filter(function (animal) {
             return animal.Notoriety() === 3
         })
             .sort(function (mobA, mobB) {
                 return mobA.Distance() - mobB.Distance()
             });
+        TextWindow.Print("Found:" + animals.length);
+
         if (useRunes && runes.length == 0) {
             runes = Orion.FindTypeEx('0x1F14', '0x0032', runeBag.Serial());
         }
@@ -84,7 +85,7 @@ function TrainTaming() {
 
             }
 
-            Orion.Print("Taming: Name:" + animal.Name() + ' ID:' + animal.Serial())
+            TextWindow.Print("Taming: Name:" + animal.Name() + ' ID:' + animal.Serial())
             TextWindow.Print('Gained :' + (Orion.SkillValue('Animal Taming', 'real') - startingSkill))
             var startTime = Orion.Now();
 
@@ -101,10 +102,15 @@ function TrainTaming() {
                 var successfulTame = Tame(animal);
                 TextWindow.Print('Taming ' + successfulTame);
             }
+            else {
+                TextWindow.Print("Could not get:" + animal.Name() + ' ID:' + animal.Serial())
+
+                Orion.Ignore(animal.Serial());
+            }
             Orion.CancelContextMenu();
             Orion.Print("Name:" + animal.Name() + ' ID:' + animal.Serial())
             Orion.Wait(1000);
-            ReleaseAllPets(animal, selectedTarget);
+            ReleaseAllPets(animal);
         });
         animals = [];
     }
@@ -194,20 +200,7 @@ function Vetting() {
     }
 }
 
-function ReleaseAllPets(animal, selectedTarget) {
-    var pets = [];
-
-    if (selectedTarget.length > 0) {
-        selectedTarget.forEach(function (graphic) {
-            pets = pets.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 60, 3)).filter(function (animal) {
-                return animal.Notoriety() == 1 && animal.Name() != 'SuperSteve'
-            });
-        })
-        TextWindow.Print('Current pets: ' + pets.length);
-
-    }
-
-    pets.forEach(function (pet) {
+function ReleaseAllPets(pet) {
         TextWindow.Print('Starting Pet Killer');
         Orion.InvokeVirtue('Honor');
         if (Orion.WaitForTarget(1000)) {
@@ -222,13 +215,16 @@ function ReleaseAllPets(animal, selectedTarget) {
             Release(pet);
             //            Orion.Ignore(pet.Serial());
             //KILL
+            TextWindow.Print('Killing' + pet.Serial());
+            Orion.Follow(pet.Serial(),false);
             while (Orion.ObjectExists(pet.Serial())) {
+                StayAway(pet.Serial(), 8);
                 Orion.CastTarget('Flame Strike', pet.Serial())
                 Orion.Wait(2000);
                 TextWindow.Print('Killing');
             }
         }
-    });
+
     if (Player.Followers() == 5) {
         BotPush("Too Many Pets");
         Orion.Wait(60000);
@@ -245,25 +241,27 @@ function Release(target) {
     if (target == null)
         target = SelectTarget();
     var tries = 0;
-    while (target.Notoriety() < 3 || tries < 3) {
+    TextWindow.Print('Releasing' + target.Serial());
+
+    while (target.Notoriety() < 3 && tries < 3) {
         tries++;
         Orion.Wait(1000);
 
-        Orion.Say(pet.Name() + " release");
-        if (Orion.WaitForGump(1000)) {
+        Orion.Say(target.Name() + " release");
+        if (Orion.WaitForGump(2000)) {
             var gump0 = Orion.GetGump('last');
             if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x909CC741')) {
                 gump0.Select(Orion.CreateGumpHook(2));
-                Orion.Wait(1000);
+                Orion.Wait(2000);
             }
             if (target.Notoriety() < 3) {
                 Orion.RequestContextMenu(target.Serial());
                 Orion.WaitContextMenuID(target.Serial(), 9);
-                if (Orion.WaitForGump(1000)) {
+                if (Orion.WaitForGump(2000)) {
                     var gump0 = Orion.GetGump('last');
                     if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x909CC741')) {
                         gump0.Select(Orion.CreateGumpHook(2));
-                        Orion.Wait(1000);
+                        Orion.Wait(2000);
                     }
                 }
             }
