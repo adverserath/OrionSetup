@@ -59,19 +59,7 @@ function TrainTaming() {
                 return mobA.Distance() - mobB.Distance()
             });
         TextWindow.Print("Found:" + animals.length);
-
-        if (useRunes && runes.length == 0) {
-            runes = Orion.FindTypeEx('0x1F14', '0x0032', runeBag.Serial());
-        }
-        if (useRunes && animals.length == 0 && selectedTarget.length > 0) {
-            var rune = runes.shift();
-            RecallRune(rune);
-        }
-        TextWindow.Print('Entering Tame Loop');
-
-        animals.forEach(function (animal) {
-            TakeOffClothesAndMeditate();
-            while (Player.WarMode() == true) {
+ while (Player.WarMode() == true) {
                 Orion.Print("Select More type of animal then leave war mode")
                 var newTame = SelectTarget();
                 if (newTame != null && newTame.Mobile() == true) {
@@ -84,6 +72,18 @@ function TrainTaming() {
                 Orion.Wait(500);
 
             }
+        if (useRunes && runes.length == 0) {
+            runes = Orion.FindTypeEx('0x1F14', '0x0032', runeBag.Serial());
+        }
+        if (useRunes && animals.length == 0 && selectedTarget.length > 0) {
+            var rune = runes.shift();
+            RecallRune(rune);
+        }
+        TextWindow.Print('Entering Tame Loop');
+
+        animals.forEach(function (animal) {
+            TakeOffClothesAndMeditate();
+           
 
             TextWindow.Print("Taming: Name:" + animal.Name() + ' ID:' + animal.Serial())
             TextWindow.Print('Gained :' + (Orion.SkillValue('Animal Taming', 'real') - startingSkill))
@@ -101,16 +101,18 @@ function TrainTaming() {
 
                 var successfulTame = Tame(animal);
                 TextWindow.Print('Taming ' + successfulTame);
+                
+                            Orion.CancelContextMenu();
+            Orion.Print("Name:" + animal.Name() + ' ID:' + animal.Serial())
+            Orion.Wait(1000);
+            ReleaseAllPets(animal);
             }
             else {
                 TextWindow.Print("Could not get:" + animal.Name() + ' ID:' + animal.Serial())
 
                 Orion.Ignore(animal.Serial());
             }
-            Orion.CancelContextMenu();
-            Orion.Print("Name:" + animal.Name() + ' ID:' + animal.Serial())
-            Orion.Wait(1000);
-            ReleaseAllPets(animal);
+
         });
         animals = [];
     }
@@ -220,7 +222,7 @@ function ReleaseAllPets(pet) {
             while (Orion.ObjectExists(pet.Serial())) {
                 StayAway(pet.Serial(), 8);
                 Orion.CastTarget('Flame Strike', pet.Serial())
-                Orion.Wait(2000);
+                Orion.Wait(1000);
                 TextWindow.Print('Killing');
             }
         }

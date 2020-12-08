@@ -29,5 +29,9 @@ function TakeOffClothesAndMeditate() {
 		Orion.Wait(4000);
 	}
 Orion.Wait(4000);
-//Orion.Dress("magery");
+
+if(Orion.ObjectExists('0x4011FF0D'))
+{
+Orion.Equip('0x4011FF0D');
+}
 }

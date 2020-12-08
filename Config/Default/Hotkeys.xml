@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="9" action="203" key="116" modifiers="0"/>
     <hotkey type="9" action="205" key="117" modifiers="0"/>
-    <hotkey type="9" action="206" key="118" modifiers="0"/>
+    <hotkey type="9" action="203" key="116" modifiers="0"/>
     <hotkey type="9" action="204" key="119" modifiers="0"/>
+    <hotkey type="9" action="206" key="118" modifiers="0"/>
+    <hotkey type="10" action="202" key="113" modifiers="0"/>
     <hotkey type="49" action="0" key="8" modifiers="64"/>
     <hotkey type="10" action="201" key="112" modifiers="0"/>
-    <hotkey type="10" action="202" key="113" modifiers="0"/>
-    <hotkey type="14" action="201" key="114" modifiers="0"/>
     <hotkey type="14" action="202" key="115" modifiers="0"/>
+    <hotkey type="14" action="201" key="114" modifiers="0"/>
     <hotkey type="39" action="3" key="45" modifiers="16"/>
-    <hotkey type="9" action="210" key="120" modifiers="0"/>
     <hotkey type="9" action="401" key="121" modifiers="0"/>
-    <hotkey type="0" action="1" key="16" modifiers="64" meta="{&#10;    &quot;do_not_interrupt&quot;: 0,&#10;    &quot;name&quot;: &quot;macro&quot;&#10;}&#10;"/>
+    <hotkey type="9" action="210" key="120" modifiers="0"/>
     <hotkey type="31" action="0" key="123" modifiers="0"/>
+    <hotkey type="0" action="1" key="16" modifiers="64" meta="{&#10;    &quot;do_not_interrupt&quot;: 0,&#10;    &quot;name&quot;: &quot;macro&quot;&#10;}&#10;"/>
 </data>
