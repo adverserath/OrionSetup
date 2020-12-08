@@ -9,7 +9,7 @@ function TrainMagery() {
     var skillLevel = Orion.SkillValue('Magery');
     var trainingTarget = SelectTarget().Serial();
 
-    while (!Player.Dead()) {
+    while (Orion.SkillValue('Magery') < 1000) {
 Orion.Wait(500);
         if ((Orion.SkillValue('Magery') % 1 == 100) && notified == false) {
             BotPush("Magery" + Orion.SkillValue('Magery', 'base'));
@@ -56,3 +56,17 @@ Orion.Wait(500);
         }
     }
 }
+
+function TrainResist() {
+    Orion.SetDress("magery");
+
+    var notified = false;
+    var trainingTarget = SelectTarget().Serial();
+
+    while (Orion.SkillValue('Resisting Spells') < 1000) {
+        skillLevel = Orion.SkillValue('Resisting Spells');
+            Orion.Cast('Clumsy', self);
+
+            Orion.Wait(2000);
+        }
+        }

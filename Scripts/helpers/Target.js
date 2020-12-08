@@ -60,9 +60,10 @@ function BorderEdge(p1, p2, range){
 function StayAwayF(){
 StayAway(SelectTarget(),8);
 }
-function StayAway(target,distance){
-while(true)
+function StayAway(targetId,distance){
+while(Orion.ObjectExists(targetId))
 {
+var target = Orion.FindObject(targetId)
 Orion.Wait(50)
   var x = target.X();
   var y = target.Y();
