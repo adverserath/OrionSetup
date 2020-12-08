@@ -11,7 +11,7 @@ function TrainTaming() {
     if (selectedTarget == null) {
         selectedTarget = [];
     }
-    var startingPetCount = Player.Followers();
+    startingPetCount = Player.Followers();
     var tames = 0;
     if (Orion.ScriptRunning('TrainTaming') > 1) {
         Orion.ToggleScript('TrainTaming', true);
