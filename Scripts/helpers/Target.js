@@ -35,7 +35,6 @@ if(distance==null)
 {
 distance=1;
 }
-Orion.Print("walking to "+ object.Name() +' '+ distance)
 Orion.WalkTo(object.X(), object.Y(), object.Z(), distance,255,1,10000);
 }
 
@@ -49,7 +48,40 @@ function InRange(p1, p2, range){
 
 }
 
+function BorderEdge(p1, p2, range){
+
+			return ( p1.X() == (p2.X() - range) )
+				|| ( p1.X() == (p2.X() + range) )
+				|| ( p1.Y() == (p2.Y() - range) )
+				|| ( p1.Y() == (p2.Y() + range) );
+
+}
+
+function StayAwayF(){
+StayAway(SelectTarget(),8);
+}
 function StayAway(target,distance){
-var tiles = Orion.FindTile()
+while(true)
+{
+Orion.Wait(50)
+  var x = target.X();
+  var y = target.Y();
+Orion.ClearFakeMapObjects();
+var tiles = 
+Orion.GetTilesInRect('land', x-distance, y-distance, x+distance, y+distance)
+.filter(function (tile){
+return BorderEdge(target,tile,distance);
+})
+        .sort(function (t1, t2) {
+            return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
+        });
+       var closest  = tiles.shift()
+       WalkTo(closest,1)
+       }
+//.forEach(function (tile){
+//Orion.Print('8--X:'+tile.X() +' Y:'+tile.Y())
+//  Orion.AddFakeMapObject(Orion.Random(1000), '0x1BF7', '', tile.X(), tile.Y(), tile.Z());
+//  })
+
 
 }

@@ -204,13 +204,10 @@ function TrainTaming() {
             selectedTarget.push('0x0041');
 
         }
-        else if (!manualSelect && Orion.SkillValue('Animal Taming', 'base') < 950) {
+        else if (!manualSelect && Orion.SkillValue('Animal Taming', 'base') < 1000) {
             selectedTarget.push('0x00E8|0x00E9');
         }
-        else if (!manualSelect && Orion.SkillValue('Animal Taming', 'base') < 1000)//1200
-        {
-            selectedTarget.push('0x00D5');
-        }
+
 
         if (selectedTarget.length > 0) {
             selectedTarget.forEach(function (graphic) {
@@ -271,7 +268,7 @@ function ReleaseAllPets(animal, selectedTarget) {
         if (Orion.WaitForTarget(1000)) {
             Orion.TargetObject(pet.Serial());
         }
-        if (Player.Followers() > 1) {
+        if (Player.Followers() > 0) {
             Orion.Print('free ' + pet.Name())
             TextWindow.Print('Releasing ' + pet.Name() + ' ' + pet.Serial());
             Orion.WalkTo(pet.X(), pet.Y(), pet.Z(), 4, 1, 1, 2, 15000)
