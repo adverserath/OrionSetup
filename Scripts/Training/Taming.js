@@ -59,31 +59,49 @@ function TrainTaming() {
                 return mobA.Distance() - mobB.Distance()
             });
         TextWindow.Print("Found:" + animals.length);
- while (Player.WarMode() == true) {
-                Orion.Print("Select More type of animal then leave war mode")
-                var newTame = SelectTarget();
-                if (newTame != null && newTame.Mobile() == true) {
-                    selectedTarget.push(newTame.Graphic())
-                }
-                else {
-                    Orion.Print("That wasnt an animal, waiting 5 seconds")
-                    Orion.Wait(5000);
-                }
-                Orion.Wait(500);
-
+        while (Player.WarMode() == true) {
+            Orion.Print("Select More type of animal then leave war mode")
+            var newTame = SelectTarget();
+            if (newTame != null && newTame.Mobile() == true) {
+                selectedTarget.push(newTame.Graphic())
             }
+            else {
+                Orion.Print("That wasnt an animal, waiting 5 seconds")
+                Orion.Wait(5000);
+            }
+            Orion.Wait(500);
+
+        }
         if (useRunes && runes.length == 0) {
             runes = Orion.FindTypeEx('0x1F14', '0x0032', runeBag.Serial());
         }
         if (useRunes && animals.length == 0 && selectedTarget.length > 0) {
-            var rune = runes.shift();
-            RecallRune(rune);
+            var randomChoice = Orion.Random(14);
+            if (randomChoice < 2) {
+                var rune = runes.shift();
+                RecallRune(rune);
+            }
+            else if (randomChoice < 5) {
+                Orion.WalkTo(Player.X() + 20, Player.Y(), Player.Z(), 5, 255, 1, 0, 10000);
+            }
+            else if (randomChoice < 8) {
+                Orion.WalkTo(Player.X(), Player.Y() + 20, Player.Z(), 5, 255, 1, 0, 10000);
+
+            }
+            else if (randomChoice < 11) {
+                Orion.WalkTo(Player.X() - 20, Player.Y(), Player.Z(), 5, 255, 1, 0, 10000);
+
+            }
+            else if (randomChoice < 14) {
+                Orion.WalkTo(Player.X(), Player.Y() - 20, Player.Z(), 5, 255, 1, 0, 10000);
+
+            }
         }
         TextWindow.Print('Entering Tame Loop');
 
         animals.forEach(function (animal) {
             TakeOffClothesAndMeditate();
-           
+
 
             TextWindow.Print("Taming: Name:" + animal.Name() + ' ID:' + animal.Serial())
             TextWindow.Print('Gained :' + (Orion.SkillValue('Animal Taming', 'real') - startingSkill))
@@ -101,11 +119,11 @@ function TrainTaming() {
 
                 var successfulTame = Tame(animal);
                 TextWindow.Print('Taming ' + successfulTame);
-                
-                            Orion.CancelContextMenu();
-            Orion.Print("Name:" + animal.Name() + ' ID:' + animal.Serial())
-            Orion.Wait(1000);
-            ReleaseAllPets(animal);
+
+                Orion.CancelContextMenu();
+                Orion.Print("Name:" + animal.Name() + ' ID:' + animal.Serial())
+                Orion.Wait(1000);
+                ReleaseAllPets(animal);
             }
             else {
                 TextWindow.Print("Could not get:" + animal.Name() + ' ID:' + animal.Serial())
@@ -203,29 +221,29 @@ function Vetting() {
 }
 
 function ReleaseAllPets(pet) {
-        TextWindow.Print('Starting Pet Killer');
-        Orion.InvokeVirtue('Honor');
-        if (Orion.WaitForTarget(1000)) {
-            Orion.TargetObject(pet.Serial());
+    TextWindow.Print('Starting Pet Killer');
+    Orion.InvokeVirtue('Honor');
+    if (Orion.WaitForTarget(1000)) {
+        Orion.TargetObject(pet.Serial());
+    }
+    if (Player.Followers() > startingPetCount) {
+        Orion.Print('free ' + pet.Name())
+        TextWindow.Print('Releasing ' + pet.Name() + ' ' + pet.Serial());
+        Orion.WalkTo(pet.X(), pet.Y(), pet.Z(), 4, 1, 1, 2, 15000)
+        Rename(pet.Serial());
+        Orion.Wait(1500);
+        Release(pet);
+        //            Orion.Ignore(pet.Serial());
+        //KILL
+        TextWindow.Print('Killing' + pet.Serial());
+        Orion.Follow(pet.Serial(), false);
+        while (Orion.ObjectExists(pet.Serial())) {
+            StayAway(pet.Serial(), 8);
+            Orion.CastTarget('Flame Strike', pet.Serial())
+            Orion.Wait(1000);
+            TextWindow.Print('Killing');
         }
-        if (Player.Followers() > startingPetCount) {
-            Orion.Print('free ' + pet.Name())
-            TextWindow.Print('Releasing ' + pet.Name() + ' ' + pet.Serial());
-            Orion.WalkTo(pet.X(), pet.Y(), pet.Z(), 4, 1, 1, 2, 15000)
-            Rename(pet.Serial());
-            Orion.Wait(1500);
-            Release(pet);
-            //            Orion.Ignore(pet.Serial());
-            //KILL
-            TextWindow.Print('Killing' + pet.Serial());
-            Orion.Follow(pet.Serial(),false);
-            while (Orion.ObjectExists(pet.Serial())) {
-                StayAway(pet.Serial(), 8);
-                Orion.CastTarget('Flame Strike', pet.Serial())
-                Orion.Wait(1000);
-                TextWindow.Print('Killing');
-            }
-        }
+    }
 
     if (Player.Followers() == 5) {
         BotPush("Too Many Pets");
