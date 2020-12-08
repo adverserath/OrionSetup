@@ -259,7 +259,7 @@ function ReleaseAllPets(animal, selectedTarget) {
     if (selectedTarget.length > 0) {
         selectedTarget.forEach(function (graphic) {
             pets = pets.concat(Orion.FindTypeEx(graphic, any, 'ground', 'mobile', 60, 3)).filter(function (animal) {
-                return animal.Notoriety() == 1
+                return animal.Notoriety() == 1 && animal.Name()!='SuperSteve'
             });
         })
         TextWindow.Print('Current pets: ' + pets.length);
