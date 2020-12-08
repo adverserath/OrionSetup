@@ -48,3 +48,8 @@ function InRange(p1, p2, range){
 				&& ( p1.Y() <= (p2.Y() + range) );
 
 }
+
+function StayAway(target,distance){
+var tiles = Orion.FindTile()
+
+}

@@ -221,7 +221,7 @@ function TrainTaming() {
 
         animals = animals.filter(function (animal) {
             Orion.Print("found" + animal.Name())
-            return animal.Notoriety() == 3 && animal.Name().length != 4
+            return animal.Notoriety() === 3 && animal.Name().length != 4
         })
             .sort(function (mobA, mobB) {
                 return mobA.Distance() - mobB.Distance()
@@ -247,8 +247,8 @@ function TrainTaming() {
             }
             Orion.Print("free them all")
             Orion.Say('all guard');
-            ReleaseAllPets(animal, selectedTarget);
         });
+        ReleaseAllPets(animal, selectedTarget);
     }
     BotPush("You died")
 }
