@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
+    <hotkey type="31" action="0" key="123" modifiers="0"/>
     <hotkey type="3" action="1" key="120" modifiers="0" meta="{&#10;    &quot;external_code&quot;: &quot;\tOrion.Cast('32');\n\tif (Orion.WaitForTarget(3000))\n\t\tOrion.TargetObject('0x4003EDB2');&quot;,&#10;    &quot;name&quot;: &quot;TrainTaming&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="2" action="2" key="121" modifiers="0" meta="{&#10;    &quot;external_code&quot;: &quot;&quot;,&#10;    &quot;name&quot;: &quot;AutoTame&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="47" action="0" key="119" modifiers="0"/>
 </data>

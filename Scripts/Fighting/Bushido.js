@@ -31,7 +31,7 @@ Orion.Print(range)
             //   }
             Orion.Print(entireAreaMobs.length)
             if (!Orion.BuffExists('Honorable Execution')
-                && attacker!=null && attacker.Hits() < 12) {
+                && attacker!=null && attacker.Hits() < 5) {
                 Orion.Print("Honorable Execution")
                 Orion.Cast('Honorable Execution');
             }

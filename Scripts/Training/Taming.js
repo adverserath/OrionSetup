@@ -19,7 +19,7 @@ function TrainTaming() {
     Orion.Print("Select the animals you taming, you can add them in later using AddNewTameToList");
 
     Orion.WarMode(1);
-    Orion.Wait(1000);
+    Orion.Wait(500);
 
     while (Player.WarMode() == true) {
         Orion.Print("Select Targets then leave war mode")
@@ -155,6 +155,9 @@ function Rename(petId) {
 
 var tamingPass = 'seems to accept|even challenging|tame already';
 var tamingFail = 'else is already|had too many owners|Cannot tame|Its already tame|too far|line of sight|be seen';
+function AutoTame() {
+        Tame(SelectTarget())
+}
 function Tame(animal) {
 
     var attempt = 0;
@@ -171,7 +174,7 @@ function Tame(animal) {
         attempt++;
         TextWindow.Print("Taming attempt:" + attempt)
         var startTime = Orion.Now();
-        StayAway(animal.Serial(), 1);
+        StayAway(animal.Serial(), 2);
         Orion.UseSkill('Animal Taming', animal.Serial());
         Orion.AddDisplayTimer('SkillInUse', 12000, 'AboveChar');
         Orion.Wait(300);
@@ -192,10 +195,10 @@ function Tame(animal) {
             || Orion.InJournal('saving', '', '0', '-1', Orion.Now() - 300, Orion.Now()) != null)
             && Orion.InJournal('fail to tame', '', '0', '-1', startTime, Orion.Now()) == null
             && Orion.InJournal(tamingPass, '', '0', '-1', startTime, Orion.Now()) == null) {
-
+Orion.UseObject('0x40156CE2');
             //   TextWindow.Print('Waiting because timer is active')
-			StayAway(animal.Serial(), 5);
-            Orion.Wait(100);
+			StayAway(animal.Serial(), 8);
+            Orion.Wait(300);
         }
         Orion.RemoveDisplayTimer('SkillInUse');
         if (Player.Followers() > pets || Orion.InJournal(tamingPass, '', '0', '-1', startTime, Orion.Now()) != null) {
@@ -241,7 +244,7 @@ function ReleaseAllPets(pet) {
         TextWindow.Print('Releasing ' + pet.Name() + ' ' + pet.Serial());
         Orion.WalkTo(pet.X(), pet.Y(), pet.Z(), 4, 1, 1, 2, 15000)
         Rename(pet.Serial());
-        Orion.Wait(1500);
+        Orion.Wait(1000);
         
         //            Orion.Ignore(pet.Serial());
         //KILL
@@ -266,10 +269,10 @@ function ReleaseAllPets(pet) {
      Orion.Step(2, 2);
      Orion.Step(2, 2);
      Orion.UseObject(self)
-     Orion.Wait(500);
+     Orion.Wait(800);
      Orion.Say('all guard');
     Release(pet);
-    Orion.Wait(5000);
+    Orion.Wait(400);
      RecallRune(Orion.FindObject('0x4003EDB0'));
     }
 
@@ -293,23 +296,23 @@ function Release(target) {
 
     while (((target.Properties().match(/\(tame\)/gi) || []).length >= 1) && tries < 3) {
         tries++;
-        //Orion.Wait(500);
+        Orion.Wait(1000);
 
         Orion.Say(target.Name() + " release");
         if (Orion.WaitForGump(2000)) {
             var gump0 = Orion.GetGump('last');
             if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x909CC741')) {
                 gump0.Select(Orion.CreateGumpHook(2));
-         //       Orion.Wait(500);
+               Orion.Wait(500);
             }
-            if (((target.Properties().match(/\(tame\)}/gi) || []).length >= 1)) {
+            if (((target.Properties().match(/\(tame\)/gi) || []).length >= 1)) {
                 Orion.RequestContextMenu(target.Serial());
                 Orion.WaitContextMenuID(target.Serial(), 9);
                 if (Orion.WaitForGump(2000)) {
                     var gump0 = Orion.GetGump('last');
                     if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x909CC741')) {
                         gump0.Select(Orion.CreateGumpHook(2));
-                //        Orion.Wait(500);
+                        Orion.Wait(500);
                     }
                 }
             }

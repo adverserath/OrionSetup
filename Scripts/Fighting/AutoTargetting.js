@@ -4,11 +4,11 @@
 ///#include helpers/ItemManager.js
 
 //////START OF CONFIG///////
-var range = 10; //How far to load status from
+var range = 12; //How far to load status from
 var delay = 300; //Delay between loop cycle
 var notorietyToShow =3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
 var notorietyToAttack = 4; //Attack targets with notoriety
-var pullTargetDistance = 7; //Distance of target to agro
+var pullTargetDistance = 10; //Distance of target to agro
 var attackEverythingAtOnce = false; //Initiate an attack on every target within range at once otherwise 1 target at a time
 var honorTargets = true;
 var autoAttack = true;

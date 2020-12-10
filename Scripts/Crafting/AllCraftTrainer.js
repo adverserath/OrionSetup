@@ -24,9 +24,10 @@ function StartAlchemy() {
 
 function StartTinkering() {
     var tool = '0x1EB8';
-    CraftCreateLoop('Tinkering', 'Tinkering', 450, 8, 86, tool, trashBarrel); //makeTongs
-    CraftCreateLoop('Tinkering', 'Tinkering', 940, 8, 121, tool, storageBox); //makeLockpicks
-    CraftCreateLoop('Tinkering', 'Tinkering', 1000, 29, 51, tool, trashBarrel); //makeHeatingStand
+    CraftCreateLoop('Tinkering', 'Tinkering', 450, 15, 86, tool, trashBarrel); //makeTongs
+    CraftCreateLoop('Tinkering', 'Tinkering', 940, 15, 121, tool, Player.BankSerial()); //makeLockpicks
+    Orion.ShutdownWindows('forced')
+    CraftCreateLoop('Tinkering', 'Tinkering', 1000, 36, 51, tool, trashBarrel); //makeHeatingStand
         BotPush(Orion.Time() + "GM Tinkering");
 
 }
