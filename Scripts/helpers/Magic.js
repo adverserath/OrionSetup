@@ -29,5 +29,6 @@ function TakeOffClothesAndMeditate() {
 		Orion.Wait(4000);
 	}
 Orion.Wait(4000);
-//Orion.Dress("magery");
+
+
 }

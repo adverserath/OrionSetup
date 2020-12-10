@@ -4,4 +4,8 @@
         <action type="8" convert_type="0" waiting_time="1000" value="401"/>
         <action type="2" convert_type="11" waiting_time="1000" serial="0x00012421" graphic="0x00CD" color="0x090C"/>
     </macro>
+    <macro name="Escape" looped="false" delay="1">
+        <action type="8" convert_type="0" waiting_time="1000" value="210"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x400DFAC4" graphic="0x1F14" color="0x0032"/>
+    </macro>
 </data>
