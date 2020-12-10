@@ -8,7 +8,7 @@
 //Uses a FindList for saws and boards, labelled Carpentry
 //WIP// 
 
-var trashBarrel = '0x4625B085';
+var trashBarrel = '0x40002C0A';
 var storageBox = '0x43AB4185';
 var scrollBox = '0x46415E83';
 var moveItem = true;
@@ -26,7 +26,6 @@ function StartTinkering() {
     var tool = '0x1EB8';
     CraftCreateLoop('Tinkering', 'Tinkering', 450, 15, 86, tool, trashBarrel); //makeTongs
     CraftCreateLoop('Tinkering', 'Tinkering', 940, 15, 121, tool, Player.BankSerial()); //makeLockpicks
-    Orion.ShutdownWindows('forced')
     CraftCreateLoop('Tinkering', 'Tinkering', 1000, 36, 51, tool, trashBarrel); //makeHeatingStand
         BotPush(Orion.Time() + "GM Tinkering");
 

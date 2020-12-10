@@ -2,7 +2,9 @@
 //#include Scripts/helpers/Target.js
 
 function TrainLockpickingWithKey() {
+Orion.Print("Select the box")
 	var box = SelectTarget();
+Orion.Print("Select the key")
 	var key = SelectTarget();
 	BotPush("LockPicking Start:" + Orion.SkillValue("Lockpicking"))
 
