@@ -219,16 +219,14 @@ Orion.UseObject('0x40156CE2');
 
 function Vetting() {
     var target = SelectTarget();
-
     while (!Player.Dead()) {
-        if (target.Hits() < target.MaxHits()) {
+        if (target.Hits() < target.MaxHits()-5) {
             WalkTo(target);
             Orion.Follow(target.Serial());
             Orion.BandageTarget(target.Serial());
             Orion.Wait(2000);
         }
-
-        Orion.Wait(200);
+Orion.Wait(300);
 
     }
 }

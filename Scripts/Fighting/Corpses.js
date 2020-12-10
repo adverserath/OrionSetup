@@ -49,3 +49,20 @@ Orion.IgnoreReset();
             });
 
 }
+
+function AutoLootAssist()
+{
+while(Player.Weight()<Player.MaxWeight())
+{
+if(Orion.ClientLastAttack()!='0x00000000'){
+            var corpses = Orion.FindTypeEx('0x2006', any, ground, any, 10);
+            corpses.forEach(function (corpse) {
+            WalkTo(corpse);
+                Orion.Wait(3000);
+                Orion.Ignore(corpse.Serial());
+            });
+            }
+Orion.Wait(4000);
+Orion.Print("loop reset");
+}
+}

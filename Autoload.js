@@ -3,6 +3,15 @@
 
 //#include Scripts/helpers/ItemManager.js
 
+function PrintDistance()
+{
+var target = SelectTarget();
+
+while(!Player.Dead()){
+Orion.Wait(100)
+Orion.Print(target.Distance())
+}
+}
 function PrintAllItemsInContainer() {
 var container = SelectTarget();
 Orion.Print(container.Serial())
