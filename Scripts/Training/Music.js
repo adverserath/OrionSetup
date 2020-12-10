@@ -30,9 +30,9 @@ function Discord(animal) {
 
 var provokeMessage = 'you start a fight|cannot be seen'
 
-function Provoke(animal) {
+function Provoke() {
     TextWindow.Print('Provo ' + animal.Name() + ' ' + animal.Serial());
-
+var animal;
     if (animal == null) {
         animal = SelectTarget();
     }
