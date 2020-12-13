@@ -14,11 +14,18 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color) {
     });
 }
 
-
 function MoveItemsFromPlayer(toContainer, graphicIDs) {
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, any);
 }
 
+function EmptyContainerToAnother(fromContainer, toContainer)
+{
+Orion.FindTypeEx(any, any, fromContainer.Serial(),3).forEach(function (items) {
+        DebugText('Moving:' + items.Name());
+        Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
+       Orion.Wait(800);
+    });
+}
 
 function Restock(listName) {
     var requiredItems = Orion.GetFindList(listName).Items();

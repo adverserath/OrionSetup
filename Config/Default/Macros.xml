@@ -8,4 +8,9 @@
         <action type="8" convert_type="0" waiting_time="1000" value="210"/>
         <action type="3" convert_type="0" waiting_time="1000" serial="0x400DFAC4" graphic="0x1F14" color="0x0032"/>
     </macro>
+    <macro name="DoMusic" looped="true" delay="1">
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x4010A802" graphic="0x0E9D" color="0x0000"/>
+        <action type="5" convert_type="0" waiting_time="1000" value="1"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x000097F8" graphic="0x0190" color="0x83EA"/>
+    </macro>
 </data>

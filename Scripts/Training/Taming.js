@@ -187,7 +187,7 @@ function Tame(animal) {
             Orion.Wait(200);
             return false;
         }
-        if (Orion.InJournal('Somebody else', '', '0', '-1', startTime - 300, Orion.Now() != null)) {
+        if (Orion.InJournal('Somebody else|seem to anger', '', '0', '-1', startTime - 300, Orion.Now() != null)) {
             Orion.RemoveDisplayTimer('SkillInUse');
             Orion.Wait(200);
         }
@@ -220,7 +220,7 @@ Orion.UseObject('0x40156CE2');
 function Vetting() {
     var target = SelectTarget();
     while (!Player.Dead()) {
-        if (target.Hits() < target.MaxHits()-5) {
+        if (target.Hits() < target.MaxHits()-1) {
             WalkTo(target);
             Orion.Follow(target.Serial());
             Orion.BandageTarget(target.Serial());

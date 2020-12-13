@@ -6,7 +6,7 @@ function AutoHonor()
 while(!Player.Dead())
 {
 Orion.Wait(100);
-if(Orion.ClientLastAttack()!='0x00000000')
+if(Orion.ClientLastAttack()!='0x00000000' && !Orion.BuffExists('Honored2'))
 {
 var target = Orion.FindObject(Orion.ClientLastAttack());
 currentTargetId = target.Serial();
@@ -30,4 +30,45 @@ HonorTarget(mobile)
                 Orion.TargetObject(currentTargetId);
             }
         }
+    }
+    
+    function Moon()
+    {
+    while(!Player.Dead())
+    {
+    	Orion.UseSkill('Hiding')
+	Orion.Wait(10000);
+   var gate = Orion.FindTypeEx('0x4BCB',any,any,any,20).shift();
+   if(gate!=null)
+   {
+
+   Orion.Wait(50);
+   }
+   Orion.UseObject(gate.Serial());
+	if (Orion.WaitForGump(1000))
+	{
+		var gump0 = Orion.GetGump('last');
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8'))
+		{
+			var gumpHook0 = Orion.CreateGumpHook(1);
+			gumpHook0.AddCheck(200, true);
+			gump0.Select(gumpHook0);
+		}
+	}
+	}
+	
+
+    }
+    
+    
+        function Stealth()
+    {
+    while(!Player.Dead())
+    {
+    Orion.UseSkill('Hiding')
+Orion.WalkTo(Player.X(), Player.Y()+20, Player.Z(), 8, 8, 0);	
+Orion.WalkTo(Player.X(), Player.Y()-20, Player.Z(), 8, 8, 0);	
+}
+	
+
     }

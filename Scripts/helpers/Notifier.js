@@ -1,6 +1,6 @@
 var hook;
 var key;
-function callBot() {
+function callBot(_private) {
     BotPush("hey");
 }
 //Create discord.conf in "Orion Launcher" folder
@@ -25,4 +25,22 @@ function BotPush(message) {
         + key; // Webhook url
     var paramText = "content=" + message;
     Orion.HttpPost(bot, paramText);
+}
+
+var shouldNotify = [];
+function NotifySkill(skillName)
+{
+if(Orion.SkillValue(skillName)%1==0){
+
+if(shouldNotify.indexOf(skillName)>-1)
+BotPush(skillName+' is at '+Orion.SkillValue(skillName)%10 )
+shouldNotify = shouldNotify.filter(function (skill){
+return skill !=skillName
+})
+}
+else
+{
+shouldNotify.push(skillName)
+
+}
 }
