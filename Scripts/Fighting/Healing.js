@@ -22,7 +22,7 @@ function HealingSelfAndFriendLoop() {
     while (Player.IsHuman) {
         Orion.Wait(200);
         if (target != null) {
-            if (target != null && (target.Poisoned() || target.Hits() < (target.MaxHits() - 5))
+            if (target != null && (target.Poisoned() || target.Hits() < (target.MaxHits()))
                 && !Orion.BuffExists('healing skill') && target.Distance() <= 2
                 && ((Player.Hits() / Player.MaxHits()) > (target.Hits() / target.MaxHits()))) {
                 Orion.BandageTarget('myTarget');

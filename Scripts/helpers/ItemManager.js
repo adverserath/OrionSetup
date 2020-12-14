@@ -5,7 +5,7 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color) {
         color = any;
     }
     DebugText('Walking');
-    Orion.WalkTo(fromContainer.X(), fromContainer.Y(), fromContainer.Z(), 0, 1, 1, 1);
+    Orion.WalkTo(fromContainer.X(), fromContainer.Y(), fromContainer.Z(), 2, 1, 1, 1);
     DebugText('Here');
     Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial()).forEach(function (items) {
         DebugText('Moving:' + items.Name());

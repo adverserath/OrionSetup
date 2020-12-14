@@ -1,3 +1,4 @@
+//#include Scripts/helpers/Target.js
 var currentTargetId;
 var targetHits;
 var targetDistance;
@@ -36,14 +37,15 @@ HonorTarget(mobile)
     {
     while(!Player.Dead())
     {
-    	Orion.UseSkill('Hiding')
-	Orion.Wait(10000);
+
    var gate = Orion.FindTypeEx('0x4BCB',any,any,any,20).shift();
    if(gate!=null)
    {
 
    Orion.Wait(50);
    }
+   WalkTo(gate,0)
+
    Orion.UseObject(gate.Serial());
 	if (Orion.WaitForGump(1000))
 	{
@@ -55,6 +57,12 @@ HonorTarget(mobile)
 			gump0.Select(gumpHook0);
 		}
 	}
+Orion.Step(1)
+Orion.Step(1)
+Orion.Step(1)
+Orion.Step(1)
+Orion.Step(1)
+
 	}
 	
 

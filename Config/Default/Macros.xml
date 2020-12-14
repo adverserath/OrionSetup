@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="false" delay="1">
-        <action type="8" convert_type="0" waiting_time="1000" value="401"/>
-        <action type="2" convert_type="11" waiting_time="1000" serial="0x00012421" graphic="0x00CD" color="0x090C"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x40156CE2" graphic="0x0E9C" color="0x0000"/>
     </macro>
     <macro name="Escape" looped="false" delay="1">
         <action type="8" convert_type="0" waiting_time="1000" value="210"/>

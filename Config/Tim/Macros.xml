@@ -1,7 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="macro" looped="false" delay="0.1">
-        <action type="16" convert_type="0" waiting_time="1000" serial="0x0000AF43" graphic="0x0000" color="0x0000"/>
-        <action type="17" convert_type="0" waiting_time="1000" serial="0x0000AF43" graphic="0x000A" color="0x0000"/>
+    <macro name="macro" looped="true" delay="0.5">
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="-134"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="6"/>
+        <action type="31" convert_type="14" waiting_time="1000" serial="0x00004955" id="0xE0E675B8" button="1">
+            <checks id="100" state="false"/>
+            <checks id="101" state="false"/>
+            <checks id="402" state="false"/>
+            <checks id="400" state="false"/>
+            <checks id="401" state="false"/>
+            <checks id="208" state="false"/>
+            <checks id="209" state="false"/>
+            <checks id="206" state="false"/>
+            <checks id="207" state="false"/>
+            <checks id="204" state="false"/>
+            <checks id="205" state="false"/>
+            <checks id="202" state="false"/>
+            <checks id="203" state="false"/>
+            <checks id="200" state="false"/>
+            <checks id="201" state="false"/>
+            <checks id="10" state="false"/>
+            <checks id="500" state="false"/>
+            <checks id="501" state="false"/>
+            <checks id="8" state="false"/>
+            <checks id="9" state="false"/>
+            <checks id="6" state="false"/>
+            <checks id="7" state="false"/>
+            <checks id="4" state="false"/>
+            <checks id="5" state="false"/>
+            <checks id="3" state="false"/>
+            <checks id="0" state="false"/>
+            <checks id="1" state="false"/>
+            <checks id="302" state="false"/>
+            <checks id="300" state="false"/>
+            <checks id="301" state="false"/>
+            <checks id="-2" state="true"/>
+            <checks id="602" state="false"/>
+            <checks id="603" state="false"/>
+            <checks id="600" state="false"/>
+            <checks id="108" state="false"/>
+            <checks id="601" state="false"/>
+            <checks id="109" state="false"/>
+            <checks id="106" state="false"/>
+            <checks id="107" state="false"/>
+            <checks id="104" state="false"/>
+            <checks id="105" state="false"/>
+            <checks id="102" state="false"/>
+            <checks id="103" state="false"/>
+        </action>
+        <action type="20" convert_type="0" waiting_time="1000" value="6"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="-130"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="15" convert_type="14" waiting_time="1000" serial="0x00004959" id="0xE0E675B8" button="1">
+            <checks id="100" state="false"/>
+            <checks id="101" state="false"/>
+            <checks id="402" state="false"/>
+            <checks id="400" state="false"/>
+            <checks id="401" state="false"/>
+            <checks id="208" state="false"/>
+            <checks id="209" state="false"/>
+            <checks id="206" state="false"/>
+            <checks id="207" state="false"/>
+            <checks id="204" state="false"/>
+            <checks id="205" state="false"/>
+            <checks id="202" state="false"/>
+            <checks id="203" state="false"/>
+            <checks id="200" state="false"/>
+            <checks id="201" state="false"/>
+            <checks id="10" state="false"/>
+            <checks id="500" state="false"/>
+            <checks id="501" state="false"/>
+            <checks id="8" state="false"/>
+            <checks id="9" state="false"/>
+            <checks id="6" state="false"/>
+            <checks id="7" state="false"/>
+            <checks id="4" state="false"/>
+            <checks id="5" state="false"/>
+            <checks id="2" state="false"/>
+            <checks id="0" state="false"/>
+            <checks id="1" state="false"/>
+            <checks id="302" state="false"/>
+            <checks id="300" state="false"/>
+            <checks id="301" state="false"/>
+            <checks id="602" state="false"/>
+            <checks id="603" state="false"/>
+            <checks id="600" state="false"/>
+            <checks id="108" state="false"/>
+            <checks id="-3" state="true"/>
+            <checks id="601" state="false"/>
+            <checks id="109" state="false"/>
+            <checks id="106" state="false"/>
+            <checks id="107" state="false"/>
+            <checks id="104" state="false"/>
+            <checks id="105" state="false"/>
+            <checks id="102" state="false"/>
+            <checks id="103" state="false"/>
+        </action>
     </macro>
 </data>

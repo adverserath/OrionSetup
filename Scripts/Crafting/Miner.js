@@ -218,7 +218,7 @@ function Mine(tile) {
 
             Orion.Print("5")
         }
-        else {
+        else if (usingBeetle){
             DebugText("beetle")
 Orion.Wait(500);
             Orion.FindListEx('Ores').forEach(function (oreGraphic) {
@@ -228,7 +228,11 @@ Orion.Wait(500);
                 Orion.Wait(600);
             });
         }
-
+            Orion.FindListEx('Ores').forEach(function (oreGraphic) {
+Orion.Drop(oreGraphic.Serial(),0,-1,-1,-1);
+              //  MoveItemsFromPlayer(beetleMobile, oreGraphic.Graphic());
+                Orion.Wait(600);
+            });
         Orion.Print("6")
         var pickaxe = Orion.FindType(pickAxe);
         pickaxe.forEach(function (pa) {
