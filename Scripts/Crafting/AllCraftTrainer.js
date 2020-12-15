@@ -2,14 +2,16 @@
 //#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/Magic.js
 //#include Scripts/helpers/ItemManager.js
+//#include Scripts/helpers/Gumps.js
 //#include Scripts/helpers/Notifier.js
+//#include Scripts/Crafting/LumberJack.js
 
 //Opens the carpentry window and created the last item
 //Uses a FindList for saws and boards, labelled Carpentry
 //WIP// 
 
-var trashBarrel = '0x40002C0A';
-var storageBox = '0x43AB4185';
+var trashBarrel = '0x40152CAA';
+var storageBox = '0x400DB543';
 var scrollBox = '0x46415E83';
 var moveItem = true;
 function StartAlchemy() {
@@ -21,6 +23,18 @@ function StartAlchemy() {
     BotPush(Orion.Time() + "GM Alchemy");
 }
 
+function StartCarpentry() {
+        EquipAxe();
+    var tool = '0x1028';
+    CraftCreateLoop('Carpentry', 'Carpentry', 450, 15, 2, tool, trashBarrel); //Wooden Box
+    CraftCreateLoop('Carpentry', 'Carpentry', 480, 8, 30, tool, trashBarrel); //Vesper Style Chair
+    CraftCreateLoop('Carpentry', 'Carpentry', 650, 43, 128, tool, trashBarrel); //Ballot Box
+    CraftCreateLoop('Carpentry', 'Carpentry', 720, 22, 30, tool, trashBarrel); //Fukiya
+    CraftCreateLoop('Carpentry', 'Carpentry', 790, 22, 23, tool, trashBarrel); //Bokuto
+    CraftCreateLoop('Carpentry', 'Carpentry', 1000, 22, 16, tool, trashBarrel); //Gnarled Staff
+
+    BotPush(Orion.Time() + "GM Carpentry");
+}
 
 function StartTinkering() {
     var tool = '0x1EB8';
@@ -69,12 +83,10 @@ function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, button
     DebugStart();
     BotPush("Started " + skillName + trainToLevel);
     Orion.UseObject(Orion.FindTypeEx(toolSet, 'any', 'backpack').shift().Serial());
-
     Orion.Print(skillName + ':' + Orion.SkillValue(skillName));
-    if (skillName === 'Carpentry') {
-        EquipAxe();
+
         var righthand = Orion.ObjAtLayer('LeftHand');
-    }
+
 
     var triedToBuy = false;
     Orion.Wait(800);

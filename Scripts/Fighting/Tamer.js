@@ -32,7 +32,9 @@ function VetMultiPets() {
             return petA.Hits() - petB.Hits()
         })
             .forEach(function (pet) {
+
                 if (pet != null) {
+                                   Orion.Wait(100);
                     if (pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits()) || pet.Dead())
                         && !Orion.BuffExists('veterinary'))
               {
@@ -46,4 +48,21 @@ function VetMultiPets() {
                 }
             })
     }
+}
+
+function Poison()
+{
+var target = SelectTarget();
+while(!target.Dead())
+{
+Orion.Wait(1000);
+if(!target.Poisoned() &&target.Hits()==target.MaxHits())
+{
+Orion.CastTarget('poison',target.Serial())
+}
+else if(!target.Poisoned() &&target.Hits()<target.MaxHits())
+{
+Orion.CastTarget('Heal',target.Serial())
+}
+}
 }

@@ -1,8 +1,6 @@
 var hook;
 var key;
-function callBot(_private) {
-    BotPush("hey");
-}
+
 //Create discord.conf in "Orion Launcher" folder
 //First Word 1  = Discord hook ID
 //single space

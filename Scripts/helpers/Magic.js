@@ -18,7 +18,7 @@ function RecallRune(runeItem) {
 	}
 }
 
-function TakeOffClothesAndMeditate() {
+function TakeOffClothesAndMeditate(_private) {
 	var equipment = [];
 		//		Orion.Undress();
 

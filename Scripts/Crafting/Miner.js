@@ -123,16 +123,16 @@ function Mine(tile) {
             Orion.Wait(2000);
 
         }
-        Orion.Print("1")
+
 
         if (walkBack) {
             Orion.WalkTo(tile.X(), tile.Y(), tile.Z(), 1, 255, 1, 1);
             walkBack = false;
         }
-        Orion.Print("2")
-        if (!usingBeetle && (Player.Weight() > (Player.MaxWeight() - 40) || listHasEmptyInBackpack('Mining'))) {
-            Orion.Print("beetlehome")
 
+        if ((Player.Weight() > (Player.MaxWeight() - 40))
+            || (((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0) > 1400)
+            || listHasEmptyInBackpack('Mining')) {
             TextWindow.Print('Going Home');
             if (useMagic) {
                 if (Player.Weight() > Player.MaxWeight()) {
@@ -140,44 +140,11 @@ function Mine(tile) {
                     Orion.Wait(3500);
 
                 }
-                Orion.Wait(500);
-                MarkRune(lastLocationRune);
-                Orion.Wait(3000);
-                RecallRune(storageRune);
-                Orion.Wait(1500);
-                Orion.FindListEx('Ores').forEach(function (oreGraphic) {
-                    if (Player.BankSerial() == storageBox.Serial()) {
-                        Orion.Say('bank');
-                    }
-                    MoveItemsFromPlayer(storageBox, oreGraphic.Graphic());
-                })
-                Restock('Mining');
-                Orion.Wait(1500);
-                if (listHasEmptyInBackpack('Mining')) {
-                    Orion.PauseScript();
+                if (usingBeetle) {
+                    Orion.Wait(600);
+                    WalkTo(beetleMobile, 1)
+                    Orion.UseObject(beetleMobile.Serial())
                 }
-                RecallRune(lastLocationRune);
-            }
-            else {
-                MoveItems(storageBox, oreGraphic.Graphic());
-                Orion.Wait(1000);
-                Orion.WalkTo(tile.X(), tile.Y(), Player.Z(), 0, 0, 1, 1, 3000);
-            }
-            Orion.Print("3")
-        }
-        else if (usingBeetle && (((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0) > 1400 || listHasEmptyInBackpack('Mining'))) {
-            Orion.Print("beetlehome")
-            TextWindow.Print('Going Home');
-            if (useMagic) {
-                if (Player.Weight() > Player.MaxWeight()) {
-                    Orion.Cast('Bless', 'self');
-                    Orion.Wait(3500);
-
-                }
-                Orion.Wait(600);
-                WalkTo(beetleMobile, 1)
-                Orion.UseObject(beetleMobile.Serial())
-                Orion.Print("GOING HOME ON MY BEETLE")
                 Orion.Wait(600);
                 MarkRune(lastLocationRune);
                 Orion.Wait(3000);
@@ -189,51 +156,38 @@ function Mine(tile) {
                 if (Player.BankSerial() == storageBox.Serial()) {
                     Orion.Say('bank');
                 }
-                Orion.RequestContextMenu(beetleMobile.Serial());
-                Orion.WaitContextMenuID(beetleMobile.Serial(), 10);
+
                 Orion.FindListEx('Ores').forEach(function (oreGraphic) {
                     MoveItemsFromPlayer(storageBox, oreGraphic.Graphic(), any);
                 })
-                EmptyContainerToAnother(beetleMobile, storageBox)
+                if (usingBeetle) {
+                    Orion.RequestContextMenu(beetleMobile.Serial());
+                    Orion.WaitContextMenuID(beetleMobile.Serial(), 10);
+                    EmptyContainerToAnother(beetleMobile, storageBox);
+                    Orion.Wait(600);
+                    Orion.UseObject(beetleMobile.Serial())
+                    Orion.Wait(600);
+                }
                 Restock('Mining');
                 Orion.Wait(1500);
                 if (listHasEmptyInBackpack('Mining')) {
                     Orion.PauseScript();
                 }
-                Orion.UseObject(beetleMobile.Serial())
-                Orion.Wait(600);
+
                 RecallRune(lastLocationRune);
                 Orion.Wait(1000);
                 Orion.UseObject(Player.Serial())
-
             }
-            else if (usingBeetle == false) {
-                Orion.Print("nobeetle")
-                Orion.RequestContextMenu(beetleMobile.Serial());
-                Orion.WaitContextMenuID(beetleMobile.Serial(), 10);
-                MoveItems(storageBox, oreGraphic.Graphic(),oreGraphic.Color() );
-                Orion.Wait(1000);
-                Orion.WalkTo(tile.X(), tile.Y(), Player.Z(), 0, 0, 1, 1, 3000);
-            }
-
-            Orion.Print("5")
         }
-        else if (usingBeetle){
-            DebugText("beetle")
-Orion.Wait(500);
+
+        else if (usingBeetle) {
+            Orion.Wait(500);
             Orion.FindListEx('Ores').forEach(function (oreGraphic) {
-                DebugText(oreGraphic.Serial())
                 Orion.MoveItem(oreGraphic.Serial(), 0, beetleMobile.Serial());
-              //  MoveItemsFromPlayer(beetleMobile, oreGraphic.Graphic());
                 Orion.Wait(600);
             });
         }
-            Orion.FindListEx('Ores').forEach(function (oreGraphic) {
-Orion.Drop(oreGraphic.Serial(),0,-1,-1,-1);
-              //  MoveItemsFromPlayer(beetleMobile, oreGraphic.Graphic());
-                Orion.Wait(600);
-            });
-        Orion.Print("6")
+
         var pickaxe = Orion.FindType(pickAxe);
         pickaxe.forEach(function (pa) {
             Orion.Wait(200);
@@ -258,8 +212,6 @@ Orion.Drop(oreGraphic.Serial(),0,-1,-1,-1);
                 }
             }
         });
-
-
     }
 }
 

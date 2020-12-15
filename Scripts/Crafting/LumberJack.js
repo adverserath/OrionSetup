@@ -20,15 +20,33 @@ function StartLumberJacking() {
     AutoLumberJack(useMagicToMove, range);
 }
 
-
+var usingBeetle = true;
 var debug = true;
 var axes = '0xF47|0xF4B|0xF45|0xF43|0x13FB|0x1443|0x13B0|0xF49'
 var storageBox;
 var storageRune;
 var lastLocationRune;
 var useMagic;
+var beetleMobile;
 
 function AutoLumberJack(magicOption, range) {
+    if (usingBeetle) {
+        Orion.UseObject(Player.Serial());
+        Orion.Wait(200);
+        var beetles = Orion.FindTypeEx('0x0317', any, ground, 'mobile', 4).filter(function (beetle) {
+            Orion.RequestContextMenu(beetle.Serial());
+            return Orion.WaitForContextMenu(500);
+        });
+        if (beetles.length > 0) {
+            beetleMobile = beetles.shift();
+            Orion.Print(beetleMobile.Serial())
+            Orion.Print(((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0));
+        }
+        else {
+            usingBeetle = false;
+        }
+    }
+    
     useMagic = magicOption;
     Orion.Say('Chop Chop');
     Orion.Print("Go into war mode to stop the script at any point");

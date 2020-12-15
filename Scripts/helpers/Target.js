@@ -21,7 +21,7 @@ function UseItemOnTargets(item, targets) {
   });
 }
 
-function RandomTarget() {
+function RandomTarget(_private) {
   var nearby = Orion.FindTypeEx(any, any, ground,
     'nothumanmobile|live|ignoreself|ignorefriends', 10, 3)
     .filter(function (mob) {
@@ -58,9 +58,40 @@ function BorderEdge(x, y, p2, range) {
 
 }
 
-function StayAwayF() {
-  StayAway(SelectTarget(), 8);
+function TestRange(){
+var target  = SelectTarget()
+var lastX = target.X()
+var lastY = target.Y()
+while(!Player.Dead())
+{if(lastX!=target.X() || lastY!=target.Y())
+{
+ShowRange(target.Serial(),[3,8])
+lastX = target.X()
+lastY = target.Y()
 }
+Orion.Wait(100);
+}
+}
+function ShowRange(targetId, range)
+{Orion.ClearFakeMapObjects();
+  if (Orion.ObjectExists(targetId)) {
+    var target = Orion.FindObject(targetId)
+    var x = target.X();
+    var y = target.Y();
+range.forEach(function (distance){
+      Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance)
+        .filter(function (tile) {
+          return BorderEdge(x, y, tile, distance);
+        })
+        .forEach(function (tile){
+        Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+        }
+        )
+})        
+
+  }
+}
+
 function StayAway(targetId, distance) {
   if (Orion.ObjectExists(targetId)) {
     var target = Orion.FindObject(targetId)

@@ -1,4 +1,4 @@
-function DebugStart() {
+function DebugStart(_private) {
   TextWindow.Open();
 }
 
