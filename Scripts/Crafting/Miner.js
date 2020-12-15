@@ -121,10 +121,7 @@ function Mine(tile) {
         }
         while (Player.WarMode()) {
             Orion.Wait(2000);
-
         }
-
-
         if (walkBack) {
             Orion.WalkTo(tile.X(), tile.Y(), tile.Z(), 1, 255, 1, 1);
             walkBack = false;
