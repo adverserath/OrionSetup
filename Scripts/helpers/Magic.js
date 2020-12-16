@@ -29,6 +29,4 @@ function TakeOffClothesAndMeditate(_private) {
 		Orion.Wait(4000);
 	}
 Orion.Wait(4000);
-
-
 }

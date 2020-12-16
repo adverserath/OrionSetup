@@ -11,12 +11,13 @@
 //Go into war mode to pause the script if you need to fight anything
 //All axes are detected automatically.
 function StartLumberJacking() {
+Orion.Print(Orion.FindObject('0x0000813F').Name())
     //Use Mark and Recall spells to move to storage and back to last location
     //Otherwise it will use Orions WalkTo functionality
     var useMagicToMove = true;
-
+    DebugStart()
     //How far to look for trees from the player
-    var range = 20;
+    var range = 10;
     AutoLumberJack(useMagicToMove, range);
 }
 
@@ -30,9 +31,10 @@ var useMagic;
 var range;
 var usedTrees = [];
 var beetleMobile;
+var axe = null;
 
 function AutoLumberJack(magicOption, _range) {
-range=_range;
+    range = _range;
     if (usingBeetle) {
         Orion.UseObject(Player.Serial());
         Orion.Wait(200);
@@ -51,7 +53,6 @@ range=_range;
     }
 
     useMagic = magicOption;
-    Orion.Say('Chop Chop');
     Orion.Print("Go into war mode to stop the script at any point");
     var file = Orion.NewFile();
 
@@ -80,13 +81,13 @@ range=_range;
     }
     var trees = [];
 
+    Orion.Wait(1000);
+    axe = Orion.FindTypeEx(axes, any, backpack|Player.Serial()).shift();
     while (!Player.Dead()) {
-    Orion.Print("Starting Loop")
-        Orion.Wait(1000);
+        Orion.Print("Starting Loop")
         EquipAxe();
         trees = GetTrees();
-    Orion.Print("Trees" + trees.length)
-
+        Orion.Print("Trees" + trees.length)
         usedTrees = usedTrees.concat(trees.map(function (stTree) {
             return stTree.X().toString() + stTree.Y().toString()
         }));
@@ -95,10 +96,10 @@ range=_range;
             var treeTile = trees.shift();
             TextWindow.Print(treeTile.X(), treeTile.Y(), treeTile.Z(), 0, Player.Z(), 1, 1);
             TextWindow.Print('Orion.WalkTo(' + treeTile.X() + ', ' + treeTile.Y() + ', ' + treeTile.Z() + ', 1, ' + 255 + ', 1, 1);');
-            var outcome = (Orion.GetDistance(treeTile.X(), treeTile.Y()) < range - 4) &&
+            var outcome = (Orion.GetDistance(treeTile.X(), treeTile.Y()) < (range - 4)) &&
                 Orion.WalkTo(treeTile.X(), treeTile.Y(), treeTile.Z(), 1, 255, 1, 1);
-    Orion.Print("Walked" + outcome)
-
+            Orion.Print("Walked" + outcome)
+            Orion.WalkTo(treeTile.X(), treeTile.Y(), treeTile.Z(), 1, 255, 1, 1)
             if (outcome) {
                 Chop(treeTile)
                 Orion.RemoveFakeMapObject(treeTile.X().toString() + treeTile.Y().toString());
@@ -118,8 +119,9 @@ function Chop(tile) {
     DebugText('StartChopMethod');
     walkBack = false;
 
-    while (Orion.LastJournalMessage() == null ||
-        'There\'s not enough wood here to harvest.'.localeCompare(Orion.LastJournalMessage().Text()) != 0) {
+    while (Orion.LastJournalMessage() == null
+        ||(Orion.LastJournalMessage().Text()
+        .match(/(not\senough\swood)|(use\san\saxe)|(cannot\sbe\sseen)|(far\saway)/gi) || []).length == 0) {
         if (Player.WarMode()) {
             Orion.Print('In War Mode');
         }
@@ -131,44 +133,56 @@ function Chop(tile) {
             walkBack = false;
         }
 
-        if (Player.Weight() > (Player.MaxWeight() - 50
-        || (((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0) > 1400)
-        )) {
-                TextWindow.Print('Going Home');
-                if (useMagic) {
-                    Orion.Wait(500);
-                    MarkRune(lastLocationRune);
-                    Orion.Wait(3000);
-                    RecallRune(storageRune);
-                    Orion.Wait(1500);
-                    Orion.FindTypeEx('0x1BD7|0x318F|0x2F5F|0x3191').forEach(function (woodStuff) {
-                        Orion.Print(woodStuff.Name())
-                        MoveItemsFromPlayer(storageBox, woodStuff.Graphic());
-                    })
-                    Orion.Wait(1500);
-                    RecallRune(lastLocationRune);
-                }
-                else {
-                    MoveItems(storageBox, '0x1BD7');
-                    Orion.Wait(1000);
-                    Orion.WalkTo(tile.X(), tile.Y(), Player.Z(), 1, Player.Z(), 1, 1);
-                }
-
+        if ((!usingBeetle && Player.Weight() > (Player.MaxWeight() - 50)
+            || (((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0) > 1400)
+        ))
+        if (useMagic) {
+            if (usingBeetle) {
+                Orion.Wait(600);
+                WalkTo(beetleMobile, 1)
+                Orion.UseObject(beetleMobile.Serial())
             }
-        
-        else if (Player.Weight() > (Player.MaxWeight() - 50))
-        {
-            Orion.FindTypeEx('0x1BDD', any, backpack)
-            .forEach(function (wood) {
-                Orion.UseObject(righthand.Serial());
+            Orion.Wait(600);
+            MarkRune(lastLocationRune);
+            Orion.Wait(3000);
+            RecallRune(storageRune);
+            Orion.Wait(1500);
+            WalkTo(storageBox)
+            Orion.UseObject(Player.Serial())
+            Orion.Wait(500);
+            if (Player.BankSerial() == storageBox.Serial()) {
+                Orion.Say('bank');
+            }
 
-                if (Orion.WaitForTarget(1000)) {
-                    Orion.TargetObject(wood.Serial());
-                    Orion.Wait(700);
-                }
-                TextWindow.Print('ChoppingLogs');
-            });
-            if(usingBeetle){
+            Orion.FindTypeEx('0x1BD7').forEach(function (boards) {
+                MoveItemsFromPlayer(storageBox, boards.Graphic(), any);
+            })
+            if (usingBeetle) {
+                Orion.RequestContextMenu(beetleMobile.Serial());
+                Orion.WaitContextMenuID(beetleMobile.Serial(), 10);
+                EmptyContainerToAnother(beetleMobile, storageBox);
+                Orion.Wait(600);
+                Orion.UseObject(beetleMobile.Serial())
+                Orion.Wait(600);
+            }
+
+            RecallRune(lastLocationRune);
+            Orion.Wait(1000);
+            Orion.UseObject(Player.Serial())
+        }
+
+        if (Player.Weight() > (Player.MaxWeight() - 100)) {
+            Orion.FindTypeEx('0x1BDD', any, backpack)
+                .forEach(function (wood) {
+                    Orion.UseObject(axe.Serial());
+
+                    if (Orion.WaitForTarget(1000)) {
+                        Orion.TargetObject(wood.Serial());
+                        Orion.Wait(700);
+                    }
+                    TextWindow.Print('ChoppingLogs');
+                });
+            if (usingBeetle) {
                 Orion.Wait(500);
                 Orion.FindTypeEx('0x1BD7').forEach(function (board) {
                     Orion.MoveItem(board.Serial(), 0, beetleMobile.Serial());
@@ -177,8 +191,7 @@ function Chop(tile) {
             }
         }
         EquipAxe();
-Orion.Wait(3000)
-        Orion.UseObject(righthand.Serial());
+        Orion.UseObject(axe.Serial());
 
         if (Orion.WaitForTarget(1000)) {
             TextWindow.Print(tile.Flags());
@@ -189,25 +202,22 @@ Orion.Wait(3000)
 }
 
 function EquipAxe() {
-    Orion.Unequip('LeftHand');
-    Orion.Unequip('RightHand');
-    Orion.Wait(1000);
-    var axe = Orion.FindTypeEx(axes, any, backpack).shift();
-    if (axe == null) {
-        Orion.Print("Cannot find an axe")
-    }
-    else {
-        while(Orion.ObjAtLayer('LeftHand')==null)
-        {
-            Orion.Print(axe.Name())
+    if (axe.Layer() == 0) {
+        Orion.Unequip('LeftHand');
+        Orion.Unequip('RightHand');
+            Orion.Wait(400);
+
+        while (Orion.ObjAtLayer('LeftHand') == null) {
             Orion.Equip(axe.Serial());
             Orion.Wait(1000);
         }
+
     }
+
 }
 
 function GetTrees(_private) {
-Orion.Print('Range '+range);
+    Orion.Print('Range ' + range);
     var trees = Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
         .filter(function (tree) {
             return (Player.Z() + 15) > tree.Z() || IsReachable(tree)
@@ -220,7 +230,7 @@ Orion.Print('Range '+range);
         });
     Orion.ClearFakeMapObjects();
     trees.forEach(function (tree) {
-        Orion.AddFakeMapObject(tree.X().toString() + tree.Y().toString(), '0x1BDD', '', tree.X(), tree.Y(), tree.Z());
+        Orion.AddFakeMapObject(tree.X().toString() + tree.Y().toString(), '0x1BDD', '', tree.X(), tree.Y(), tree.Z() + 15);
     });
     return trees;
 }

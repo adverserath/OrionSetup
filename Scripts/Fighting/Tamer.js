@@ -66,3 +66,18 @@ Orion.CastTarget('Heal',target.Serial())
 }
 }
 }
+
+function ForceLore()
+{
+var lastGump=Orion.GetLastGump().Serial();
+if(Orion.GumpExists('generic', any, '0xD937D1DB')){
+Orion.GetLastGump().Close();
+}
+var target  = SelectTarget();
+var gumpText;
+while(target.Distance()<20 && !Orion.GumpExists('generic', any, '0xD937D1DB'))
+{
+Orion.UseSkill('Animal Lore',target.Serial())
+Orion.Wait(400);
+}
+}
