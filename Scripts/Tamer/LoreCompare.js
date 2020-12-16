@@ -1,6 +1,6 @@
 //#include Scripts/helpers/Target.js
 
-var tameColumns = ["name","hits","stamina","mana","str","dex","int","bard","filler","resistPhys","resistFire","resistCold","resistPoison","resistEnergy","damagePhys","damageFire","damageCold","damagePoison","damageEnergy","BaseDamage","Wrestling","Tactics","Resist","Anatomy","Healing","Poison","DetectHidden","Hiding","Parry","Magery","EvalInt","Meditation","Necro","SpiritSpeak","Mysticism","Focus","SpellWeaving","Discordance","Bushido","Ninjitsu","Chivalry"]
+var tameColumns = ["name", "hits", "stamina", "mana", "str", "dex", "int", "bard", "filler", "resistPhys", "resistFire", "resistCold", "resistPoison", "resistEnergy", "damagePhys", "damageFire", "damageCold", "damagePoison", "damageEnergy", "BaseDamage", "Wrestling", "Tactics", "Resist", "Anatomy", "Healing", "Poison", "DetectHidden", "Hiding", "Parry", "Magery", "EvalInt", "Meditation", "Necro", "SpiritSpeak", "Mysticism", "Focus", "SpellWeaving", "Discordance", "Bushido", "Ninjitsu", "Chivalry"]
 var tamers = [["an alligator", 60, null, 0, 100, 25, 20, null, null, 25, 5, null, 5, null, 100, null, null, null, null, null, 60.0, 60.0, 40.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, -1],
 ["a bake kitsune", 350, null, null, 220, 145, 425, null, null, 40, 70, 40, 40, 40, 70, null, null, null, 30, null, 55.0, 90.0, 100.0, null, null, null, null, null, null, 90.0, 90.0, null, null, null, null, null, null, null, null, null, null, -1],
 ["a battle chicken lizard", 177, null, null, 177, 124, 13, null, null, 15, 5, null, null, null, 100, null, null, null, null, null, 62.0, 62.0, 53.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, -1],
@@ -136,15 +136,37 @@ var tamers = [["an alligator", 60, null, 0, 100, 25, 20, null, null, 25, 5, null
 ["a Wolf spider", 160, null, 310, 268, 165, 310, null, null, 30, 20, 25, 100, 25, 70, null, null, 30, null, null, 90.0, 95.9, 75.0, 90.0, null, 77.2, null, 110.0, null, null, null, null, null, null, null, null, null, null, null, null, null, -1]]
 
 function GetGump() {
-TextWindow.Open();
-    Orion.Print(Orion.GumpExists('generic', any, '0xD937D1DB'))
+    TextWindow.Open();
+    TextWindow.Clear();
     var target = SelectTarget();
     ForceLore(target)
-    Orion.Print(loreTextArray.length)
-    for (var index = 0; index < loreTextArray.length; index++) {
-        TextWindow.Print(loreTextArray[index].match(/(?:\s<|\w)*>(?:\w|\<|\s|=|#)*>((?:\w|\s|-)*)/i)[1]);
+    var mobName = loreTextArray[0].match(/>(?:(?:\d|\.)*\/)*(\w(?:\w|\.|\s)*)%?</i)[1];
+    TextWindow.Print("using "+ mobName)
+    var mobArray = tamers.filter(function (singleMob) {
+        return singleMob[0] === mobName;
+    }).shift();
+//        TextWindow.Print(mobArray)
+
+    for (var index = 1; index < loreTextArray.length; index++) {
+        var mobNameregex = loreTextArray[index].match(/>(?:(?:\d|\.)*\/)*(\w(?:\w|\.|\s)*)%?</i);
+
+        if (mobNameregex != null && mobNameregex.length > 1) {
+
+            if (mobArray != null) {
+                TextWindow.Print(tameColumns[index] + ' : ' + mobNameregex[1] +' / '+ mobArray[index])
+
+                //    for (var mobdata = 0; mobdata < mobArray.length; mobdata++) {
+                //      var element = mobArray[mobdata];
+                //     if (element != null) {
+                //GetNext value from data
+
+                //Compare Value to max
+            }
+        }
     }
+
 }
+    
 var loreTextArray = [];
 function ForceLore(target) {
     if (Orion.GumpExists('generic', any, '0xD937D1DB')) {
