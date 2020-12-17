@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="62" action="1" key="103" modifiers="0" meta="{&#10;    &quot;text&quot;: &quot;Brieg buy&quot;&#10;}&#10;"/>
+    <hotkey type="31" action="1" key="121" modifiers="0"/>
     <hotkey type="31" action="2" key="122" modifiers="0"/>
     <hotkey type="31" action="0" key="123" modifiers="0"/>
-    <hotkey type="31" action="1" key="121" modifiers="0"/>
     <hotkey type="33" action="0" key="144" modifiers="16"/>
+    <hotkey type="62" action="1" key="103" modifiers="0" meta="{&#10;    &quot;text&quot;: &quot;Brieg buy&quot;&#10;}&#10;"/>
 </data>
