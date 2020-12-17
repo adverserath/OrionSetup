@@ -137,12 +137,29 @@ var tamers = [["an alligator",60,25,20,100,25,20,-1,null,35,10,null,10,null,null
 ["Windrunner",null,125,55,400,125,55,-1,null,50,40,40,40,40,null,null,null,null,null,null,35.0,40.0,30.0,null,null,null,60,null,null,null,null,null,null,null,null,20,null,null,null,null,null,-1],
 ["a Wolf spider",160,165,310,268,165,310,-1,null,35,30,35,100,35,null,null,null,null,null,null,90.0,95.9,75.0,90.0,null,77.2,60,110.0,null,null,null,null,null,null,null,20,null,null,null,null,null,-1]]
 
-function GetGump() {
+function GetGump(target) {
     TextWindow.Open();
     TextWindow.Clear();
-    var target = SelectTarget();
+    target = SelectTarget();
     ForceLore(target)
+    CalculateCreature()
+}
 
+function AutoLore() {
+while(!Player.Dead())
+{
+Orion.Wait(100)
+        var mob = Orion.FindTypeEx(any, any, ground,
+            'nothumanmobile|live|ignoreself|ignorefriends', 8, 3).forEach(function (mob){
+                ForceLore(mob)
+    CalculateCreature()
+    Orion.Wait(2000)
+            })
+}
+}
+
+function CalculateCreature(_private)
+{
     var lastCommand;
     loreTextArray = Orion.GetLastGump().TextList();
     var mobName = loreTextArray[0].match(/>(?:(?:\d|\.)*\/)*(\w(?:\w|\.|\s)*)%?</i)[1];
@@ -181,7 +198,7 @@ var usedKeys=[]
         lastCommand = command;
     });
      TextWindow.Print('Overall Rating: ' +(total/counter).toFixed(2)+ '%')
-
+Orion.Print('Overall Rating: ' +(total/counter).toFixed(2)+ '%')
 
 
 }
