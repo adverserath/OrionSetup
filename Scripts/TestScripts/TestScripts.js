@@ -1,33 +1,32 @@
 //#include Scripts/helpers/Debug.js
 
 function openCorpse() {
-Orion.OpenContainer('0x4205AD94');
+  Orion.OpenContainer('0x4205AD94');
 }
 
 
 function NotEnoughResourcesGump() {
   TextWindow.Open();
-    var output = Orion.GetLastGump();//.foreach(function (cmd){
-    var value =  output.CommandList().filter(function (text) {
-          TextWindow.Print( text.search('1044155|1044154') );
+  var output = Orion.GetLastGump();//.foreach(function (cmd){
+  var value = output.CommandList().filter(function (text) {
+    TextWindow.Print(text.search('1044155|1044154'));
 
-        return text.search('1044155|1044154') >= 0;
+    return text.search('1044155|1044154') >= 0;
 
-    })
-              TextWindow.Print(value);
+  })
+  TextWindow.Print(value);
 
 }
 
-function GumpText()
-{  
+function GumpText() {
   var output = Orion.GetLastGump();//.foreach(function (cmd){
   TextWindow.Open();
   TextWindow.Print(output.EntriesList());
 
-    
+
 }
 
-var debug=true;
+var debug = true;
 
 function GetTargetAndPrint() {
   TextWindow.Open();
@@ -37,10 +36,10 @@ function GetTargetAndPrint() {
   TextWindow.Print(obj.Name());
   TextWindow.Print(obj.FullName());
   TextWindow.Print(obj.Notoriety());
- TextWindow.Print('player'+obj.IsPlayer());
-  TextWindow.Print('color'+ obj.NameColor());
+  TextWindow.Print('player' + obj.IsPlayer());
+  TextWindow.Print('color' + obj.NameColor());
 
- TextWindow.Print('yellow'+obj.YellowHits());
+  TextWindow.Print('yellow' + obj.YellowHits());
 
   TextWindow.Print(obj.Race());
   TextWindow.Print(obj.ProfileReceived());
@@ -51,8 +50,8 @@ function GetTargetAndPrint() {
 }
 
 function getFlags() {
-var a = Orion.InfoContextMenu()
-TextWindow.Print(a.trim());
+  var a = Orion.InfoContextMenu()
+  TextWindow.Print(a.trim());
 
 
 }

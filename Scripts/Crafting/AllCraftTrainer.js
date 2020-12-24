@@ -24,7 +24,7 @@ function StartAlchemy() {
 }
 
 function StartCarpentry() {
-        EquipAxe();
+    EquipAxe();
     var tool = '0x1028';
     CraftCreateLoop('Carpentry', 'Carpentry', 450, 15, 2, tool, trashBarrel); //Wooden Box
     CraftCreateLoop('Carpentry', 'Carpentry', 480, 8, 30, tool, trashBarrel); //Vesper Style Chair
@@ -41,17 +41,17 @@ function StartTinkering() {
     CraftCreateLoop('Tinkering', 'Tinkering', 450, 15, 86, tool, trashBarrel); //makeTongs
     CraftCreateLoop('Tinkering', 'Tinkering', 940, 15, 121, tool, Player.BankSerial()); //makeLockpicks
     CraftCreateLoop('Tinkering', 'Tinkering', 1000, 36, 51, tool, trashBarrel); //makeHeatingStand
-        BotPush(Orion.Time() + "GM Tinkering");
+    BotPush(Orion.Time() + "GM Tinkering");
 
 }
 
 function StartCartography() {
     var tool = '0x0FBF';
-    CraftCreateLoop('Cartography', 'Cartography', 500, 1, 2, tool, trashBarrel); 
-    CraftCreateLoop('Cartography', 'Cartography', 650, 1, 9, tool, trashBarrel); 
-    CraftCreateLoop('Cartography', 'Cartography', 700, 1, 16, tool, trashBarrel); 
-        CraftCreateLoop('Cartography', 'Cartography', 1000, 1, 23, tool, trashBarrel); 
-        BotPush(Orion.Time() + "GM Cartography");
+    CraftCreateLoop('Cartography', 'Cartography', 500, 1, 2, tool, trashBarrel);
+    CraftCreateLoop('Cartography', 'Cartography', 650, 1, 9, tool, trashBarrel);
+    CraftCreateLoop('Cartography', 'Cartography', 700, 1, 16, tool, trashBarrel);
+    CraftCreateLoop('Cartography', 'Cartography', 1000, 1, 23, tool, trashBarrel);
+    BotPush(Orion.Time() + "GM Cartography");
 
 }
 
@@ -96,7 +96,7 @@ function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, button
     Orion.UseObject(Orion.FindTypeEx(toolSet, 'any', 'backpack').shift().Serial());
     Orion.Print(skillName + ':' + Orion.SkillValue(skillName));
 
-        var righthand = Orion.ObjAtLayer('LeftHand');
+    var righthand = Orion.ObjAtLayer('LeftHand');
 
 
     var triedToBuy = false;
@@ -125,7 +125,7 @@ function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, button
             Orion.Print("failed")
 
             BotPush("Out of " + skillName + " resources")
-           // Orion.ShutdownWindows('forced');
+            // Orion.ShutdownWindows('forced');
             Orion.PauseScript();
             triedToBuy = false;
         }
@@ -140,7 +140,7 @@ function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, button
         if (tools.length == 1) {
             BotPush("no tools left");
             BotPush(listName + ": " + Orion.SkillValue(skillName));
-           //          Orion.ShutdownWindows('forced');
+            //          Orion.ShutdownWindows('forced');
         }
         var backpackBeforeMake = Orion.FindType('any', 'any', 'backpack')
         var successfulCraft = false;

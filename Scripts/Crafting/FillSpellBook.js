@@ -13,18 +13,16 @@ function FillSpellBook(book) {
     //		(/(reptile|dragon|demon|ogre|repond|bear|undead|orc|\n\s?elemental)\sslayer/gi) >= 1)
 
     Orion.FindTypeEx('0x0EFA')
-    .filter(function(mbook)
-    {
-    return (mbook.Properties().match(/64 Spells/gi)||[]).length !=1
-    })
-    .forEach(function(mbook){
-    if(mbook.Serial()!='0x423EAD8A')
-    {
-    TextWindow.Print(mbook.Serial())
-    StartInscription(mbook) 
-    }
+        .filter(function (mbook) {
+            return (mbook.Properties().match(/64 Spells/gi) || []).length != 1
+        })
+        .forEach(function (mbook) {
+            if (mbook.Serial() != '0x423EAD8A') {
+                TextWindow.Print(mbook.Serial())
+                StartInscription(mbook)
+            }
 
-    })
+        })
 }
 var pages = [1, 8, 15, 22, 29, 36, 43, 50];
 //var pages = [50];
@@ -35,29 +33,28 @@ var listName = 'Inscription';
 var storageBox = '0x46415E83';
 
 function StartInscription(scrollBox) {
-Restock(listName);
+    Restock(listName);
     var tool = '0x0FBF';
     var scrollIndex = 0;
-    var firstScroll=parseInt('0x1F2D');
+    var firstScroll = parseInt('0x1F2D');
     pages.forEach(function (page) {
         spellNumbers.forEach(function (spell) {
-            var scrollId = '0x'+(firstScroll+scrollIndex).toString(16).toUpperCase();
+            var scrollId = '0x' + (firstScroll + scrollIndex).toString(16).toUpperCase();
             DebugText('Checking ' + scrollId);
             Orion.Print('Checking ' + scrollId);
-            if(FindScrollAndMove(scrollId,scrollBox)==false)
-            {
+            if (FindScrollAndMove(scrollId, scrollBox) == false) {
                 DebugText('Creating ' + scrollId);
 
-                CraftCreateLoop(page, spell, scrollBox.Serial(),scrollId);
+                CraftCreateLoop(page, spell, scrollBox.Serial(), scrollId);
                 Orion.Wait(5000);
             }
-            else{
+            else {
                 Orion.Print('Found ' + scrollId);
                 Orion.Wait(5000);
 
             }
             Orion.Print(scrollIndex);
-            scrollIndex = scrollIndex +1;
+            scrollIndex = scrollIndex + 1;
         });
     });
 
@@ -66,10 +63,10 @@ Restock(listName);
 
 function CraftCreateLoop(buttonMenuID, buttonItemID, containerID, scrollId) {
     Orion.UseObject(Orion.FindTypeEx(toolSet, 'any', 'backpack').shift().Serial());
-Orion.Print(scrollId);
+    Orion.Print(scrollId);
     var triedToBuy = false;
     var itemCreated = false;
-    while (itemCreated==false) {
+    while (itemCreated == false) {
         TextWindow.Clear();
         Orion.Wait(500);
         var needToBuy = NotEnoughResourcesGump();
@@ -87,9 +84,8 @@ Orion.Print(scrollId);
             triedToBuy = false;
         }
         else if (NeedMoreManaGump()) {
-            while(Player.Mana()<Player.MaxMana())
-            {
-            Orion.Wait(1000);
+            while (Player.Mana() < Player.MaxMana()) {
+                Orion.Wait(1000);
             }
         }
 
@@ -129,29 +125,29 @@ Orion.Print(scrollId);
 
 }
 
-function FindScrollAndMove(scrollId, scrollBox){
+function FindScrollAndMove(scrollId, scrollBox) {
     var startTime = Orion.Now();
 
-        var items = Orion.FindTypeEx(scrollId, any, backpack).concat(Orion.FindTypeEx(scrollId, any, storageBox));
-//Orion.Print(items.)
-        items.forEach(function (item) {
-                    DebugText('Found ' + item.Name());
-            if (Orion.ObjectExists(item.Serial())) {
-                DebugText('Adding' + item.Name());
-                    Orion.MoveItem(item.Serial(), 1, scrollBox);
+    var items = Orion.FindTypeEx(scrollId, any, backpack).concat(Orion.FindTypeEx(scrollId, any, storageBox));
+    //Orion.Print(items.)
+    items.forEach(function (item) {
+        DebugText('Found ' + item.Name());
+        if (Orion.ObjectExists(item.Serial())) {
+            DebugText('Adding' + item.Name());
+            Orion.MoveItem(item.Serial(), 1, scrollBox);
 
-                    Orion.Wait(300)
-                    itemCreated = true;
+            Orion.Wait(300)
+            itemCreated = true;
 
 
-                output = Orion.InJournal("That spell is", '', '0', '-1', startTime, Orion.Now());
-                if (output != null) {
-                    Orion.MoveItem(item.Serial(), 0, storageBox);
-                }
-
+            output = Orion.InJournal("That spell is", '', '0', '-1', startTime, Orion.Now());
+            if (output != null) {
+                Orion.MoveItem(item.Serial(), 0, storageBox);
             }
-        });
-        return (items.length>0);
+
+        }
+    });
+    return (items.length > 0);
 }
 
 function RestackContainerItems() {

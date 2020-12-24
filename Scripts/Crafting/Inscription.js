@@ -2,9 +2,9 @@ function Inscribe() {
     TextWindow.Open();
     var triedToBuy = false;
     while (!Player.Dead()) {
-    Orion.Wait(400);
+        Orion.Wait(400);
         TextWindow.Clear();
-         DebugText('inscription :' + Orion.SkillValue('inscription'));
+        DebugText('inscription :' + Orion.SkillValue('inscription'));
         var needToBuy = listHasEmptyInBackpack('Inscribe');
 
         if (needToBuy && !triedToBuy) {

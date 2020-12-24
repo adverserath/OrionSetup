@@ -11,7 +11,7 @@
 //Go into war mode to pause the script if you need to fight anything
 //All axes are detected automatically.
 function StartLumberJacking() {
-Orion.Print(Orion.FindObject('0x0000813F').Name())
+    Orion.Print(Orion.FindObject('0x0000813F').Name())
     //Use Mark and Recall spells to move to storage and back to last location
     //Otherwise it will use Orions WalkTo functionality
     var useMagicToMove = true;
@@ -82,7 +82,7 @@ function AutoLumberJack(magicOption, _range) {
     var trees = [];
 
     Orion.Wait(1000);
-    axe = Orion.FindTypeEx(axes, any, backpack|Player.Serial()).shift();
+    axe = Orion.FindTypeEx(axes, any, backpack | Player.Serial()).shift();
     while (!Player.Dead()) {
         Orion.Print("Starting Loop")
         EquipAxe();
@@ -120,8 +120,8 @@ function Chop(tile) {
     walkBack = false;
 
     while (Orion.LastJournalMessage() == null
-        ||(Orion.LastJournalMessage().Text()
-        .match(/(not\senough\swood)|(use\san\saxe)|(cannot\sbe\sseen)|(far\saway)/gi) || []).length == 0) {
+        || (Orion.LastJournalMessage().Text()
+            .match(/(not\senough\swood)|(use\san\saxe)|(cannot\sbe\sseen)|(far\saway)/gi) || []).length == 0) {
         if (Player.WarMode()) {
             Orion.Print('In War Mode');
         }
@@ -136,40 +136,40 @@ function Chop(tile) {
         if ((!usingBeetle && Player.Weight() > (Player.MaxWeight() - 50)
             || (((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0) > 1400)
         ))
-        if (useMagic) {
-            if (usingBeetle) {
+            if (useMagic) {
+                if (usingBeetle) {
+                    Orion.Wait(600);
+                    WalkTo(beetleMobile, 1)
+                    Orion.UseObject(beetleMobile.Serial())
+                }
                 Orion.Wait(600);
-                WalkTo(beetleMobile, 1)
-                Orion.UseObject(beetleMobile.Serial())
-            }
-            Orion.Wait(600);
-            MarkRune(lastLocationRune);
-            Orion.Wait(3000);
-            RecallRune(storageRune);
-            Orion.Wait(1500);
-            WalkTo(storageBox)
-            Orion.UseObject(Player.Serial())
-            Orion.Wait(500);
-            if (Player.BankSerial() == storageBox.Serial()) {
-                Orion.Say('bank');
-            }
+                MarkRune(lastLocationRune);
+                Orion.Wait(3000);
+                RecallRune(storageRune);
+                Orion.Wait(1500);
+                WalkTo(storageBox)
+                Orion.UseObject(Player.Serial())
+                Orion.Wait(500);
+                if (Player.BankSerial() == storageBox.Serial()) {
+                    Orion.Say('bank');
+                }
 
-            Orion.FindTypeEx('0x1BD7').forEach(function (boards) {
-                MoveItemsFromPlayer(storageBox, boards.Graphic(), any);
-            })
-            if (usingBeetle) {
-                Orion.RequestContextMenu(beetleMobile.Serial());
-                Orion.WaitContextMenuID(beetleMobile.Serial(), 10);
-                EmptyContainerToAnother(beetleMobile, storageBox);
-                Orion.Wait(600);
-                Orion.UseObject(beetleMobile.Serial())
-                Orion.Wait(600);
-            }
+                Orion.FindTypeEx('0x1BD7').forEach(function (boards) {
+                    MoveItemsFromPlayer(storageBox, boards.Graphic(), any);
+                })
+                if (usingBeetle) {
+                    Orion.RequestContextMenu(beetleMobile.Serial());
+                    Orion.WaitContextMenuID(beetleMobile.Serial(), 10);
+                    EmptyContainerToAnother(beetleMobile, storageBox);
+                    Orion.Wait(600);
+                    Orion.UseObject(beetleMobile.Serial())
+                    Orion.Wait(600);
+                }
 
-            RecallRune(lastLocationRune);
-            Orion.Wait(1000);
-            Orion.UseObject(Player.Serial())
-        }
+                RecallRune(lastLocationRune);
+                Orion.Wait(1000);
+                Orion.UseObject(Player.Serial())
+            }
 
         if (Player.Weight() > (Player.MaxWeight() - 100)) {
             Orion.FindTypeEx('0x1BDD', any, backpack)
@@ -202,14 +202,13 @@ function Chop(tile) {
 }
 
 function EquipAxe() {
-if(axe==null)
-{
-axe = Orion.FindObject('0x4012327C')
-}
+    if (axe == null) {
+        axe = Orion.FindObject('0x4012327C')
+    }
     if (axe.Layer() == 0) {
         Orion.Unequip('LeftHand');
         Orion.Unequip('RightHand');
-            Orion.Wait(400);
+        Orion.Wait(400);
 
         while (Orion.ObjAtLayer('LeftHand') == null) {
             Orion.Equip(axe.Serial());

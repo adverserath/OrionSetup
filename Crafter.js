@@ -36,7 +36,7 @@ function StartMining() {
 }
 
 function RestackContainerItems() {
-Orion.Print('Select the container you would like to sort');
-var container = SelectTarget();
-MoveItems(container,container,'any','any');
+    Orion.Print('Select the container you would like to sort');
+    var container = SelectTarget();
+    MoveItems(container, container, 'any', 'any');
 }

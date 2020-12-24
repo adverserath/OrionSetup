@@ -3,25 +3,24 @@
 
 //#include Scripts/helpers/ItemManager.js
 
-function PrintDistance()
-{
-var target = SelectTarget();
+function PrintDistance() {
+	var target = SelectTarget();
 
-while(!Player.Dead()){
-Orion.Wait(100)
-Orion.Print(target.Distance())
-}
+	while (!Player.Dead()) {
+		Orion.Wait(100)
+		Orion.Print(target.Distance())
+	}
 }
 function PrintAllItemsInContainer() {
-var container = SelectTarget();
-Orion.Print(container.Serial())
-        var items = Orion.FindTypeEx(any, any, container.Serial());
-TextWindow.Open()
+	var container = SelectTarget();
+	Orion.Print(container.Serial())
+	var items = Orion.FindTypeEx(any, any, container.Serial());
+	TextWindow.Open()
 
-        items.forEach(function (item) {
-        
-TextWindow.Print(item.Name())
-        });
+	items.forEach(function (item) {
+
+		TextWindow.Print(item.Name())
+	});
 }
 var unique;
 var checkedIDs = [];
@@ -171,82 +170,82 @@ function ShowItemWorth() {
 		var itemName = item.Name();
 		var itemProp = item.Properties();
 
-		itemValue +=((itemProp.match(
-		/Intelligence\sBonus\s(\d)/i
-		)|| [])[1]||0)/8;
-		
-		itemValue +=((itemProp.match(
-		/Mana\sIncrease\s(\d)/i
-		)|| [])[1]||0)/8;
-			
-		itemValue +=((itemProp.match(
-		/Faster\sCast\s(\d)/i
-		)|| [])[1]||0)/1;	
+		itemValue += ((itemProp.match(
+			/Intelligence\sBonus\s(\d)/i
+		) || [])[1] || 0) / 8;
 
-		itemValue +=((itemProp.match(
-		/Faster\sCast\sRecovery\s(\d)/i
-		)|| [])[1]||0)/3;	
-		
-		itemValue +=((itemProp.match(
-		/Spell\sDamage\sIncrease\s(\d*)/i
-		)|| [])[1]||0)/12;	
+		itemValue += ((itemProp.match(
+			/Mana\sIncrease\s(\d)/i
+		) || [])[1] || 0) / 8;
 
-		itemValue +=((itemProp.match(
-		/Magery\s\+(\d*)/i
-		)|| [])[1]||0)/15;	
+		itemValue += ((itemProp.match(
+			/Faster\sCast\s(\d)/i
+		) || [])[1] || 0) / 1;
 
-		itemValue +=((itemProp.match(
-		/Meditation\s\+(\d*)/i
-		)|| [])[1]||0)/15;	
+		itemValue += ((itemProp.match(
+			/Faster\sCast\sRecovery\s(\d)/i
+		) || [])[1] || 0) / 3;
 
-		itemValue +=((itemProp.match(
-		/Evaluating\sIntelligence\s\+(\d*)/i
-		)|| [])[1]||0)/15;	
+		itemValue += ((itemProp.match(
+			/Spell\sDamage\sIncrease\s(\d*)/i
+		) || [])[1] || 0) / 12;
 
-		itemValue +=((itemProp.match(
-		/Resisting\sSpells\s\+(\d*)/i
-		)|| [])[1]||0)/15;	
+		itemValue += ((itemProp.match(
+			/Magery\s\+(\d*)/i
+		) || [])[1] || 0) / 15;
 
-		itemValue +=((itemProp.match(
-		/Lower\sReagent\sCost\s(\d*)/i
-		)|| [])[1]||0)/20;	
+		itemValue += ((itemProp.match(
+			/Meditation\s\+(\d*)/i
+		) || [])[1] || 0) / 15;
 
-		itemValue +=((itemProp.match(
-		/Lower\sMana\sCost\s(\d)/i
-		)|| [])[1]||0)/8;	
+		itemValue += ((itemProp.match(
+			/Evaluating\sIntelligence\s\+(\d*)/i
+		) || [])[1] || 0) / 15;
 
-		itemValue +=((itemProp.match(
-		/Mana\sRegeneration\s(\d*)/i
-		)|| [])[1]||0)/2;	
+		itemValue += ((itemProp.match(
+			/Resisting\sSpells\s\+(\d*)/i
+		) || [])[1] || 0) / 15;
 
-		itemValue +=(itemProp.match(
-		/Repond\sSlayer/i
-		)|| []).length;	
+		itemValue += ((itemProp.match(
+			/Lower\sReagent\sCost\s(\d*)/i
+		) || [])[1] || 0) / 20;
 
-		itemValue +=(itemProp.match(
-		/Undead\sSlayer/i
-		)|| []).length;	
+		itemValue += ((itemProp.match(
+			/Lower\sMana\sCost\s(\d)/i
+		) || [])[1] || 0) / 8;
 
-		itemValue +=(itemProp.match(
-		/Elemental\sSlayer/i
-		)|| []).length;	
+		itemValue += ((itemProp.match(
+			/Mana\sRegeneration\s(\d*)/i
+		) || [])[1] || 0) / 2;
 
-		itemValue +=(itemProp.match(
-		/Demon\sSlayer/i
-		)|| []).length;	
+		itemValue += (itemProp.match(
+			/Repond\sSlayer/i
+		) || []).length;
 
-		itemValue +=(itemProp.match(
-		/Arachnid\sSlayer/i
-		)|| []).length;	
+		itemValue += (itemProp.match(
+			/Undead\sSlayer/i
+		) || []).length;
 
-		itemValue +=(itemProp.match(
-		/Reptile\sSlayer/i
-		)|| []).length;	
+		itemValue += (itemProp.match(
+			/Elemental\sSlayer/i
+		) || []).length;
 
-		itemValue +=(itemProp.match(
-		/Dragon\sSlayer/i
-		)|| []).length;			
+		itemValue += (itemProp.match(
+			/Demon\sSlayer/i
+		) || []).length;
 
-Orion.Print(itemValue);
+		itemValue += (itemProp.match(
+			/Arachnid\sSlayer/i
+		) || []).length;
+
+		itemValue += (itemProp.match(
+			/Reptile\sSlayer/i
+		) || []).length;
+
+		itemValue += (itemProp.match(
+			/Dragon\sSlayer/i
+		) || []).length;
+
+		Orion.Print(itemValue);
 	}
 }

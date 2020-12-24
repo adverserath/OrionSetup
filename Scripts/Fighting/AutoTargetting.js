@@ -230,7 +230,7 @@ function MobFinder() {
         while (Player.WarMode()) {
             Orion.Wait(500);
             var mobs = Orion.FindTypeEx(mob.Graphic(), any, ground,
-            'nothumanmobile|live|ignoreself|ignorefriends', '60', '3|4')
+                'nothumanmobile|live|ignoreself|ignorefriends', '60', '3|4')
 
             if (mobs.length > 0) {
                 WalkTo(mobs.shift(), 10);

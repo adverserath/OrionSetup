@@ -36,7 +36,7 @@ function WalkTo(object, distance) {
     distance = 1;
   }
 
-    Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, 1, 1,5000);
+  Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, 1, 1, 5000);
   //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
 }
 
@@ -58,36 +58,35 @@ function BorderEdge(x, y, p2, range) {
 
 }
 
-function TestRange(){
-var target  = SelectTarget()
-var lastX = target.X()
-var lastY = target.Y()
-while(!Player.Dead())
-{if(lastX!=target.X() || lastY!=target.Y())
-{
-ShowRange(target.Serial(),[3,8])
-lastX = target.X()
-lastY = target.Y()
+function TestRange() {
+  var target = SelectTarget()
+  var lastX = target.X()
+  var lastY = target.Y()
+  while (!Player.Dead()) {
+    if (lastX != target.X() || lastY != target.Y()) {
+      ShowRange(target.Serial(), [3, 8])
+      lastX = target.X()
+      lastY = target.Y()
+    }
+    Orion.Wait(100);
+  }
 }
-Orion.Wait(100);
-}
-}
-function ShowRange(targetId, range)
-{Orion.ClearFakeMapObjects();
+function ShowRange(targetId, range) {
+  Orion.ClearFakeMapObjects();
   if (Orion.ObjectExists(targetId)) {
     var target = Orion.FindObject(targetId)
     var x = target.X();
     var y = target.Y();
-range.forEach(function (distance){
+    range.forEach(function (distance) {
       Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance)
         .filter(function (tile) {
           return BorderEdge(x, y, tile, distance);
         })
-        .forEach(function (tile){
-        Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+        .forEach(function (tile) {
+          Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
         }
         )
-})        
+    })
 
   }
 }

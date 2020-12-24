@@ -1,5 +1,5 @@
 function CastSpellOnTarget(spellName, targetID) {
-	Orion.Cast(spellName+'');	
+	Orion.Cast(spellName + '');
 	if (Orion.WaitForTarget(10000))
 		Orion.TargetObject(targetID);
 }
@@ -20,7 +20,7 @@ function RecallRune(runeItem) {
 
 function TakeOffClothesAndMeditate(_private) {
 	var equipment = [];
-		//		Orion.Undress();
+	//		Orion.Undress();
 
 	while (Player.Mana() < Player.MaxMana()) {
 		if (!Orion.BuffExists('Meditation')) {
@@ -28,5 +28,5 @@ function TakeOffClothesAndMeditate(_private) {
 		}
 		Orion.Wait(4000);
 	}
-Orion.Wait(4000);
+	Orion.Wait(4000);
 }

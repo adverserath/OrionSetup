@@ -32,7 +32,7 @@ var provokeMessage = 'you start a fight|cannot be seen'
 
 function Provoke() {
     TextWindow.Print('Provo ' + animal.Name() + ' ' + animal.Serial());
-var animal;
+    var animal;
     if (animal == null) {
         animal = SelectTarget();
     }
@@ -99,9 +99,9 @@ function TrainMusic() {
 
 
     while (!Player.Dead()) {
-    var animals = [];
+        var animals = [];
         Orion.IgnoreReset();
-    Orion.ResetIgnoreList();
+        Orion.ResetIgnoreList();
         Orion.Wait(200);
         TextWindow.Print("Looking for tamables");
 
@@ -131,7 +131,7 @@ function TrainMusic() {
     BotPush("You died")
 }
 
-function ReleaseAllPets(animal,selectedTarget) {
+function ReleaseAllPets(animal, selectedTarget) {
     var pets = [];
 
     if (selectedTarget.length > 0) {
@@ -151,15 +151,14 @@ function ReleaseAllPets(animal,selectedTarget) {
             Orion.WalkTo(pet.X(), pet.Y(), pet.Z(), 4, 1, 1, 2, 15000)
             Rename(pet.Serial());
             Orion.Wait(1500);
-        //    Orion.Say(pet.Name() + " release");
-			Release(pet);
-//            Orion.Ignore(pet.Serial());
-  //KILL
-  while(Orion.ObjectExists(pet.Serial()))
-  {
-  Orion.CastTarget('Flame Strike',pet.Serial())
-  Orion.Wait(1000);
-  }
+            //    Orion.Say(pet.Name() + " release");
+            Release(pet);
+            //            Orion.Ignore(pet.Serial());
+            //KILL
+            while (Orion.ObjectExists(pet.Serial())) {
+                Orion.CastTarget('Flame Strike', pet.Serial())
+                Orion.Wait(1000);
+            }
         }
     });
     if (Player.Followers() == 5) {
@@ -169,30 +168,26 @@ function ReleaseAllPets(animal,selectedTarget) {
 
 }
 
-function Release(target)
-{
-if(target==null)
-target  = SelectTarget();
-          	Orion.RequestContextMenu(target.Serial());
-	Orion.WaitContextMenuID(target.Serial(), 9);
-	
-	
-		Orion.RequestContextMenu(target.Serial());
-	Orion.WaitContextMenuID(target.Serial(), 9);
-	if (Orion.WaitForGump(1000))
-	{
-		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x909CC741'))
-		{
-			gump0.Select(Orion.CreateGumpHook(2));
-			Orion.Wait(100);
-		}
-	}
-	
+function Release(target) {
+    if (target == null)
+        target = SelectTarget();
+    Orion.RequestContextMenu(target.Serial());
+    Orion.WaitContextMenuID(target.Serial(), 9);
+
+
+    Orion.RequestContextMenu(target.Serial());
+    Orion.WaitContextMenuID(target.Serial(), 9);
+    if (Orion.WaitForGump(1000)) {
+        var gump0 = Orion.GetGump('last');
+        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x909CC741')) {
+            gump0.Select(Orion.CreateGumpHook(2));
+            Orion.Wait(100);
+        }
+    }
+
 }
 
-function PrintNumberOfMobs()
-{
+function PrintNumberOfMobs() {
 
-Orion.Print(Orion.FindTypeEx(any, any, 'ground', 'mobile', 30, 3).length)
+    Orion.Print(Orion.FindTypeEx(any, any, 'ground', 'mobile', 30, 3).length)
 }

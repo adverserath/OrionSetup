@@ -27,43 +27,41 @@ function MoveHides(corpse) {
 }
 
 function CutCorpses() {
-Orion.IgnoreReset();
+    Orion.IgnoreReset();
     var knife = Orion.FindType('0x0EC4', any, backpack).shift();
 
-            var corpses = Orion.FindTypeEx('0x2006', any, ground, 'near', 2);
-            corpses.forEach(function (corpse) {
-                Orion.Wait(400);
-                Orion.UseObject(knife);
-                if (Orion.WaitForTarget(1000)) {
-                    Orion.TargetObject(corpse.Serial());
-                }
-            });
-            corpses.forEach(function (corpse) {
-                Orion.Wait(400);
-                Orion.OpenContainer(corpse);
-                Orion.Wait(600);
-                MoveHides(corpse);
-                CutHides();
-                BankLeather();
-                Orion.Ignore(corpse.Serial());
-            });
+    var corpses = Orion.FindTypeEx('0x2006', any, ground, 'near', 2);
+    corpses.forEach(function (corpse) {
+        Orion.Wait(400);
+        Orion.UseObject(knife);
+        if (Orion.WaitForTarget(1000)) {
+            Orion.TargetObject(corpse.Serial());
+        }
+    });
+    corpses.forEach(function (corpse) {
+        Orion.Wait(400);
+        Orion.OpenContainer(corpse);
+        Orion.Wait(600);
+        MoveHides(corpse);
+        CutHides();
+        BankLeather();
+        Orion.Ignore(corpse.Serial());
+    });
 
 }
 
-function AutoLootAssist()
-{
-while(Player.Weight()<Player.MaxWeight())
-{
-if(Orion.ClientLastAttack()!='0x00000000'){
+function AutoLootAssist() {
+    while (Player.Weight() < Player.MaxWeight()) {
+        if (Orion.ClientLastAttack() != '0x00000000') {
             var corpses = Orion.FindTypeEx('0x2006', any, ground, any, 20);
             corpses.forEach(function (corpse) {
-            WalkTo(corpse);
-            Orion.UseObject(corpse.Serial())
+                WalkTo(corpse);
+                Orion.UseObject(corpse.Serial())
                 Orion.Wait(3000);
                 Orion.Ignore(corpse.Serial());
             });
-            }
-Orion.Wait(4000);
-Orion.Print("loop reset");
-}
+        }
+        Orion.Wait(4000);
+        Orion.Print("loop reset");
+    }
 }

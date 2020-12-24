@@ -10,7 +10,7 @@ function TrainMagery() {
     var trainingTarget = SelectTarget().Serial();
 
     while (Orion.SkillValue('Magery') < 1000) {
-Orion.Wait(500);
+        Orion.Wait(500);
         if ((Orion.SkillValue('Magery') % 1 == 100) && notified == false) {
             BotPush("Magery" + Orion.SkillValue('Magery', 'base'));
         }
@@ -19,7 +19,7 @@ Orion.Wait(500);
         }
 
         skillLevel = Orion.SkillValue('Magery');
-                if (skillLevel < 550) {
+        if (skillLevel < 550) {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();
             }
@@ -51,7 +51,7 @@ Orion.Wait(500);
         }
         else {
             BotPush("Player:" + Player.Name() + " GM Magery");
-         //   Orion.ShutdownWindows('forced');
+            //   Orion.ShutdownWindows('forced');
             Orion.Wait(2000);
         }
     }
@@ -65,8 +65,8 @@ function TrainResist() {
 
     while (Orion.SkillValue('Resisting Spells') < 1000) {
         skillLevel = Orion.SkillValue('Resisting Spells');
-            Orion.Cast('Clumsy', self);
+        Orion.Cast('Clumsy', self);
 
-            Orion.Wait(2000);
-        }
-        }
+        Orion.Wait(2000);
+    }
+}

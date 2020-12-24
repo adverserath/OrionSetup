@@ -10,7 +10,7 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color) {
     Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial()).forEach(function (items) {
         DebugText('Moving:' + items.Name());
         Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
-        Orion.Wait(600+Orion.GetPing('average'));
+        Orion.Wait(600 + Orion.GetPing('average'));
     });
 }
 
@@ -18,13 +18,12 @@ function MoveItemsFromPlayer(toContainer, graphicIDs) {
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, any);
 }
 
-function EmptyContainerToAnother(fromContainer, toContainer)
-{
-WalkTo(toContainer,2);
-Orion.FindTypeEx(any, any, fromContainer.Serial(),3).forEach(function (items) {
+function EmptyContainerToAnother(fromContainer, toContainer) {
+    WalkTo(toContainer, 2);
+    Orion.FindTypeEx(any, any, fromContainer.Serial(), 3).forEach(function (items) {
         DebugText('Moving:' + items.Name());
         Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
-       Orion.Wait(800);
+        Orion.Wait(800);
     });
 }
 
@@ -48,12 +47,11 @@ function Restock(listName) {
                         neededAmount = (reqItem.Count() - Orion.Count(reqItem.Graphic(), reqItem.Color(), backpack, '', '', true));
                         if (item.Container() != Player.Serial() && neededAmount > 0) {
                             DebugText(item.Container() + '   ' + neededAmount);
-                       //     Orion.WalkTo(item.X(), item.Y(), item.Z(), 0, 1, 1, 1);
-                         //   DebugText('Here');
+                            //     Orion.WalkTo(item.X(), item.Y(), item.Z(), 0, 1, 1, 1);
+                            //   DebugText('Here');
                             Orion.MoveItem(item.Serial(), reqItem.Count());
-                            if(!first)
-                            {Orion.Wait(600);}
-                           first = false;
+                            if (!first) { Orion.Wait(600); }
+                            first = false;
                         }
                     });
                 });

@@ -41,7 +41,7 @@ function TrainTaming() {
     var useRunes = false;
     var startingSkill = Orion.SkillValue('Animal Taming', 'real')
     var animals = [];
-var lastDirection;
+    var lastDirection;
     while (!Player.Dead()) {
         var animals = [];
         Orion.Wait(800);
@@ -53,27 +53,27 @@ var lastDirection;
             })
         }
         animals = animals.filter(function (animal) {
-        
-            return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name()==='a ki-rin')
-        })
-            .sort(function (mobA, mobB) {
-                return mobA.Distance() - mobB.Distance()
-            });
-            animals.forEach(function (animal){
-                    TextWindow.Print(animal.Name());
 
-            })
-            
-        if(animal.length==0){
-                animals = animals.filter(function (animal) {
-        
-            return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name().length!=4)
+            return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name() === 'a ki-rin')
         })
             .sort(function (mobA, mobB) {
                 return mobA.Distance() - mobB.Distance()
             });
-            animals.forEach(function (animal){
-                    TextWindow.Print(animal.Name());
+        animals.forEach(function (animal) {
+            TextWindow.Print(animal.Name());
+
+        })
+
+        if (animal.length == 0) {
+            animals = animals.filter(function (animal) {
+
+                return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name().length != 4)
+            })
+                .sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance()
+                });
+            animals.forEach(function (animal) {
+                TextWindow.Print(animal.Name());
 
             })
         }
@@ -96,29 +96,29 @@ var lastDirection;
         }
         if (useRunes && animals.length == 0 && selectedTarget.length > 0) {
             var randomChoice = 15;//Orion.Random(14);
-             var rune = runes.shift();
-             RecallRune(rune);
-            if (randomChoice <= 2 && lastDirection!=0) {
-            lastDirection=0;
+            var rune = runes.shift();
+            RecallRune(rune);
+            if (randomChoice <= 2 && lastDirection != 0) {
+                lastDirection = 0;
                 var rune = runes.shift();
                 RecallRune(rune);
             }
-            else if (randomChoice <= 5 && lastDirection!=3) {
-            lastDirection=1;
+            else if (randomChoice <= 5 && lastDirection != 3) {
+                lastDirection = 1;
                 Orion.WalkTo(Player.X() + 50, Player.Y(), Player.Z(), 5, 255, 1, 0, 10000);
             }
-            else if (randomChoice <= 8 && lastDirection!=4) {
-            lastDirection=2;
+            else if (randomChoice <= 8 && lastDirection != 4) {
+                lastDirection = 2;
                 Orion.WalkTo(Player.X(), Player.Y() + 50, Player.Z(), 5, 255, 1, 0, 10000);
 
             }
-            else if (randomChoice <= 11 && lastDirection!=1) {
-            lastDirection=3;
+            else if (randomChoice <= 11 && lastDirection != 1) {
+                lastDirection = 3;
                 Orion.WalkTo(Player.X() - 50, Player.Y(), Player.Z(), 5, 255, 1, 0, 10000);
 
             }
-            else if (randomChoice <= 14 && lastDirection!=2) {
-            lastDirection=4;
+            else if (randomChoice <= 14 && lastDirection != 2) {
+                lastDirection = 4;
                 Orion.WalkTo(Player.X(), Player.Y() - 50, Player.Z(), 5, 255, 1, 0, 10000);
 
             }
@@ -126,7 +126,7 @@ var lastDirection;
         TextWindow.Print('Entering Tame Loop');
 
         animals.forEach(function (animal) {
-       //     TakeOffClothesAndMeditate();
+            //     TakeOffClothesAndMeditate();
 
 
             TextWindow.Print("Taming: Name:" + animal.Name() + ' ID:' + animal.Serial())
@@ -141,7 +141,7 @@ var lastDirection;
                 Orion.CancelContextMenu();
 
                 var animalId = animal.Serial();
-           //     Orion.Follow(animalId);
+                //     Orion.Follow(animalId);
 
                 var successfulTame = Tame(animal);
                 TextWindow.Print('Taming ' + successfulTame);
@@ -174,7 +174,7 @@ function Rename(petId) {
 var tamingPass = 'seems to accept|even challenging|tame already';
 var tamingFail = 'else is already|had too many owners|Cannot tame|Its already tame|too far|line of sight|be seen';
 function AutoTame() {
-        Tame(SelectTarget())
+    Tame(SelectTarget())
 }
 function Tame(animal) {
 
@@ -182,7 +182,7 @@ function Tame(animal) {
     if (animal == null) {
         animal = SelectTarget();
     }
-        TextWindow.Print('Tame ' + animal.Name() + ' ' + animal.Serial());
+    TextWindow.Print('Tame ' + animal.Name() + ' ' + animal.Serial());
     var pets = Player.Followers();
     TextWindow.Open();
 
@@ -213,9 +213,9 @@ function Tame(animal) {
             || Orion.InJournal('saving', '', '0', '-1', Orion.Now() - 300, Orion.Now()) != null)
             && Orion.InJournal('fail to tame', '', '0', '-1', startTime, Orion.Now()) == null
             && Orion.InJournal(tamingPass, '', '0', '-1', startTime, Orion.Now()) == null) {
-//Orion.UseObject('0x40156CE2');
+            //Orion.UseObject('0x40156CE2');
             //   TextWindow.Print('Waiting because timer is active')
-			StayAway(animal.Serial(), 6);
+            StayAway(animal.Serial(), 6);
             Orion.Wait(300);
         }
         Orion.RemoveDisplayTimer('SkillInUse');
@@ -238,13 +238,13 @@ function Tame(animal) {
 function Vetting() {
     var target = SelectTarget();
     while (!Player.Dead()) {
-        if (target.Hits() < target.MaxHits()-1) {
+        if (target.Hits() < target.MaxHits() - 1) {
             WalkTo(target);
             Orion.Follow(target.Serial());
             Orion.BandageTarget(target.Serial());
             Orion.Wait(2000);
         }
-Orion.Wait(300);
+        Orion.Wait(300);
 
     }
 }
@@ -252,44 +252,44 @@ Orion.Wait(300);
 function ReleaseAllPets(pet) {
     TextWindow.Print('Starting Pet Killer');
     //Orion.InvokeVirtue('Honor');
-   // if (Orion.WaitForTarget(1000)) {
-  //      Orion.TargetObject(pet.Serial());
-  //  }
+    // if (Orion.WaitForTarget(1000)) {
+    //      Orion.TargetObject(pet.Serial());
+    //  }
     if (Player.Followers() > startingPetCount) {
         Orion.Print('free ' + pet.Name())
         TextWindow.Print('Releasing ' + pet.Name() + ' ' + pet.Serial());
         Orion.WalkTo(pet.X(), pet.Y(), pet.Z(), 4, 1, 1, 2, 15000)
         Rename(pet.Serial());
         Orion.Wait(1000);
-        
+
         //            Orion.Ignore(pet.Serial());
         //KILL
         //Release(pet);
-     //  TextWindow.Print('Killing' + pet.Serial());
-   //     Orion.Follow(pet.Serial(), false);
-    //    while (Orion.ObjectExists(pet.Serial())) {
-    //        StayAway(pet.Serial(), 8);
-     //       Orion.CastTarget('Flame Strike', pet.Serial())
-    //        Orion.Wait(1000);
-    //        TextWindow.Print('Killing');
-     //   }
-     
-     //DROP AT SWAMP
-   //  WalkTo(pet,1)
-   //  Orion.Wait(1000);
-  //   Orion.UseObject(pet.Serial())
-  //   Orion.Wait(1000);
-   //  RecallRune(Orion.FindObject('0x400004E6'));
-   //  Orion.Wait(500);
-       
-  //   Orion.Step(2, 2);
-   //  Orion.Step(2, 2);
-  //   Orion.UseObject(self)
-  //   Orion.Wait(800);
- //    Orion.Say('all guard');
-    Release(pet);
-  //  Orion.Wait(400);
-   //  RecallRune(Orion.FindObject('0x4003EDB0'));
+        //  TextWindow.Print('Killing' + pet.Serial());
+        //     Orion.Follow(pet.Serial(), false);
+        //    while (Orion.ObjectExists(pet.Serial())) {
+        //        StayAway(pet.Serial(), 8);
+        //       Orion.CastTarget('Flame Strike', pet.Serial())
+        //        Orion.Wait(1000);
+        //        TextWindow.Print('Killing');
+        //   }
+
+        //DROP AT SWAMP
+        //  WalkTo(pet,1)
+        //  Orion.Wait(1000);
+        //   Orion.UseObject(pet.Serial())
+        //   Orion.Wait(1000);
+        //  RecallRune(Orion.FindObject('0x400004E6'));
+        //  Orion.Wait(500);
+
+        //   Orion.Step(2, 2);
+        //  Orion.Step(2, 2);
+        //   Orion.UseObject(self)
+        //   Orion.Wait(800);
+        //    Orion.Say('all guard');
+        Release(pet);
+        //  Orion.Wait(400);
+        //  RecallRune(Orion.FindObject('0x4003EDB0'));
     }
 
     if (Player.Followers() == 5) {
@@ -319,7 +319,7 @@ function Release(target) {
             var gump0 = Orion.GetGump('last');
             if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x909CC741')) {
                 gump0.Select(Orion.CreateGumpHook(2));
-               Orion.Wait(500);
+                Orion.Wait(500);
             }
             if (((target.Properties().match(/\(tame\)/gi) || []).length >= 1)) {
                 Orion.RequestContextMenu(target.Serial());

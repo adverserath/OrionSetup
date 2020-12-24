@@ -2,10 +2,10 @@
 //#include Scripts/Fighting/Corpses.js
 //#include Scripts/Fighting/Healing.js
 
-function HealSelf(){
+function HealSelf() {
     BandageSelf();
 }
 
-function BandageNearbyFriend(){
+function BandageNearbyFriend() {
     BandageSelfAndFriendLoop();
 }

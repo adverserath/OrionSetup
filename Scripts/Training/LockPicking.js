@@ -2,9 +2,9 @@
 //#include Scripts/helpers/Target.js
 
 function TrainLockpickingWithKey() {
-Orion.Print("Select the box")
+	Orion.Print("Select the box")
 	var box = SelectTarget();
-Orion.Print("Select the key")
+	Orion.Print("Select the key")
 	var key = SelectTarget();
 	BotPush("LockPicking Start:" + Orion.SkillValue("Lockpicking"))
 
@@ -33,7 +33,7 @@ function AutoLockpicking() {
 	while (!Player.Dead()) {
 		var chestIds = Orion.FindTypeEx(
 			'0x0E42|0x0E40|0x0E3C|0x0E77|0x0E3E|0x0E7E|0x0E41|0x0E3D|0x09AB|0x0E7C|0x0E7F|0x0E43|0x0E3F'
-			, any, any, any, 30).filter(function(chest){
+			, any, any, any, 30).filter(function (chest) {
 				return !chest.Ignored();
 			});
 
@@ -58,7 +58,7 @@ function AutoLockpicking() {
 
 			var startTime = Orion.Now()
 			var keepPicking = true;
-			while (chest.Distance() < 2 && keepPicking==true && ((chest.Properties().match(/contents/gi) || []).length) == 0) {
+			while (chest.Distance() < 2 && keepPicking == true && ((chest.Properties().match(/contents/gi) || []).length) == 0) {
 				Orion.Wait(200);
 				Orion.UseType('0x14FC', '0xFFFF');
 				if (Orion.WaitForTarget(1000)) {
@@ -74,12 +74,12 @@ function AutoLockpicking() {
 					Orion.AddFakeMapObject(chest.Serial(), chest.Graphic(), '0x26', chest.X(), chest.Y(), chest.Z());
 				}
 
-				if (((chest.Properties().match(/contents/gi) || []).length) > 0 ) {
+				if (((chest.Properties().match(/contents/gi) || []).length) > 0) {
 					keepPicking = false;
-						uniqueChestIds.pop(chestId);
-						Orion.Print(chestId + ' open')
-						Orion.RemoveFakeMapObject(chest.Serial());
-						Orion.AddFakeMapObject(chest.Serial(), chest.Graphic(), '0x3', chest.X(), chest.Y(), chest.Z());
+					uniqueChestIds.pop(chestId);
+					Orion.Print(chestId + ' open')
+					Orion.RemoveFakeMapObject(chest.Serial());
+					Orion.AddFakeMapObject(chest.Serial(), chest.Graphic(), '0x3', chest.X(), chest.Y(), chest.Z());
 				}
 			}
 

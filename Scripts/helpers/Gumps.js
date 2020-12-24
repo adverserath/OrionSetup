@@ -34,11 +34,10 @@ function InscribedScrollGump(_private) {
 
 function NeedMoreManaGump(_private) {
     var output = Orion.GetLastGump();
-var response = false;
-        if(output.TextList().length>0)
-{
-response = output.TextList()[0].search("mana")!=-1;
- }
-return response;
+    var response = false;
+    if (output.TextList().length > 0) {
+        response = output.TextList()[0].search("mana") != -1;
+    }
+    return response;
 }
 
