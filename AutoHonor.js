@@ -57,6 +57,7 @@ HonorTarget(mobile)
 			gump0.Select(gumpHook0);
 		}
 	}
+	Orion.Wait(100)
 Orion.Step(1)
 Orion.Step(1)
 Orion.Step(1)
@@ -73,8 +74,10 @@ Orion.Step(1)
     {
     while(!Player.Dead())
     {
+    Orion.Wait(100)
     Orion.UseSkill('Hiding')
 Orion.WalkTo(Player.X(), Player.Y()+20, Player.Z(), 8, 8, 0);	
+    Orion.UseSkill('Hiding')
 Orion.WalkTo(Player.X(), Player.Y()-20, Player.Z(), 8, 8, 0);	
 }
 	

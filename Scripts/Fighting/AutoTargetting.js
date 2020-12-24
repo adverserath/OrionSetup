@@ -8,12 +8,12 @@ var delay = 300; //Delay between loop cycle
 var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
 var notorietyToAttack = 4; //Attack targets with notoriety
 var pullTargetDistance = 10; //Distance of target to agro
-var attackEverythingAtOnce = false; //Initiate an attack on every target within range at once otherwise 1 target at a time
+var attackEverythingAtOnce = true; //Initiate an attack on every target within range at once otherwise 1 target at a time
 var honorTargets = true;
 var autoAttack = true;
-var archer = true;
+var archer = false;
 var walkToNextTarget = false;
-var retargetClosest = true;
+var retargetClosest = false;
 
 //DO NOT CHANGE
 var attack = true; //Enable attacking

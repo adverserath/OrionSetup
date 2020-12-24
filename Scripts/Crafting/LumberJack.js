@@ -202,6 +202,10 @@ function Chop(tile) {
 }
 
 function EquipAxe() {
+if(axe==null)
+{
+axe = Orion.FindObject('0x4012327C')
+}
     if (axe.Layer() == 0) {
         Orion.Unequip('LeftHand');
         Orion.Unequip('RightHand');

@@ -147,13 +147,15 @@ function Mine(tile) {
                 Orion.Wait(3000);
                 RecallRune(storageRune);
                 Orion.Wait(1500);
-                WalkTo(storageBox)
+                TextWindow.Print('Walk To Storage');
+                WalkTo(storageBox,0)
+                TextWindow.Print('Open Storage');
                 Orion.UseObject(Player.Serial())
                 Orion.Wait(500);
                 if (Player.BankSerial() == storageBox.Serial()) {
                     Orion.Say('bank');
                 }
-
+				WalkTo(storageBox,1)
                 Orion.FindListEx('Ores').forEach(function (oreGraphic) {
                     MoveItemsFromPlayer(storageBox, oreGraphic.Graphic(), any);
                 })

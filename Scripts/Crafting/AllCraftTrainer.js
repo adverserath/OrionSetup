@@ -10,8 +10,8 @@
 //Uses a FindList for saws and boards, labelled Carpentry
 //WIP// 
 
-var trashBarrel = '0x40152CAA';
-var storageBox = '0x400DB543';
+var trashBarrel = '0x400880FB';
+var storageBox = '0x400F7A0A';
 var scrollBox = '0x46415E83';
 var moveItem = true;
 function StartAlchemy() {
@@ -44,6 +44,17 @@ function StartTinkering() {
         BotPush(Orion.Time() + "GM Tinkering");
 
 }
+
+function StartCartography() {
+    var tool = '0x0FBF';
+    CraftCreateLoop('Cartography', 'Cartography', 500, 1, 2, tool, trashBarrel); 
+    CraftCreateLoop('Cartography', 'Cartography', 650, 1, 9, tool, trashBarrel); 
+    CraftCreateLoop('Cartography', 'Cartography', 700, 1, 16, tool, trashBarrel); 
+        CraftCreateLoop('Cartography', 'Cartography', 1000, 1, 23, tool, trashBarrel); 
+        BotPush(Orion.Time() + "GM Cartography");
+
+}
+
 
 function StartInscription() {
     var tool = '0x0FBF';

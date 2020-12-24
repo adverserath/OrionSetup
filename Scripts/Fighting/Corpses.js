@@ -55,9 +55,10 @@ function AutoLootAssist()
 while(Player.Weight()<Player.MaxWeight())
 {
 if(Orion.ClientLastAttack()!='0x00000000'){
-            var corpses = Orion.FindTypeEx('0x2006', any, ground, any, 10);
+            var corpses = Orion.FindTypeEx('0x2006', any, ground, any, 20);
             corpses.forEach(function (corpse) {
             WalkTo(corpse);
+            Orion.UseObject(corpse.Serial())
                 Orion.Wait(3000);
                 Orion.Ignore(corpse.Serial());
             });
