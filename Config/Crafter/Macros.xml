@@ -6,14 +6,12 @@
         <action type="3" convert_type="9" waiting_time="1000" serial="0x00006EF6" graphic="0x0190" color="0x841B"/>
         <action type="5" convert_type="0" waiting_time="1000" value="21"/>
     </macro>
-    <macro name="AnimalLore" looped="true" delay="8">
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00002172" id="0x909CC741" button="2"/>
+    <macro name="AnimalLore" looped="true" delay="1">
+        <action type="5" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x00004F26" graphic="0x00E4" color="0x0000"/>
     </macro>
-    <macro name="in" looped="true" delay="2">
-        <action type="5" convert_type="0" waiting_time="1000" value="22"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x0000DEF5" graphic="0x00F3" color="0x0000"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x0000DCE1" graphic="0x00F3" color="0x0000"/>
-        <action type="1" convert_type="1" waiting_time="1000" serial="0x40084AFD" graphic="0x0E9D" color="0x0000"/>
+    <macro name="in" looped="false" delay="1">
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x000190BF" id="0x000001F2" button="133"/>
     </macro>
     <macro name="Moongate" looped="true" delay="6">
         <action type="8" convert_type="0" waiting_time="1000" value="13"/>
@@ -50,5 +48,9 @@
         <action type="1" convert_type="0" waiting_time="1000" serial="0x40078DD5" graphic="0x0E81" color="0x0000"/>
         <action type="3" convert_type="0" waiting_time="1000" serial="0x00007FE2" graphic="0x00A9" color="0x0489"/>
         <action type="3" convert_type="9" waiting_time="1000" serial="0x00006EF6" graphic="0x0190" color="0x841B"/>
+    </macro>
+    <macro name="fish" looped="true" delay="9">
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x400426B7" graphic="0x0DC0" color="0x0000"/>
+        <action type="4" convert_type="8" waiting_time="1000" graphic="0x1799" x="3544" y="2582" z="65531" relative_x="0" relative_y="3" relative_z="65534"/>
     </macro>
 </data>

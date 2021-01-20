@@ -34,7 +34,6 @@ var beetleMobile;
 var axe = null;
 
 function AutoLumberJack(magicOption, _range) {
-    range = _range;
     if (usingBeetle) {
         Orion.UseObject(Player.Serial());
         Orion.Wait(200);
@@ -51,8 +50,11 @@ function AutoLumberJack(magicOption, _range) {
             usingBeetle = false;
         }
     }
-
+    Orion.Print("Using Beetle:" + usingBeetle)
+    range = _range;
     useMagic = magicOption;
+    DebugStart();
+    Orion.Say('Chop Chop');
     Orion.Print("Go into war mode to stop the script at any point");
     var file = Orion.NewFile();
 
@@ -79,12 +81,11 @@ function AutoLumberJack(magicOption, _range) {
         storageRune = Orion.FindObject(storageRuneFile);
         lastLocationRune = Orion.FindObject(lastLocationRuneFile);
     }
+    axe = Orion.FindTypeEx(axes, any, backpack | Player.Serial()).shift();
+
     var trees = [];
 
-    Orion.Wait(1000);
-    axe = Orion.FindTypeEx(axes, any, backpack | Player.Serial()).shift();
     while (!Player.Dead()) {
-        Orion.Print("Starting Loop")
         EquipAxe();
         trees = GetTrees();
         Orion.Print("Trees" + trees.length)
@@ -119,9 +120,9 @@ function Chop(tile) {
     DebugText('StartChopMethod');
     walkBack = false;
 
-    while (Orion.LastJournalMessage() == null
+    while ( Orion.GetDistance(tile.X(), tile.Y()) <= 2 && (Orion.LastJournalMessage() == null
         || (Orion.LastJournalMessage().Text()
-            .match(/(not\senough\swood)|(use\san\saxe)|(cannot\sbe\sseen)|(far\saway)/gi) || []).length == 0) {
+            .match(/(not\senough\swood)|(use\san\saxe)|(cannot\sbe\sseen)|(far\saway)/gi) || []).length == 0)) {
         if (Player.WarMode()) {
             Orion.Print('In War Mode');
         }
@@ -133,45 +134,39 @@ function Chop(tile) {
             walkBack = false;
         }
 
-        if ((!usingBeetle && Player.Weight() > (Player.MaxWeight() - 50)
+        if ((!usingBeetle && Player.Weight() > (Player.MaxWeight() - 90)
             || (((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0) > 1400)
         ))
             if (useMagic) {
                 if (usingBeetle) {
                     Orion.Wait(600);
                     WalkTo(beetleMobile, 1)
-                    Orion.UseObject(beetleMobile.Serial())
                 }
                 Orion.Wait(600);
                 MarkRune(lastLocationRune);
-                Orion.Wait(3000);
+                Orion.Wait(500);
                 RecallRune(storageRune);
-                Orion.Wait(1500);
+                Orion.Wait(500);
                 WalkTo(storageBox)
-                Orion.UseObject(Player.Serial())
                 Orion.Wait(500);
                 if (Player.BankSerial() == storageBox.Serial()) {
                     Orion.Say('bank');
                 }
 
-                Orion.FindTypeEx('0x1BD7').forEach(function (boards) {
-                    MoveItemsFromPlayer(storageBox, boards.Graphic(), any);
+                Orion.FindListEx('Lumber').forEach(function (oreGraphic) {
+                    MoveItemsFromPlayer(storageBox, oreGraphic.Graphic(), any);
                 })
                 if (usingBeetle) {
                     Orion.RequestContextMenu(beetleMobile.Serial());
-                    Orion.WaitContextMenuID(beetleMobile.Serial(), 10);
+					Orion.WaitContextMenuCliloc(beetleMobile.Serial(), 3006145);
+                    Orion.Wait(600);
                     EmptyContainerToAnother(beetleMobile, storageBox);
                     Orion.Wait(600);
-                    Orion.UseObject(beetleMobile.Serial())
-                    Orion.Wait(600);
                 }
-
                 RecallRune(lastLocationRune);
-                Orion.Wait(1000);
-                Orion.UseObject(Player.Serial())
             }
 
-        if (Player.Weight() > (Player.MaxWeight() - 100)) {
+        if (Player.Weight() > (Player.MaxWeight() - 140)) {
             Orion.FindTypeEx('0x1BDD', any, backpack)
                 .forEach(function (wood) {
                     Orion.UseObject(axe.Serial());
@@ -184,7 +179,7 @@ function Chop(tile) {
                 });
             if (usingBeetle) {
                 Orion.Wait(500);
-                Orion.FindTypeEx('0x1BD7').forEach(function (board) {
+                Orion.FindListEx('Lumber').forEach(function (board) {
                     Orion.MoveItem(board.Serial(), 0, beetleMobile.Serial());
                     Orion.Wait(600);
                 });

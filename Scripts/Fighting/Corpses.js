@@ -28,7 +28,7 @@ function MoveHides(corpse) {
 
 function CutCorpses() {
     Orion.IgnoreReset();
-    var knife = Orion.FindType('0x0EC4', any, backpack).shift();
+    var knife = Orion.FindType('0x0EC4|0x13F6', any, backpack).shift();
 
     var corpses = Orion.FindTypeEx('0x2006', any, ground, 'near', 2);
     corpses.forEach(function (corpse) {
@@ -52,16 +52,24 @@ function CutCorpses() {
 
 function AutoLootAssist() {
     while (Player.Weight() < Player.MaxWeight()) {
-        if (Orion.ClientLastAttack() != '0x00000000') {
-            var corpses = Orion.FindTypeEx('0x2006', any, ground, any, 20);
+        if (Orion.ClientLastAttack() == '0x00000000') {
+            var corpses = Orion.FindTypeEx('0x2006', any, 'ground', any, 8);
             corpses.forEach(function (corpse) {
-                WalkTo(corpse);
+            Orion.Print("Walking to "+corpse.Serial())
+                WalkTo(corpse,2);
                 Orion.UseObject(corpse.Serial())
                 Orion.Wait(3000);
+          //      Orion.Hide(corpse.Serial())
                 Orion.Ignore(corpse.Serial());
             });
         }
-        Orion.Wait(4000);
+        Orion.Wait(1000);
         Orion.Print("loop reset");
     }
+}
+
+function HideCorpse()
+{
+var target = SelectTarget()
+                Orion.Hide(target.Serial())
 }

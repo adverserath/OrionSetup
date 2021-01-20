@@ -93,4 +93,5 @@
     <property name="Greater Artifact"/>
     <property name="Major Artifact"/>
     <property name="Legendary Artifact"/>
+    <property name="Weight"/>
 </data>

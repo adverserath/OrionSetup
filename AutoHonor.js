@@ -4,8 +4,11 @@ var targetHits;
 var targetDistance;
 function AutoHonor() {
     while (!Player.Dead()) {
-        Orion.Wait(100);
-        if (Orion.ClientLastAttack() != '0x00000000' && !Orion.BuffExists('Honored2')) {
+        Orion.Wait(400);
+        
+        if (Orion.ClientLastAttack() != '0x00000000' 
+        && Orion.ObjectExists(Orion.ClientLastAttack())
+        && !Orion.BuffExists('Honored2')) {
             var target = Orion.FindObject(Orion.ClientLastAttack());
             currentTargetId = target.Serial();
             targetHits = target.Hits()

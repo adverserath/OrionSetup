@@ -77,16 +77,25 @@ function AutoMiner(magicOption, _range) {
     }
     var rocks = [];
     while (!Player.Dead()) {
-        Orion.Wait(1000);
         rocks = GetRocks(usedRocks);
 
         usedRocks = usedRocks.concat(rocks.map(function (stRock) {
             return stRock.X().toString() + stRock.Y().toString()
         }));
         Orion.Print(rocks.length)
-
+Orion.Wait(1000);
         while (rocks.length > 0) {
+        Orion.Wait(200);
+            
+            if(rocks.length > 5)
+            {
+            rocks.shift();
+			rocks.shift();
+			rocks.shift();
+			rocks.shift();
+            }
             var rockTile = rocks.shift();
+
             TextWindow.Print(rockTile.X(), rockTile.Y(), rockTile.Z(), 0, Player.Z(), 1, 1);
             TextWindow.Print('Orion.WalkTo(' + rockTile.X() + ', ' + rockTile.Y() + ', ' + rockTile.Z() + ', 1, ' + 255 + ', 1, 1);');
             var outcome = (Orion.GetDistance(rockTile.X(), rockTile.Y()) < range - 4) &&
@@ -109,12 +118,11 @@ function AutoMiner(magicOption, _range) {
 var walkBack;
 function Mine(tile) {
     DebugText('StartChopMethod');
-    walkBack = false;
-    //	else if ((itemProp.match(/Luck\s((9|10)(\d))/gi) || []).length >= 1) {
-    while (Orion.LastJournalMessage() == null ||
-        (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)|(metal\sbefore)|(far\saway)/gi) || []).length == 0) {
+    walkBack = false;		
 
-        Orion.Wait(200);
+    while ( Orion.GetDistance(tile.X(), tile.Y()) <= 1 && (Orion.LastJournalMessage() == null ||
+        (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)|(metal\sbefore)|(far\saway)/gi) || []).length == 0)) {
+        Orion.Wait(100);
         if (Player.WarMode()) {
             Orion.Print('In War Mode');
             walkBack = true;
@@ -128,7 +136,7 @@ function Mine(tile) {
         }
 
         if ((Player.Weight() > (Player.MaxWeight() - 40))
-            || (((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0) > 1400)
+            || (beetleMobile!=null && ((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0) > 1400)
             || listHasEmptyInBackpack('Mining')) {
             TextWindow.Print('Going Home');
             if (useMagic) {
@@ -137,21 +145,25 @@ function Mine(tile) {
                     Orion.Wait(3500);
 
                 }
-                if (usingBeetle) {
-                    Orion.Wait(600);
-                    WalkTo(beetleMobile, 1)
-                    Orion.UseObject(beetleMobile.Serial())
+             //   if (usingBeetle) {
+                 //   Orion.Wait(600);
+                  //  WalkTo(beetleMobile, 1)
+                   // Orion.UseObject(beetleMobile.Serial())
+             //   }
+                                if(storageBox==null)
+                {
+                storageBox = Orion.FindObject(storageFile);
                 }
                 Orion.Wait(600);
                 MarkRune(lastLocationRune);
-                Orion.Wait(3000);
-                RecallRune(storageRune);
-                Orion.Wait(1500);
-                TextWindow.Print('Walk To Storage');
-                WalkTo(storageBox, 0)
-                TextWindow.Print('Open Storage');
-                Orion.UseObject(Player.Serial())
                 Orion.Wait(500);
+                RecallRune(storageRune);
+                Orion.Wait(500);
+                TextWindow.Print('Walk To Storage');
+                Orion.WalkTo(storageBox.X(), storageBox.Y(), storageBox.Z(), 1, 255, 1, 1, 5000);
+                TextWindow.Print('Open Storage');
+                Orion.Wait(800);
+
                 if (Player.BankSerial() == storageBox.Serial()) {
                     Orion.Say('bank');
                 }
@@ -161,21 +173,22 @@ function Mine(tile) {
                 })
                 if (usingBeetle) {
                     Orion.RequestContextMenu(beetleMobile.Serial());
-                    Orion.WaitContextMenuID(beetleMobile.Serial(), 10);
+					Orion.WaitContextMenuCliloc(beetleMobile.Serial(), 3006145);
+                       Orion.Wait(600);
                     EmptyContainerToAnother(beetleMobile, storageBox);
                     Orion.Wait(600);
-                    Orion.UseObject(beetleMobile.Serial())
-                    Orion.Wait(600);
+                //    Orion.UseObject(beetleMobile.Serial())
+                //    Orion.Wait(600);
                 }
                 Restock('Mining');
-                Orion.Wait(1500);
+                Orion.Wait(1000);
                 if (listHasEmptyInBackpack('Mining')) {
                     Orion.PauseScript();
                 }
 
                 RecallRune(lastLocationRune);
-                Orion.Wait(1000);
-                Orion.UseObject(Player.Serial())
+               // Orion.Wait(1000);
+              //  Orion.UseObject(Player.Serial())
             }
         }
 
@@ -186,10 +199,13 @@ function Mine(tile) {
                 Orion.Wait(600);
             });
         }
-
+   TextWindow.Print('Digging');
         var pickaxe = Orion.FindType(pickAxe);
         pickaxe.forEach(function (pa) {
-            Orion.Wait(200);
+            Orion.Wait(100);
+            if (Orion.LastJournalMessage() == null ||
+        (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)|(metal\sbefore)|(far\saway)/gi) || []).length == 0) {
+
             if (Player.Weight() <= (Player.MaxWeight() - 40) &&
                 Orion.GetDistance(tile.X(), tile.Y()) <= 1 &&
                 (Orion.LastJournalMessage() == null ||
@@ -199,16 +215,17 @@ function Mine(tile) {
                 TextWindow.Print(Orion.GetDistance(tile.X(), tile.Y()));
 
 
-                if (Orion.WaitForTarget(1000)) {
+                if (Orion.WaitForTarget(200)) {
                     //Orion.Wait(100);
                     TextWindow.Print(tile.Flags());
                     Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
                     TextWindow.Print(Orion.LastJournalMessage().Text());
-                    Orion.Wait(400);
+                    Orion.Wait(600);
                     if (Player.Weight() > (Player.MaxWeight() - 80)) {
                         Orion.Wait(400 + Orion.GetPing());
                     }
                 }
+            }
             }
         });
     }
@@ -238,27 +255,6 @@ function printJournal() {
             TextWindow.Print(Orion.LastJournalMessage().Text());
 
         }
-    }
-}
-
-function Smelt1By1() {
-    while (!Player.Dead()) {
-        Orion.Wait(500);
-        Orion.FindTypeEx('0x19B9', any, ground).forEach(function (ore) {
-            while (ore.Count() != 0) {
-                Orion.MoveItem(ore.Serial(), 1);
-                Orion.Wait(600);
-
-                Orion.FindType('0x19B9').forEach(function (bore) {
-                    Orion.UseObject(bore);
-                    if (Orion.WaitForTarget(1000)) {
-                        Orion.TargetObject('0x451CFB1C');
-                        Orion.Wait(300);
-                    }
-                });
-            }
-
-        });
     }
 }
 

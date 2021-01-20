@@ -4,6 +4,23 @@
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/helpers/Notifier.js
 
+function TamingTo110()
+{	
+while(true)
+{
+	Orion.Cast('744');
+	Orion.Wait(200);
+	if (Orion.WaitForTarget(1000))
+		Orion.TargetObject('0x0000BCBB');
+	if(Orion.SkillValue("Animal Taming")>1100)
+	{
+	BotPush("Taming is 1100")
+		Orion.ShutdownWindows('forced')
+		}
+	
+	}
+}
+
 function VetMultiPets() {
     var selected;
     var selecting = true;
@@ -23,7 +40,7 @@ function VetMultiPets() {
         Orion.Print("Selected:" + pet.Name())
     })
 
-    while (!Player.Dead()) {
+    while (true) {
         Orion.Wait(200)
         pets.filter(function (pet) {
             return pet.Distance() <= 2
@@ -34,9 +51,10 @@ function VetMultiPets() {
             .forEach(function (pet) {
 
                 if (pet != null) {
-                    Orion.Wait(100);
+                    Orion.Wait(300);
                     if (pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits()) || pet.Dead())
                         && !Orion.BuffExists('veterinary')) {
+                        Orion.WaitWhileTargeting(1000);
                         Orion.BandageTarget(pet.Serial());
                         Orion.AddDisplayTimer('bandagePet',
                             Orion.BuffTimeRemaining('veterinary'),
@@ -73,4 +91,22 @@ function ForceLore() {
         Orion.UseSkill('Animal Lore', target.Serial())
         Orion.Wait(400);
     }
+}
+
+function TrainLore()
+{
+    while(Orion.SkillValue('animal lore')<1000)
+    {
+        if (Orion.GumpExists('generic', any, '0xD937D1DB')) {
+        Orion.GetLastGump().Close();
+    }
+        Orion.UseSkill('2');
+        if (Orion.WaitForTarget(1000))
+            Orion.TargetObject('0x00004F26');
+                    Orion.GetLastGump().Close();
+    Orion.Wait(500)
+    }
+    
+                        Orion.Wait(300);
+
 }

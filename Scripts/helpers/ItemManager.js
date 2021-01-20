@@ -10,12 +10,17 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color) {
     Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial()).forEach(function (items) {
         DebugText('Moving:' + items.Name());
         Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
-        Orion.Wait(600 + Orion.GetPing('average'));
+        Orion.Wait(800 + Orion.GetPing('average'));
     });
 }
 
 function MoveItemsFromPlayer(toContainer, graphicIDs) {
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, any);
+}
+//#include Scripts/helpers/Target.js
+
+function Empty(){
+EmptyContainerToAnother(SelectTarget(),SelectTarget())
 }
 
 function EmptyContainerToAnother(fromContainer, toContainer) {
@@ -35,13 +40,11 @@ function Restock(listName) {
         DebugText('item:' + reqItem.Comment() + ' Needed: ' + neededAmount);
 
         if (neededAmount > 0) {
-            Orion.FindTypeEx(any, any, ground, '', '', '', true).filter(function (container) {
+            Orion.FindTypeEx(any, any, ground, '', 2, '', true).filter(function (container) {
                 return container.Serial() != Player.Serial();
             })
                 .forEach(function (outside) {
-                    DebugText('finding:' + reqItem.Comment());
-
-                    Orion.FindTypeEx(reqItem.Graphic(), reqItem.Color(), outside.Serial(), '', 4, '', true).forEach(function (item) {
+                    Orion.FindTypeEx(reqItem.Graphic(), reqItem.Color(), outside.Serial(), '', '', '', true).forEach(function (item) {
                         DebugText('Getting:' + reqItem.Comment());
 
                         neededAmount = (reqItem.Count() - Orion.Count(reqItem.Graphic(), reqItem.Color(), backpack, '', '', true));

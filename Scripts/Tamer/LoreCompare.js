@@ -150,14 +150,17 @@ function RateTarget() {
     CalculateCreature()
     Orion.Wait(100)
 }
+
+var ignoreUnder100 = true;
 function AutoLore() {
     while (!Player.Dead()) {
         Orion.Wait(500)
         while (Player.WarMode()) {
             var mob = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 8, 3).forEach(function (mob) {
+                'nothumanmobile|live|ignoreself|ignorefriends', 4, 3).forEach(function (mob) {
                     ForceLore(mob)
-                    CalculateCreature()
+                    CalculateCreature(mob)
+                    Orion.Ignore(mob.Serial())
                     Orion.Wait(2000)
                 })
             Orion.Wait(100)
@@ -175,7 +178,11 @@ function CalculateCreature(target) {
     }).shift();
 
     var counter = 0;
-    var total = 0;
+    var divider = 0;
+    var untrainedTotal = 0;
+    var unScrolledTotal = 0;
+    var scrolledTotal = 0;
+    
     var usedKeys = []
     loreTextCommands = Orion.GetLastGump().CommandList().forEach(function (command) {
         if (command.search(/\shtmlgump\s/i) >= 0 && lastCommand.search(/xmfhtmlgumpcolor/i) >= 0) {
@@ -195,20 +202,58 @@ function CalculateCreature(target) {
 
                 //  TextWindow.Print(command)
                 //TextWindow.Print(value)
+                                if(value!=0)
+                {
                 counter++;
-                var percRating = (parseFloat(value) / parseFloat(maxValue) * 100).toFixed(2);
-                total = parseFloat(total) + parseFloat(percRating);
-                if (percRating > 97 || maxValue > 100) {
+                if(!(ignoreUnder100&&maxValue<=100&&counter>=10))
+{
+divider++;
+                if(maxValue==0)
+                {
+                maxValue = value
+                }
+                var unscrollMax  = maxValue;
+                if(counter>=10&&maxValue<=100)
+                {
+                unscrollMax=value;
+                }
+                var scrollMax  = maxValue;
+                if(counter>=10&&maxValue<=120)
+                {
+                scrollMax=value;
+                }
+
+                var percRating1 = (parseFloat(value) / parseFloat(maxValue) * 100).toFixed(2);
+                untrainedTotal = parseFloat(untrainedTotal) + parseFloat(percRating1);
+                var percRating2 = (parseFloat(value) / parseFloat(unscrollMax) * 100).toFixed(2);
+                unScrolledTotal = parseFloat(unScrolledTotal) + parseFloat(percRating2);
+                var percRating3 = (parseFloat(value) / parseFloat(scrollMax) * 100).toFixed(2);
+                scrolledTotal = parseFloat(scrolledTotal) + parseFloat(percRating3);
+
+
+               
+                if (percRating3 > 97 || maxValue > 100) {
                     Orion.Print(tameColumns[keyLocation] + '		' + value + ' /' + maxValue)
                 }
-                TextWindow.Print(tameColumns[keyLocation] + '		' + value + ' /' + maxValue + '   ' + percRating + '%')
+                TextWindow.Print(counter + '  '+tameColumns[keyLocation] + '		' + value + ' /' + maxValue + '   ' + percRating1 + '%')
+               if(counter>=10)
+               {
+                TextWindow.Print(counter + '  '+tameColumns[keyLocation] + '		' + value + ' /' + unscrollMax + '   ' + percRating2 + '%')
+                TextWindow.Print(counter + '  '+tameColumns[keyLocation] + '		' + value + ' /' + scrollMax + '   ' + percRating3 + '%')
+}
+}
+}
             }
         }
         lastCommand = command;
     });
-    TextWindow.Print('Overall Rating: ' + (total / counter).toFixed(2) + '%')
-    Orion.Print('Overall Rating: ' + (total / counter).toFixed(2) + '%')
-    if (total / counter > 95) {
+    TextWindow.Print('Untrained Rating: ' + (untrainedTotal / divider).toFixed(2) + '%')
+    Orion.Print('Untrained Rating: ' + (untrainedTotal / divider).toFixed(2) + '%')
+        TextWindow.Print('Unscrolled Rating: ' + (unScrolledTotal / divider).toFixed(2) + '%')
+    Orion.Print('Unscrolled Rating: ' + (unScrolledTotal / divider).toFixed(2) + '%')
+        TextWindow.Print('Scrolled Rating: ' + (scrolledTotal / divider).toFixed(2) + '%')
+    Orion.Print('Scrolled Rating: ' + (scrolledTotal / divider).toFixed(2) + '%')
+    if (scrolledTotal / divider > 95) {
         Orion.AddHighlightCharacter(target.Serial(), '0x047F');
     }
 

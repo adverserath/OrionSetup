@@ -1,9 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="12">
-    <findlist name="Gold/Arrows">
+<data version="0" size="16">
+    <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
         <item graphic="0x0F3F" color="0x0000" comment="Arrow" count="0"/>
+        <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0"/>
+        <item graphic="any" color="any" comment="Lesser Arti" count="0">
+            <property name="Lesser Artifact" value_min="0" value_max="100"/>
+            <property name="Weight" value_min="1" value_max="2"/>
+        </item>
+        <item graphic="any" color="any" comment="Major Arti" count="0">
+            <property name="Major Artifact" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="Greater Arti" count="0">
+            <property name="Greater Artifact" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="Legendary Arti" count="0">
+            <property name="Legendary Artifact" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="0x1F09" color="0x0000" comment="Ring" count="0"/>
+        <item graphic="0x1086" color="0x0000" comment="Bracelet" count="0"/>
+        <item graphic="0x1F06" color="0x0000" comment="Bracelet" count="0"/>
+        <item graphic="0x108A" color="0x0000" comment="Ring" count="0"/>
+        <item graphic="0x1BD1" color="0x0000" comment="Feather" count="0"/>
+        <item graphic="any" color="any" comment="Minor Magic" count="0">
+            <property name="Minor Magic Item" value_min="0" value_max="100"/>
+            <property name="Weight" value_min="1" value_max="2"/>
+        </item>
+        <item graphic="any" color="any" comment="Major Magic" count="0">
+            <property name="Lesser Magic Item" value_min="0" value_max="100"/>
+            <property name="Weight" value_min="1" value_max="2"/>
+        </item>
+        <item graphic="any" color="any" comment="Lesser Magic" count="0">
+            <property name="Lesser Magic Item" value_min="0" value_max="100"/>
+            <property name="Weight" value_min="1" value_max="2"/>
+        </item>
+        <item graphic="any" color="any" comment="Greater Magic" count="0">
+            <property name="Greater Magic Item" value_min="0" value_max="100"/>
+            <property name="Weight" value_min="1" value_max="2"/>
+        </item>
     </findlist>
     <findlist name="Inscription">
         <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>
@@ -29,6 +64,14 @@
         <item graphic="0x019B7" color="any" comment="ore" count="0"/>
         <item graphic="0x019B9" color="any" comment="ore" count="0"/>
         <item graphic="0x019BA" color="any" comment="ore" count="0"/>
+        <item graphic="0x3197" color="0x0000" comment="Fire Ruby" count="0"/>
+        <item graphic="0x3192" color="0x0000" comment="Dark Sapphire" count="0"/>
+        <item graphic="0x3195" color="0x0000" comment="Ecru Citrine" count="0"/>
+        <item graphic="0x3194" color="0x0000" comment="Perfect Emerald" count="0"/>
+        <item graphic="0x3198" color="0x0000" comment="Blue Diamond" count="0"/>
+        <item graphic="0x5732" color="0x0000" comment="Crystalline Blackrock" count="0"/>
+        <item graphic="0x0F28" color="0x0497" comment="A Small Piece Of Blackrock" count="0"/>
+        <item graphic="0x3193" color="0x0000" comment="Turquoise" count="0"/>
     </findlist>
     <findlist name="Mining">
         <item graphic="0x0F39|0x0F39" color="0x0000" comment="Shovel" count="5"/>
@@ -43,7 +86,7 @@
         <item graphic="0x1766" color="0x0000" comment="Cut Cloth" count="200"/>
     </findlist>
     <findlist name="Fletching">
-        <item graphic="0x1BD7" color="0x0000" comment="Board" count="200"/>
+        <item graphic="0x1BD7" color="0xFFFF" comment="Board" count="200"/>
         <item graphic="0x1022" color="0x0000" comment="Fletching" count="3"/>
     </findlist>
     <findlist name="FletchingShaft">
@@ -55,5 +98,21 @@
         <item graphic="0x0F88" color="0x0000" comment="Nightshade" count="500"/>
         <item graphic="0x0E9B" color="0x0000" comment="Mortar And Pestle" count="3"/>
         <item graphic="0x0F84" color="0x0000" comment="Garlic" count="200"/>
+    </findlist>
+    <findlist name="Gold/Arrows">
+        <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
+        <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
+        <item graphic="0x0F3F" color="0x0000" comment="Arrow" count="0"/>
+        <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0"/>
+    </findlist>
+    <findlist name="Blacksmithy">
+        <item graphic="0x0FBB" color="0x0000" comment="Tongs" count="3"/>
+        <item graphic="0x1BF2" color="0x0000" comment="Ingots" count="200"/>
+    </findlist>
+    <findlist name="Lumber">
+        <item graphic="0x1BD7" color="any" comment="Boards" count="0"/>
+    </findlist>
+    <findlist name="Runes">
+        <item graphic="0x1F14" color="0x0000" comment="Recall Rune" count="8"/>
     </findlist>
 </data>

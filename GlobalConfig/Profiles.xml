@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
+    <profile serial="0x00000D0D" file="Atten"/>
+    <profile serial="0x00004F3B" file="Tamer"/>
     <profile serial="0x00005DC9" file="Tyr"/>
+    <profile serial="0x00006A06" file="Tyr"/>
+    <profile serial="0x00006EF6" file="Tamer"/>
     <profile serial="0x0000813F" file="Tim"/>
     <profile serial="0x000097BB" file="Default"/>
-    <profile serial="0x000097F8" file="Tamer"/>
-    <profile serial="0x0000FEFD" file="Tamer"/>
+    <profile serial="0x000097F8" file="Barnacle"/>
+    <profile serial="0x0000C794" file="Tamer"/>
+    <profile serial="0x0000C941" file="Crafter"/>
+    <profile serial="0x0000FA01" file="Vimto"/>
+    <profile serial="0x0000FEFD" file="Atten"/>
     <profile serial="0x00165051" file="Crafter"/>
     <profile serial="0x001CD12E" file="Tim"/>
     <profile serial="0x002B3C52" file="Tyr"/>

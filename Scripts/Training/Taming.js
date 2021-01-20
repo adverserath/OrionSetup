@@ -54,7 +54,7 @@ function TrainTaming() {
         }
         animals = animals.filter(function (animal) {
 
-            return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name() === 'a ki-rin')
+            return ((animal.Properties().match(/tameable/gi) || []).length >= 1)
         })
             .sort(function (mobA, mobB) {
                 return mobA.Distance() - mobB.Distance()
@@ -64,7 +64,7 @@ function TrainTaming() {
 
         })
 
-        if (animal.length == 0) {
+
             animals = animals.filter(function (animal) {
 
                 return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name().length != 4)
@@ -76,7 +76,7 @@ function TrainTaming() {
                 TextWindow.Print(animal.Name());
 
             })
-        }
+        
         TextWindow.Print("Found:" + animals.length);
         while (Player.WarMode() == true) {
             Orion.Print("Select More type of animal then leave war mode")
@@ -161,6 +161,7 @@ function TrainTaming() {
         animals = [];
     }
     BotPush("You died")
+    Orion.ShutdownWindows('forced')
 }
 
 function Rename(petId) {
@@ -347,6 +348,8 @@ function AddNewTameToList() {
     }
     selectedTarget.push(SelectTarget().Graphic());
 }
+
+
 
 function Escape() {
 

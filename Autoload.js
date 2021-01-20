@@ -1,8 +1,21 @@
 //#include Scripts/helpers/Target.js
 //#include Scripts/helpers/Notifier.js
-
+//#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/ItemManager.js
 
+function Empty(){
+EmptyContainerToAnother(SelectTarget(),SelectTarget())
+}
+function test()
+{
+//Orion.InfoContextMenu();
+
+}
+//('serial', count, 'container', index);
+function Hide()
+{
+Orion.Hide()
+}
 function PrintDistance() {
 	var target = SelectTarget();
 

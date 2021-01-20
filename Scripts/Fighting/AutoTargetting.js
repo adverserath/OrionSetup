@@ -3,16 +3,16 @@
 //#include helpers/ItemManager.js
 
 //////START OF CONFIG///////
-var range = 12; //How far to load status from
-var delay = 300; //Delay between loop cycle
+var range = 30; //How far to load status from
+var delay = 500; //Delay between loop cycle
 var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
-var notorietyToAttack = 4; //Attack targets with notoriety
-var pullTargetDistance = 10; //Distance of target to agro
-var attackEverythingAtOnce = true; //Initiate an attack on every target within range at once otherwise 1 target at a time
+var notorietyToAttack = 3; //Attack targets with notoriety
+var pullTargetDistance = 15; //Distance of target to agro
+var attackEverythingAtOnce = false; //Initiate an attack on every target within range at once otherwise 1 target at a time
 var honorTargets = true;
 var autoAttack = true;
 var archer = false;
-var walkToNextTarget = false;
+var walkToNextTarget = true;
 var retargetClosest = false;
 
 //DO NOT CHANGE
@@ -26,7 +26,7 @@ var lastSearchMobsIds = [];
 function ShowEnemiesByDistance() {
 
     //Stop When Dead
-    while (!Player.Dead()) {
+    while (true) {
         var mobileByDistance = [];
         for (var distance = 0; distance <= range; distance++) {
             if (!mobileByDistance.hasOwnProperty(distance)) {
@@ -51,7 +51,8 @@ function ShowEnemiesByDistance() {
             'nothumanmobile|live|ignoreself|ignorefriends', range, notorietyToShow)
             .filter(function (mob) {
                 return mob.Notoriety() >= (notorietyToShow)
-                    && mob.Notoriety() < 7;
+                    && mob.Notoriety() < 7
+                    && mob.Graphic()=='0x00A5';
             })
             .sort(function (mobA, mobB) {
                 return mobA.Distance() - mobB.Distance()
@@ -108,14 +109,21 @@ function ShowEnemiesByDistance() {
 
                         Orion.ClientLastAttack(mobId);
                         AttackMobile(mobile);
-
+                    if (walkToNextTarget == true) {
+                        Orion.Wait(2000);
+                        if (archer == true) {
+                            WalkTo(mobile, 8);
+                        }
+                        else
+                            WalkTo(mobile, 1);
+}
                     }
                 })
         };
 
         AttackMobile(lastAttacker);
         //Attack Closest with lowest health
-        if (autoAttack && retargetClosest && Player.WarMode() && (attack || lastAttacker == null || lastAttacker.Distance() > 1)) {
+        if (autoAttack && retargetClosest && Player.WarMode() && (attack || lastAttacker == null)) {
 
 
             if (attackList.length > 0) {
@@ -147,7 +155,7 @@ function ShowEnemiesByDistance() {
                     vicinity = vicinity.sort(function (mobSerialA, mobSerialB) {
                         return mobSerialA.Hits() - mobSerialB.Hits();
                     });
-                    //  var newTarget = vicinity[Orion.Random(vicinity.length)];
+                      //var newTarget = vicinity[Orion.Random(vicinity.length)];
                     var newTarget = vicinity.shift();
                     AttackMobile(newTarget);
                     if (walkToNextTarget == true) {

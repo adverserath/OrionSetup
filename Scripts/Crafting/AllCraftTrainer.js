@@ -10,8 +10,8 @@
 //Uses a FindList for saws and boards, labelled Carpentry
 //WIP// 
 
-var trashBarrel = '0x400880FB';
-var storageBox = '0x400F7A0A';
+var trashBarrel = '0x40033ED7';
+var storageBox = '0x4014D9C4';
 var scrollBox = '0x46415E83';
 var moveItem = true;
 function StartAlchemy() {
@@ -45,6 +45,15 @@ function StartTinkering() {
 
 }
 
+function StartBlacksmith() {
+    var tool = '0x0FBB';
+    CraftCreateLoop('Blacksmithy', 'Blacksmithy', 750, 22, 44, tool, trashBarrel); //makeTongs
+    CraftCreateLoop('Blacksmithy', 'Blacksmithy', 900, 22, 107, tool, Player.BankSerial()); //makeLockpicks
+    CraftCreateLoop('Blacksmithy', 'Blacksmithy', 1000, 8, 93, tool, trashBarrel); //makeHeatingStand
+    BotPush(Orion.Time() + "GM Blacksmithy");
+
+}
+
 function StartCartography() {
     var tool = '0x0FBF';
     CraftCreateLoop('Cartography', 'Cartography', 500, 1, 2, tool, trashBarrel);
@@ -67,7 +76,7 @@ function StartInscription() {
 
 function StartFletching() {
     var tool = '0x1022';
-    CraftCreateLoop('Bowcraft/Fletching', 'FletchingShaft', 400, 1, 9, tool, storageBox); //shaft
+    CraftCreateLoop('Bowcraft/Fletching', 'FletchingShaft', 400, 1, 16, tool, storageBox); //shaft
     CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 500, 15, 2, tool, trashBarrel); //bow
     CraftCreateLoop('Bowcraft/Fletching', 'FletchingShaft', 899, 8, 16, tool, trashBarrel); //dart
     CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 1000, 15, 23, tool, trashBarrel); //composite
@@ -80,13 +89,13 @@ var scissorsId;
 function StartTailoring() {
     scissorsId = Orion.FindType(scissorsGraphic).shift();
     var tool = '0x0F9D';
-    CraftCreateLoop('Tailoring', 'Tailoring', 480, 8, 16, tool, storageBox); //fancyshirt
-    CraftCreateLoop('Tailoring', 'Tailoring', 520, 8, 44, tool, storageBox); //fancydress
-    CraftCreateLoop('Tailoring', 'Tailoring', 600, 29, 9, tool, storageBox); //furboot
-    CraftCreateLoop('Tailoring', 'Tailoring', 720, 1, 100, tool, storageBox); //kasa
+    CraftCreateLoop('Tailoring', 'Tailoring', 480, 15, 16, tool, storageBox); //fancyshirt
+    CraftCreateLoop('Tailoring', 'Tailoring', 520, 15, 44, tool, storageBox); //fancydress
+    CraftCreateLoop('Tailoring', 'Tailoring', 600, 29, 8, tool, storageBox); //furboot
+    CraftCreateLoop('Tailoring', 'Tailoring', 720, 8, 100, tool, storageBox); //kasa
     CraftCreateLoop('Tailoring', 'Tailoring', 780, 29, 16, tool, storageBox); //ninjatabi
-    CraftCreateLoop('Tailoring', 'Tailoring', 985, 22, 72, tool, storageBox); //oiledcloth
-    CraftCreateLoop('Tailoring', 'Tailoring', 1000, 8, 135, tool, storageBox); //elvenshirt
+    CraftCreateLoop('Tailoring', 'Tailoring', 996, 22, 86, tool, storageBox); //oiledcloth
+    CraftCreateLoop('Tailoring', 'Tailoring', 1000, 15, 191, tool, storageBox); //elvenshirt
 }
 
 
@@ -206,6 +215,19 @@ function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, button
                     Orion.Wait(700);
                 }
             }
+            
+            	if (skillName === 'Blacksmithy' && Orion.WaitForGump(1000))
+	{
+		var gump0 = Orion.GetGump('last');
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x38920ABD'))
+		{
+			gump0.Select(Orion.CreateGumpHook(14));
+			Orion.Wait(100);
+		}
+	}
+	if (Orion.WaitForTarget(1000))
+		Orion.TargetObject(itemId);
+
             var isFirst = true;
 
             if (Orion.ObjectExists(itemId) && moveItem == true) {
