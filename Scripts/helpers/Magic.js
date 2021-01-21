@@ -1,7 +1,18 @@
 function CastSpellOnTarget(spellName, targetID) {
+	var startCastTime = Orion.Now();
+
 	Orion.Cast(spellName + '');
-	if (Orion.WaitForTarget(10000))
+	Orion.Wait(400)
+	while (Orion.InJournal('You have not yet recovered', '', '0', '-1', startCastTime, Orion.Now()) != null) {
+		startCastTime = Orion.Now()
+		Orion.Cast(spellName + '');
+		Orion.Wait(400)
+	}
+
+	if (Orion.WaitForTarget(3000))
 		Orion.TargetObject(targetID);
+	Orion.Wait(1000);
+
 }
 
 function MarkRune(runeItem) {
@@ -9,10 +20,15 @@ function MarkRune(runeItem) {
 }
 
 function RecallRune(runeItem) {
+	var startCastTime = Orion.Now();
 	var x = Player.X();
 	var y = Player.Y();
 	CastSpellOnTarget("Recall", runeItem.Serial());
-	Orion.Wait(1500);
+
+	if (Orion.InJournal('blocking the location', '', '0', '-1', startCastTime, Orion.Now() + 1500) != null) {
+		BotPush('Location is blocked')
+		Orion.PauseScript();
+	}
 	if (x == Player.X() && y == Player.Y()) {
 		RecallRune(runeItem);
 	}

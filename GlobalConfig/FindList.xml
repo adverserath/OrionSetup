@@ -113,6 +113,6 @@
         <item graphic="0x1BD7" color="any" comment="Boards" count="0"/>
     </findlist>
     <findlist name="Runes">
-        <item graphic="0x1F14" color="0x0000" comment="Recall Rune" count="32"/>
+        <item graphic="0x1F14" color="any" comment="Recall Rune" count="10"/>
     </findlist>
 </data>
