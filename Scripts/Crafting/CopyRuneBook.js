@@ -5,17 +5,9 @@
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Gumps.js
 
-function GeneratedScript_110640()
+function GeneratedScript_001752()
 {
-	if (Orion.WaitForGump(1000))
-	{
-		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x000001F2'))
-		{
-			gump0.Select(Orion.CreateGumpHook(133));
-			Orion.Wait(100);
-		}
-	}
+Orion.Print(Orion.ObjAtLayer(21).Serial())
 }
 
 function CopyRuneBook() {
@@ -23,21 +15,27 @@ function CopyRuneBook() {
 
     Orion.Print('Select original book')
     var originalBook = SelectTarget();
+    var originalBookName = originalBook.Properties()
+    .match(/(?:.*\n)*((?:\w|\s)*){1}/i)[1];
+		
     Orion.Print('Select new book')
     var newBook = SelectTarget();
 
 var runeBookRune;
-    if (originalBook.Container()!=backpack)
+    if (originalBook.Container()!=Orion.ObjAtLayer(21).Serial())
     {
         Orion.Print('Select runebook location rune')
         runeBookRune = SelectTarget();
-        WalkTo(newBook);
-//Create rune to location
-
+        WalkTo(originalBook);
+        Orion.Wait(1000);
+        Orion.Print('Marking Original Location')
+        MarkRune(runeBookRune);
+        Orion.Wait(1000);
     }
+
     //Open Original book
     Orion.UseObject(newBook.Serial())
-    Orion.Wait(500)
+    Orion.WaitForGump(1000)
 
     //Count Locations = X
     var newBookgumpinfo = Orion.GetLastGump().TextList();
@@ -46,17 +44,30 @@ var runeBookRune;
         if (newBookgumpinfo[textId] != 'Empty')
             newBooklocations++;
     }
-    Orion.GetLastGump().Close();
 
     if (newBooklocations != 0) {
         Orion.Print('New book must be empty')
         Orion.ToggleScript('CopyRuneBook');
     }
 
-    Orion.Wait(1000)
+	if (Orion.WaitForGump(1000))
+	{
+		var gump0 = Orion.GetGump('last');
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x00000059'))
+		{
+			gump0.Select(Orion.CreateGumpHook(1));
+			Orion.Wait(300);
+			Orion.SendPrompt(originalBookName);
+			Orion.Wait(300);
+		}
+	}
+	    Orion.GetLastGump().Close();
+
+
+    Orion.Wait(600)
     //Open Original book
     Orion.UseObject(originalBook.Serial())
-    Orion.Wait(500)
+    Orion.WaitForGump(1000);
     //Count Locations = X
     var gumpinfo = Orion.GetLastGump().TextList();
     var locations = 0;
@@ -83,18 +94,37 @@ var runeBookRune;
         Orion.ToggleScript('CopyRuneBook');
     }
     //For 0+2 to X+2
-    for (var recallId = 1; recallId < locations; recallId++) {
+    for (var recallId = 1; recallId <= locations; recallId++) {
+        if(runeBookRune!=null)
+        {
+            var lastX = Player.X()
+            var lastY = Player.Y()
+            Orion.Wait(500)
+            RecallRune(runeBookRune);
+            Orion.Wait(2000)
+            while (Player.X() == lastX && Player.Y() == lastY) {
+                Orion.Wait(2000)
+                RecallRune(runeBookRune);
+            }
+            WalkTo(originalBook);
+            Orion.Wait(1000)
+        }
         Orion.UseObject(originalBook.Serial());
-        Orion.Print('Recalling to ' + gumpinfo[recallId + 1])
+        var recallbutton = (49 + recallId);
+        var lastX = Player.X()
+        var lastY = Player.Y()
+        
+        Orion.Print('Recalling to ' + gumpinfo[recallId + 1] + ' button: ' + recallbutton)
         if (Orion.WaitForGump(1000)) {
+            Orion.Wait(500)
             var gump0 = Orion.GetGump('last');
+            
+            Orion.Print(recallbutton)
             if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x00000059')) {
-                gump0.Select(Orion.CreateGumpHook((49 + recallId)));
+                gump0.Select(Orion.CreateGumpHook(recallbutton));
                 Orion.Wait(100);
             }
         }
-        var lastX = Player.X()
-        var lastY = Player.Y()
 
         while (Player.X() == lastX && Player.Y() == lastY) {
             Orion.Wait(100)
@@ -113,6 +143,4 @@ var runeBookRune;
         Orion.Wait(1000);
 
     }
-
-
 }
