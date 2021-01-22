@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="31" action="0" key="123" modifiers="8"/>
-    <hotkey type="8" action="4" key="99" modifiers="4"/>
-    <hotkey type="31" action="2" key="122" modifiers="8"/>
-    <hotkey type="8" action="2" key="98" modifiers="4"/>
+    <hotkey type="8" action="3" key="100" modifiers="4"/>
+    <hotkey type="8" action="5" key="101" modifiers="4"/>
+    <hotkey type="29" action="262" key="19" modifiers="0"/>
     <hotkey type="41" action="7" key="111" modifiers="16"/>
-    <hotkey type="29" action="257" key="36" modifiers="16"/>
-    <hotkey type="29" action="258" key="33" modifiers="16"/>
-    <hotkey type="29" action="263" key="145" modifiers="0"/>
-    <hotkey type="9" action="115" key="117" modifiers="0"/>
-    <hotkey type="29" action="260" key="35" modifiers="16"/>
-    <hotkey type="49" action="0" key="16" modifiers="64"/>
-    <hotkey type="9" action="104" key="116" modifiers="0"/>
-    <hotkey type="29" action="261" key="34" modifiers="16"/>
-    <hotkey type="29" action="256" key="45" modifiers="16"/>
-    <hotkey type="47" action="0" key="119" modifiers="0"/>
-    <hotkey type="11" action="110" key="118" modifiers="0"/>
-    <hotkey type="9" action="111" key="113" modifiers="0"/>
-    <hotkey type="29" action="259" key="46" modifiers="16"/>
-    <hotkey type="16" action="32" key="112" modifiers="0"/>
-    <hotkey type="11" action="105" key="115" modifiers="0"/>
-    <hotkey type="9" action="103" key="114" modifiers="0"/>
-    <hotkey type="9" action="116" key="121" modifiers="0"/>
-    <hotkey type="9" action="107" key="120" modifiers="0"/>
-    <hotkey type="3" action="1" key="123" modifiers="0" meta="{&#10;    &quot;external_code&quot;: &quot;var target = SelectTarget()\n                Orion.Hide(target.Serial())&quot;,&#10;    &quot;name&quot;: &quot;HideCorpse&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
-    <hotkey type="9" action="101" key="122" modifiers="0"/>
-    <hotkey type="31" action="6" key="117" modifiers="8"/>
+    <hotkey type="31" action="5" key="118" modifiers="8"/>
     <hotkey type="31" action="4" key="119" modifiers="8"/>
     <hotkey type="12" action="37" key="103" modifiers="0"/>
-    <hotkey type="31" action="5" key="118" modifiers="8"/>
-    <hotkey type="29" action="262" key="19" modifiers="0"/>
-    <hotkey type="8" action="5" key="101" modifiers="4"/>
-    <hotkey type="8" action="3" key="100" modifiers="4"/>
-    <hotkey type="8" action="6" key="102" modifiers="4"/>
-    <hotkey type="31" action="3" key="121" modifiers="8"/>
-    <hotkey type="8" action="1" key="97" modifiers="4"/>
+    <hotkey type="31" action="6" key="117" modifiers="8"/>
+    <hotkey type="29" action="259" key="46" modifiers="16"/>
+    <hotkey type="9" action="101" key="122" modifiers="0"/>
+    <hotkey type="29" action="256" key="45" modifiers="16"/>
+    <hotkey type="3" action="1" key="123" modifiers="0" meta="{&#10;    &quot;external_code&quot;: &quot;var target = SelectTarget()\n                Orion.Hide(target.Serial())&quot;,&#10;    &quot;name&quot;: &quot;HideCorpse&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="29" action="261" key="34" modifiers="16"/>
+    <hotkey type="9" action="107" key="120" modifiers="0"/>
+    <hotkey type="29" action="260" key="35" modifiers="16"/>
+    <hotkey type="9" action="116" key="121" modifiers="0"/>
+    <hotkey type="29" action="258" key="33" modifiers="16"/>
+    <hotkey type="29" action="257" key="36" modifiers="16"/>
+    <hotkey type="49" action="0" key="16" modifiers="64"/>
+    <hotkey type="9" action="103" key="114" modifiers="0"/>
+    <hotkey type="29" action="263" key="145" modifiers="0"/>
+    <hotkey type="11" action="105" key="115" modifiers="0"/>
+    <hotkey type="16" action="32" key="112" modifiers="0"/>
+    <hotkey type="9" action="111" key="113" modifiers="0"/>
+    <hotkey type="11" action="110" key="118" modifiers="0"/>
+    <hotkey type="47" action="0" key="119" modifiers="0"/>
+    <hotkey type="9" action="104" key="116" modifiers="0"/>
+    <hotkey type="9" action="115" key="117" modifiers="0"/>
+    <hotkey type="31" action="2" key="122" modifiers="8"/>
+    <hotkey type="8" action="2" key="98" modifiers="4"/>
+    <hotkey type="31" action="0" key="123" modifiers="8"/>
+    <hotkey type="8" action="4" key="99" modifiers="4"/>
     <hotkey type="31" action="1" key="120" modifiers="8"/>
     <hotkey type="10" action="109" key="104" modifiers="0"/>
+    <hotkey type="31" action="3" key="121" modifiers="8"/>
+    <hotkey type="8" action="1" key="97" modifiers="4"/>
+    <hotkey type="8" action="6" key="102" modifiers="4"/>
 </data>
