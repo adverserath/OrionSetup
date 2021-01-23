@@ -8,18 +8,18 @@ function StartFishing() {
 
     DebugStart()
     // How far to look for trees from the player
-    var range = 8;
+    var range = 16;
     AutoFisherman(range);
 }
 
 function Messages() {
-TextWindow.Open();
+    TextWindow.Open();
 
-TextWindow.Clear();
-range =10//0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137
-//Orion.GetTilesInRect('0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137', (Player.X() - range), (Player.Y() - range), -10, (Player.X() + range), (Player.Y() + range), 255)
-//            var tiles = Orion.GetTilesInRect('0x1797|0x1798|0x1799|0x179A|0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137', xLoc, yLoc,xLoc, yLoc)
- //           if (tiles.length==1 && tiles[0].Graphic() == '0x1797|0x1798|0x1799|0x179A|0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137') {
+    TextWindow.Clear();
+    range = 10//0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137
+    //Orion.GetTilesInRect('0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137', (Player.X() - range), (Player.Y() - range), -10, (Player.X() + range), (Player.Y() + range), 255)
+    //            var tiles = Orion.GetTilesInRect('0x1797|0x1798|0x1799|0x179A|0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137', xLoc, yLoc,xLoc, yLoc)
+    //           if (tiles.length==1 && tiles[0].Graphic() == '0x1797|0x1798|0x1799|0x179A|0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137') {
 }
 
 
@@ -33,7 +33,8 @@ function HighLightWater() {
     waterTiles.forEach(function (water) {
         Orion.AddFakeMapObject(water.X().toString() + water.Y().toString(), '0x09CC', '', water.X(), water.Y(), water.Z());
     });
-    return waterTiles;}
+    return waterTiles;
+}
 var debug = true;
 var fishingRods = '0x0DC0'
 var range;
@@ -57,29 +58,28 @@ function AutoFisherman(_range) {
     while (!Player.Dead()) {
         EquipRod();
         waterTiles = GetWater(range)
-        
+
         Orion.Print("Water tiles: " + waterTiles.length)
 
         while (waterTiles.length > 0) {
-        Orion.Wait(500)
+            Orion.Wait(500)
 
             var waterTile = waterTiles.shift();
             Orion.RemoveFakeMapObject(waterTile.X().toString() + waterTile.Y().toString());
 
-             Orion.AddFakeMapObject(waterTile.X().toString() + waterTile.Y().toString(), '0x09CC', '0xFF00', waterTile.X(), waterTile.Y(), waterTile.Z()+15);
-                    
-            TextWindow.Print('X:'+ waterTile.X() + ' Y:'+ waterTile.Y() + ' Z:'+  waterTile.Z());
-            var outcome =Orion.WalkTo(waterTile.X(), waterTile.Y(), waterTile.Z(), 4, 255, 1, 1);
-                            TextWindow.Print("Walked" + outcome);
+            Orion.AddFakeMapObject(waterTile.X().toString() + waterTile.Y().toString(), '0x09CC', '0xFF00', waterTile.X(), waterTile.Y(), waterTile.Z() + 15);
+
+            TextWindow.Print('X:' + waterTile.X() + ' Y:' + waterTile.Y() + ' Z:' + waterTile.Z());
+            var outcome = Orion.WalkTo(waterTile.X(), waterTile.Y(), waterTile.Z(), 4, 255, 1, 1);
+            TextWindow.Print("Walked" + outcome);
 
             Orion.WalkTo(waterTile.X(), waterTile.Y(), waterTile.Z(), 6, 255, 1, 1)
             if (outcome) {
                 Fish(waterTile)
-                var chunkX = parseInt((waterTile.X()/8))
-                 var chunkY = parseInt((waterTile.Y()/8))
-                 Orion.RemoveFakeMapObject(waterTile.X().toString() + waterTile.Y().toString());
-
-                 fishedWater = fishedWater.push({
+                var chunkX = parseInt((waterTile.X() / 8))
+                var chunkY = parseInt((waterTile.Y() / 8))
+                Orion.RemoveFakeMapObject(waterTile.X().toString() + waterTile.Y().toString());
+var newChunk =                     {
                         x: chunkX,
                         y: chunkY,
                         X: function () {
@@ -87,17 +87,23 @@ function AutoFisherman(_range) {
                         },
                         Y: function () {
                             return this.y;
-                        },
-                    }
-                );
+                        }
+                    };
+                    TextWindow.Print('newChunk')
+                                        TextWindow.Print(newChunk.X() + '  ' + newChunk.Y())
 
-                 waterTiles = waterTiles.filter(function (tiles){
-                    var keepTile =  parseInt((tiles.X()/8))!=chunkX && parseInt((tiles.Y()/8))!=chunkY 
-                                    if(!keepTile)
-                                    Orion.RemoveFakeMapObject(tiles.X().toString() + tiles.Y().toString());
-                                    return keepTile;
+                fishedWater.push(newChunk);
+fishedWater.forEach(function (chunk){
+                    TextWindow.Print('fished chunks')
+                                        TextWindow.Print(chunk.X() + '  ' + chunk.Y())
+})
+                waterTiles = waterTiles.filter(function (tiles) {
+                    var keepTile = parseInt((tiles.X() / 8)) != chunkX && parseInt((tiles.Y() / 8)) != chunkY
+                    if (!keepTile)
+                        Orion.RemoveFakeMapObject(tiles.X().toString() + tiles.Y().toString());
+                    return keepTile;
 
-                 })
+                })
 
             }
             Orion.ClearJournal();
@@ -112,7 +118,7 @@ function AutoFisherman(_range) {
 
 var walkBack;
 function Fish(tile) {
-Orion.Wait(500)
+    Orion.Wait(500)
     DebugText('StartFishMethod');
     walkBack = false;
     var doNext = false;
@@ -143,8 +149,9 @@ Orion.Wait(500)
             Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
         }
         var startTime = Orion.Now();
-        while (!doNext) {
+        while (!doNext||Player.Weight() < (Player.MaxWeight() - 40)) {
             Orion.Wait(1000);
+                  
             startTime = Orion.Now();
             Orion.UseObject(fishingRod.Serial());
 
@@ -155,7 +162,13 @@ Orion.Wait(500)
                     'Top', 'Circle', 'Fishing', 0, 0,
                     'any', -1, '0x0000FFFE');
             }
-            var msg = (Orion.WaitJournal('Already fishing|You need to be closer|You do not have room|You broke your|seem to be biting here|You do not have room|You broke your|', Orion.Now(), (Orion.Now() + 10000), '2', '0'))
+            Orion.Wait(500);
+            Orion.UseObject(fishingRod.Serial());
+
+            if (Orion.WaitForTarget(1000)) {
+                Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
+            }
+            var msg = (Orion.WaitJournal('Already fishing|You need to be closer|You do not have room|You broke your|seem to be biting here|You do not have room|You broke your|', Orion.Now()-1000, (Orion.Now() + 2000), '2', '0'))
 
             if (msg == null) {
                 TextWindow.Print('Cant fish that');
@@ -172,9 +185,9 @@ Orion.Wait(500)
 
                     doNext = true;
                 }
-                 else if (Orion.InJournal('You broke your', '', '0', '-1', (Orion.Now() - 2000), Orion.Now()) != null) {
-//NeedNewRod
-BotPush('New rod needed')
+                else if (Orion.InJournal('You broke your', '', '0', '-1', (Orion.Now() - 2000), Orion.Now()) != null) {
+                    //NeedNewRod
+                    BotPush('New rod needed')
                     doNext = true;
                 }
                 else if (Orion.InJournal('already fishing', '', '0', '-1', (Orion.Now() - 2000), Orion.Now()) != null) {
@@ -212,18 +225,32 @@ function EquipRod() {
     }
 
 }
-
+function WaterTest()
+{
+GetWater(16);
+}
 function GetWater(_range) {
-Orion.Wait(300)
+    Orion.Wait(300)
     Orion.Print('Range ' + _range);
-    var waterTiles = Orion.GetTilesInRect('water', (Player.X() - _range), (Player.Y() - _range),-6, (Player.X() + _range), (Player.Y() + _range),-1)
-    .filter(function (tile) {
-        return (IsReachable(tile,1))
-    })
-    .filter(function(tile){
-        return fishedWater.map(function(e) { return e.X(); }).indexOf(parseInt((tile.X()/8))) && fishedWater.map(function(e) { return e.Y(); }).indexOf(parseInt((tile.Y()/8)));
+    var waterTiles = Orion.GetTilesInRect('water', (Player.X() - _range), (Player.Y() - _range), (Player.X() + _range), (Player.Y() + _range))
+        .filter(function (tile) {
+            return (IsReachable(tile, 5)) && (tile.X()-1)%8!=0 && (tile.Y()-1)%8!=0
+        })
+        .filter(function (tile) {
+            return fishedWater.map(
+                function (e) 
+                {
+                    return e.X();
+                })
+                .indexOf(parseInt((tile.X() / 8))) 
+                && fishedWater.map(
+                    function (e) 
+                    {
+                     return e.Y(); 
+                    })
+                    .indexOf(parseInt((tile.Y() / 8)));
 
-    })
+        })
         .sort(function (t1, t2) {
             return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
         });
@@ -234,11 +261,10 @@ Orion.Wait(300)
     return waterTiles;
 }
 
-function IsReachable(tile,_range) {
-var result = Orion.GetTilesInRect('water', (tile.X() - _range), (tile.Y() - _range),-6, (tile.X() + _range), (tile.Y() + _range),-1).length == 9;
+function IsReachable(tile, _range) {
+    var result = Orion.GetTilesInRect('land', (tile.X() - _range), (tile.Y() - _range), 0, (tile.X() + _range), (tile.Y() + _range),255).length;
     //Orion.GetTilesInRect('tileFlags', startX, startY, endX, endY);
-    TextWindow.Print(Orion.GetTilesInRect('water', (tile.X() - _range), (tile.Y() - _range),-6, (tile.X() + _range), (tile.Y() + _range),-1).length)
-    return result;
+    return result >= 9 && result < 30;
 }
 
 function GetWater2(_private) {
@@ -246,7 +272,7 @@ function GetWater2(_private) {
     Orion.Print('Range ' + range);
     for (var xLoc = (Player.X() - range); xLoc < (Player.X() + range); xLoc++) {
         for (var yLoc = (Player.Y() - range); yLoc < (Player.Y() + range); yLoc++) {
-            var tiles = Orion.GetTilesInRect('', xLoc, yLoc,xLoc, yLoc)
+            var tiles = Orion.GetTilesInRect('', xLoc, yLoc, xLoc, yLoc)
             if (tiles.length == 1 && tiles[0].Graphic() == '0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137') {
                 TextWindow.Print(tiles[0].Graphic())
                 var newTile = {
