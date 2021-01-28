@@ -52,7 +52,7 @@ function VetMultiPets() {
 
                 if (pet != null) {
                     Orion.Wait(300);
-                    if (pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits()) || pet.Dead())
+                    if (pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits()-2) || pet.Dead())
                         && !Orion.BuffExists('veterinary')) {
                         Orion.WaitWhileTargeting(1000);
                         Orion.BandageTarget(pet.Serial());

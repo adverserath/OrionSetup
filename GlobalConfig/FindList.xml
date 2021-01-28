@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="17">
+<data version="0" size="18">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -113,7 +113,7 @@
         <item graphic="0x1BD7" color="any" comment="Boards" count="0"/>
     </findlist>
     <findlist name="Runes">
-        <item graphic="0x1F14" color="any" comment="Recall Rune" count="16"/>
+        <item graphic="0x1F14" color="any" comment="Recall Rune" count="42"/>
     </findlist>
     <findlist name="Fishies">
         <item graphic="0x09CC" color="0x0000" comment="Fish" count="0"/>
@@ -121,6 +121,18 @@
         <item graphic="0x09CF" color="0x0000" comment="Fish" count="0"/>
         <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0"/>
         <item graphic="0x4307" color="0x0000" comment="Redbelly Bream" count="0"/>
-        <item graphic="0x0DD6" color="0x0056" comment="Wondrous Fish" count="0"/>
+        <item graphic="0x0DD6" color="any" comment="Wondrous Fish" count="0"/>
+        <item graphic="0x4306" color="0x0000" comment="Bluegill Sunfish" count="0"/>
+        <item graphic="0x4303" color="0x0000" comment="Yellow Perch" count="0"/>
+        <item graphic="0x44C4" color="0x0000" comment="Pike" count="0"/>
+        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0"/>
+        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0"/>
+        <item graphic="0x09CD" color="0x0000" comment="Smallmouth Bass" count="0"/>
+        <item graphic="0x44C6" color="0x0000" comment="Green Catfish" count="0"/>
+    </findlist>
+    <findlist name="UnwantedStuff">
+        <item graphic="0x170F" color="0x06AB" comment="Shoes" count="0"/>
+        <item graphic="0x1711" color="0x0000" comment="Thigh Boots" count="0"/>
+        <item graphic="0x170D" color="0x0000" comment="Sandals" count="0"/>
     </findlist>
 </data>

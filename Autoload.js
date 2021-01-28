@@ -1,264 +1,127 @@
 //#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Debug.js
+//#include Scripts/helpers/Magic.js
 //#include Scripts/helpers/ItemManager.js
+//#include Scripts/helpers/Notifier.js
+//#include Scripts/helpers/Gumps.js
 
-function Empty(){
-EmptyContainerToAnother(SelectTarget(),SelectTarget())
-}
 function test()
 {
-//Orion.InfoContextMenu();
 
 }
-//('serial', count, 'container', index);
-function Hide()
-{
-Orion.Hide()
-}
-function PrintDistance() {
-	var target = SelectTarget();
+function Autostart() {
+    Orion.Wait(1000)
+    if (!((Player.Name().match(/(\w*)ian/gi) || []).length >= 1)) {
+    Orion.Print('Not me')
+    }
+    else{
+        //Find RuneBook
+        var runebook = Orion.FindTypeEx('0x22C5', '0x08A1')[0];
+        //Check for bod book
+        var bodBook = Orion.FindTypeEx('0x2259', '0x0000')[0];
+        //loop runebook locations and get bulks
 
-	while (!Player.Dead()) {
-		Orion.Wait(100)
-		Orion.Print(target.Distance())
+        if (runebook == null || bodBook == null) {
+            BotPush(Player.Name() + ' has no book')
+            Orion.LogOut();
+        }
+        //logout
+        Orion.UseObject(runebook.Serial())
+        Orion.WaitForGump(1000);
+        //Count Locations = X
+        var gumpinfo = Orion.GetLastGump().TextList();
+        var locations = 0;
+        for (var textId = 2; textId < 18; textId++) {
+            if (gumpinfo[textId] != 'Empty') {
+                locations++;
+            }
+        }
+        Orion.Print('Runes:' + locations);
+
+        var npcs = ['0x0000511D','0x0000EC37','0x0000ED92','0x0000A68F','0x0000A6E2','0x000002F4']
+        //0x0000511D -ins
+        //0x0000EC37 -weav
+        //0x0000ED92 -tink
+        //0x0000A68F -carp
+        //0x0000A6E2 - arm
+        //0x000002F4 - fletch
+        for (var recallId = 1; recallId <= locations; recallId++) {
+            Orion.Wait(500)
+
+            if(Player.Mana()<15){
+	while (Player.Mana() < 40) {
+		if (!Orion.BuffExists('Meditation')) {
+			Orion.UseSkill('Meditation');
+		}
+		Orion.Wait(4000);
 	}
-}
-function PrintAllItemsInContainer() {
-	var container = SelectTarget();
-	Orion.Print(container.Serial())
-	var items = Orion.FindTypeEx(any, any, container.Serial());
-	TextWindow.Open()
+	Orion.Wait(4000);
+                Orion.Wait(2000);
+                }
 
-	items.forEach(function (item) {
+            var skip = false;
+            var startCastTime = Orion.Now();
+            var lastX = Player.X()
+            var lastY = Player.Y()
 
-		TextWindow.Print(item.Name())
-	});
-}
-var unique;
-var checkedIDs = [];
-var bin;
-function BinPicker() {
-	bin = Orion.FindObject('0x40053E83');
-	TextWindow.Open();
-	checkedIDs = [];
-	while (Player.WarMode()) {
-		Orion.Wait(200);
-		// TextWindow.Clear();
-		//	TextWindow.Print('LoopStart');
-		SearchBin(bin.Serial());
-	}
-}
 
-function SearchBin(container) {
-	//TextWindow.Print('Open BAGS');
-	var bagsInBin = Orion.FindTypeEx('0x0E75', any, bin.Serial(), '', '', '', 'false').filter(function (item) {
-		return item != null && checkedIDs.indexOf(item.Serial()) == -1;
-	});
-	var skip = false;
-	bagsInBin.forEach(function (bag) {
-		if (bag != null && !skip) {
-			Orion.Wait(300);
-			var bagID = bag.Serial();
-			//TextWindow.Print('Open ' + bagID);
-			checkedIDs.push(bagID);
-			if (!Orion.OpenContainer(bagID, 300)) {
-				//	TextWindow.Print('skip');
-				skip = true;
-			}
-			Orion.Wait(200);
-		}
-	});
 
-	if (!skip) {
-		//TextWindow.Print('Open ITEMS');
-		var items = Orion.FindTypeEx('any', 'any', container, '', '', '', 'true')
-			.filter(function (item) {
-				var checked = checkedIDs.indexOf(item.Serial()) == -1;
-				return item != null && (item.Graphic() !== '0x0E75' || item.Name() !== 'Backpack')
-					&& checkedIDs.indexOf(item.Serial()) == -1;
-			});
+            while (Player.X() == lastX && Player.Y() == lastY && !skip) {
+                if (Orion.InJournal('blocking the location', '', '0', '-1', startCastTime, Orion.Now()) != null) {
+                    skip = true;
+                }
+                if (!skip) {
+                    startCastTime = Orion.Now();
+                    Orion.UseObject(runebook.Serial());
+                    var recallbutton = (49 + recallId);
+                    var locationName = gumpinfo[recallId + 1];
+                    Orion.Print('Recalling to ' + locationName + ' button: ' + recallbutton)
+                    var startCastTime = Orion.Now();
+                    if (Orion.WaitForGump(1000)) {
+                        Orion.Wait(200)
+                        var gump0 = Orion.GetGump('last');
 
-		items.forEach(function (lootable) {
-			if (Orion.ObjectExists(lootable.Serial())) {
-				var lootSerial = lootable.Serial();
-				PrintItem(lootSerial);
-				checkedIDs.push(lootSerial);
-			}
-		});
-	}
-	if (skip) {
-		checkedIDs = [];
-	}
-}
+                        Orion.Print(recallbutton)
+                        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x00000059')) {
+                            gump0.Select(Orion.CreateGumpHook(recallbutton));
 
-function PrintItem(id) {
-	var item = Orion.FindObject(id);
+                        }
+                    }
+                    Orion.Wait(3000)
 
-	if (item != null && item.Properties().length > 1) {
-		//	TextWindow.Print(item.Serial());
-		//TextWindow.Print(item.Properties().length);
+                }
+            }
+            
+            if(recallId===locations){
+            Orion.Wait(2000)
+                WalkTo(Orion.FindObject('0x400F4894'))
+                MoveItemsFromPlayer(Orion.FindTypeEx('0x2259')[0], '0x2258')
+                Orion.CloseUO();
+            }
 
-		//TextWindow.Print(item.Name());
-		var itemName = item.Name();
-		var itemProp = item.Properties();
-		//TextWindow.Print('Runic: ' + (itemName.indexOf(/Ash Runic/gi) >= 0));
+            if(!skip){
+                var npcSerial =npcs[(recallId-1)]; 
+                WalkTo(Orion.FindObject(npcSerial))
+                Orion.Print('GetBod')
+                for (var index = 0; index < 3; index++) {
+                    
+                    Orion.RequestContextMenu(npcSerial);
+                    Orion.WaitContextMenuCliloc(npcSerial, '3006152');
+                    if (Orion.WaitForGump(1000))
+                    {
+                        var gump0 = Orion.GetGump('last');
+                        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x9BADE6EA'))
+                        {
+                            gump0.Select(Orion.CreateGumpHook(1));
+                            Orion.Wait(100);
+                        }
+                    }
+                    Orion.Wait(500);
+                    
+                }
 
-		if ((itemProp.match(/(cooking)|(fletcher)/gi) || []).length >= 1) {
-			//	TextWindow.Print('no cooking');
-		}
-		else if ((itemName.match(/Ash Runic/gi) || []).length >= 1) {
-			TextWindow.Print('--------TAKE  Ash');
-			TakeItem(item);
-		}
-		//TextWindow.Print('DemonSlayer: ' + (itemProp.indexOf('demon slayer') >= 0));
-
-		else if (itemProp.match(/(reptile|dragon|demon|ogre|repond|bear|undead|orc|\n\s?elemental)\sslayer/gi) >= 1) {
-			TextWindow.Print('--------TAKE  slayer');
-			TakeItem(item);
-		}
-		//TextWindow.Print('exceptional: ' + (itemName.indexOf('exceptional') >= 0));
-
-		else if (itemName.indexOf('exceptional') >= 0) {
-			TextWindow.Print('--------TAKE  exceptional');
-
-			TakeItem(item);
-		}
-		//TextWindow.Print('fc: ' + (itemProp.indexOf('faster Casting 1') >= 0 && itemProp.indexOf('faster cast recovery 2') >= 0));
-
-		else if ((itemProp.match(/cast(\s1)|(recovery\s2)/gi) || []).length >= 2) {
-			TextWindow.Print('--------TAKE  fc');
-
-			TakeItem(item);
-		}
-		//TextWindow.Print('hci: ' + (itemProp.indexOf('hit chance increase') >= 0) + 'dci' + (itemProp.indexOf('defense chance increase') >= 0));
-		else if ((itemProp.match(/(Hit Chance Increase\s1\d)|(Defense Chance Increase\s1\d)/gi) || []).length >= 2) {
-			TextWindow.Print('--------TAKE  hcidci');
-
-			TakeItem(item);
-		}
-		else if ((itemProp.match(/Bonus:\s((2)(2|3|4|5|6|7|8|9))|(30) | Exceptional Bonus:\s((2)(\d)|(30))/gi) || []).length >= 2) {
-			TextWindow.Print('--------TAKE  craftbonus');
-
-			TakeItem(item)
-		}
-		//if ((itemProp.match(/bonus/g) || []).length >= 2 && itemProp.indexOf(' exceptional ') >= 0) {
-		//	TakeItem(item)
-		//}
-
-		else if ((itemProp.match(/Taming\s\+((1|2)(\d))|Veterinary\s\+((1|2)(\d))|Peacemaking\s\+((1|2)(\d))|Discordance\s\+((1|2)(\d))|Musicianship\s\+((1|2)(\d))|Provocation\s\+((1|2)(\d))/gi) || []).length >= 2) {
-			TextWindow.Print('--------TAKE  music');
-
-			TakeItem(item)
-		}
-
-		else if ((itemProp.match(/Lower Reagent Cost\s(((1)(6|7|8|9))|(2\d))/gi) || []).length >= 1) {
-			TextWindow.Print('--------TAKE  lrc');
-
-			TakeItem(item)
-		}
-		else if ((itemProp.match(/Luck\s((9|10)(\d))/gi) || []).length >= 1) {
-			TextWindow.Print('--------TAKE  luck');
-
-			TakeItem(item)
-		}
-
-		//TextWindow.Print(' ');
-	}
+            }
+        }
+    }
 }
 
-function TakeItem(item) {
-	TextWindow.Print('Take' + item.Serial() + item.Name() + '\n')
-	TextWindow.Print(item.Properties());
-	Orion.Wait(300);
-	Orion.MoveItem(item.Serial());
-	BotPush('```' + item.Properties() + '```');
-	Orion.Wait(100);
-}
-
-function ShowItemWorth() {
-	var item = SelectTarget();
-	var itemValue = 0;
-	if (item != null && item.Properties().length > 1) {
-		var itemName = item.Name();
-		var itemProp = item.Properties();
-
-		itemValue += ((itemProp.match(
-			/Intelligence\sBonus\s(\d)/i
-		) || [])[1] || 0) / 8;
-
-		itemValue += ((itemProp.match(
-			/Mana\sIncrease\s(\d)/i
-		) || [])[1] || 0) / 8;
-
-		itemValue += ((itemProp.match(
-			/Faster\sCast\s(\d)/i
-		) || [])[1] || 0) / 1;
-
-		itemValue += ((itemProp.match(
-			/Faster\sCast\sRecovery\s(\d)/i
-		) || [])[1] || 0) / 3;
-
-		itemValue += ((itemProp.match(
-			/Spell\sDamage\sIncrease\s(\d*)/i
-		) || [])[1] || 0) / 12;
-
-		itemValue += ((itemProp.match(
-			/Magery\s\+(\d*)/i
-		) || [])[1] || 0) / 15;
-
-		itemValue += ((itemProp.match(
-			/Meditation\s\+(\d*)/i
-		) || [])[1] || 0) / 15;
-
-		itemValue += ((itemProp.match(
-			/Evaluating\sIntelligence\s\+(\d*)/i
-		) || [])[1] || 0) / 15;
-
-		itemValue += ((itemProp.match(
-			/Resisting\sSpells\s\+(\d*)/i
-		) || [])[1] || 0) / 15;
-
-		itemValue += ((itemProp.match(
-			/Lower\sReagent\sCost\s(\d*)/i
-		) || [])[1] || 0) / 20;
-
-		itemValue += ((itemProp.match(
-			/Lower\sMana\sCost\s(\d)/i
-		) || [])[1] || 0) / 8;
-
-		itemValue += ((itemProp.match(
-			/Mana\sRegeneration\s(\d*)/i
-		) || [])[1] || 0) / 2;
-
-		itemValue += (itemProp.match(
-			/Repond\sSlayer/i
-		) || []).length;
-
-		itemValue += (itemProp.match(
-			/Undead\sSlayer/i
-		) || []).length;
-
-		itemValue += (itemProp.match(
-			/Elemental\sSlayer/i
-		) || []).length;
-
-		itemValue += (itemProp.match(
-			/Demon\sSlayer/i
-		) || []).length;
-
-		itemValue += (itemProp.match(
-			/Arachnid\sSlayer/i
-		) || []).length;
-
-		itemValue += (itemProp.match(
-			/Reptile\sSlayer/i
-		) || []).length;
-
-		itemValue += (itemProp.match(
-			/Dragon\sSlayer/i
-		) || []).length;
-
-		Orion.Print(itemValue);
-	}
-}

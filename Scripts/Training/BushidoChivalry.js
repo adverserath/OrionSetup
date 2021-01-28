@@ -7,6 +7,10 @@ function TrainChivalryAndBushido() {
                 Orion.Wait(1000);
             }
         }
+       if (Orion.SkillValue('Chivalry') < 500) {
+            Orion.Cast('Consecrate Weapon');
+            Orion.Wait(500);
+        }
         if (Orion.SkillValue('Chivalry') < 600) {
             Orion.Cast('Divine Fury');
             Orion.Wait(2000);
@@ -23,10 +27,13 @@ function TrainChivalryAndBushido() {
             Orion.Cast('Noble Sacrifice');
             Orion.Wait(2000);
         }
-
+        else if (Orion.SkillValue('Chivalry') == 1000) {
+            BotPush('chiv done');
+            Orion.PauseScript();
+        }
         if (Orion.SkillValue('Bushido') < 600) {
-            Orion.Cast('Confidence');
-            Orion.Wait(2000);
+     //       Orion.Cast('Confidence');
+     //       Orion.Wait(2000);
         }
         else if (Orion.SkillValue('Bushido') < 750) {
             if (Orion.BuffExists('Counter Attack')) {

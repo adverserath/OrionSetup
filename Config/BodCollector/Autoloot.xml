@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="0" size="2">
+    <autoloot name="MageLoot" container="myTarget" find_list="Inscription" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="true" autostart_on_login="false"/>
+    <autoloot name="Gold" container="" find_list="All items" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="false" autostart_on_login="false"/>
+</data>

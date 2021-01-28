@@ -50,7 +50,7 @@ function AutoFisherman(_range) {
     Orion.Print("Go into war mode to stop the script at any point");
 
     storageBox = SelectTarget('Select a storage Box');
-
+bin = Orion.FindObject('0x40033ED7');
     fishingRod = Orion.FindTypeEx(fishingRods, any, backpack | Player.Serial()).shift();
 
     var waterTiles = [];
@@ -115,14 +115,13 @@ fishedWater.forEach(function (chunk){
         }
     }
 }
-
+var doNext = true;
 var walkBack;
 function Fish(tile) {
     Orion.Wait(500)
     DebugText('StartFishMethod');
     walkBack = false;
-    var doNext = false;
-
+doNext = false;
     while (!doNext) {
         if (Player.WarMode()) {
             Orion.Print('In War Mode');
@@ -130,26 +129,44 @@ function Fish(tile) {
         while (Player.WarMode()) {
             Orion.Wait(2000);
         }
+         if (Player.Weight() > (Player.MaxWeight() - 50)) {
+                     Orion.FindListEx('Fishies').forEach(function (fish) {
+Orion.UseType('0x13F6', '0xFFFF');
+	if (Orion.WaitForTarget(1000))
+	{
+		Orion.TargetObject(fish.Serial());
+		Orion.Wait(600);
+		}            
+		})
+
+}
+		
+        if (Player.Weight() > (Player.MaxWeight() - 50)) {
+        
+        DebugText('Heading Back to Storage');
+        
+            WalkTo(storageBox)
+            Orion.Wait(1000);
+            Orion.FindListEx('Fishies').forEach(function (fish) {
+                MoveItemsFromPlayer(storageBox, fish.Graphic(), any);
+            })
+             Orion.Wait(1000);
+             WalkTo(bin)
+           Orion.FindListEx('UnwantedStuff').forEach(function (notFish) {
+                MoveItemsFromPlayer(bin, notFish.Graphic(), any);
+            })
+            walkBack = true;
+        }
         if (walkBack) {
             Orion.WalkTo(tile.X(), tile.Y(), tile.Z(), 4, 255, 1, 1);
             walkBack = false;
         }
-
-        if (Player.Weight() > (Player.MaxWeight() - 40)) {
-            WalkTo(storageBox)
-            Orion.FindListEx('Fishies').forEach(function (fish) {
-                MoveItemsFromPlayer(storageBox, fish.Graphic(), any);
-            })
-        }
-
         EquipRod();
-        Orion.UseObject(fishingRod.Serial());
-
-        if (Orion.WaitForTarget(1000)) {
-            Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
-        }
         var startTime = Orion.Now();
-        while (!doNext||Player.Weight() < (Player.MaxWeight() - 40)) {
+        
+        while (!doNext&&Player.Weight() < (Player.MaxWeight() - 40)) {
+             DebugText('Cast Rod');
+
             Orion.Wait(1000);
                   
             startTime = Orion.Now();
@@ -158,11 +175,11 @@ function Fish(tile) {
             if (Orion.WaitForTarget(1000)) {
                 Orion.TargetTile(any, tile.X(), tile.Y(), tile.Z());
                 Orion.AddDisplayTimer('fishing',
-                    10000,
+                    6000,
                     'Top', 'Circle', 'Fishing', 0, 0,
                     'any', -1, '0x0000FFFE');
             }
-            Orion.Wait(500);
+            Orion.Wait(1000);
             Orion.UseObject(fishingRod.Serial());
 
             if (Orion.WaitForTarget(1000)) {
@@ -171,28 +188,34 @@ function Fish(tile) {
             var msg = (Orion.WaitJournal('Already fishing|You need to be closer|You do not have room|You broke your|seem to be biting here|You do not have room|You broke your|', Orion.Now()-1000, (Orion.Now() + 2000), '2', '0'))
 
             if (msg == null) {
-                TextWindow.Print('Cant fish that');
+                DebugText('Cant fish that');
                 doNext = true;
             }
             else {
                 //        TextWindow.Print(msg.Text());
-                if (Orion.InJournal('You need to be closer|You do not have room|You broke your|cannot be seen', '', '0', '-1', (Orion.Now() - 2000), Orion.Now()) != null) {
-                    TextWindow.Print('Done here');
+                if (Orion.InJournal('You need to be closer|You do not have room|You broke your|cannot be seen', '', '0', '-1', (startTime), Orion.Now()) != null) {
+                    DebugText('Done here');
                     doNext = true;
+                    Orion.Wait(1000);
                 }
-                else if (Orion.InJournal('seem to be biting here|You do not have room', '', '0', '-1', (Orion.Now() - 2000), Orion.Now()) != null) {
-                    TextWindow.Print('Keep fishing here');
-
+                else if (Orion.InJournal('seem to be biting here|You do not have room', '', '0', '-1', (startTime), Orion.Now()) != null) {
+                    DebugText('Keep fishing here');
                     doNext = true;
+                    Orion.Wait(1000);
                 }
-                else if (Orion.InJournal('You broke your', '', '0', '-1', (Orion.Now() - 2000), Orion.Now()) != null) {
+                else if (Orion.InJournal('You broke your', '', '0', '-1', (startTime), Orion.Now()) != null) {
                     //NeedNewRod
                     BotPush('New rod needed')
                     doNext = true;
+                    Orion.Wait(1000);
                 }
-                else if (Orion.InJournal('already fishing', '', '0', '-1', (Orion.Now() - 2000), Orion.Now()) != null) {
-                    Orion.Wait(2000);
+                else if (Orion.InJournal('already fishing', '', '0', '-1', (startTime), Orion.Now()) != null) {
+                    while(Orion.DisplayTimerExists('fishing'))
+                    {
+                    Orion.Wait(1000);
+                        doNext = false;
 
+                    }
                 }
 
             }
