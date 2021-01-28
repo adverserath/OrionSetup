@@ -11,9 +11,12 @@
         <action type="3" convert_type="0" waiting_time="1000" serial="0x00004F26" graphic="0x00E4" color="0x0000"/>
     </macro>
     <macro name="in" looped="false" delay="1">
-        <action type="16" convert_type="0" waiting_time="1000" serial="0x0000F0AE" graphic="0x0000" color="0x0000"/>
-        <action type="17" convert_type="0" waiting_time="1000" serial="0x0000F0AE" graphic="0x0001" color="0x0000"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000AEE7" id="0x9BADE6EA" button="1"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="-129"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="1"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="-130"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="-129"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="1"/>
     </macro>
     <macro name="Moongate" looped="true" delay="6">
         <action type="8" convert_type="0" waiting_time="1000" value="13"/>

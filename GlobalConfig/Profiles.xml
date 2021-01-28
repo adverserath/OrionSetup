@@ -10,6 +10,10 @@
     <profile serial="0x000097F8" file="Barnacle"/>
     <profile serial="0x0000A57A" file="BodCollector"/>
     <profile serial="0x0000A70A" file="BodCollector"/>
+    <profile serial="0x0000A75F" file="BodCollector"/>
+    <profile serial="0x0000A78E" file="BodCollector"/>
+    <profile serial="0x0000A866" file="BodCollector"/>
+    <profile serial="0x0000A89B" file="BodCollector"/>
     <profile serial="0x0000C794" file="Tamer"/>
     <profile serial="0x0000C941" file="Crafter"/>
     <profile serial="0x0000FA01" file="Vimto"/>

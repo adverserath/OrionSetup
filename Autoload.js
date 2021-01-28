@@ -7,10 +7,17 @@
 
 function test()
 {
-
+            Orion.Print('Going Home')
+            Orion.Wait(2000)
+                        Orion.Print('Walk In')
+                Orion.WalkTo(Player.X()+3, Player.Y()-3, Player.Z(), 2, 255, 1, 1);
+                Orion.Print('Move Stuff to Book')
+                MoveItemsFromPlayer(Orion.FindTypeEx('0x2259')[0], '0x2258')
+                                Orion.Print('Good Bye')
+                Orion.CloseUO();
 }
 function Autostart() {
-    Orion.Wait(1000)
+    Orion.Wait(3000)
     if (!((Player.Name().match(/(\w*)ian/gi) || []).length >= 1)) {
     Orion.Print('Not me')
     }
@@ -29,6 +36,7 @@ function Autostart() {
         Orion.UseObject(runebook.Serial())
         Orion.WaitForGump(1000);
         //Count Locations = X
+        Orion.Wait(400);
         var gumpinfo = Orion.GetLastGump().TextList();
         var locations = 0;
         for (var textId = 2; textId < 18; textId++) {
@@ -48,8 +56,8 @@ function Autostart() {
         for (var recallId = 1; recallId <= locations; recallId++) {
             Orion.Wait(500)
 
-            if(Player.Mana()<15){
-	while (Player.Mana() < 40) {
+            if(Player.Mana()<13){
+	while (Player.Mana() < 14) {
 		if (!Orion.BuffExists('Meditation')) {
 			Orion.UseSkill('Meditation');
 		}
@@ -91,11 +99,19 @@ function Autostart() {
 
                 }
             }
-            
-            if(recallId===locations){
-            Orion.Wait(2000)
-                WalkTo(Orion.FindObject('0x400F4894'))
+                        Orion.Print('recallId:'+recallId)
+                        Orion.Print('locations:'+locations)
+
+            if(recallId==locations){
+            Orion.Print('Going Home')
+            Orion.Wait(1000)
+                        Orion.Print('Walk In')
+                Orion.WalkTo(Player.X()+3, Player.Y()-3, Player.Z(), 1, 255, 1, 1);
+                Orion.Wait(1000)
+
+                Orion.Print('Move Stuff to Book')
                 MoveItemsFromPlayer(Orion.FindTypeEx('0x2259')[0], '0x2258')
+                                Orion.Print('Good Bye')
                 Orion.CloseUO();
             }
 
