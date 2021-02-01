@@ -17,7 +17,7 @@ function StartLumberJacking() {
     var useMagicToMove = true;
     DebugStart()
     //How far to look for trees from the player
-    var range = 10;
+    var range = 20;
     AutoLumberJack(useMagicToMove, range);
 }
 
@@ -87,6 +87,7 @@ function AutoLumberJack(magicOption, _range) {
 
     while (!Player.Dead()) {
         EquipAxe();
+        Orion.Wait(1000)
         trees = GetTrees();
         Orion.Print("Trees" + trees.length)
         usedTrees = usedTrees.concat(trees.map(function (stTree) {
@@ -231,4 +232,9 @@ function GetTrees(_private) {
         Orion.AddFakeMapObject(tree.X().toString() + tree.Y().toString(), '0x1BDD', '', tree.X(), tree.Y(), tree.Z() + 15);
     });
     return trees;
+}
+
+function IsReachable(rock) {
+    //Orion.GetTilesInRect('tileFlags', startX, startY, endX, endY);
+    return Orion.GetTilesInRect('tree', rock.X() - 2, rock.Y() - 2, rock.X() + 2, rock.Y() + 2).length < 16;
 }

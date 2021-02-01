@@ -5,8 +5,11 @@
         <action type="4" convert_type="0" waiting_time="1000" graphic="0x0000" x="2298" y="1177" z="0" relative_x="-1" relative_y="3" relative_z="-7"/>
     </macro>
     <macro name="PeaceArea" looped="false" delay="1"/>
-    <macro name="Moongate" looped="false" delay="1">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x4012F148" graphic="0x4BCB" color="0x0000"/>
+    <macro name="Moongate" looped="true" delay="0.5">
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x400D0669" graphic="0x14F6" color="0x0000"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00005EE6" id="0x877C84F9" button="1"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00005EEB" id="0x5D40A15B" button="1"/>
+        <action type="4" convert_type="0" waiting_time="1000" graphic="0x0000" x="1627" y="3539" z="0" relative_x="-1" relative_y="1" relative_z="0"/>
     </macro>
     <macro name="DigTreasure" looped="false" delay="1">
         <action type="1" convert_type="1" waiting_time="1000" serial="0x400D07AB" graphic="0x0F39" color="0x0000"/>

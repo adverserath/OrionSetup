@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="macro" looped="true" delay="10">
-        <action type="1" convert_type="1" waiting_time="1000" serial="0x4010C9DB" graphic="0x13F6" color="0x0000"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x40106156" graphic="0x4303" color="0x0000"/>
+    <macro name="macro" looped="true" delay="0.5">
+        <action type="5" convert_type="0" waiting_time="1000" value="16"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x00003E91" graphic="0x0006" color="0x083A"/>
     </macro>
     <macro name="PeaceArea" looped="false" delay="1">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x40143B43" graphic="0x22C5" color="0x0461"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000B022" id="0x00000059" button="20"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000B029" id="0x00000059" button="60"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="-129"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="1"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="-130"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="-128"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x40173554" graphic="0x14F6" color="0x0000"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00004153" id="0x877C84F9" button="1"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00004155" id="0x5D40A15B" button="1"/>
+        <action type="4" convert_type="0" waiting_time="1000" graphic="0x0000" x="1627" y="3540" z="0" relative_x="-6" relative_y="-6" relative_z="0"/>
     </macro>
     <macro name="Moongate" looped="false" delay="1">
         <action type="1" convert_type="0" waiting_time="1000" serial="0x4012F148" graphic="0x4BCB" color="0x0000"/>

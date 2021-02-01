@@ -71,12 +71,16 @@ function TestRange() {
     Orion.Wait(100);
   }
 }
+
+
+
 function ShowRange(targetId, range) {
   Orion.ClearFakeMapObjects();
   if (Orion.ObjectExists(targetId)) {
     var target = Orion.FindObject(targetId)
     var x = target.X();
     var y = target.Y();
+    
     range.forEach(function (distance) {
       Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance)
         .filter(function (tile) {

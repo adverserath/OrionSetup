@@ -86,6 +86,33 @@ function AutoLockpicking() {
 		});
 		Orion.Wait(1000);
 	}
+}
+function HighlightLocked() {
+	Orion.ClearFakeMapObjects();
+	Orion.IgnoreReset();
+	var uniqueChestIds = [];
+	while (!Player.Dead()) {
+		var chestIds = Orion.FindTypeEx(
+			'0x0E42|0x0E40|0x0E3C|0x0E77|0x0E3E|0x0E7E|0x0E41|0x0E3D|0x09AB|0x0E7C|0x0E7F|0x0E43|0x0E3F'
+			, any, any, any, 160).filter(function (chest) {
+				return !chest.Ignored();
+			});
+
+		chestIds.forEach(function (chest) {
+			var chestId = chest.Serial();
+
+			if (((chest.Properties().match(/contents/gi) || []).length) == 0
+				&& uniqueChestIds.indexOf(chestId) === -1) {
+				Orion.Print("Adding " + chestId)
+				uniqueChestIds.push(chestId);
+				Orion.AddFakeMapObject(chestId, chest.Graphic(), '0x35', chest.X(), chest.Y(), chest.Z());
+
+			}
+		});
+
+		Orion.Wait(1000);
+		
+	}
 
 	//var box = SelectTarget();
 

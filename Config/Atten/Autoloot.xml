@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="0" size="1">
-    <autoloot name="Gold" container="myTarget" find_list="Gold/Arrows" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="true" autostart_on_login="false"/>
+    <autoloot name="Gold" container="mount" find_list="Gold/Arrows" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="true" autostart_on_login="false"/>
 </data>

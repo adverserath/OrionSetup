@@ -86,7 +86,7 @@
         <item graphic="0x1766" color="0x0000" comment="Cut Cloth" count="200"/>
     </findlist>
     <findlist name="Fletching">
-        <item graphic="0x1BD7" color="0xFFFF" comment="Board" count="200"/>
+        <item graphic="0x1BD7" color="0x0000" comment="Board" count="200"/>
         <item graphic="0x1022" color="0x0000" comment="Fletching" count="3"/>
     </findlist>
     <findlist name="FletchingShaft">
@@ -111,6 +111,11 @@
     </findlist>
     <findlist name="Lumber">
         <item graphic="0x1BD7" color="any" comment="Boards" count="0"/>
+        <item graphic="0x3191" color="0x0000" comment="Luminescent Fungi" count="0"/>
+        <item graphic="0x318F" color="0x0000" comment="Bark Fragment" count="0"/>
+        <item graphic="0x3190" color="0x0000" comment="Parasitic Plant" count="0"/>
+        <item graphic="0x2F5F" color="0x0000" comment="Switch" count="0"/>
+        <item graphic="0x3199" color="0x0000" comment="Brilliant Amber" count="0"/>
     </findlist>
     <findlist name="Runes">
         <item graphic="0x1F14" color="any" comment="Recall Rune" count="42"/>

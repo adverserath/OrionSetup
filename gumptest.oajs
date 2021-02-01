@@ -1,4 +1,60 @@
+function tree()
+{
+GetTrees().forEach(function (tree){Orion.WalkTo(tree.X(), tree.Y(), tree.Z())})
+}
+function GetTrees() {
+var range = 10
+    var trees = Orion.GetTilesInRect('tree', Player.X() - range, Player.Y() - range, Player.X() + range, Player.Y() + range)
+        .filter(function (tree) {
+            return (Player.Z() + 15) > tree.Z()
+        })
+        .sort(function (t1, t2) {
+            return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
+        });
+    Orion.ClearFakeMapObjects();
+    trees.forEach(function (tree) {
+        Orion.AddFakeMapObject(tree.X().toString() + tree.Y().toString(), '0x1BDD', '', tree.X(), tree.Y(), tree.Z() + 15);
+    });
+    return trees;
+}
 
+function hpAll()
+{
+	// use with fast call gump, shows dmg or heals recieved on all 
+	//mobs/players as a floating text above them
+	CustomGumpResponse.UpdateFastCallGumpText('','HP ON');
+		if(Orion.ScriptRunning('hpAll')>1)
+		 {
+			CustomGumpResponse.UpdateFastCallGumpText('','HP OFF');
+			Orion.ToggleScript('hpAll',true);			
+		}
+	var hp = [];
+	while (true)
+		{
+		var livemobiles = Orion.FindTypeEx(any, any,'ground', 'live', 18);
+		for (var c = 0; c <  livemobiles.length; c++)
+			{
+            var cObj = livemobiles[c];
+            Orion.GetStatus(cObj.Serial());
+            hp[c] = cObj.Hits(); 
+            } 
+        Orion.Wait(100);
+		for (var c = 0; c <  livemobiles.length; c++)
+			{
+			if (hp[c]!=livemobiles[c].Hits())
+				{
+				if ((livemobiles[c].Hits()-hp[c])>2)
+        			{
+        			Orion.PrintFast(livemobiles[c].Serial(), 70, '',(livemobiles[c].Hits()-hp[c]));
+        			}
+				if ((livemobiles[c].Hits()-hp[c])<-2)
+        			{
+        			Orion.PrintFast(livemobiles[c].Serial(), 34, '',(livemobiles[c].Hits()-hp[c]));
+        			}				
+				}
+			}         
+		}	
+}
 function TestResponseAllControls(unused)
 {
 	var code = CustomGumpResponse.ReturnCode();

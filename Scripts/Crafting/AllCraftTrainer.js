@@ -77,9 +77,9 @@ function StartInscription() {
 function StartFletching() {
     var tool = '0x1022';
     CraftCreateLoop('Bowcraft/Fletching', 'FletchingShaft', 400, 1, 16, tool, storageBox); //shaft
-    CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 500, 15, 2, tool, trashBarrel); //bow
-    CraftCreateLoop('Bowcraft/Fletching', 'FletchingShaft', 899, 8, 16, tool, trashBarrel); //dart
-    CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 1000, 15, 23, tool, trashBarrel); //composite
+    CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 600, 15, 2, tool, trashBarrel); //bow
+    CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 702, 15, 9, tool, trashBarrel); //crossbow
+ //   CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 1000, 15, 23, tool, trashBarrel); //composite
     BotPush(Orion.Time() + "GM Fletching");
 }
 

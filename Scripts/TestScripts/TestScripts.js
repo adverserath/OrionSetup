@@ -1,4 +1,37 @@
 //#include Scripts/helpers/Debug.js
+//#include Scripts/helpers/Target.js
+
+function simpleJSONstringify() {
+  var obj = SelectTarget().Properties;
+  var prop, str, val,
+      isArray = obj instanceof Array;
+
+  if (typeof obj !== "object") return false;
+
+  str = isArray ? "[" : "{";
+
+  function quote(str) {
+      if (typeof str !== "string") str = str.toString();
+      return str.match(/^\".*\"$/) ? str : '"' + str.replace(/"/g, '\\"') + '"'
+  }
+
+  for (prop in obj) {
+      if (!isArray) {
+          // quote property
+          str += quote(prop) + ": ";
+      }
+
+      // quote value
+      val = obj[prop];
+      str += typeof val === "object" ? simpleJSONstringify(val) : quote(val);
+      str += ", ";
+  }
+
+  // Remove last colon, close bracket
+  str = str.substr(0, str.length - 2)  + ( isArray ? "]" : "}" );
+
+  TextWindow.Print(str);
+}
 
 function openCorpse() {
   Orion.OpenContainer('0x4205AD94');

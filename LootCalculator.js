@@ -1,14 +1,55 @@
 //#include Scripts/helpers/Target.js
 
+
+function GeneratedScript_005351()
+{
+while(true){
+	Orion.UseObject('0x400D0669');
+	if (Orion.WaitForGump(1000))
+	{
+		var gump0 = Orion.GetGump('last');
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x877C84F9'))
+		{
+			gump0.Select(Orion.CreateGumpHook(1));
+			Orion.Wait(100);
+		}
+	}
+	if (Orion.WaitForGump(1000))
+	{
+		var gump1 = Orion.GetGump('last');
+		if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x5D40A15B'))
+		{
+			gump1.Select(Orion.CreateGumpHook(1));
+			Orion.Wait(100);
+		}
+	}
+	if (Orion.WaitForTarget(1000))
+		Orion.TargetTile('any', 1627, 3539, 0);
+	if (Orion.WaitForGump(300))
+	{
+		var gump2 = Orion.GetGump('last');
+		if ((gump2 !== null) && (!gump2.Replayed()) && (gump2.ID() === '0x11775C2E'))
+		{
+			gump2.Select(Orion.CreateGumpHook(1));
+			Orion.Wait(100000);
+		}
+	}
+	Orion.Wait(500)
+	Orion.GetGump('last').Close()
+}}
+
+
 function CheckSelectedItem() {
 	CheckItem(SelectTarget());
 }
 
+var bracelet = '0x1086|0x1F06';
+var ring = '0x108A|0x1F09';
 function CheckItem(item) {
 	if (item.Graphic() === '0x0EFA') {
 		Orion.Print(MageBookRating(item));
 	}
-	if (item.Graphic() === 'Bracelet/Ring/Armour') {
+	if (item.Graphic() == '0x1086') {
 		Orion.Print(MageBookRating(item));
 	}
 	if (item.Graphic() === 'Weapon') {
@@ -101,6 +142,6 @@ function MageBookRating(book) {
 		itemValue += (itemProp.match(
 			/\w*\sSlayer/i
 		) || []).length / 2;
-		return itemValue / 3 * 100;
+		return itemValue / 3 * 125;
 	}
 }
