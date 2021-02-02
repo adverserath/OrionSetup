@@ -210,8 +210,9 @@ function SearchForHiddenChests() {
       Orion.PauseScript('WanderDungeon');
       Orion.StopWalking();
       if (chestIds.length == 0) {
-        Orion.Wait(8000)
-        Orion.UseSkillTarget('Detecting Hidden', self)
+if (!Orion.DisplayTimerExists('dh')) {
+      Orion.UseSkillTarget('Detecting Hidden', self)
+      }
         var chestIds = Orion.FindTypeEx(
           '0x0E42|0x0E40|0x0E3C|0x0E77|0x0E3E|0x0E7E|0x0E41|0x0E3D|0x09AB|0x0E7C|0x0E7F|0x0E43|0x0E3F'
           , '0x0AB9', any, any, 40).filter(function (chest) {
@@ -250,6 +251,8 @@ function SearchForHiddenChests() {
           }
           Orion.UseObject(chest.Serial())
           Orion.Wait(600)
+          MoveItems(chest, lootbag, any, any)
+          Orion.Wait(100)
           MoveItems(chest, lootbag, any, any)
           Orion.Wait(600)
         }
