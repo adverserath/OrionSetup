@@ -120,7 +120,7 @@ function Autostart() {
                 WalkTo(Orion.FindObject(npcSerial))
                 Orion.Print('GetBod')
                 for (var index = 0; index < 3; index++) {
-                    
+                    Orion.Wait(300)
                     Orion.RequestContextMenu(npcSerial);
                     Orion.WaitContextMenuCliloc(npcSerial, '3006152');
                     if (Orion.WaitForGump(1000))

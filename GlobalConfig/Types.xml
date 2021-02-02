@@ -1,17 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="14">
-    <type name="bm" id="0x0F7B"/>
-    <type name="bp" id="0x0F7A"/>
-    <type name="ga" id="0x0F84"/>
-    <type name="gs" id="0x0F85"/>
-    <type name="mr" id="0x0F86"/>
-    <type name="ns" id="0x0F88"/>
-    <type name="sa" id="0x0F8C"/>
-    <type name="ss" id="0x0F8D"/>
-    <type name="en" id="0x0F87"/>
-    <type name="bandage" id="0x0E21"/>
-    <type name="bottle" id="0x0F0E"/>
-    <type name="scroll" id="0x0E34"/>
-    <type name="map" id="0x14EB"/>
-    <type name="gp" id="0x0EED"/>
+<data version="0" size="1">
+    <type name="land" id="0x0190"/>
 </data>

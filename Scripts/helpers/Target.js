@@ -8,6 +8,29 @@ function SelectTarget(itemUsage) {
   return target;
 }
 
+function SelectCoordinate(_private) {
+  if(Orion.WaitForAddObject('myTarget')==0)
+  {
+return null;
+  }
+  Orion.Wait(100)
+
+  return {
+    x: SelectedTile.X(),
+    y: SelectedTile.Y(),
+    z: SelectedTile.Z(),
+    X: function () {
+        return this.x;
+    },
+    Y: function () {
+        return this.y;
+    },
+    Z: function () {
+        return this.z;
+    }
+}
+}
+
 function UseItemOnTarget(item, target) {
   Orion.UseObject(item.Serial());
   if (Orion.WaitForTarget(5000)) {
@@ -31,12 +54,14 @@ function RandomTarget(_private) {
   return nearby[Orion.Random(nearby.length)];
 }
 
-function WalkTo(object, distance) {
+function WalkTo(object, distance, timeMS) {
   if (distance == null) {
     distance = 1;
   }
-
-  Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, 1, 1, 5000);
+  if (timeMS == null) {
+    timeMS = 15000;
+  }
+  Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, 1, 1, timeMS);
   //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
 }
 
@@ -58,29 +83,13 @@ function BorderEdge(x, y, p2, range) {
 
 }
 
-function TestRange() {
-  var target = SelectTarget()
-  var lastX = target.X()
-  var lastY = target.Y()
-  while (!Player.Dead()) {
-    if (lastX != target.X() || lastY != target.Y()) {
-      ShowRange(target.Serial(), [3, 8])
-      lastX = target.X()
-      lastY = target.Y()
-    }
-    Orion.Wait(100);
-  }
-}
-
-
-
 function ShowRange(targetId, range) {
   Orion.ClearFakeMapObjects();
   if (Orion.ObjectExists(targetId)) {
     var target = Orion.FindObject(targetId)
     var x = target.X();
     var y = target.Y();
-    
+
     range.forEach(function (distance) {
       Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance)
         .filter(function (tile) {

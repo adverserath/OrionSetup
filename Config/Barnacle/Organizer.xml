@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="0"/>
+<data version="0" size="1">
+    <organizer name="ChestEmptier" from="0x4011C02A" to="0x400DA045" find_list="Gold/Arrows/Artis" ignore_list="Not use" restock="false" stack_items="true"/>
+</data>
