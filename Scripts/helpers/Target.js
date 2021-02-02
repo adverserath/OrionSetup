@@ -54,14 +54,18 @@ function RandomTarget(_private) {
   return nearby[Orion.Random(nearby.length)];
 }
 
-function WalkTo(object, distance, timeMS) {
+function WalkTo(object, distance, timeMS, walking) {
+
   if (distance == null) {
     distance = 1;
   }
   if (timeMS == null) {
     timeMS = 15000;
   }
-  Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, 1, 1, timeMS);
+    if (walking == null) {
+    walking = 1;
+  }
+  Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
   //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
 }
 

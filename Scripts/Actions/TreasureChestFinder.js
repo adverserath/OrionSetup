@@ -3,39 +3,55 @@
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Debug.js
 function RecordFoundChest(chest) {
-if(chest!=null)
-{
+  if (chest != null) {
     var newFile = Orion.NewFile();
     newFile.Append('TreasureChestsFound.conf');
-newFile.WriteLine(JSON.stringify(
-{
-    x: chest.X(),
-    y: chest.Y(),
-    z: chest.Z(),
-    X: function () {
-        return this.x;
-    },
-    Y: function () {
-        return this.y;
-    },
-    Z: function () {
-        return this.z;
-    }
-    }))
-  newFile.Close();
+    newFile.WriteLine(JSON.stringify(
+      {
+        x: chest.X(),
+        y: chest.Y(),
+        z: chest.Z(),
+        X: function () {
+          return this.x;
+        },
+        Y: function () {
+          return this.y;
+        },
+        Z: function () {
+          return this.z;
+        }
+      }))
+    newFile.Close();
   }
 }
 
-function StayHidden()
-{
-while(true)
-{
-if(!Player.Hidden())
-{
-Orion.UseSkill('Hiding')
-}
-Orion.Wait(300)
-}
+function StayHidden() {
+  while (true) {
+    if (!Player.Hidden()) {
+      Orion.StopWalking();
+      var resumeWD = false;
+      var resumeSFHD = false;
+      if (Orion.ScriptRunning('WanderDungeon') > 0) {
+        Orion.PauseScript('WanderDungeon');
+        resumeWD = true;
+      }
+      if (Orion.ScriptRunning('SearchForHiddenChests') > 0) {
+        Orion.PauseScript('SearchForHiddenChests');
+        resumeSFHD = true;
+      }
+      BotPush('Not Hiding')
+      Orion.Wait(100);   
+      Orion.UseSkill('Hiding')
+      Orion.Wait(300)
+      if(resumeWD&&Player.Hidden()){
+        Orion.ResumeScript('WanderDungeon');
+      }
+      if(resumeWD&&Player.Hidden()){
+        Orion.ResumeScript('SearchForHiddenChests');
+      }
+    }
+    Orion.Wait(300)
+  }
 }
 
 function CreatePath(_private) {
@@ -94,30 +110,76 @@ function ReadPath(_private) {
 
 function WanderDungeon(_private) {
   var path = ReadPath()
+  var foundStart = false;
+  var startingRef = 0;
   while (true) {
     Orion.Wait(100);
     path.forEach(function (location) {
-      if (Player.WarMode()) {
-                Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', location.X(), location.Y(), location.Z());
-				Orion.Wait(500);
+      if (!foundStart) {
+        Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', location.X(), location.Y(), location.Z());
+        Orion.Wait(100);
+        startingRef++;
         if (Orion.GetDistance(location.X(), location.Y()) < 15) {
-          Orion.WarMode(0);
+        Orion.Print('Starting from point: '+startingRef)
+		  foundStart = true;
           Orion.Wait(1000);
         }
       }
       else {
-        WalkTo(location, 1, 40000);
-        WalkTo(location, 1, 40000);
+        WalkTo(location, 1, 40000, 0);
+        WalkTo(location, 1, 40000, 0);
       }
     })
   }
 }
 
+var startingLocation;
+var lootbag;
+function GetStartUp() {
+  var file = Orion.NewFile();
+
+  file.Open('TreasureStartup.conf');
+  var startingLocationFile = file.ReadLine();
+  var lootbagFile = file.ReadLine();
+  file.Close();
+  startingLocation = SelectCoordinate('Select location to goto at end');
+  if (startingLocation != null) {
+    Orion.Wait(200);
+    var newFile = Orion.NewFile();
+    newFile.Open('TreasureStartup.conf');
+    newFile.WriteLine(JSON.stringify(startingLocation) + ' ');
+    lootbag = SelectTarget('Select lootbag');
+    newFile.WriteLine(lootbag.Serial() + ' ');
+    newFile.Close();
+  }
+  else {
+    Orion.Print('loading')
+    Orion.Print(startingLocationFile);
+    var coord = JSON.parse(startingLocationFile);
+    startingLocation = {
+      x: coord.x,
+      y: coord.y,
+      z: Player.Z(),
+      X: function () {
+        return this.x;
+      },
+      Y: function () {
+        return this.y;
+      },
+      Z: function () {
+        return this.z;
+      }
+    }
+
+
+    lootbag = Orion.FindObject(lootbagFile);
+  }
+  Orion.Print(startingLocation.X() + ' ' + startingLocation.Y())
+  Orion.Print(lootbag.Serial())
+}
 function SearchForHiddenChests() {
-  Orion.Print('Select location to goto at end')
-  var startingLocation = SelectCoordinate();
-  Orion.Print('Select lootbag')
-  var lootbag = SelectTarget();
+
+  GetStartUp()
 
   Orion.ToggleScript('WanderDungeon');
   Orion.ToggleScript('StayHidden');
@@ -164,29 +226,32 @@ function SearchForHiddenChests() {
         var chestId = chest.Serial()
         Orion.AddFakeMapObject(chestId, chest.Graphic(), '0x35', chest.X(), chest.Y(), chest.Z() + 5);
         Orion.Print('X:' + chest.X(), 'Y:' + chest.Y(), '   Z:' + chest.Z())
-        WalkTo(chest,1,40000);
-        WalkTo(chest,1,40000);
+        WalkTo(chest, 1, 40000, 0);
+        WalkTo(chest, 1, 40000, 0);
         startCastTime = Orion.Now();
-if(Orion.GetDistance(chest.Serial())<2)
-{
-        while (Orion.InJournal('yields|not appear', '', '0', '-1', startCastTime, Orion.Now()) == null) {
-          Orion.Wait(1000)
-          WalkTo(chest);
-          Orion.UseType('0x14FC', '0xFFFF')
-          if (Orion.WaitForTarget(1000)) {
-            Orion.TargetObject(chest.Serial());
+        if (Orion.GetDistance(chest.Serial()) < 2) {
+        BotPush('Found Chest')
+          while (Orion.InJournal('yields|not appear', '', '0', '-1', startCastTime, Orion.Now()) == null) {
+            Orion.Wait(1000)
+            WalkTo(chest, 1, 40000, 0);
+            Orion.UseType('0x14FC', '0xFFFF')
+            if (Orion.WaitForTarget(1000)) {
+              Orion.TargetObject(chest.Serial());
+            }
           }
-        }
-        Orion.Wait(2000);
-        startCastTime = Orion.Now();
-        while (Orion.InJournal('harmless', '', '0', '-1', startCastTime, Orion.Now()) == null) {
-          Orion.UseSkillTarget('Remove Trap', chest.Serial())
-          Orion.Wait(10500);
-        }
-        Orion.UseObject(chest.Serial())
-        Orion.Wait(600)
-        MoveItems(chest, lootbag, any, any)
-        Orion.Wait(600)
+          Orion.Wait(2000);
+          startCastTime = Orion.Now();
+          while (Orion.InJournal('harmless', '', '0', '-1', startCastTime, Orion.Now()) == null) {
+            Orion.UseSkillTarget('Remove Trap', chest.Serial())
+            Orion.Wait(1000);
+            if (Orion.InJournal('harmless', '', '0', '-1', startCastTime, Orion.Now()) == null) {
+              Orion.Wait(10000);
+            }
+          }
+          Orion.UseObject(chest.Serial())
+          Orion.Wait(600)
+          MoveItems(chest, lootbag, any, any)
+          Orion.Wait(600)
         }
       }
       RecordFoundChest(chest)
@@ -208,8 +273,15 @@ if(Orion.GetDistance(chest.Serial())<2)
       }
       )
   }
-  Orion.ToggleScript('WanderDungeon');
-    Orion.ToggleScript('StayHidden');
+  Orion.StopWalking();
+  if (Orion.ScriptRunning('WanderDungeon') != 0) {
+    Orion.ToggleScript('WanderDungeon');
+  }
   BotPush('Full')
-  WalkTo(startingLocation, 1, 120000)
+  WalkTo(startingLocation, 1, 120000, 0)
+
+  if (Orion.ScriptRunning('StayHidden') != 0) {
+    Orion.ToggleScript('StayHidden');
+  }
+
 }
