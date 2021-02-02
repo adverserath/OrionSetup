@@ -3,35 +3,39 @@
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Debug.js
 function RecordFoundChest(chest) {
-  if (chest != null) {
+if(chest!=null)
+{
     var newFile = Orion.NewFile();
     newFile.Append('TreasureChestsFound.conf');
-    newFile.WriteLine(JSON.stringify(
-      {
-        x: chest.X(),
-        y: chest.Y(),
-        z: chest.Z(),
-        X: function () {
-          return this.x;
-        },
-        Y: function () {
-          return this.y;
-        },
-        Z: function () {
-          return this.z;
-        }
-      }))
-    newFile.Close();
+newFile.WriteLine(JSON.stringify(
+{
+    x: chest.X(),
+    y: chest.Y(),
+    z: chest.Z(),
+    X: function () {
+        return this.x;
+    },
+    Y: function () {
+        return this.y;
+    },
+    Z: function () {
+        return this.z;
+    }
+    }))
+  newFile.Close();
   }
 }
 
-function StayHidden() {
-  while (true) {
-    if (!Player.Hidden()) {
-      Orion.UseSkill('Hiding')
-    }
-    Orion.Wait(300)
-  }
+function StayHidden()
+{
+while(true)
+{
+if(!Player.Hidden())
+{
+Orion.UseSkill('Hiding')
+}
+Orion.Wait(300)
+}
 }
 
 function CreatePath(_private) {
@@ -94,8 +98,8 @@ function WanderDungeon(_private) {
     Orion.Wait(100);
     path.forEach(function (location) {
       if (Player.WarMode()) {
-        Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', location.X(), location.Y(), location.Z());
-        Orion.Wait(500);
+                Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', location.X(), location.Y(), location.Z());
+				Orion.Wait(500);
         if (Orion.GetDistance(location.X(), location.Y()) < 15) {
           Orion.WarMode(0);
           Orion.Wait(1000);
@@ -160,11 +164,14 @@ function SearchForHiddenChests() {
         var chestId = chest.Serial()
         Orion.AddFakeMapObject(chestId, chest.Graphic(), '0x35', chest.X(), chest.Y(), chest.Z() + 5);
         Orion.Print('X:' + chest.X(), 'Y:' + chest.Y(), '   Z:' + chest.Z())
-        WalkTo(chest);
+        WalkTo(chest,1,40000);
+        WalkTo(chest,1,40000);
         startCastTime = Orion.Now();
-
+if(Orion.GetDistance(chest.Serial())<2)
+{
         while (Orion.InJournal('yields|not appear', '', '0', '-1', startCastTime, Orion.Now()) == null) {
-          Orion.Wait(400)
+          Orion.Wait(1000)
+          WalkTo(chest);
           Orion.UseType('0x14FC', '0xFFFF')
           if (Orion.WaitForTarget(1000)) {
             Orion.TargetObject(chest.Serial());
@@ -180,6 +187,7 @@ function SearchForHiddenChests() {
         Orion.Wait(600)
         MoveItems(chest, lootbag, any, any)
         Orion.Wait(600)
+        }
       }
       RecordFoundChest(chest)
       Orion.ResumeScript('WanderDungeon');
@@ -201,7 +209,7 @@ function SearchForHiddenChests() {
       )
   }
   Orion.ToggleScript('WanderDungeon');
-  Orion.ToggleScript('StayHidden');
+    Orion.ToggleScript('StayHidden');
   BotPush('Full')
   WalkTo(startingLocation, 1, 120000)
 }
