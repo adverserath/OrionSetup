@@ -1,6 +1,17 @@
 //#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/Target.js
 
+function myFunction() {
+  var luck = parseInt("1000");
+  var fame = parseInt("2000");
+  var famemod = (0.83 - Math.round(Math.log(Math.round(fame / 6000, 3) + 0.001, 10), 3))
+var max = 100 * famemod
+var luckmod = (100 - Math.sqrt(luck))
+var max2 = Math.max(10, max)
+var divider = max2 * luckmod / 100.0;
+var chance = 1 / divider;  document.getElementById("demo").innerHTML = 'famemod: '+famemod + '<br> luckmod: ' + luckmod  + '<br> max2: ' + max2+ '<br> chance: ' + chance*100
+}
+
 function simpleJSONstringify() {
   var obj = SelectTarget().Properties;
   var prop, str, val,
