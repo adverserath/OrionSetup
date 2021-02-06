@@ -9,9 +9,8 @@ function SelectTarget(itemUsage) {
 }
 
 function SelectCoordinate(_private) {
-  if(Orion.WaitForAddObject('myTarget')==0)
-  {
-return null;
+  if (Orion.WaitForAddObject('myTarget') == 0) {
+    return null;
   }
   Orion.Wait(100)
 
@@ -20,15 +19,15 @@ return null;
     y: SelectedTile.Y(),
     z: SelectedTile.Z(),
     X: function () {
-        return this.x;
+      return this.x;
     },
     Y: function () {
-        return this.y;
+      return this.y;
     },
     Z: function () {
-        return this.z;
+      return this.z;
     }
-}
+  }
 }
 
 function UseItemOnTarget(item, target) {
@@ -62,7 +61,7 @@ function WalkTo(object, distance, timeMS, walking) {
   if (timeMS == null) {
     timeMS = 15000;
   }
-    if (walking == null) {
+  if (walking == null) {
     walking = 1;
   }
   Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);

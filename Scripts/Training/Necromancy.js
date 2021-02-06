@@ -34,11 +34,14 @@ function TrainNecro() {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();
             }
+            if(Player.Hits()>40 )
+            {
             Orion.Cast('Pain Spike', self);
+            }
 
             Orion.Wait(500);
         }
-        else if (skillLevel < 500) {
+        else if (skillLevel < 700) {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();
             }

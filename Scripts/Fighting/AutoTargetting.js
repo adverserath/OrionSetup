@@ -102,7 +102,7 @@ function ShowEnemiesByDistance() {
                         mobile != null
                         && shouldAttack
                         && distanceFromPlayer <= pullTargetDistance
-                        && (mobile.Notoriety() >= notorietyToAttack && mobile.Notoriety() <= 5 || Orion.ClientLastAttack() == mobId)
+                        && (mobile.Notoriety() >= notorietyToAttack && mobile.Notoriety() <= 5 || Orion.ClientLastAttack() === mobId)
                         && attackList.indexOf(mobId) < 0
                     ) {
                         Orion.Print("attacking " + mobile.Name())

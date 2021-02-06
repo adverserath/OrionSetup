@@ -4,23 +4,6 @@
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/helpers/Notifier.js
 
-function TamingTo110()
-{	
-while(true)
-{
-	Orion.Cast('744');
-	Orion.Wait(200);
-	if (Orion.WaitForTarget(1000))
-		Orion.TargetObject('0x0000BCBB');
-	if(Orion.SkillValue("Animal Taming")>1100)
-	{
-	BotPush("Taming is 1100")
-		Orion.ShutdownWindows('forced')
-		}
-	
-	}
-}
-
 function VetMultiPets() {
     var selected;
     var selecting = true;
@@ -109,4 +92,21 @@ function TrainLore()
     
                         Orion.Wait(300);
 
+}
+
+function TamingTo110()
+{	
+while(true)
+{
+	Orion.Cast('744');
+	Orion.Wait(200);
+	if (Orion.WaitForTarget(1000))
+		Orion.TargetObject('0x0000BCBB');
+	if(Orion.SkillValue("Animal Taming")>1100)
+	{
+	BotPush("Taming is 1100")
+		Orion.ShutdownWindows('forced')
+		}
+	
+	}
 }
