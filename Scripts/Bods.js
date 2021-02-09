@@ -231,3 +231,58 @@ function createMap(id, color) {
         }
     }
 }
+
+function BodReader(){
+    Orion.File()
+    TextWindow.Open()
+    var gumpinfo = Orion.GetLastGump().CommandList();
+gumpinfo.forEach(function (line) {
+   // TextWindow.Print(line);
+
+    (line.match(/.?xmfhtmlgumpcolor\s(?:\d*\s){4}(\d*)/i)||[]).forEach(function (match){
+
+        TextWindow.Print(match)
+
+    })
+});
+}
+
+function ReadCliLoc() {
+    var clilocs = []
+    var file = Orion.NewFile();
+  
+    file.Open('cliloc.txt');
+    if (file != null) {
+      var i = 0;
+      var location = '1'
+      while (location != null && location) {
+        //TextWindow.Print(i++)
+        location = file.ReadLine();
+        
+          TextWindow.Print(location)
+        if (location != null && location) {
+          TextWindow.Print(location)
+          var cliloc = location.split(';');
+          var cliLine = {
+            id: cliloc[0],
+            name: cliloc[1],
+            type: cliloc[2],
+            Id: function () {
+              return this.id;
+            },
+            Name: function () {
+              return this.name;
+            },
+            Type: function () {
+              return this.type;
+            }
+          }
+          clilocs.push(cliLine);
+    //      TextWindow.Print(cliLine[0])
+   //       TextWindow.Print(cliLine[1])
+        }
+      }
+    }
+    file.Close();
+    return clilocs;
+  }
