@@ -224,9 +224,3 @@ function ReadCliLoc(_private) {
   file.Close();
   return clilocs;
 }
-
-function testfile(){
-TextWindow.Print('test')
-var file = Orion.NewFile();
-TextWindow.Print(file.Open('OA/cliloc.txt',true))
-}
