@@ -13,9 +13,7 @@ function AutoHonor() {
             currentTargetId = target.Serial();
             targetHits = target.Hits()
             targetDistance = target.Distance();
-            var mobile =
-                HonorTarget(mobile)
-
+            var mobile = HonorTarget(mobile)
         }
     }
 }

@@ -1,0 +1,453 @@
+1098235;A Three Tiered Cake ;Original
+1027989;Agility;Original
+1041318;Agility potion;Original
+1028005;Arch Cure;Original
+1028006;Arch Protection;Original
+1028013;Blade Spirits;Original
+1027997;Bless;Original
+1028029;Chain Lightning;Original
+1027982;Clumsy;Original
+1027983;Create Food;Original
+1027990;Cunning;Original
+1027991;Cure;Original
+1041316;Cure potion;Original
+1028007;Curse;Original
+1072849;Darkglow Poison;Original
+1041325;Deadly Poison potion;Original
+1028021;Dispel;Original
+1028014;Dispel Field;Original
+1028037;Earthquake;Original
+1028022;Energy Bolt;Original
+1028030;Energy Field;Original
+1028038;Energy Vortex;Original
+1028023;Explosion;Original
+1041332;Explosion potion;Original
+1027984;Feeblemind;Original
+1028008;Fire Field;Original
+1027998;Fireball;Original
+1028031;Flamestrike;Original
+1028032;Gate Travel;Original
+1041319;Greater Agility potion;Original
+1041317;Greater Cure potion;Original
+1041333;Greater Explosion potion;Original
+1028009;Greater Heal;Original
+1041330;Greater Heal potion;Original
+1041324;Greater Poison potion;Original
+1041327;Greater Refreshment potion;Original
+1041321;Greater Strength potion;Original
+1030316;Green Tea;Original
+1027992;Harm;Original
+1027985;Heal;Original
+1041329;Heal potion;Original
+1028015;Incognito;Original
+1028024;Invisibility;Original
+1015096;Large Crate;Original
+1041315;Lesser Cure potion;Original
+1041331;Lesser Explosion potion;Original
+1041328;Lesser Heal potion;Original
+1041322;Lesser Poison potion;Original
+1028010;Lightning;Original
+1027986;Magic Arrow;Original
+1027999;Magic Lock;Original
+1028016;Magic Reflection;Original
+1027993;Magic Trap;Original
+1027994;Magic Untrap;Original
+1028011;Mana Drain;Original
+1028033;Mana Vampire;Original
+1028025;Mark;Original
+1028026;Mass Curse;Original
+1028034;Mass Dispel;Original
+1015094;Medium Crate;Original
+1028035;Meteor Swarm;Original
+1028017;Mind Blast;Original
+1028787;Necromancer Spellbook;Original
+1027987;Night Sight;Original
+1028018;Paralyze;Original
+1028027;Paralyze Field;Original
+1072848;Parasitic Poison;Original
+1028000;Poison;Original
+1028019;Poison Field;Original
+1041323;Poison potion;Original
+1028036;Polymorph;Original
+1027995;Protection;Original
+1027981;Reactive Armor;Original
+1028012;Recall;Original
+1041326;Refresh potion;Original
+1028039;Resurrection;Original
+1028028;Reveal;Original
+1028901;Runebook;Original
+1156443;Runic Atlas;Original
+1015093;Small Crate;Original
+1023834;Spellbook;Original
+1027996;Strength;Original
+1041320;Strength potion;Original
+1028040;Summon Air Elemental;Original
+1028020;Summon Creature;Original
+1028041;Summon Daemon;Original
+1028042;Summon Earth Elemental;Original
+1028043;Summon Fire Elemental;Original
+1028044;Summon Water Elemental;Original
+1028001;Telekinesis;Original
+1028002;Teleport;Original
+1028003;Unlock;Original
+1028004;Wall of Stone;Original
+1027988;Weaken;Original
+1015082;Wooden Throne;Original
+1073550;ancient wild staff;Original
+1028800;animate dead;Original
+1073549;arcanist's wild staff;Original
+1023902;arrow;Original
+1024130;arrow fletching;Original
+1073512;assassin's shortbow;Original
+1030320;awase miso soup;Original
+1023913;axe;Original
+1024187;axle;Original
+1024177;axle with gears;Original
+1041343;baked apple pie;Original
+1041346;baked fruit pie;Original
+1041347;baked meat pie;Original
+1041344;baked peach cobbler;Original
+1041348;baked pumpkin pie;Original
+1041345;baked quiche;Original
+1025440;bandana;Original
+1073505;barbed longbow;Original
+1023917;bardiche;Original
+1024321;barrel hoops;Original
+1027608;barrel lid;Original
+1027857;barrel staves;Original
+1024100;barrel tap;Original
+1025132;bascinet;Original
+1023911;battle axe;Original
+1028801;blood oath;Original
+1025441;body sash;Original
+1030152;bokuto;Original
+1025199;bone armor;Original
+1025198;bone arms;Original
+1025200;bone gloves;Original
+1025201;bone helmet;Original
+1025202;bone leggings;Original
+1025913;bonnet;Original
+1025899;boots;Original
+1025042;bow;Original
+1011219;bracelet;Original
+1023934;broadsword;Original
+1027026;bronze shield;Original
+1027027;buckler ;Original
+1025110;butcher knife;Original
+1022537;cake;Original
+1041002;cake mix;Original
+1022599;candelabra;Original
+1025909;cap;Original
+1025051;chainmail coif;Original
+1025054;chainmail leggings;Original
+1025055;chainmail tunic;Original
+1044516;cheese pizza;Original
+1030333;cherry armoire;Original
+1025640;chicken leg;Original
+1023779;cleaver;Original
+1112117;clippers;Original
+1025397;cloak;Original
+1024171;clock;Original
+1024173;clock frame;Original
+1024175;clock parts;Original
+1025128;close helmet;Original
+1029932;composite bow;Original
+1072095;conflagration potion;Original
+1072106;confusion blast;Original
+1022487;cooked bird;Original
+1024159;cookie mix;Original
+1028802;corpse skin;Original
+1023919;crossbow;Original
+1027163;crossbow bolt;Original
+1028803;curse weapon;Original
+1022546;cut of ribs;Original
+1025185;cutlass;Original
+1023922;dagger;Original
+1023915;double axe;Original
+1028059;doublet;Original
+1024157;dough;Original
+1023740;drum;Original
+1011208;earrings;Original
+1030329;elegant armoire;Original
+1031550;elven composite longbow;Original
+1072952;enchanted apple;Original
+1028804;evil omen;Original
+1023909;executioner's axe;Original
+1027935;fancy dress;Original
+1027933;fancy shirt;Original
+1025914;feathered hat;Original
+1027174;female leather armor;Original
+1027172;female plate;Original
+1030259;finished wooden chest;Original
+1022427;fish steak;Original
+1025907;floppy hat;Original
+1024158;flour sifter;Original
+1022910;foot stool;Original
+1022548;fork;Original
+1022486;fried eggs;Original
+1024325;froe;Original
+1073507;frozen longbow;Original
+1025437;full apron;Original
+1024179;gears;Original
+1030255;gilded wooden chest;Original
+1024167;globe;Original
+1025112;gnarled staff;Original
+1022458;goblet;Original
+1072953;grapes of wrath;Original
+1072098;greater conflagration potion;Original
+1072109;greater confusion blast;Original
+1025182;halberd;Original
+1025435;half apron;Original
+1025181;hammer pick;Original
+1073552;hardened wild staff;Original
+1023907;hatchet;Original
+1027030;heater shield;Original
+1025117;heavy crossbow;Original
+1025130;helmet;Original
+1011202;hinge;Original
+1028805;horrific beast;Original
+1024112;iron key;Original
+1025916;jester hat;Original
+1028095;jester suit;Original
+1025119;katana;Original
+1026464;keg;Original
+1024113;key ring;Original
+1025431;kilt;Original
+1023553;kindling;Original
+1022550;knife;Original
+1025121;kryss;Original
+1022597;lantern;Original
+1023762;lap harp;Original
+1025115;large battle axe;Original
+1027178;leather bustier;Original
+1027609;leather cap;Original
+1025062;leather gloves;Original
+1025063;leather gorget;Original
+1025067;leather leggings;Original
+1027168;leather shorts;Original
+1027176;leather skirt;Original
+1025069;leather sleeves;Original
+1025068;leather tunic;Original
+1025642;leg of lamb;Original
+1028806;lich form;Original
+1073510;lightweight shortbow;Original
+1025433;long pants;Original
+1073508;longbow of might;Original
+1023937;longsword;Original
+1023763;lute;Original
+1023932;mace;Original
+1031551;magical shortbow;Original
+1030331;maple armoire;Original
+1025179;maul;Original
+1072154;metal container engraving tool;Original
+1027028;metal kite shield;Original
+1027035;metal shield;Original
+1028807;mind rot;Original
+1030317;miso soup;Original
+1023739;mortar and pestle;Original
+1022539;muffins;Original
+1073511;mystical shortbow;Original
+1153501;nexus core ;Original
+1025134;norse helm;Original
+1030158;nunchaku;Original
+1030253;ornate wooden chest;Original
+1028808;pain spike;Original
+1025643;pan of cookies;Original
+1024095;pewter mug;Original
+1023718;pickaxe;Original
+1023719;pitchfork;Original
+1027937;plain dress;Original
+1030251;plain wooden chest;Original
+1022519;plate;Original
+1025138;plate helm;Original
+1025136;platemail arms;Original
+1025140;platemail gloves;Original
+1025139;platemail gorget;Original
+1025137;platemail legs;Original
+1025141;platemail tunic;Original
+1028809;poison strike;Original
+1023721;quarter staff;Original
+1073509;ranger's shortbow;Original
+1030327;red armoire;Original
+1030319;red miso soup;Original
+1029933;repeating crossbow;Original
+1011207;ring;Original
+1025099;ringmail gloves;Original
+1025104;ringmail leggings;Original
+1025102;ringmail sleeves;Original
+1025100;ringmail tunic;Original
+1027939;robe;Original
+1024153;sack of flour;Original
+1025901;sandals;Original
+1044517;sausage pizza;Original
+1040000;savage kin paint;Original
+1024148;saw;Original
+1026226;scales;Original
+1025046;scimitar;Original
+1023997;sewing kit;Original
+1024185;sextant parts;Original
+1027124;shaft;Original
+1023713;shepherd's crook;Original
+1025399;shirt;Original
+1025903;shoes;Original
+1030263;short cabinet;Original
+1025422;short pants;Original
+1025123;short spear;Original
+1044567;skillet;Original
+1025398;skirt;Original
+1025444;skullcap;Original
+1073506;slayer longbow;Original
+1024021;sledge hammer;Original
+1025091;smith's hammer;Original
+1030248;smoke bomb;Original
+1023938;spear;Original
+1022552;spoon;Original
+1024189;springs;Original
+1025365;spyglass;Original
+1023761;standing harp;Original
+1022602;stool;Original
+1028810;strangle;Original
+1025911;straw hat;Original
+1027170;studded armor;Original
+1027180;studded bustier;Original
+1025077;studded gloves;Original
+1025078;studded gorget;Original
+1025082;studded leggings;Original
+1025084;studded sleeves;Original
+1025083;studded tunic;Original
+1028811;summon familiar;Original
+1028189;surcoat;Original
+1030304;sushi platter;Original
+1030302;sushi rolls;Original
+1156401;sweet cocoa butter;Original
+1041340;sweet dough;Original
+1030261;tall cabinet;Original
+1025910;tall straw hat;Original
+1027032;tear kite shield;Original
+1030150;tetsubo;Original
+1025905;thigh boots;Original
+1073551;thorned wild staff;Original
+1024027;tongs;Original
+1025915;tricorne hat;Original
+1028097;tunic;Original
+1025187;two handed axe;Original
+1041336;unbaked apple pie;Original
+1041334;unbaked fruit pie;Original
+1041338;unbaked meat pie;Original
+1041335;unbaked peach cobbler;Original
+1041342;unbaked pumpkin pie;Original
+1041339;unbaked quiche;Original
+1041341;uncooked cheese pizza;Original
+1041337;uncooked sausage pizza;Original
+1028812;vampiric embrace;Original
+1028813;vengeful spirit;Original
+1025049;viking sword;Original
+1025040;war axe;Original
+1025125;war fork;Original
+1025177;war hammer;Original
+1025127;war mace;Original
+1029451;wasabi clumps;Original
+1030318;white miso soup;Original
+1025908;wide-brim hat;Original
+1031557;wild staff;Original
+1028814;wither;Original
+1025912;wizard's hat;Original
+1022861;wooden bench;Original
+1022474;wooden box;Original
+1023651;wooden chest;Original
+1030257;wooden footlocker;Original
+1022718;wooden shelf;Original
+1028815;wraith form;Original
+1030224;yumi;Original
+1049706;10;Original
+1049706;10;Original
+1016007;15;Original
+1016007;15;Original
+1062239;20;Original
+1062239;20;Original
+1011046;APPLY;Original
+1011046;APPLY;Original
+1018337;Agapite;Original
+1018337;Agapite;Original
+1044060;Alchemy;Original
+1044060;Alchemy;Original
+1062229;All;Original
+1062229;All;Original
+1062217;Amount;Original
+1062217;Amount;Original
+1071429;Ash;Original
+1071429;Ash;Original
+1062238;Barbed;Original
+1062238;Barbed;Original
+1044067;Blacksmithing;Original
+1044067;Blacksmithing;Original
+1071431;Bloodwood;Original
+1071431;Bloodwood;Original
+1018335;Bronze;Original
+1018335;Bronze;Original
+1062228;Bulk Order Type;Original
+1062228;Bulk Order Type;Original
+1044071;Carpentry;Original
+1044071;Carpentry;Original
+1062231;Clear Filter;Original
+1062231;Clear Filter;Original
+1044286;Cloth;Original
+1044286;Cloth;Original
+1044073;Cooking;Original
+1044073;Cooking;Original
+1018334;Copper;Original
+1018334;Copper;Original
+1018332;Dull Copper;Original
+1018332;Dull Copper;Original
+1062223;Filter Preference;Original
+1062223;Filter Preference;Original
+1044068;Fletching;Original
+1044068;Fletching;Original
+1071433;Frostwood;Original
+1071433;Frostwood;Original
+1018336;Golden;Original
+1018336;Golden;Original
+1071432;Heartwood;Original
+1071432;Heartwood;Original
+1062237;Horned;Original
+1062237;Horned;Original
+1044083;Inscription;Original
+1044083;Inscription;Original
+1062226;Iron;Original
+1062226;Iron;Original
+1062225;Large;Original
+1062225;Large;Original
+1062235;Leather;Original
+1062235;Leather;Original
+1062232;Material Type;Original
+1062232;Material Type;Original
+1071428;Oak;Original
+1071428;Oak;Original
+1062215;Quality;Original
+1062215;Quality;Original
+1062477;Set Book Filter;Original
+1062477;Set Book Filter;Original
+1062478;Set Your Filter;Original
+1062478;Set Your Filter;Original
+1018333;Shadow Iron;Original
+1018333;Shadow Iron;Original
+1062224;Small;Original
+1062224;Small;Original
+1062236;Spined;Original
+1062236;Spined;Original
+1044094;Tailoring;Original
+1044094;Tailoring;Original
+1044097;Tinkering;Original
+1044097;Tinkering;Original
+1018339;Valorite;Original
+1018339;Valorite;Original
+1018338;Verite;Original
+1018338;Verite;Original
+1079435;Wood;Original
+1079435;Wood;Original
+1071430;Yew;Original
+1071430;Yew;Original
+1060636;exceptional;Original
+1060636;exceptional;Original
+1011542;normal;Original
+1011542;normal;Original
