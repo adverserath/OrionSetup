@@ -2,10 +2,79 @@
 //.?\w*\s61(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4},
 var cliloc;
 
-function test(){
+function test() {
 
-TextWindow.Print(Orion.GetGump('last').ButtonList().join().match(/button\s225/i)==null)
+  TextWindow.Print(Orion.GetGump('last').ButtonList().join().match(/button\s225/i) == null)
 
+}
+
+var smallBodsLibrary = [];
+var largeBodsLibrary = [];
+
+function CreateSmallBod(_name, _quality, _material, _count) {
+  return {
+    name: _name,
+    quality: _quality,
+    material: _material,
+    count: _count,
+
+    Name: function () {
+      return this.name;
+    },
+    Quality: function () {
+      return this.quality;
+    },
+    Material: function () {
+      return this.material;
+    },
+    Count: function () {
+      return this.count;
+    },
+    isEqual: function (obj) {
+      return this.Name() === obj.Name()
+        && this.Quality() === obj.Quality()
+        && this.Material() === obj.Material()
+        && this.Count() === obj.Count();
+    },
+    toString: function () {
+      return  'Name:'+ this.Name() +' Quality:'+ this.Quality() +' Material:'+  this.Material() +' Count:'+  this.Count();
+    }
+  }
+}
+
+function CreateLargeBod() {
+  return {
+    smallBods:[],
+    SmallBods: function () {
+      return this.smallBods;
+    },
+    Add: function (obj) {
+      this.smallBods.push(obj)
+    },
+    toString: function () {
+      return  'LargeBod:\n\t'+this.smallBods.join('\n\t');
+    },
+    canFill: function () {
+    TextWindow.Print('Large Bod:')
+      return  this.smallBods.forEach(function (sb){
+      var found = false;
+      smallBodsLibrary.forEach(function (sbl){
+      if(sbl.isEqual(sb))
+      {
+     found=true;
+      }
+      })
+      if(found){
+      TextWindow.Print('+' + sb)
+      }
+      else{
+            TextWindow.Print('-' + sb)
+
+      }
+      })
+    }
+
+  }
 }
 
 function BodReader() {
@@ -15,12 +84,15 @@ function BodReader() {
   bodBook.forEach(function (book) {
     ReadBook(book.Serial());
   })
+  largeBodsLibrary.forEach(function (lb){
+  lb.canFill();
+  })
 }
 
 function ReadBook(bookId) {
 
   TextWindow.Open()
-  
+
   TextWindow.Clear()
   Orion.UseObject(bookId);
   if (Orion.WaitForGump(1000)) {
@@ -45,10 +117,12 @@ function ReadBook(bookId) {
     }
   }
   var endOfBook = false;
-  while (Orion.GetGump('last').ButtonList().join().match(/button\s225/i)!=null) {
+  while (!endOfBook) {
     ReadPage()
-    if (Orion.WaitForGump(1000)) {
-      var gump1 = Orion.GetGump('last');
+          endOfBook = Orion.GetGump('last').ButtonList().join().match(/button\s225/i) == null;
+
+    if (Orion.WaitForGump(3000)) {
+          var gump1 = Orion.GetGump('last');
       if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x54F555DF')) {
         gump1.Select(Orion.CreateGumpHook(3));
         Orion.Wait(100);
@@ -59,76 +133,78 @@ function ReadBook(bookId) {
 
 }
 function ReadPage() {
-Orion.Wait(1000);
-  var bodsOnPage = [];
+  Orion.Wait(100);
   var gump = Orion.GetLastGump();
   var gumpinfo = gump.CommandList();
   var line = gumpinfo.join()
 
-//TextWindow.Print(line)
+  //TextWindow.Print(line)
   var smallBods = (line.match(/.?\w*\s61(?:\d*\s){4}\d*1062224\s(?:\d*\s){3},.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4}){0,1},\s\w*\s\d*\s\d*\s\d*\s\d*/ig) || []);
 
   smallBods.forEach(function (bod) {
- //TextWindow.Print(bod)
+    //TextWindow.Print(bod)
 
     var matches = (bod.match(/.?\w*\s61(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
     var loc;
-    if(matches[4]){
+    if (matches[4]) {
 
-     loc= gump.Text(matches[5]).match(/\d\s.\s(\d*)/i)[1];
-         TextWindow.Print( GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + GetString(matches[3]) + ' ' + GetString(matches[4])+ ' : ' + loc);
-    bodsOnPage.push(GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + GetString(matches[3]) + ' ' + GetString(matches[4]) + ' ' + loc)
-     }
-     else{
-          loc= gump.Text(matches[5]).match(/\d\s.\s(\d*)/i)[1];
-    TextWindow.Print( GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + GetString(matches[3]) + ' : ' + loc);
-    bodsOnPage.push(GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + GetString(matches[3]) + ' ' + loc)
-     }
-    
+      loc = gump.Text(matches[5]).match(/\d\s.\s(\d*)/i)[1];
+     // TextWindow.Print(GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + GetString(matches[3]) + ' ' + GetString(matches[4]) + ' : ' + loc);
+      smallBodsLibrary.push(CreateSmallBod(GetString(matches[2]), GetString(matches[3]), GetString(matches[4]), loc))
+ //     TextWindow.Print(CreateSmallBod(GetString(matches[2]), GetString(matches[3]), GetString(matches[4]), loc))
+
+    }
+    else {
+      loc = gump.Text(matches[5]).match(/\d\s.\s(\d*)/i)[1];
+ //     TextWindow.Print(GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + GetString(matches[3]) + ' : ' + loc);
+      smallBodsLibrary.push(CreateSmallBod(GetString(matches[2]), GetString(matches[3]), '', loc))
+//      TextWindow.Print(CreateSmallBod(GetString(matches[2]), GetString(matches[3]), '', loc))
+    }
+
   }
   )
-//TextWindow.Print(line)
+  //TextWindow.Print(line)
 
   var largeBods = (line.match(/.?\w*\s61(?:\d*\s){4}\d*1062225\s(?:\d*\s){3},(.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4})?,(?:\s\w*\s\d*\s\d*\s\d*\s\d*\s,)+)+/ig) || []);
 
-//TextWindow.Print(line)
+  //TextWindow.Print(line)
   largeBods.forEach(function (bigBod) {
-//TextWindow.Print(bigBod)
-  
+    //TextWindow.Print(bigBod)
+
     var innerBods = (bigBod.match(/.?\w*\s103(?:\d*\s){4}(?:\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(?:\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(?:\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(?:\d*)/ig) || []);
 
+var largeBod =CreateLargeBod();
     innerBods.forEach(function (bod) {
-//    TextWindow.Print('bod')
-//    TextWindow.Print(bod)
+      //    TextWindow.Print('bod')
+      //    TextWindow.Print(bod)
       var matches = (bod.match(/.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
-  //    matches.forEach(function (test){TextWindow.Print(test)})
-    
-          var loc;
+      //    matches.forEach(function (test){TextWindow.Print(test)})
 
-    if(matches[3]){
+      var loc;
+
+      if (matches[3]) {
 
 
-     loc= gump.Text(matches[4]).match(/\d*\s.\s(\d*)/i)[1];
-      TextWindow.Print('large' + ' '+ GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + GetString(matches[3]) + ' ' +  ' : ' + loc);
-      bodsOnPage.push(GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + GetString(matches[3]) + ' ' + ' ' + loc)
-     }
-     else{
-          loc= gump.Text(matches[4]).match(/\d\s.\s(\d*)/i)[1];
-    TextWindow.Print('large' + ' '+ GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + ' : ' + loc);
-    bodsOnPage.push(GetString(matches[1]) + ' ' + GetString(matches[2]) + ' ' + ' ' + loc)
-     }
-     
+        loc = gump.Text(matches[4]).match(/\d*\s.\s(\d*)/i)[1];
+      largeBod.Add(CreateSmallBod(GetString(matches[1]), GetString(matches[2]), GetString(matches[3]), loc))
+      }
+      else {
+        loc = gump.Text(matches[4]).match(/\d\s.\s(\d*)/i)[1];
+        largeBod.Add(CreateSmallBod(GetString(matches[1]), GetString(matches[2]), '', loc))
+      }
+
     }
     )
+     //     TextWindow.Print(largeBod)
 
+largeBodsLibrary.push(largeBod)
 
   }
   )
-  return bodsOnPage;
 }
 
 function GetString(id) {
-//TextWindow.Print('id:'+id)
+  //TextWindow.Print('id:'+id)
   var curIt = cliloc.filter(
     function (cl) {
 
@@ -186,6 +262,28 @@ function ReadCliLoc() {
   return clilocs;
 }
 
+function ClilocRefine() {
+  var cliloc = ReadCliLoc();
+  
+    var gump = Orion.GetLastGump();
+  var gumpinfo = gump.CommandList();
+  var line = gumpinfo.join()
+ var ids = [];
+    TextWindow.Clear()
+        TextWindow.Print(line)
+
+  line.match(/xmfhtmlgumpcolor\s\d*\s\d*\s\d*\s\d*\s(\d*)/gm).forEach(function (match){
+  ids.push(match.match(/(\d{7})/g)[0])
+  })
+     cliloc.forEach(function (cl){
+    if(ids.indexOf(cl.Id())>-1)
+    {
+      TextWindow.Print(cl.Id()+';'+cl.Name()+';'+cl.Type())
+    }
+  })
+
+  }
+  
 
 var bods = ['1023913',
   '1023911',
