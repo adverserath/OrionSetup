@@ -204,7 +204,7 @@ function GetBods() {
                     if (Orion.WaitForGump(1000)) {
                         Orion.Wait(200)
                         var gump0 = Orion.GetGump('last');
-                        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x9BADE6EA')) {
+                        if ((gump0 !== null) && (!gump0.Replayed()) && ((gump0.ID() === '0xBE0DAD1E')||(gump0.ID() === '0x9BADE6EA'))) {
                             Orion.Wait(200)
                             gump0.Select(Orion.CreateGumpHook(1));
                             Orion.Wait(100);
