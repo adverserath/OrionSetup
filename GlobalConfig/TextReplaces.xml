@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="0">
+    <replace originaltext="Uus Jux" originalcolor="0xFFFF" replacedtext="Clumsy" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Mani Ylem" originalcolor="0xFFFF" replacedtext="Create Food" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Rel Wis" originalcolor="0xFFFF" replacedtext="Feeblemind" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Mani" originalcolor="0xFFFF" replacedtext="Heal" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Por Ylem" originalcolor="0xFFFF" replacedtext="Magic Arrow" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Lor" originalcolor="0xFFFF" replacedtext="Night Sight" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Flam Sanct" originalcolor="0xFFFF" replacedtext="Reactive Armor" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Des Mani" originalcolor="0xFFFF" replacedtext="Weaken" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Ex Uus" originalcolor="0xFFFF" replacedtext="Agility" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Uus Wis" originalcolor="0xFFFF" replacedtext="Cunning" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Nox" originalcolor="0xFFFF" replacedtext="Cure" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Mani" originalcolor="0xFFFF" replacedtext="Harm" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Jux" originalcolor="0xFFFF" replacedtext="Magic Trap" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Jux" originalcolor="0xFFFF" replacedtext="Remove Trap" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Uus Sanct" originalcolor="0xFFFF" replacedtext="Protection" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Uus Mani" originalcolor="0xFFFF" replacedtext="Strength" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Rel Sanct" originalcolor="0xFFFF" replacedtext="Bless" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas Flam" originalcolor="0xFFFF" replacedtext="Fireball" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Por" originalcolor="0xFFFF" replacedtext="Magic Lock" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Nox" originalcolor="0xFFFF" replacedtext="Poison" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Ort Por Ylem" originalcolor="0xFFFF" replacedtext="Telekinesis" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Rel Por" originalcolor="0xFFFF" replacedtext="Teleport" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Ex Por" originalcolor="0xFFFF" replacedtext="Unlock" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Sanct Ylem" originalcolor="0xFFFF" replacedtext="Wall Of Stone" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas An Nox" originalcolor="0xFFFF" replacedtext="Arch Cure" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas Uus Sanct" originalcolor="0xFFFF" replacedtext="Arch Protection" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Des Sanct" originalcolor="0xFFFF" replacedtext="Curse" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Flam Grav" originalcolor="0xFFFF" replacedtext="Fire Field" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Vas Mani" originalcolor="0xFFFF" replacedtext="Greater Heal" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Por Ort Grav" originalcolor="0xFFFF" replacedtext="Lightning" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Ort Rel" originalcolor="0xFFFF" replacedtext="Mana Drain" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Ort Por" originalcolor="0xFFFF" replacedtext="Recall" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Jux Hur Ylem" originalcolor="0xFFFF" replacedtext="Blade Spirits" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Grav" originalcolor="0xFFFF" replacedtext="Dispel Field" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal In Ex" originalcolor="0xFFFF" replacedtext="Incognito" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Jux Sanct" originalcolor="0xFFFF" replacedtext="Magic Reflect" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Por Corp Wis" originalcolor="0xFFFF" replacedtext="Mind Blast" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Ex Por" originalcolor="0xFFFF" replacedtext="Paralyze" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Nox Grav" originalcolor="0xFFFF" replacedtext="Poison Field" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Xen" originalcolor="0xFFFF" replacedtext="Summon Creature" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Ort" originalcolor="0xFFFF" replacedtext="Dispel" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Corp Por" originalcolor="0xFFFF" replacedtext="Energy Bolt" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas Ort Flam" originalcolor="0xFFFF" replacedtext="Explosion" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Lor Xen" originalcolor="0xFFFF" replacedtext="Invisibility" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Por Ylem" originalcolor="0xFFFF" replacedtext="Mark" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas Des Sanct" originalcolor="0xFFFF" replacedtext="Mass Curse" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Ex Grav" originalcolor="0xFFFF" replacedtext="Paralyze Field" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Wis Quas" originalcolor="0xFFFF" replacedtext="Reveal" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas Ort Grav" originalcolor="0xFFFF" replacedtext="Chain Lightning" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Sanct Grav" originalcolor="0xFFFF" replacedtext="Energy Field" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Vas Flam" originalcolor="0xFFFF" replacedtext="Flame Strike" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas Rel Por" originalcolor="0xFFFF" replacedtext="Gate Travel" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Ort Sanct" originalcolor="0xFFFF" replacedtext="Mana Vampire" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas An Ort" originalcolor="0xFFFF" replacedtext="Mass Dispel" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Des Flam Ylem" originalcolor="0xFFFF" replacedtext="Meteor Swarm" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas Ylem Rel" originalcolor="0xFFFF" replacedtext="Polymorph" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Vas Por" originalcolor="0xFFFF" replacedtext="Earthquake" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Vas Corp Por" originalcolor="0xFFFF" replacedtext="Energy Vortex" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Corp" originalcolor="0xFFFF" replacedtext="Resurrection" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Vas Xen Hur" originalcolor="0xFFFF" replacedtext="Air Elemental" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Vas Xen Corp" originalcolor="0xFFFF" replacedtext="Summon Daemon" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Vas Xen Ylem" originalcolor="0xFFFF" replacedtext="Earth Elemental" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Vas Xen Flam" originalcolor="0xFFFF" replacedtext="Fire Elemental" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Vas Xen An Flam" originalcolor="0xFFFF" replacedtext="Water Elemental" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Sar" originalcolor="0xFFFF" replacedtext="Pain Spike" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Uus Corp" originalcolor="0xFFFF" replacedtext="Animate Dead" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Jux Mani Xen" originalcolor="0xFFFF" replacedtext="Blood Oath" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Agle Corp Ylem" originalcolor="0xFFFF" replacedtext="Corpse Skin" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="An Sanct Gra Char" originalcolor="0xFFFF" replacedtext="Curse Weapon" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Pas Tym An Sanct" originalcolor="0xFFFF" replacedtext="Evil Omen" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Rel Xen Vas Bal" originalcolor="0xFFFF" replacedtext="Horrific Beast" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Rel Xen Corp Ort" originalcolor="0xFFFF" replacedtext="Lich Form" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Wis An Ben" originalcolor="0xFFFF" replacedtext="Mind Rot" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Sar" originalcolor="0xFFFF" replacedtext="Pain Spike" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Vas Nox" originalcolor="0xFFFF" replacedtext="Poison Strike" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="In Bal Nox" originalcolor="0xFFFF" replacedtext="Strangle" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Xen Bal" originalcolor="0xFFFF" replacedtext="Summon Familiar" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Xen Bal Beh" originalcolor="0xFFFF" replacedtext="Vengeful Spirit" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kal Vas An Flam" originalcolor="0xFFFF" replacedtext="Wither" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Rel Xen Um" originalcolor="0xFFFF" replacedtext="Wraith Form" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+</data>

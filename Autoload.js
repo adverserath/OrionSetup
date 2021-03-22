@@ -18,6 +18,10 @@ function test()
                 Orion.CloseUO();
 }
 function Autostart() {
-GetBods()
+//GetBods()
+Orion.Wait(4000)
+SortBods() 
+                Orion.Print('Good Bye')
+                Orion.CloseUO();
 }
 

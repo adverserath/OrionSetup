@@ -6,12 +6,12 @@
 //#include Scripts/helpers/Gumps.js
 
 var bodMap = [
-    createMap('0x4000CAB5', '0x0483'),//tailor
-    createMap('0x4000CABA', '0x0591'),//fletch
-    createMap('0x400C4071', '0x05E8'),//carpentry
-    createMap('0x4000CAB1', '0x044E'),//blacksmith
-    createMap('0x4000CAB6', '0x0455'),//tinker
-    createMap('0x40139DEB', '0x0A26'),//inscription
+    createMap('0x400DDB48', '0x0483'),//tailor
+    createMap('0x400DDB45', '0x0591'),//fletch
+    createMap('0x400DDB49', '0x05E8'),//carpentry
+    createMap('0x400DDD35', '0x044E'),//blacksmith
+    createMap('0x400DDAF1', '0x0455'),//tinker
+    createMap('0x400DD9B1', '0x0A26'),//inscription
     createMap('0x4000CAB8', '0x09C9'),//alchemy
 ]
 
@@ -24,11 +24,11 @@ function test() {
 }
 
 function SortBods() {
-
+Orion.Wait(500);
     var chest = Orion.FindObject('0x40148DC5')
     WalkTo(chest);
         Orion.UseObject(chest.Serial());
-
+Orion.Wait(1000);
     var bodBook = Orion.FindTypeEx('0x2259')[0];
     MoveItems(chest, Player, '0x2259', '0x0000')
 
@@ -189,8 +189,7 @@ function GetBods() {
 
                 Orion.Print('Move Stuff to Book')
                 MoveItemsFromPlayer(Orion.FindTypeEx('0x2259')[0], '0x2258')
-                Orion.Print('Good Bye')
-                Orion.CloseUO();
+
             }
 
             if (!skip) {

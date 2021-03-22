@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="18">
+<data version="0" size="19">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -39,6 +39,7 @@
             <property name="Greater Magic Item" value_min="0" value_max="100"/>
             <property name="Weight" value_min="1" value_max="2"/>
         </item>
+        <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0"/>
     </findlist>
     <findlist name="Inscription">
         <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>
@@ -139,5 +140,8 @@
         <item graphic="0x170F" color="0x06AB" comment="Shoes" count="0"/>
         <item graphic="0x1711" color="0x0000" comment="Thigh Boots" count="0"/>
         <item graphic="0x170D" color="0x0000" comment="Sandals" count="0"/>
+    </findlist>
+    <findlist name="mushrooms">
+        <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0"/>
     </findlist>
 </data>

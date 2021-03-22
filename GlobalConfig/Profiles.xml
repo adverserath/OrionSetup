@@ -14,6 +14,7 @@
     <profile serial="0x0000A78E" file="BodCollector"/>
     <profile serial="0x0000A866" file="BodCollector"/>
     <profile serial="0x0000A89B" file="BodCollector"/>
+    <profile serial="0x0000AFA4" file="Crafter"/>
     <profile serial="0x0000C794" file="Tamer"/>
     <profile serial="0x0000C941" file="Crafter"/>
     <profile serial="0x0000FA01" file="Vimto"/>

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="0">
+    <property name="PropertiesCount"/>
     <property name="Balanced"/>
     <property name="Cold Resist"/>
     <property name="Damage Increase"/>
     <property name="Defense Chance Increase"/>
     <property name="Dexterity Bonus"/>
-    <property name="Energy Resists"/>
+    <property name="Energy Resist"/>
     <property name="Faster Cast Recovery"/>
     <property name="Enhance Potion"/>
     <property name="Energy Damage"/>
@@ -93,5 +94,19 @@
     <property name="Greater Artifact"/>
     <property name="Major Artifact"/>
     <property name="Legendary Artifact"/>
-    <property name="Weight"/>
+    <ignored_property name="Physical Damage"/>
+    <ignored_property name="Fire Damage"/>
+    <ignored_property name="Poison Damage"/>
+    <ignored_property name="Cold Damage"/>
+    <ignored_property name="Energy Damage"/>
+    <ignored_property name="Chaos Damage"/>
+    <ignored_property name="Physical Resist"/>
+    <ignored_property name="Fire Resist"/>
+    <ignored_property name="Poison Resist"/>
+    <ignored_property name="Cold Resist"/>
+    <ignored_property name="Energy Resist"/>
+    <ignored_property name="Magic Item"/>
+    <ignored_property name="Artifact"/>
+    <ignored_property name="Charges"/>
+    <ignored_property name="Mage Armor"/>
 </data>
