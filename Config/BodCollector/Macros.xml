@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="true" delay="1">
-        <action type="16" convert_type="0" waiting_time="1000" serial="0x0000ED92" graphic="0x0000" color="0x0000"/>
-        <action type="17" convert_type="0" waiting_time="1000" serial="0x0000ED92" graphic="0x0001" color="0x0000"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x000029F6" id="0x9BADE6EA" button="1"/>
-        <action type="16" convert_type="0" waiting_time="1000" serial="0x0000ED92" graphic="0x0000" color="0x0000"/>
-        <action type="17" convert_type="0" waiting_time="1000" serial="0x0000ED92" graphic="0x0001" color="0x0000"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x000029F7" id="0xBE0DAD1E" button="1"/>
-        <action type="16" convert_type="0" waiting_time="1000" serial="0x0000ED92" graphic="0x0000" color="0x0000"/>
-        <action type="17" convert_type="0" waiting_time="1000" serial="0x0000ED92" graphic="0x0001" color="0x0000"/>
-        <action type="17" convert_type="0" waiting_time="1000" serial="0x0000A68F" graphic="0x0001" color="0x0000"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00002A07" id="0x9BADE6EA" button="1"/>
-        <action type="16" convert_type="0" waiting_time="1000" serial="0x0000A68F" graphic="0x0000" color="0x0000"/>
-        <action type="17" convert_type="0" waiting_time="1000" serial="0x0000A68F" graphic="0x0001" color="0x0000"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00002A08" id="0x9BADE6EA" button="1"/>
-        <action type="16" convert_type="0" waiting_time="1000" serial="0x0000A68F" graphic="0x0000" color="0x0000"/>
-        <action type="17" convert_type="0" waiting_time="1000" serial="0x0000A68F" graphic="0x0001" color="0x0000"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x000015F8" id="0x38920ABD" button="16"/>
     </macro>
     <macro name="AnimalLore" looped="true" delay="1">
         <action type="5" convert_type="0" waiting_time="1000" value="2"/>

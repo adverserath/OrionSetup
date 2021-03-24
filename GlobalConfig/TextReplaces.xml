@@ -80,4 +80,14 @@
     <replace originaltext="Kal Xen Bal Beh" originalcolor="0xFFFF" replacedtext="Vengeful Spirit" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
     <replace originaltext="Kal Vas An Flam" originalcolor="0xFFFF" replacedtext="Wither" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
     <replace originaltext="Rel Xen Um" originalcolor="0xFFFF" replacedtext="Wraith Form" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Myrshalee" originalcolor="0xFFFF" replacedtext="Arcane Circle" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Olorisstra" originalcolor="0xFFFF" replacedtext="Gift of Renewal" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kaeldril" originalcolor="0xFFFF" replacedtext="Attunement" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Erelonia" originalcolor="0xFFFF" replacedtext="Thunderstorm" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Rauvvrae" originalcolor="0xFFFF" replacedtext="Natures Fury" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Tarisstree" originalcolor="0xFFFF" replacedtext="Reaper Form" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Kaelyn" originalcolor="0xFFFF" replacedtext="Wildfire" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Rathril" originalcolor="0xFFFF" replacedtext="Dryad Allure" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Nyraxle" originalcolor="0xFFFF" replacedtext="Word of Death" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
+    <replace originaltext="Aslavdra" originalcolor="0xFFFF" replacedtext="Arcane Empowerment" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
 </data>

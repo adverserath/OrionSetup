@@ -10,8 +10,8 @@
 //Uses a FindList for saws and boards, labelled Carpentry
 //WIP// 
 
-var trashBarrel = '0x40033ED7';
-var storageBox = '0x4014D9C4';
+var trashBarrel = '0x4004D8FC';
+var storageBox = '0x400C931A';
 var scrollBox = '0x46415E83';
 var moveItem = true;
 function StartAlchemy() {
@@ -79,7 +79,7 @@ function StartFletching() {
     CraftCreateLoop('Bowcraft/Fletching', 'FletchingShaft', 400, 1, 16, tool, storageBox); //shaft
     CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 600, 15, 2, tool, trashBarrel); //bow
     CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 702, 15, 9, tool, trashBarrel); //crossbow
- //   CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 1000, 15, 23, tool, trashBarrel); //composite
+    CraftCreateLoop('Bowcraft/Fletching', 'Fletching', 951, 15, 16, tool, trashBarrel); //composite
     BotPush(Orion.Time() + "GM Fletching");
 }
 
