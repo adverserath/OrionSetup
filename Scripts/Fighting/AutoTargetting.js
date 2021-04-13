@@ -3,7 +3,7 @@
 //#include helpers/ItemManager.js
 
 //////START OF CONFIG///////
-var range = 30; //How far to load status from
+var range = 18; //How far to load status from
 var delay = 500; //Delay between loop cycle
 var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
 var notorietyToAttack = 3; //Attack targets with notoriety
@@ -11,7 +11,7 @@ var pullTargetDistance = 15; //Distance of target to agro
 var attackEverythingAtOnce = false; //Initiate an attack on every target within range at once otherwise 1 target at a time
 var honorTargets = true;
 var autoAttack = true;
-var archer = false;
+var archer = true;
 var walkToNextTarget = true;
 var retargetClosest = false;
 
@@ -52,7 +52,7 @@ function ShowEnemiesByDistance() {
             .filter(function (mob) {
                 return mob.Notoriety() >= (notorietyToShow)
                     && mob.Notoriety() < 7
-                    && mob.Graphic()=='0x00A5';
+                    && mob.InLOS()
             })
             .sort(function (mobA, mobB) {
                 return mobA.Distance() - mobB.Distance()
@@ -91,6 +91,7 @@ function ShowEnemiesByDistance() {
                     var x = indexX * 130;
                     var y = (distanceFromPlayer * 35) + 200;
                     Orion.ShowStatusbar(mobId, x, y);
+                    
 
 
                     var shouldAttack = lastAttacker == null
@@ -110,9 +111,9 @@ function ShowEnemiesByDistance() {
                         Orion.ClientLastAttack(mobId);
                         AttackMobile(mobile);
                     if (walkToNextTarget == true) {
-                        Orion.Wait(2000);
+                        Orion.Wait(200);
                         if (archer == true) {
-                            WalkTo(mobile, 8);
+                            WalkTo(mobile, 10);
                         }
                         else
                             WalkTo(mobile, 1);
@@ -157,6 +158,13 @@ function ShowEnemiesByDistance() {
                     });
                       //var newTarget = vicinity[Orion.Random(vicinity.length)];
                     var newTarget = vicinity.shift();
+                    if (walkToNextTarget == true) {
+                    WalkTo(newTarget, 13);
+                    if(newTarget.InLOS())
+                    {
+                    WalkTo(newTarget, 10);
+                    }
+                    }
                     AttackMobile(newTarget);
                     if (walkToNextTarget == true) {
                         Orion.Wait(2000);
@@ -179,7 +187,12 @@ function ShowEnemiesByDistance() {
             mobile != null &&
             !Orion.BuffExists('Honored2') &&
             mobile.Hits() == mobile.MaxHits() &&
-            mobile.Distance() < 10) {
+            mobile.Distance() < 13 &&
+            mobile.InLOS()) {
+            if(mobile.Distance() > 13)
+            {
+            WalkTo(newTarget, 13);
+            }
             Orion.AddHighlightCharacter(mobile.Serial(), '0xF550', true);
             Orion.Print('Honor');
             Orion.InvokeVirtue('Honor');

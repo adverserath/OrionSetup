@@ -5,6 +5,7 @@
 
 function GeneratedScript_094340()
 {
+
 while(true){
 	Orion.UseSkill('16');
 	if (Orion.WaitForTarget(1000))
@@ -30,6 +31,16 @@ function TrainNecro() {
         }
 
         skillLevel = Orion.SkillValue('Necromancy');
+                if (skillLevel < 201) {
+            if (Player.Mana() < 10) {
+                TakeOffClothesAndMeditate();
+            }
+
+            Orion.Cast('Curse Weapon');
+            
+
+            Orion.Wait(500);
+        }
         if (skillLevel < 500) {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();

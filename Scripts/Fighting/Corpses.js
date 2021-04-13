@@ -1,6 +1,5 @@
 //#include Scripts/helpers/Target.js
 //#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Target.js
 //#include Scripts/helpers/Debug.js
 
 function CutHides() {
@@ -51,8 +50,19 @@ function CutCorpses() {
 }
 
 function AutoLootAssist() {
-    while (Player.Weight() < Player.MaxWeight()) {
-        if (Orion.ClientLastAttack() == '0x00000000') {
+while(!Player.Dead())
+{
+Orion.Wait(1000)
+            var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 10, 3)
+                .filter(function (mob) {
+                    return mob.Notoriety() >= 3
+                        && mob.Notoriety() < 7
+                        && mob.InLOS();
+                }).length;
+if(Player.WarMode() && entireAreaMobs == 0)
+{
+    if (Player.Weight() < Player.MaxWeight()) {
             var corpses = Orion.FindTypeEx('0x2006', any, 'ground', any, 8);
             corpses.forEach(function (corpse) {
             Orion.Print("Walking to "+corpse.Serial())
@@ -62,10 +72,11 @@ function AutoLootAssist() {
           //      Orion.Hide(corpse.Serial())
                 Orion.Ignore(corpse.Serial());
             });
-        }
+
         Orion.Wait(1000);
-        Orion.Print("loop reset");
     }
+}
+}
 }
 
 function HideCorpse()

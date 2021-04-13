@@ -1,3 +1,5 @@
+//#include Scripts/helpers/Target.js
+
 function BushKnight() {
     var range = 2;
     var bow = Orion.ObjAtLayer('LeftHand');
@@ -61,6 +63,78 @@ function BushKnight() {
             }
 
             if (entireAreaMobs.length > 0) {
+                   if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
+                       Orion.Cast('consecrate weapon');
+                       Orion.Wait(1000);
+             }
+
+                if (Player.Mana() > 10 && !Orion.BuffExists('divine fury')) {
+                       Orion.Cast('divine fury');
+                       Orion.Wait(1000);
+                }
+            }
+        }
+    }
+}
+
+function BushyArcher() {
+    var range = 8;
+    var bow = Orion.ObjAtLayer('LeftHand');
+    if (bow != null) {
+        range = (bow.Properties().match(/Range\s(\d*)/i) || [0, 2])[1]
+    }
+    Orion.Print(!Player.Dead())
+    while (!Player.Dead()) {
+        while (Player.WarMode()) {
+            Orion.Wait(500);
+
+            var attacker = Orion.FindObject(Orion.ClientLastAttack());
+
+            var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', (range), 3)
+                .filter(function (mob) {
+                    return mob.Notoriety() >= 3
+                        && mob.Notoriety() < 7;
+                });
+var mobsAroundAttacker = entireAreaMobs.filter(function (mob){
+            return attacker!=null && attacker.Exists() && mob.Exists() && InRange(attacker, mob, 5)}).length
+            	Orion.Print("Mobs arround attacker:" + mobsAroundAttacker)
+if (Orion.SpellStatus('Honorable Execution') &&
+	(attacker == null || attacker.Hits()>5))
+	{
+	Orion.Print("Disabled Honorable Execution")
+	Orion.Cast('Honorable Execution');
+	Orion.Wait(200)
+	}
+            if (!Orion.SpellStatus('Honorable Execution')
+                && attacker != null && attacker.Hits() < 5) {
+                Orion.Print("Honorable Execution")
+                Orion.Cast('Honorable Execution');
+            }
+            else if (Player.Mana() > 10 &&
+                !Orion.SpellStatus('Lightning Strike') &&
+                !Orion.SpellStatus('Honorable Execution') &&
+                entireAreaMobs.length == 1
+            ) {
+                Orion.Print("Lightning Strike")
+                Orion.Cast('Lightning Strike');
+            }
+            else if(!Orion.AbilityStatus('Primary') && bow.Graphic() == '0x2D2B' && mobsAroundAttacker > 2){
+                Orion.Print("----LIGHTNING ARROW-----")
+                Orion.UseAbility('Primary', true);
+            }
+            else if (Player.Mana() > 10 &&
+                !Orion.SpellStatus('Honorable Execution') &&
+                !Orion.SpellStatus('Momentum Strike') &&
+                entireAreaMobs.length > 2
+            ) {
+                Orion.Print("Momentum Strike")
+                Orion.Cast('Momentum Strike');
+            }
+             Orion.Wait(500)
+
+
+            if (entireAreaMobs.length > 0) {
                 //   if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
                 //       Orion.Cast('consecrate weapon');
                 //       Orion.Wait(1000);
@@ -73,4 +147,9 @@ function BushKnight() {
             }
         }
     }
+}
+
+function mobsInArea()
+{
+TextWindow.Print(Orion.GetStatus(Orion.ClientLastAttack()))
 }

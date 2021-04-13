@@ -232,7 +232,7 @@ function createMap(id, color) {
 }
 
 function BodReader(){
-    Orion.File()
+   // Orion.File()
     TextWindow.Open()
     var gumpinfo = Orion.GetLastGump().CommandList();
 gumpinfo.forEach(function (line) {

@@ -28,7 +28,6 @@ EmptyContainerToAnother(SelectTarget(),SelectTarget())
 function EmptyContainerToAnother(fromContainer, toContainer) {
     WalkTo(toContainer, 2);
     Orion.FindTypeEx(any, any, fromContainer.Serial(), 3).forEach(function (items) {
-        DebugText('Moving:' + items.Name());
         Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
         Orion.Wait(800);
     });

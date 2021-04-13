@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="macro" looped="true" delay="1">
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00001400" id="0x38920ABD" button="15"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00001401" id="0x38920ABD" button="16"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00001402" id="0x38920ABD" button="15"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00001403" id="0x38920ABD" button="44"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00001404" id="0x38920ABD" button="29"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00001405" id="0x38920ABD" button="9"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00001406" id="0x38920ABD" button="8"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00001407" id="0x38920ABD" button="100"/>
-    </macro>
+    <macro name="macro" looped="true" delay="1"/>
     <macro name="PeaceArea" looped="false" delay="1"/>
     <macro name="Moongate" looped="false" delay="1">
         <action type="1" convert_type="0" waiting_time="1000" serial="0x4012F148" graphic="0x4BCB" color="0x0000"/>

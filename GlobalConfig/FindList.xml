@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="19">
+<data version="0" size="20">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -18,10 +18,6 @@
         <item graphic="any" color="any" comment="Legendary Arti" count="0">
             <property name="Legendary Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="0x1F09" color="0x0000" comment="Ring" count="0"/>
-        <item graphic="0x1086" color="0x0000" comment="Bracelet" count="0"/>
-        <item graphic="0x1F06" color="0x0000" comment="Bracelet" count="0"/>
-        <item graphic="0x108A" color="0x0000" comment="Ring" count="0"/>
         <item graphic="0x1BD1" color="0x0000" comment="Feather" count="0"/>
         <item graphic="any" color="any" comment="Minor Magic" count="0">
             <property name="Minor Magic Item" value_min="0" value_max="100"/>
@@ -143,5 +139,13 @@
     </findlist>
     <findlist name="mushrooms">
         <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0"/>
+    </findlist>
+    <findlist name="Eggs">
+        <item graphic="0x9F180" color="0x0000" comment="EasterEgg" count="0"/>
+        <item graphic="0x9F17" color="0x0000" comment="Easter Egg" count="0"/>
+        <item graphic="0x9F14" color="0x0000" comment="Easter Egg" count="0"/>
+        <item graphic="0x9F16" color="0x0000" comment="Easter Egg" count="0"/>
+        <item graphic="0x9F15" color="0x0000" comment="Easter Egg" count="0"/>
+        <item graphic="0x9F18" color="0x0000" comment="Easter Egg" count="0"/>
     </findlist>
 </data>
