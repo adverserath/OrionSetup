@@ -5,26 +5,21 @@
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Gumps.js
 
-function MakeLastScroll()
-{
-while(true)
-{
-Orion.Wait(100);
-	Orion.UseObject('0x40010EE2');
-	if (Orion.WaitForGump(1000))
-	{
-		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x38920ABD'))
-		{
-			gump0.Select(Orion.CreateGumpHook(21));
-			Orion.Wait(100);
-		}
-	}
-	while(Player.Mana()<Player.MaxMana())
-	{
-	Orion.Wait(100);
-	}
-}
+function MakeLastScroll() {
+    while (true) {
+        Orion.Wait(100);
+        Orion.UseObject('0x40010EE2');
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x38920ABD')) {
+                gump0.Select(Orion.CreateGumpHook(21));
+                Orion.Wait(100);
+            }
+        }
+        while (Player.Mana() < Player.MaxMana()) {
+            Orion.Wait(100);
+        }
+    }
 }
 
 function FillSpellBook() {

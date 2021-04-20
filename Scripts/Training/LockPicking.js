@@ -111,7 +111,7 @@ function HighlightLocked() {
 		});
 
 		Orion.Wait(1000);
-		
+
 	}
 
 	//var box = SelectTarget();

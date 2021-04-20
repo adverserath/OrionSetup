@@ -91,7 +91,7 @@ function ShowEnemiesByDistance() {
                     var x = indexX * 130;
                     var y = (distanceFromPlayer * 35) + 200;
                     Orion.ShowStatusbar(mobId, x, y);
-                    
+
 
 
                     var shouldAttack = lastAttacker == null
@@ -110,14 +110,14 @@ function ShowEnemiesByDistance() {
 
                         Orion.ClientLastAttack(mobId);
                         AttackMobile(mobile);
-                    if (walkToNextTarget == true) {
-                        Orion.Wait(200);
-                        if (archer == true) {
-                            WalkTo(mobile, 10);
+                        if (walkToNextTarget == true) {
+                            Orion.Wait(200);
+                            if (archer == true) {
+                                WalkTo(mobile, 10);
+                            }
+                            else
+                                WalkTo(mobile, 1);
                         }
-                        else
-                            WalkTo(mobile, 1);
-}
                     }
                 })
         };
@@ -156,14 +156,13 @@ function ShowEnemiesByDistance() {
                     vicinity = vicinity.sort(function (mobSerialA, mobSerialB) {
                         return mobSerialA.Hits() - mobSerialB.Hits();
                     });
-                      //var newTarget = vicinity[Orion.Random(vicinity.length)];
+                    //var newTarget = vicinity[Orion.Random(vicinity.length)];
                     var newTarget = vicinity.shift();
                     if (walkToNextTarget == true) {
-                    WalkTo(newTarget, 13);
-                    if(newTarget.InLOS())
-                    {
-                    WalkTo(newTarget, 10);
-                    }
+                        WalkTo(newTarget, 13);
+                        if (newTarget.InLOS()) {
+                            WalkTo(newTarget, 10);
+                        }
                     }
                     AttackMobile(newTarget);
                     if (walkToNextTarget == true) {
@@ -189,9 +188,8 @@ function ShowEnemiesByDistance() {
             mobile.Hits() == mobile.MaxHits() &&
             mobile.Distance() < 13 &&
             mobile.InLOS()) {
-            if(mobile.Distance() > 13)
-            {
-            WalkTo(newTarget, 13);
+            if (mobile.Distance() > 13) {
+                WalkTo(newTarget, 13);
             }
             Orion.AddHighlightCharacter(mobile.Serial(), '0xF550', true);
             Orion.Print('Honor');
@@ -217,7 +215,7 @@ function ShowEnemiesByDistance() {
 }
 
 function DrawRange() {
-    var range = 1;
+    var range = 16;
     var bow = Orion.ObjAtLayer('LeftHand');
 
     if (bow != null) {
@@ -231,10 +229,10 @@ function DrawRange() {
 
         Orion.ClearHighlightCharacters(true);
         Orion.FindTypeEx(any, any, ground,
-            'nothumanmobile|live|ignoreself|ignorefriends', range, notorietyToShow)
+            'nothumanmobile|live|ignoreself|ignorefriends', range, 'grey|criminal|enemy')
             .forEach(function (mob) {
                 if (mob.Distance() <= range && mob.InLOS() == true)
-                    Orion.AddHighlightCharacter(mob.Serial(), '0x0AB0', true)
+                    Orion.AddHighlightCharacter(mob.Serial(), '0x00B0', true)
                 else
                     Orion.RemoveHighlightCharacter(mob.Serial(), true);
 

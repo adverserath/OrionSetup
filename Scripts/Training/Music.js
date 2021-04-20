@@ -4,43 +4,42 @@
 var discordMessage = 'jarring music|already in'
 
 function TrainDiscord() {
-var bardRange = 8 + ((parseInt(Orion.SkillValue('Discordance'))/10) / 15);
-Orion.Print(bardRange)
-Orion.ActivateClient();
-Orion.WalkTo(2274,1059,27,0,1)
-        var animal = SelectTarget();
-    while(!Player.Dead())
-    {
-    var startTime = Orion.Now();
-    var isDiscorded = false;
-    WalkTo(animal,bardRange)
+    var bardRange = 8 + ((parseInt(Orion.SkillValue('Discordance')) / 10) / 15);
+    Orion.Print(bardRange)
+    Orion.ActivateClient();
+    Orion.WalkTo(2274, 1059, 27, 0, 1)
+    var animal = SelectTarget();
+    while (!Player.Dead()) {
+        var startTime = Orion.Now();
+        var isDiscorded = false;
+        WalkTo(animal, bardRange)
 
-    while (!isDiscorded) {
-        Orion.UseType('0x0E9D', '0xFFFF');
-        Orion.Print("discording " + animal.Name() + ' ' + animal.Serial());
-        Orion.Wait(1000);
-        Orion.AddDisplayTimer('SkillInUse', 4000, 'AboveChar');
-        Orion.UseSkill('Discordance', animal.Serial());
-        Orion.Wait(500);
-Orion.Print(InRange(Player, animal, bardRange) )
-Orion.Print(animal.InLOS())
-        if (Orion.InJournal(discordMessage, '', '0', '-1', startTime, Orion.Now()) != null) {
-            isDiscorded = true;
-Orion.WalkTo(2273,1060,27,0,1)
-Orion.Wait(15000)
-        }
-        while (Orion.DisplayTimerExists('SkillInUse')) {
+        while (!isDiscorded) {
+            Orion.UseType('0x0E9D', '0xFFFF');
+            Orion.Print("discording " + animal.Name() + ' ' + animal.Serial());
             Orion.Wait(1000);
+            Orion.AddDisplayTimer('SkillInUse', 4000, 'AboveChar');
+            Orion.UseSkill('Discordance', animal.Serial());
+            Orion.Wait(500);
+            Orion.Print(InRange(Player, animal, bardRange))
+            Orion.Print(animal.InLOS())
+            if (Orion.InJournal(discordMessage, '', '0', '-1', startTime, Orion.Now()) != null) {
+                isDiscorded = true;
+                Orion.WalkTo(2273, 1060, 27, 0, 1)
+                Orion.Wait(15000)
+            }
+            while (Orion.DisplayTimerExists('SkillInUse')) {
+                Orion.Wait(1000);
+            }
         }
     }
-}
 }
 
 var provokeMessage = 'you start a fight|cannot be seen'
 
 //This method needs a house location, with 2 1x1 stable cells.
 function TrainProvoke() {
-Orion.ActivateClient();
+    Orion.ActivateClient();
     Orion.Print('Target the attacker')
     var attacker = SelectTarget();
     Orion.Print('Target the target')
@@ -51,19 +50,17 @@ Orion.ActivateClient();
     Orion.AddHighlightCharacter(attacker.Serial(), '0x0004', true);
 
     while (!Player.Dead()) {
-Orion.Wait(100)
-        if(!Orion.DisplayTimerExists('SkillInUse'))
-        {
-    Orion.UseType('0x0E9D', '0xFFFF');
-        Orion.UseSkill('Provocation', attacker.Serial());
-        Orion.Wait(500);
-	if (Orion.WaitForTarget(2000))
-	{
-        Orion.TargetObject(target.Serial());
-        Orion.AddDisplayTimer('SkillInUse', 11000, 'AboveChar');
-        }
-        Orion.Wait(1000)
-        
+        Orion.Wait(100)
+        if (!Orion.DisplayTimerExists('SkillInUse')) {
+            Orion.UseType('0x0E9D', '0xFFFF');
+            Orion.UseSkill('Provocation', attacker.Serial());
+            Orion.Wait(500);
+            if (Orion.WaitForTarget(2000)) {
+                Orion.TargetObject(target.Serial());
+                Orion.AddDisplayTimer('SkillInUse', 11000, 'AboveChar');
+            }
+            Orion.Wait(1000)
+
         }
     }
 }

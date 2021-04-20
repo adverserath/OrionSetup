@@ -87,18 +87,17 @@ function BorderEdge(x, y, p2, range) {
 }
 
 function GetDistanceToSqrt() {
-var p1 = Player
-var p2 = SelectTarget()
-while(true)
-{
-Orion.Wait(100)
-var xDelta = p1.X() - p2.X()
-var yDelta = p1.Y() - p2.Y()
-var sqrt = Math.sqrt((xDelta*xDelta)+ (yDelta*yDelta))
-Orion.Print('sqrt' + sqrt)
-Orion.Print('range: '+InRange(p1,p2,14)+ ' '+ p2.Distance())
-Orion.Print('LOS: '+p2.InLOS())
-}// return sqrt
+  var p1 = Player
+  var p2 = SelectTarget()
+  while (true) {
+    Orion.Wait(100)
+    var xDelta = p1.X() - p2.X()
+    var yDelta = p1.Y() - p2.Y()
+    var sqrt = Math.sqrt((xDelta * xDelta) + (yDelta * yDelta))
+    Orion.Print('sqrt' + sqrt)
+    Orion.Print('range: ' + InRange(p1, p2, 14) + ' ' + p2.Distance())
+    Orion.Print('LOS: ' + p2.InLOS())
+  }// return sqrt
 }
 
 function ShowRange(targetId, range) {
@@ -142,17 +141,17 @@ function StayAway(targetId, distance) {
 
 function coordinate(xLoc, yLoc, zLoc) {
   return {
-      x: xLoc,
-      y: yLoc,
-      z: zLoc,
-      X: function () {
-          return this.x;
-      },
-      Y: function () {
-          return this.y;
-      },
-      Z: function () {
-          return this.z;
-      },
+    x: xLoc,
+    y: yLoc,
+    z: zLoc,
+    X: function () {
+      return this.x;
+    },
+    Y: function () {
+      return this.y;
+    },
+    Z: function () {
+      return this.z;
+    },
   }
 }

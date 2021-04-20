@@ -121,7 +121,7 @@ function Chop(tile) {
     DebugText('StartChopMethod');
     walkBack = false;
 
-    while ( Orion.GetDistance(tile.X(), tile.Y()) <= 2 && (Orion.LastJournalMessage() == null
+    while (Orion.GetDistance(tile.X(), tile.Y()) <= 2 && (Orion.LastJournalMessage() == null
         || (Orion.LastJournalMessage().Text()
             .match(/(not\senough\swood)|(use\san\saxe)|(cannot\sbe\sseen)|(far\saway)/gi) || []).length == 0)) {
         if (Player.WarMode()) {
@@ -159,7 +159,7 @@ function Chop(tile) {
                 })
                 if (usingBeetle) {
                     Orion.RequestContextMenu(beetleMobile.Serial());
-					Orion.WaitContextMenuCliloc(beetleMobile.Serial(), 3006145);
+                    Orion.WaitContextMenuCliloc(beetleMobile.Serial(), 3006145);
                     Orion.Wait(600);
                     EmptyContainerToAnother(beetleMobile, storageBox);
                     Orion.Wait(600);
@@ -199,7 +199,7 @@ function Chop(tile) {
 
 function EquipAxe() {
     if (axe == null) {
-        axe = Orion.FindObject('0x4012327C')
+        axe = Orion.FindTypeEx(axes, any, backpack)
     }
     if (axe.Layer() == 0) {
         Orion.Unequip('LeftHand');

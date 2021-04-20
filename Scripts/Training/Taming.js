@@ -65,18 +65,18 @@ function TrainTaming() {
         })
 
 
-            animals = animals.filter(function (animal) {
+        animals = animals.filter(function (animal) {
 
-                return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name().length != 4)
-            })
-                .sort(function (mobA, mobB) {
-                    return mobA.Distance() - mobB.Distance()
-                });
-            animals.forEach(function (animal) {
-                TextWindow.Print(animal.Name());
+            return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name().length != 4)
+        })
+            .sort(function (mobA, mobB) {
+                return mobA.Distance() - mobB.Distance()
+            });
+        animals.forEach(function (animal) {
+            TextWindow.Print(animal.Name());
 
-            })
-        
+        })
+
         TextWindow.Print("Found:" + animals.length);
         while (Player.WarMode() == true) {
             Orion.Print("Select More type of animal then leave war mode")

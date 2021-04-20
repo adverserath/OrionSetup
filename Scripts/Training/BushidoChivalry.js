@@ -3,11 +3,11 @@ function TrainChivalryAndBushido() {
     while (Player.IsHuman()) {
         if (Player.Mana() < 10) {
             //  Orion.UseSkill('Meditation');
-         //   while (Player.Mana() < Player.MaxMana()) {
-                Orion.Wait(1000);
+            //   while (Player.Mana() < Player.MaxMana()) {
+            Orion.Wait(1000);
             //}
         }
-       if (Orion.SkillValue('Chivalry') < 500) {
+        if (Orion.SkillValue('Chivalry') < 500) {
             Orion.Cast('Consecrate Weapon');
             Orion.Wait(500);
         }
@@ -32,7 +32,7 @@ function TrainChivalryAndBushido() {
             Orion.Cast('Confidence');
             Orion.Wait(2000);
         }
-        else if (Orion.SkillValue('Bushido','base') < 991) {
+        else if (Orion.SkillValue('Bushido', 'base') < 991) {
             if (Orion.BuffExists('Counter Attack')) {
                 Orion.Cast('Confidence');
                 Orion.Wait(2000);

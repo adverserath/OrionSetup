@@ -40,13 +40,13 @@ function StayHidden() {
         resumeSFHD = true;
       }
       BotPush('Not Hiding')
-      Orion.Wait(100);   
+      Orion.Wait(100);
       Orion.UseSkill('Hiding')
       Orion.Wait(300)
-      if(resumeWD&&Player.Hidden()){
+      if (resumeWD && Player.Hidden()) {
         Orion.ResumeScript('WanderDungeon');
       }
-      if(resumeWD&&Player.Hidden()){
+      if (resumeWD && Player.Hidden()) {
         Orion.ResumeScript('SearchForHiddenChests');
       }
     }
@@ -120,8 +120,8 @@ function WanderDungeon(_private) {
         Orion.Wait(100);
         startingRef++;
         if (Orion.GetDistance(location.X(), location.Y()) < 15) {
-        Orion.Print('Starting from point: '+startingRef)
-		  foundStart = true;
+          Orion.Print('Starting from point: ' + startingRef)
+          foundStart = true;
           Orion.Wait(1000);
         }
       }
@@ -210,9 +210,9 @@ function SearchForHiddenChests() {
       Orion.PauseScript('WanderDungeon');
       Orion.StopWalking();
       if (chestIds.length == 0) {
-if (!Orion.DisplayTimerExists('dh')) {
-      Orion.UseSkillTarget('Detecting Hidden', self)
-      }
+        if (!Orion.DisplayTimerExists('dh')) {
+          Orion.UseSkillTarget('Detecting Hidden', self)
+        }
         var chestIds = Orion.FindTypeEx(
           '0x0E42|0x0E40|0x0E3C|0x0E77|0x0E3E|0x0E7E|0x0E41|0x0E3D|0x09AB|0x0E7C|0x0E7F|0x0E43|0x0E3F'
           , '0x0AB9', any, any, 40).filter(function (chest) {
@@ -231,7 +231,7 @@ if (!Orion.DisplayTimerExists('dh')) {
         WalkTo(chest, 1, 40000, 0);
         startCastTime = Orion.Now();
         if (Orion.GetDistance(chest.Serial()) < 2) {
-        BotPush('Found Chest')
+          BotPush('Found Chest')
           while (Orion.InJournal('yields|not appear', '', '0', '-1', startCastTime, Orion.Now()) == null) {
             Orion.Wait(1000)
             WalkTo(chest, 1, 40000, 0);
