@@ -247,15 +247,32 @@ function EquipRod() {
 
 }
 function WaterTest() {
-    GetWater(16);
+    GetWater(32);
 }
 function GetWater(_range) {
     Orion.Wait(300)
     Orion.Print('Range ' + _range);
     var waterTiles = Orion.GetTilesInRect('water', (Player.X() - _range), (Player.Y() - _range), (Player.X() + _range), (Player.Y() + _range))
+        .concat(
+            Orion.GetTilesInRect('land', (Player.X() - _range), (Player.Y() - _range), (Player.X() + _range), (Player.Y() + _range))
+        ).filter(function (tile) {
+            return tile.Graphic() == '0x00A8'
+                || tile.Graphic() == '0x00A9'
+                || tile.Graphic() == '0x00AA'
+                || tile.Graphic() == '0x00AB'
+                || tile.Graphic() == '00x0136'
+                || tile.Graphic() == '0x0137'
+                || tile.Graphic() == '0x1797'
+                || tile.Graphic() == '0x1798'
+                || tile.Graphic() == '0x1799'
+                || tile.Graphic() == '0x179A'
+                || tile.Graphic() == '0x179B'
+                || tile.Graphic() == '0x179C'
+        })
         .filter(function (tile) {
             return (IsReachable(tile, 5)) && (tile.X() - 1) % 8 != 0 && (tile.Y() - 1) % 8 != 0
         })
+
         .filter(function (tile) {
             return fishedWater.map(
                 function (e) {
@@ -285,13 +302,19 @@ function IsReachable(tile, _range) {
     return result >= 9 && result < 30;
 }
 
-function GetWater2(_private) {
+function GetWater2(range) {
     var waterTiles = [];
     Orion.Print('Range ' + range);
     for (var xLoc = (Player.X() - range); xLoc < (Player.X() + range); xLoc++) {
         for (var yLoc = (Player.Y() - range); yLoc < (Player.Y() + range); yLoc++) {
             var tiles = Orion.GetTilesInRect('', xLoc, yLoc, xLoc, yLoc)
-            if (tiles.length == 1 && tiles[0].Graphic() == '0x00A8|0x00A9|0x00AA|0x00AB|0x0136|0x0137') {
+
+            if (tiles.length > 1 && (tiles[0].Graphic() == '0x00A8'
+                || tiles[0].Graphic() == '0x00A9'
+                || tiles[0].Graphic() == '0x00AA'
+                || tiles[0].Graphic() == '0x00AB'
+                || tiles[0].Graphic() == '00x0136'
+                || tiles[0].Graphic() == '0x0137')) {
                 TextWindow.Print(tiles[0].Graphic())
                 var newTile = {
                     x: xLoc,

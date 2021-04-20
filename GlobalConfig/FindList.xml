@@ -36,6 +36,12 @@
             <property name="Weight" value_min="1" value_max="2"/>
         </item>
         <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0"/>
+        <item graphic="any" color="any" comment="Spell Damage Increase" count="0">
+            <property name="Spell Damage Increase" value_min="17" value_max="18"/>
+        </item>
+        <item graphic="any" color="any" comment="Damange Increase" count="0">
+            <property name="Damage Increase" value_min="35" value_max="35"/>
+        </item>
     </findlist>
     <findlist name="Inscription">
         <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>
@@ -50,7 +56,7 @@
         <item graphic="0x0F7A" color="0x0000" comment="Black Pearl" count="100"/>
     </findlist>
     <findlist name="Carpentry">
-        <item graphic="0x1028" color="0x0000" comment="Saw" count="0"/>
+        <item graphic="0x1034" color="0x0000" comment="Saw" count="0"/>
         <item graphic="0x1BD7" color="0x0000" comment="Board" count="100"/>
     </findlist>
     <findlist name="Leather">
