@@ -1,13 +1,16 @@
 //#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/Target.js
 
-function TimeRun() {
-  Orion.WalkTo(2274, 1059, 27, 0, 1)
-  //BardRange()
-  //var start = Orion.Now()
-  //Orion.WalkTo(Player.X(),Player.Y()-14,Player.Z(),0,0,1)
-  //var end = Orion.Now()
-  //Orion.Print('Time:' + end-start )
+function PlayerDetected() {
+	while (true) {
+		var npc = Orion.FindTypeEx(any, any, ground,
+			'mobile', 15, 'yellow|blue')
+		npc.forEach(function (npc) {
+			Orion.ActivateClient();
+
+		})
+		Orion.Wait(1000)
+	}
 }
 
 function BardRange() {

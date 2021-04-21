@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="macro" looped="true" delay="1">
-        <action type="8" convert_type="0" waiting_time="1000" value="508"/>
-        <action type="1000" convert_type="0" waiting_time="1500"/>
+    <macro name="macro" looped="true" delay="10">
+        <action type="9" convert_type="0" waiting_time="1000" value="pop"/>
+        <action type="1000" convert_type="0" waiting_time="1000"/>
+        <action type="5" convert_type="0" waiting_time="1000" value="21"/>
     </macro>
     <macro name="PeaceArea" looped="false" delay="1">
         <action type="1" convert_type="0" waiting_time="1000" serial="0x40173554" graphic="0x14F6" color="0x0000"/>
