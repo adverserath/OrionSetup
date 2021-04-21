@@ -100,6 +100,7 @@ function StartTailoring() {
 
 
 function CraftCreateLoop(skillName, listName, trainToLevel, buttonMenuID, buttonItemID, toolSet, containerID, createdItemGraphicId) {
+    Orion.SetCatchBag(containerID);
     DebugStart();
     BotPush("Started " + skillName + trainToLevel);
     Orion.UseObject(Orion.FindTypeEx(toolSet, 'any', 'backpack').shift().Serial());
