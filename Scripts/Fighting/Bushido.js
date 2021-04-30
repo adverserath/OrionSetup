@@ -63,14 +63,14 @@ function BushKnight() {
             }
 
             if (entireAreaMobs.length > 0) {
-                   if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
-                       Orion.Cast('consecrate weapon');
-                       Orion.Wait(1000);
-             }
+                if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
+                    Orion.Cast('consecrate weapon');
+                    Orion.Wait(1000);
+                }
 
                 if (Player.Mana() > 10 && !Orion.BuffExists('divine fury')) {
-                       Orion.Cast('divine fury');
-                       Orion.Wait(1000);
+                    Orion.Cast('divine fury');
+                    Orion.Wait(1000);
                 }
             }
         }
@@ -96,16 +96,16 @@ function BushyArcher() {
                     return mob.Notoriety() >= 3
                         && mob.Notoriety() < 7;
                 });
-var mobsAroundAttacker = entireAreaMobs.filter(function (mob){
-            return attacker!=null && attacker.Exists() && mob.Exists() && InRange(attacker, mob, 5)}).length
-            	Orion.Print("Mobs arround attacker:" + mobsAroundAttacker)
-if (Orion.SpellStatus('Honorable Execution') &&
-	(attacker == null || attacker.Hits()>5))
-	{
-	Orion.Print("Disabled Honorable Execution")
-	Orion.Cast('Honorable Execution');
-	Orion.Wait(200)
-	}
+            var mobsAroundAttacker = entireAreaMobs.filter(function (mob) {
+                return attacker != null && attacker.Exists() && mob.Exists() && InRange(attacker, mob, 5)
+            }).length
+            Orion.Print("Mobs arround attacker:" + mobsAroundAttacker)
+            if (Orion.SpellStatus('Honorable Execution') &&
+                (attacker == null || attacker.Hits() > 5)) {
+                Orion.Print("Disabled Honorable Execution")
+                Orion.Cast('Honorable Execution');
+                Orion.Wait(200)
+            }
             if (!Orion.SpellStatus('Honorable Execution')
                 && attacker != null && attacker.Hits() < 5) {
                 Orion.Print("Honorable Execution")
@@ -119,7 +119,7 @@ if (Orion.SpellStatus('Honorable Execution') &&
                 Orion.Print("Lightning Strike")
                 Orion.Cast('Lightning Strike');
             }
-            else if(!Orion.AbilityStatus('Primary') && bow.Graphic() == '0x2D2B' && mobsAroundAttacker > 2){
+            else if (!Orion.AbilityStatus('Primary') && bow.Graphic() == '0x2D2B' && mobsAroundAttacker > 2) {
                 Orion.Print("----LIGHTNING ARROW-----")
                 Orion.UseAbility('Primary', true);
             }
@@ -131,7 +131,7 @@ if (Orion.SpellStatus('Honorable Execution') &&
                 Orion.Print("Momentum Strike")
                 Orion.Cast('Momentum Strike');
             }
-             Orion.Wait(500)
+            Orion.Wait(500)
 
 
             if (entireAreaMobs.length > 0) {
@@ -149,7 +149,6 @@ if (Orion.SpellStatus('Honorable Execution') &&
     }
 }
 
-function mobsInArea()
-{
-TextWindow.Print(Orion.GetStatus(Orion.ClientLastAttack()))
+function mobsInArea() {
+    TextWindow.Print(Orion.GetStatus(Orion.ClientLastAttack()))
 }

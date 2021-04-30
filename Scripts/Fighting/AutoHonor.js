@@ -19,10 +19,6 @@ function AutoHonor() {
 }
 
 function HonorTarget(target) {
-    Orion.Print('t=' + currentTargetId)
-    Orion.Print('h=' + target.Hits())
-    Orion.Print('d=' + targetDistance)
-
     if (!Orion.BuffExists('Honored2') &&
         targetDistance < 13) {
         Orion.Print('honor')

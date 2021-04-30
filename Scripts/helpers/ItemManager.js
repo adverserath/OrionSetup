@@ -21,8 +21,8 @@ function MoveItemsFromPlayer(toContainer, graphicIDs) {
 }
 //#include Scripts/helpers/Target.js
 
-function EmptyTargetXToTargetY(){
-EmptyContainerToAnother(SelectTarget(),SelectTarget())
+function EmptyTargetXToTargetY() {
+    EmptyContainerToAnother(SelectTarget(), SelectTarget())
 }
 
 function EmptyContainerToAnother(fromContainer, toContainer) {

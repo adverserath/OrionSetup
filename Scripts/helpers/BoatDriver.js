@@ -22,12 +22,12 @@
 var SeaMarket = createDock("Sea Market", 4518, 2320, [coordinate(4518, 2320)], false, false);
 var Britain = createDock("Britain", 1471, 1803, [coordinate(1471, 1803)], false, false);
 var Trinsic = createDock("Trinsic", 2115, 2854, [coordinate(2115, 2854)], false, false);
-var Moonglow = createDock("Moonglow", 4410, 1008, [coordinate(4410, 849),coordinate(4410, 1008)], false, false);
+var Moonglow = createDock("Moonglow", 4410, 1008, [coordinate(4410, 849), coordinate(4410, 1008)], false, false);
 var SkaraBrae = createDock("Skara Brae", 655, 2306, [coordinate(655, 2306)], true, false);//Go through right
 var Vesper = createDock("Vesper", 3051, 835, [coordinate(3051, 835)], false, false);
-var Jhelom = createDock("Jhelom", 1388, 3925, [coordinate(1528, 3824),coordinate(1528, 3925),coordinate(1388, 3925)], false, false);
+var Jhelom = createDock("Jhelom", 1388, 3925, [coordinate(1528, 3824), coordinate(1528, 3925), coordinate(1388, 3925)], false, false);
 var Jhelom = createDock("Jhelom Islands", 1388, 3925, [coordinate(0, 0)], false, false);
-var Papua = createDock("Papua", 5866,3243, [coordinate(2983, 2886),coordinate(5972, 2687), coordinate(5866, 2687),coordinate(5866, 3243)], false, true);
+var Papua = createDock("Papua", 5866, 3243, [coordinate(2983, 2886), coordinate(5972, 2687), coordinate(5866, 2687), coordinate(5866, 3243)], false, true);
 
 function createDock(_name, _X, _Y, _path, goOffMap, _lostLand) {
     return {
@@ -136,9 +136,8 @@ function SetDirection(location) {
     }
 }
 
-function LookForAFight()
-{
-//if any mob within 12 tiles
-//  //STOP AND KILL EVERYTHING 
-//then carry on
+function LookForAFight() {
+    //if any mob within 12 tiles
+    //  //STOP AND KILL EVERYTHING 
+    //then carry on
 }

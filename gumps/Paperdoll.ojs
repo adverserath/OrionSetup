@@ -1,0 +1,150 @@
+//See _README.txt file for details
+//==================================================================
+//==========================Gump's content==========================
+//==================================================================
+var statbarX = 0;
+var statbarY = 280;
+var barWidth = 270;
+var linesHeight = 10;
+var linesIndentations = 10;
+var y = 0 + statbarY;
+var lineWidth = barWidth  * 0.7;
+var y = 0 + statbarY;
+var lineWidth = barWidth  * 0.7;
+var barstart = barWidth*0.1
+
+
+if (barWidth < 60)
+    barWidth = 60;
+
+if (linesHeight < 4)
+    linesHeight = 4;
+
+if (linesIndentations < 1)
+    linesIndentations = 1;
+var barHeight = 0 + (linesHeight * 5) + (linesIndentations * 3);
+	Gump.AddHitBox(0, -8, 0, 270, 277);
+
+var colour = 0x00ffffff;
+if(Player.Notoriety()==1)
+    colour = 0x00838fbf;
+else if(Player.Notoriety()==2)
+    colour = 0x0083df8d;
+else if(Player.Notoriety()==3)
+    colour = 0x00cccccc;
+else if(Player.Notoriety()==4)
+    colour = 0x00808080;
+else if(Player.Notoriety()==5)
+    colour = 0x00ffa366;
+else if(Player.Notoriety()==6)
+    colour = 0x00ff6666;
+else if(Player.Notoriety()==7)
+    colour = 0x00ffe066;
+else
+    colour = 0x00111111;
+
+Gump.AddPage(1);
+var obj = Gump.AddGumpPic(0, 0x07EE, 0, 0, 0);
+obj.SetTooltip(0, 'Double click to maximize paperdoll gump');
+
+Gump.AddPage(2);
+var partyManifestX = 37;
+var profileX = 23;
+
+if (Gump.IsPlayersGump())
+{
+Gump.AddPolygone(0, 0, -8, 0, 270, 277, 0xFF000000); //black
+
+Gump.AddPolygone(0, 0, -6, 2, 266, 273, colour); //green
+Gump.AddPolygone(0, 0, -4, 4, 262, 269, 0xFF000000); //black
+Gump.AddPolygone(0, 0, -2, 6, 258, 265, 0xFFCDCDCD); //white
+	//Gump.AddGumpPic(0, 0x07D0, 0, 0, 0);
+//		Gump.AddPolygone(0, 0, 0, 0, 270, 420, 0xFFCDCDCD); //white
+//	Gump.AddPolygone(0, 0, 0, 0, 270, 420, 0xFF000000,0,9); //outer
+//	Gump.AddPolygone(0, 0, 0, 0, 270, 420, 0xFF00DD00,1,2); //green
+
+	//Gump.AddPolygone(0, 0, 0, 0, 270, 420, 0xFF333333,1,10);
+//			Gump.AddPolygone(0, 0, 0, 0, 270, 420, 0xFF333333,1,5);
+		
+
+
+	Gump.AddPolygone(0, 0, 23, 60, 150, 200, 0x00000000);
+
+	obj = Gump.AddButton('ID_BUTTON_HELP', 0x07EF, 0x07F1, 0x07F0, 185, 44);
+	obj.SetTooltip(0, "Open server's help menu gump");
+
+	obj = Gump.AddButton('ID_BUTTON_OPTIONS', 0x07D6, 0x07D8, 0x07D7, 185, 71);
+	obj.SetTooltip(0, 'Open the configuration gump');
+
+	obj = Gump.AddButton('ID_BUTTON_LOGOUT', 0x07D9, 0x07DB, 0x07DA, 185, 98);
+	obj.SetTooltip(0, 'Open the logout gump');
+
+	if (Orion.ProtocolVersion() >= Orion.MakeProtocolVersion('5.0.0a'))
+	{
+		obj = Gump.AddButton('ID_BUTTON_JOURNAL_OR_QUESTS', 0x57B5, 0x57B6, 0x57B7, 185, 125);
+		obj.SetTooltip(0, 'Open the quests gump');
+	}
+	else
+	{
+		obj = Gump.AddButton('ID_BUTTON_JOURNAL_OR_QUESTS', 0x07DC, 0x07DE, 0x07DD, 185, 125);
+		obj.SetTooltip(0, 'Open the journal gump');
+	}
+
+	obj = Gump.AddButton('ID_BUTTON_SKILLS', 0x07DF, 0x07E1, 0x07E0, 185, 152);
+	obj.SetTooltip(0, 'Open the skills gump');
+
+	if (Orion.ProtocolVersion() >= Orion.MakeProtocolVersion('5.0.0a'))
+	{
+		obj = Gump.AddButton('ID_BUTTON_CHAT_OR_GUILD', 0x57B2, 0x57B3, 0x57B4, 185, 179);
+		obj.SetTooltip(0, 'Open the guild gump');
+	}
+	else
+	{
+		obj = Gump.AddButton('ID_BUTTON_CHAT_OR_GUILD', 0x07E2, 0x07E4, 0x07E3, 185, 179);
+		obj.SetTooltip(0, 'Open the chat gump');
+	}
+
+	if (Player.InWarMode())
+		obj = Gump.AddButton('ID_BUTTON_WARMODE', 0x07E8, 0x07EA, 0x07E9, 185, 206);
+	else
+		obj = Gump.AddButton('ID_BUTTON_WARMODE', 0x07E5, 0x07E7, 0x07E6, 185, 206);
+
+	obj.SetTooltip(0, "Change player's warmode");
+
+	obj = Gump.AddHitBox('ID_BUTTON_VIRTUE', 80, 4, 32, 32, true);
+	obj.SetTooltip(0, "Open server's virtue gump");
+
+	obj = Gump.AddButton('ID_BUTTON_VIRTUE', 0x0071, 0x0071, 0x0071, 10, 10);
+	obj.SetTooltip(0, "Open server's virtue gump");
+
+	if (Gump.UsePaperdollBooks())
+	{
+		obj = Gump.AddButton('ID_COMBAT_BOOK', 0x2B34, 0x2B34, 0x2B34, 42, 155);
+		obj.SetTooltip(0, 'Open combat book');
+
+		if (Orion.ProtocolVersion() >= Orion.MakeProtocolVersion('7.0.0.0'))
+		{
+			obj = Gump.AddButton('ID_RACIAL_ABILITIES_BOOK', 0x2B28, 0x2B28, 0x2B28, 25, 155);
+			obj.SetTooltip(0, 'Open racial abilities book');
+
+			partyManifestX = 49;
+			profileX = 35;
+		}
+	}
+
+	obj = Gump.AddButton('ID_PARTY_MANIFEST_SCROLL', 0x07D2, 0x07D2, 0x07D2, 42, 205);
+	obj.SetTooltip(0, 'Double click for open party manifest gump');
+
+	obj = Gump.AddHitBox('ID_BUTTON_MINIMIZE', 226, 258, 16, 16, true);
+	obj.SetTooltip(0, 'Minimize the paperdoll gump');
+}
+else
+	Gump.AddGumpPic(0, 0x07D1, 0, 0, 0);
+
+obj = Gump.AddButton('ID_BUTTON_STATUS', 0x07EB, 0x07ED, 0x07EC, 185, 233);
+obj.SetTooltip(0, "Open player's statusbar gump");
+
+obj = Gump.AddButton('ID_PROFILE_SCROLL', 0x07D2, 0x07D2, 0x07D2, 25, 205);
+obj.SetTooltip(0, 'Double click for open profile gump');
+
+Gump.AddText('ID_TITLE', 45, 15, 'title', 0, true, 2, Player.ColorByNotoriety(), 185);

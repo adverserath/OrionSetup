@@ -3,8 +3,8 @@
 //#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/ItemManager.js
 
-function Empty(){
-EmptyContainerToAnother(SelectTarget(),SelectTarget())
+function Empty() {
+	EmptyContainerToAnother(SelectTarget(), SelectTarget())
 }
 function PrintAllItemsInContainer() {
 	var container = SelectTarget();

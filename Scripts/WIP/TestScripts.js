@@ -1,45 +1,75 @@
 //#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/Target.js
 
-function myFunction() {
-  var luck = parseInt("1000");
-  var fame = parseInt("2000");
-  var famemod = (0.83 - Math.round(Math.log(Math.round(fame / 6000, 3) + 0.001, 10), 3))
-var max = 100 * famemod
-var luckmod = (100 - Math.sqrt(luck))
-var max2 = Math.max(10, max)
-var divider = max2 * luckmod / 100.0;
-var chance = 1 / divider;  document.getElementById("demo").innerHTML = 'famemod: '+famemod + '<br> luckmod: ' + luckmod  + '<br> max2: ' + max2+ '<br> chance: ' + chance*100
+function PlayerDetected() {
+	while (true) {
+		var npc = Orion.FindTypeEx(any, any, ground,
+			'mobile', 15, 'yellow|blue')
+		npc.forEach(function (npc) {
+			Orion.ActivateClient();
+
+		})
+		Orion.Wait(1000)
+	}
+}
+
+function BardRange() {
+  var range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+  Orion.ClearFakeMapObjects();
+
+  var target = Player
+  var x = target.X();
+  var y = target.Y();
+
+  range.forEach(function (distance) {
+    Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance).concat()
+
+      .forEach(function (tile) {
+        var xDelta = tile.X() - Player.X()
+        var yDelta = tile.Y() - Player.Y()
+        var sqrt = Math.sqrt((xDelta * xDelta) + (yDelta * yDelta))
+
+        if (sqrt < 15) {
+          Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x0197', tile.X(), tile.Y(), tile.Z());
+
+        }
+        else {
+          Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+        }
+      }
+      )
+  })
+
 }
 
 function simpleJSONstringify() {
   var obj = SelectTarget().Properties;
   var prop, str, val,
-      isArray = obj instanceof Array;
+    isArray = obj instanceof Array;
 
   if (typeof obj !== "object") return false;
 
   str = isArray ? "[" : "{";
 
   function quote(str) {
-      if (typeof str !== "string") str = str.toString();
-      return str.match(/^\".*\"$/) ? str : '"' + str.replace(/"/g, '\\"') + '"'
+    if (typeof str !== "string") str = str.toString();
+    return str.match(/^\".*\"$/) ? str : '"' + str.replace(/"/g, '\\"') + '"'
   }
 
   for (prop in obj) {
-      if (!isArray) {
-          // quote property
-          str += quote(prop) + ": ";
-      }
+    if (!isArray) {
+      // quote property
+      str += quote(prop) + ": ";
+    }
 
-      // quote value
-      val = obj[prop];
-      str += typeof val === "object" ? simpleJSONstringify(val) : quote(val);
-      str += ", ";
+    // quote value
+    val = obj[prop];
+    str += typeof val === "object" ? simpleJSONstringify(val) : quote(val);
+    str += ", ";
   }
 
   // Remove last colon, close bracket
-  str = str.substr(0, str.length - 2)  + ( isArray ? "]" : "}" );
+  str = str.substr(0, str.length - 2) + (isArray ? "]" : "}");
 
   TextWindow.Print(str);
 }
@@ -111,15 +141,22 @@ function getTileData() {
 }
 
 function test() {
-
-  TextWindow.Open();
-  while (!Player.Dead()) {
-
-    Orion.InfoContextMenu();
-
-
-    Orion.Wait(500);
-  }
+  TextWindow.Clear()
+  TextWindow.Print('watertile')
+  Orion.GetTiles(any, 2273, 1032).forEach(function (tile) {
+    TextWindow.Print(tile.Flags())
+    TextWindow.Print((tile.Flags() & 524288) == 524288)
+  })
+  TextWindow.Print('staticwater')
+  Orion.GetTiles('any', 2276, 1053).forEach(function (tile) {
+    TextWindow.Print(tile.Flags())
+    TextWindow.Print((tile.Flags() & 524288) == 524288)
+  })
+  TextWindow.Print('grass')
+  Orion.GetTiles('any', 2276, 1061).forEach(function (tile) {
+    TextWindow.Print(tile.Flags())
+    TextWindow.Print((tile.Flags() & 524288) == 524288)
+  })
 }
 
 function getPeople() {

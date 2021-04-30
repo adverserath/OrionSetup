@@ -18,7 +18,7 @@ function TrainMagery() {
             notified = false;
         }
 
-        skillLevel = Orion.SkillValue('Magery');
+        skillLevel = Orion.SkillValue('Magery','base');
         if (skillLevel < 550) {
             if (Player.Mana() < 10) {
                 TakeOffClothesAndMeditate();
@@ -35,14 +35,14 @@ function TrainMagery() {
 
             Orion.Wait(500);
         }
-        else if (Orion.SkillValue('Magery') < 790) {
+        else if (skillLevel < 790) {
             if (Player.Mana() < 20) {
                 TakeOffClothesAndMeditate();
             }
-            Orion.Cast('Invisibility', self);
+            Orion.Cast('Reveal', self);
             Orion.Wait(500);
         }
-        else if (Orion.SkillValue('Magery') < 1000) {
+        else if (skillLevel < 1000) {
             if (Player.Mana() < 40) {
                 TakeOffClothesAndMeditate();
             }

@@ -1,0 +1,92 @@
+//See _README.txt file for details
+//==================================================================
+//=========================Gump configuration=======================
+//==================================================================
+//Statusbar width
+var barWidth = 135;
+
+//Hits line height
+var linesHeight = 7;
+//==================================================================
+//==========================Gump's content==========================
+//==================================================================
+var hitsColor = 0x0386;
+var textColor = 0x0386;
+
+var character = Orion.FindObject(Gump.Serial());
+
+var colour = 0x00ffffff;
+if(character.Notoriety()==1)
+    colour = 0x00838fbf;
+else if(character.Notoriety()==2)
+    colour = 0x0083df8d;
+else if(character.Notoriety()==3)
+    colour = 0x00cccccc;
+else if(character.Notoriety()==4)
+    colour = 0x00AA8080;
+else if(character.Notoriety()==5)
+    colour = 0x00ffa366;
+else if(character.Notoriety()==6)
+    colour = 0x00ff6666;
+else if(character.Notoriety()==7)
+    colour = 0x00ffe066;
+else
+    colour = 0x00111111;
+
+if (character.IsValid())
+{
+	hitsColor = 0;
+	textColor = character.ColorByNotoriety();
+
+	if (character.Notoriety() == 3 || character.Notoriety() == 4) //Orion::NT_CRIMINAL or Orion::NT_SOMEONE_GRAY
+		textColor = 0x0481;
+}
+
+if (barWidth < 60)
+    barWidth = 60;
+
+if (linesHeight < 4)
+    linesHeight = 4;
+
+var barHeight = 28 + linesHeight;
+
+Gump.AddPolygone(0, 0, 0, 0, barWidth, barHeight, colour);
+Gump.AddPolygone(0, 0, 1, 1, barWidth - 1, barHeight - 1, 0, true);
+
+var obj = Gump.AddTextEntry('ID_TEXT_FIELD', 4, 0, 'name'+character.Poisoned(), true, 1, 0, textColor, textColor, barWidth-4, 'Center', 'Cropped');
+obj.SetCheckOnSerial(true);
+obj.SetReadOnly(true);
+
+var y = 24;
+var lineWidth = barWidth  * 0.7;
+var barstart = barWidth*0.15
+Gump.SetLineWidth(lineWidth);
+
+var percents = CalculatePercents(character.MaxHits(), character.Hits(), lineWidth);
+
+if (percents < 1)
+    percents = 1;
+
+//Red background
+Gump.AddPolygone(0, 0, barstart, y, lineWidth, linesHeight, 0xFFC40000);
+Gump.AddText(0, 5, y-6, 'H:', 0, true, 1, 0x0000, barWidth-5, 'Left', 'Cropped');
+
+//Character status line (blue)
+var hitsLineColor = 0xFF00C4C4;
+
+if (character.Poisoned())
+	hitsLineColor = 0xFF00C400; //Character status line (green)
+else if (character.YellowHits())
+	hitsLineColor = 0xFFC4C400; //Character status line (yellow)
+
+//Real hits line
+Gump.AddPolygone('ID_HITS_VALUE', 0, barstart, y, percents, linesHeight, hitsLineColor);
+
+//Black scope
+Gump.AddPolygone(0, 0, barstart, y, lineWidth + 1, linesHeight + 1, 0, true);
+
+if(character.Notoriety()==1 || character.Notoriety()==2)
+{
+Gump.AddButton('ID_BUTTON_HEAL_1', 0x0938, 0x093A, 0x093A, barWidth -15, 5);
+Gump.AddButton('ID_BUTTON_HEAL_2', 0x0939, 0x093A, 0x093A, barWidth -15, 20);
+}

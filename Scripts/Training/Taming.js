@@ -37,8 +37,11 @@ function TrainTaming() {
     Orion.Print("Select a rune bag")
     var runeBag = SelectTarget();
 
-    var runes = Orion.FindTypeEx('0x1F14', any, runeBag.Serial());
-    var useRunes = false;
+    var useRunes = runeBag!=null;
+    var runes;
+    if(useRunes)
+		runes = Orion.FindTypeEx('0x1F14', any, runeBag.Serial());
+    
     var startingSkill = Orion.SkillValue('Animal Taming', 'real')
     var animals = [];
     var lastDirection;
@@ -65,18 +68,18 @@ function TrainTaming() {
         })
 
 
-            animals = animals.filter(function (animal) {
+        animals = animals.filter(function (animal) {
 
-                return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name().length != 4)
-            })
-                .sort(function (mobA, mobB) {
-                    return mobA.Distance() - mobB.Distance()
-                });
-            animals.forEach(function (animal) {
-                TextWindow.Print(animal.Name());
+            return ((animal.Properties().match(/tameable/gi) || []).length >= 1) && (animal.Name().length != 4)
+        })
+            .sort(function (mobA, mobB) {
+                return mobA.Distance() - mobB.Distance()
+            });
+        animals.forEach(function (animal) {
+            TextWindow.Print(animal.Name());
 
-            })
-        
+        })
+
         TextWindow.Print("Found:" + animals.length);
         while (Player.WarMode() == true) {
             Orion.Print("Select More type of animal then leave war mode")
@@ -161,7 +164,7 @@ function TrainTaming() {
         animals = [];
     }
     BotPush("You died")
-    Orion.ShutdownWindows('forced')
+  //  Orion.ShutdownWindows('forced')
 }
 
 function Rename(petId) {

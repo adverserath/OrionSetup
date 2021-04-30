@@ -24,11 +24,11 @@ function test() {
 }
 
 function SortBods() {
-Orion.Wait(500);
+    Orion.Wait(500);
     var chest = Orion.FindObject('0x40148DC5')
     WalkTo(chest);
-        Orion.UseObject(chest.Serial());
-Orion.Wait(1000);
+    Orion.UseObject(chest.Serial());
+    Orion.Wait(1000);
     var bodBook = Orion.FindTypeEx('0x2259')[0];
     MoveItems(chest, Player, '0x2259', '0x0000')
 
@@ -36,44 +36,37 @@ Orion.Wait(1000);
     while (((bodBook.Properties().match(
         /Deeds\sIn\sBook:\s(\d*)/i
     ) || [])[1] || 0) != 0) {
-    Orion.UseObject(bodBook.Serial());    
-    	if (Orion.WaitForGump(1000))
-	{
-		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF'))
-		{
-			gump0.Select(Orion.CreateGumpHook(1));
-			Orion.Wait(100);
-		}
-	}
-	if (Orion.WaitForGump(1000))
-	{
-		var gump1 = Orion.GetGump('last');
-		if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x968739DB'))
-		{
-			gump1.Select(Orion.CreateGumpHook(3));
-			Orion.Wait(100);
-		}
-	}
-	if (Orion.WaitForGump(1000))
-	{
-		var gump2 = Orion.GetGump('last');
-		if ((gump2 !== null) && (!gump2.Replayed()) && (gump2.ID() === '0x968739DB'))
-		{
-			gump2.Select(Orion.CreateGumpHook(0));
-			Orion.Wait(100);
-		}
-	}
+        Orion.UseObject(bodBook.Serial());
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF')) {
+                gump0.Select(Orion.CreateGumpHook(1));
+                Orion.Wait(100);
+            }
+        }
+        if (Orion.WaitForGump(1000)) {
+            var gump1 = Orion.GetGump('last');
+            if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x968739DB')) {
+                gump1.Select(Orion.CreateGumpHook(3));
+                Orion.Wait(100);
+            }
+        }
+        if (Orion.WaitForGump(1000)) {
+            var gump2 = Orion.GetGump('last');
+            if ((gump2 !== null) && (!gump2.Replayed()) && (gump2.ID() === '0x968739DB')) {
+                gump2.Select(Orion.CreateGumpHook(0));
+                Orion.Wait(100);
+            }
+        }
 
-    Orion.Wait(400)
-            Orion.Print('Start Bod Drop Book')
+        Orion.Wait(400)
+        Orion.Print('Start Bod Drop Book')
 
         while (Orion.FindType('any').length < 49 && (((bodBook.Properties().match(
             /Deeds\sIn\sBook:\s(\d*)/i
-        ) || [])[1] || 0)) != 0)
-        {
-        Orion.Wait(200)
-        Orion.Print('Empting Book')
+        ) || [])[1] || 0)) != 0) {
+            Orion.Wait(200)
+            Orion.Print('Empting Book')
             if (Orion.WaitForGump(1000)) {
                 var gump0 = Orion.GetGump('last');
                 if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF')) {
@@ -81,7 +74,7 @@ Orion.Wait(1000);
                     Orion.Wait(100);
                 }
             }
-}
+        }
         Orion.Wait(200)
 
         bodMap.forEach(function (map) {
@@ -203,7 +196,7 @@ function GetBods() {
                     if (Orion.WaitForGump(1000)) {
                         Orion.Wait(200)
                         var gump0 = Orion.GetGump('last');
-                        if ((gump0 !== null) && (!gump0.Replayed()) && ((gump0.ID() === '0xBE0DAD1E')||(gump0.ID() === '0x9BADE6EA'))) {
+                        if ((gump0 !== null) && (!gump0.Replayed()) && ((gump0.ID() === '0xBE0DAD1E') || (gump0.ID() === '0x9BADE6EA'))) {
                             Orion.Wait(200)
                             gump0.Select(Orion.CreateGumpHook(1));
                             Orion.Wait(100);
@@ -231,57 +224,57 @@ function createMap(id, color) {
     }
 }
 
-function BodReader(){
-   // Orion.File()
+function BodReader() {
+    // Orion.File()
     TextWindow.Open()
     var gumpinfo = Orion.GetLastGump().CommandList();
-gumpinfo.forEach(function (line) {
-   // TextWindow.Print(line);
+    gumpinfo.forEach(function (line) {
+        // TextWindow.Print(line);
 
-    (line.match(/.?xmfhtmlgumpcolor\s(?:\d*\s){4}(\d*)/i)||[]).forEach(function (match){
+        (line.match(/.?xmfhtmlgumpcolor\s(?:\d*\s){4}(\d*)/i) || []).forEach(function (match) {
 
-        TextWindow.Print(match)
+            TextWindow.Print(match)
 
-    })
-});
+        })
+    });
 }
 
 function ReadCliLoc() {
     var clilocs = []
     var file = Orion.NewFile();
-  
+
     file.Open('cliloc.txt');
     if (file != null) {
-      var i = 0;
-      var location = '1'
-      while (location != null && location) {
-        //TextWindow.Print(i++)
-        location = file.ReadLine();
-        
-          TextWindow.Print(location)
-        if (location != null && location) {
-          TextWindow.Print(location)
-          var cliloc = location.split(';');
-          var cliLine = {
-            id: cliloc[0],
-            name: cliloc[1],
-            type: cliloc[2],
-            Id: function () {
-              return this.id;
-            },
-            Name: function () {
-              return this.name;
-            },
-            Type: function () {
-              return this.type;
+        var i = 0;
+        var location = '1'
+        while (location != null && location) {
+            //TextWindow.Print(i++)
+            location = file.ReadLine();
+
+            TextWindow.Print(location)
+            if (location != null && location) {
+                TextWindow.Print(location)
+                var cliloc = location.split(';');
+                var cliLine = {
+                    id: cliloc[0],
+                    name: cliloc[1],
+                    type: cliloc[2],
+                    Id: function () {
+                        return this.id;
+                    },
+                    Name: function () {
+                        return this.name;
+                    },
+                    Type: function () {
+                        return this.type;
+                    }
+                }
+                clilocs.push(cliLine);
+                //      TextWindow.Print(cliLine[0])
+                //       TextWindow.Print(cliLine[1])
             }
-          }
-          clilocs.push(cliLine);
-    //      TextWindow.Print(cliLine[0])
-   //       TextWindow.Print(cliLine[1])
         }
-      }
     }
     file.Close();
     return clilocs;
-  }
+}

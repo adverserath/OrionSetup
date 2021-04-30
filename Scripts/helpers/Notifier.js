@@ -1,11 +1,15 @@
 var hook;
 var key;
 
+function BotPush(message){
+TelegramPost(message)
+DiscordPost(message)
+}
 //Create discord.conf in "Orion Launcher" folder
 //First Word 1  = Discord hook ID
 //single space
 //Second Word 2 = API key
-function BotPush(message) {
+function DiscordPost(message) {
     if (hook == null && key == null) {
         var file = Orion.NewFile();
         open = file.Open('discordkey.conf');
@@ -23,6 +27,34 @@ function BotPush(message) {
         + key; // Webhook url
     var paramText = "content=" + message;
     Orion.HttpPost(bot, paramText);
+}
+
+//Create telegramkey.conf in "Orion Launcher" folder
+//First Word   = first part of key
+//single space
+//Second Word =  second part of key
+//single space
+//Third Word =  chat id
+function TelegramPost(message) {
+    if (hook == null && key == null) {
+        var file = Orion.NewFile();
+        open = file.Open('telegramkey.conf');
+        if (!file.Opened()) {
+            return;
+        }
+        hook = file.Read();
+        key = file.Read();
+        chatId = file.Read();
+        file.Close();
+    }
+    var bot =
+        "https://api.telegram.org/bot"
+        + hook
+        + ":"
+        + key
+        + '/sendMessage?chat_id=' + chatId +'&text='+message; // Webhook url
+    var paramText = '';
+	Orion.HttpPost(bot, paramText);
 }
 
 var shouldNotify = [];
