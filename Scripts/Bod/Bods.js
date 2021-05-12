@@ -4,31 +4,57 @@
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Gumps.js
+var bodChestSerial = '0x40148DBE'
 
-var bodMap = [
-    createMap('0x400DDB48', '0x0483'),//tailor
-    createMap('0x400DDB45', '0x0591'),//fletch
-    createMap('0x400DDB49', '0x05E8'),//carpentry
-    createMap('0x400DDD35', '0x044E'),//blacksmith
-    createMap('0x400DDAF1', '0x0455'),//tinker
-    createMap('0x400DD9B1', '0x0A26'),//inscription
-    createMap('0x4000CAB8', '0x09C9'),//alchemy
-]
+var bodMap = []
 
-function test() {
-    var bodBook = Orion.FindTypeEx('0x2259')[0];
+function PopulateBookIDs(map) {
+    TextWindow.Print('GetBook:' + map.BookName())
+    var books = Orion.FindTypeEx('0x2259', any, bodChestSerial, '', 2, '', true)
+        .filter(function (book) {
+            TextWindow.Print('name' + (book.Properties().match(
+                /Book\sName:\s(\w*)/i) || [])[1] || '')
+            TextWindow.Print('count' + ((book.Properties().match(
+                /Deeds\sIn\sBook:\s(\d*)/i
+            ) || [])[1] || 0))
 
-    Orion.Print(((bodBook.Properties().match(
-        /Deeds\sIn\sBook:\s(\d*)/i
-    ) || [])[1] || 0) === 240)
+            return ((book.Properties().match(
+                /Book\sName:\s(\w*)/i) || [])[1] || '') === map.BookName() &&
+                ((book.Properties().match(
+                    /Deeds\sIn\sBook:\s(\d*)/i
+                ) || [])[1] || 0) < 495
+        })
+    if (books.length > 0) {
+        map.SetSerial(books[0].Serial())
+    }
+    else {
+        BotPush('No Bod Book for ' + map.BookName())
+        Orion.PauseScript();
+    }
 }
 
 function SortBods() {
     Orion.Wait(500);
-    var chest = Orion.FindObject('0x40148DBE')
+    var chest = Orion.FindObject(bodChestSerial)
     WalkTo(chest);
     Orion.UseObject(chest.Serial());
     Orion.Wait(1000);
+    bodMap.push(createMap('Tailor', '0x00000000', '0x0483'))//tailor
+    bodMap.push(createMap('Fletch', '0x00000000', '0x0591'))//fletch
+    bodMap.push(createMap('Carpentry', '0x00000000', '0x05E8'))//carpentry
+    bodMap.push(createMap('Blacksmith', '0x00000000', '0x044E'))//blacksmith
+    bodMap.push(createMap('Tinker', '0x00000000', '0x0455'))//tinker
+    bodMap.push(createMap('Inscription', '0x00000000', '0x0A26'))//inscription
+    bodMap.push(createMap(('Alchemy'), '0x00000000', '0x09C9'))//alchemy
+
+    bodMap.forEach(function (bodMapping) {
+        Orion.Print(bodMapping.BookName())
+        PopulateBookIDs(bodMapping)
+        Orion.Print(bodMapping.Serial())
+    }
+    )
+
+
     var bodBook = Orion.FindTypeEx('0x2259')[0];
     MoveItems(chest, Player, '0x2259', '0x0000')
 
@@ -60,13 +86,13 @@ function SortBods() {
         }
 
         Orion.Wait(400)
-        Orion.Print('Start Bod Drop Book')
+        TextWindow.Print('Start Bod Drop Book')
 
-        while (Orion.FindType('any').length < 49 && (((bodBook.Properties().match(
+        while (Orion.FindType('any').length < 80 && (((bodBook.Properties().match(
             /Deeds\sIn\sBook:\s(\d*)/i
         ) || [])[1] || 0)) != 0) {
             Orion.Wait(200)
-            Orion.Print('Empting Book')
+            TextWindow.Print('Empting Book')
             if (Orion.WaitForGump(1000)) {
                 var gump0 = Orion.GetGump('last');
                 if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF')) {
@@ -78,8 +104,7 @@ function SortBods() {
         Orion.Wait(200)
 
         bodMap.forEach(function (map) {
-            var bodBook = Orion.FindObject(map.Book())
-            MoveItems(Player, bodBook, '0x2258', map.Color())
+            MoveItems(Player, map, '0x2258', map.BodColor())
         });
     }
 
@@ -182,7 +207,7 @@ function GetBods() {
 
                 Orion.Print('Move Stuff to Book')
                 MoveItemsFromPlayer(Orion.FindTypeEx('0x2259')[0], '0x2258')
-				skip = true
+                skip = true
             }
 
             if (!skip) {
@@ -209,15 +234,22 @@ function GetBods() {
     }
 }
 
-function createMap(id, color) {
+function createMap(name, id, color) {
     return {
         color: color,
-        book: id,
-        Color: function () {
+        bookName: name,
+        serial: id,
+        BodColor: function () {
             return this.color;
         },
-        Book: function () {
-            return this.book;
+        Serial: function () {
+            return this.serial;
+        },
+        SetSerial: function (id) {
+            this.serial = id
+        },
+        BookName: function () {
+            return this.bookName;
         }
     }
 }
