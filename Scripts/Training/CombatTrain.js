@@ -1,6 +1,6 @@
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Target.js
-
+var fightParagons = true
 function TrainComabt() {
 	TextWindow.Open()
 
@@ -11,6 +11,8 @@ function TrainComabt() {
 	var tGraphic;
 	if (target != null) {
 		tColor = target.Color();
+		if(fightParagons)
+					tColor = any
 		tGraphic = target.Graphic()
 	}
 	else {
@@ -46,7 +48,7 @@ function TrainComabt() {
 		}
 	};
 	var mobs = Orion.FindTypeEx(tGraphic, tColor, ground,
-		'nothumanmobile|live|ignoreself|ignorefriends', 35, 3).
+		'nothumanmobile|live|ignoreself|ignorefriends', 45, 3).
 		filter(function (mob) {
 			return mob.Notoriety() >= 3 && mob.Notoriety() <= 6 && mob.Name() != ''
 		})

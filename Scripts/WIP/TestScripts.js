@@ -1,16 +1,66 @@
 //#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/Target.js
+//#include Scripts/helpers/Notifier.js
 
 function PlayerDetected() {
 	while (true) {
+	Orion.Wait(500)
 		var npc = Orion.FindTypeEx(any, any, ground,
-			'mobile', 15, 'yellow|blue')
+			'mobile|human', 15, 'yellow|criminal')
 		npc.forEach(function (npc) {
+		if(npc.Properties().indexOf('Shop')==-1)
+		{Orion.Print(npc.Properties().indexOf('Shop'))
 			Orion.ActivateClient();
-
+BotPush('Detected : '+npc.Name())
+Orion.PlayWav('C:\\Sounds\\Windows Background.wav'); 
+}
 		})
-		Orion.Wait(1000)
+		Orion.Wait(2000)	
+		if(Player.Hits()<Player.MaxHits())
+		{
+				BotPush('Injured')
+					Orion.ActivateClient();
+							Orion.Wait(10000)	
+		}
+		var paragonCorpse = Orion.FindTypeEx('0x2006', '0x0501', ground,
+			'', 10);
+		if(paragonCorpse.length>0)
+			{
+			Orion.Ignore(paragonCorpse.shift().Serial())
+					Orion.ActivateClient();
+							Orion.Wait(10000)	
+			}
 	}
+}
+
+function DrawLOS()
+{
+while(true)
+{
+Orion.ClearFakeMapObjects();
+
+  var range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,15]
+
+  var target = Player
+  var x = target.X();
+  var y = target.Y();
+
+  range.forEach(function (distance) {
+    Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance).concat()
+
+      .forEach(function (tile) {
+        if (Orion.InLOS(Player.X(),Player.Y(),Player.Z(),tile.X(), tile.Y(),tile.Z())) {
+          Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x0197', tile.X(), tile.Y(), tile.Z());
+
+        }
+        else {
+          Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+        }
+      }
+      )
+  })
+Orion.Wait(1000)
+}
 }
 
 function BardRange() {

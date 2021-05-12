@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="Provoke" looped="false" delay="1">
-        <action type="1" convert_type="1" waiting_time="1000" serial="0x40106B31" graphic="0x0E9D" color="0x0000"/>
+    <macro name="Provoke" looped="true" delay="1">
+        <action type="8" convert_type="0" waiting_time="1000" value="605"/>
     </macro>
 </data>

@@ -5,20 +5,27 @@
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Gumps.js
 
-function GeneratedScript_001752() {
-    var rune = SelectTarget();
-    var newBook = SelectTarget();
-    MarkRune(rune);
+function ScrollMaker() {
+    while (true) {
+        Orion.Wait(2000)
+        if (Player.Mana() > 50) {
+            var pens = Orion.FindTypeEx('0x0FBF', '0xFFFF', backpack);
+            Orion.Print(pens.length)
+            if (pens.length > 0) {
+                Orion.UseType('0x0FBF', any, backpack);
+                if (Orion.WaitForGump(1000)) {
+                    Orion.Wait(200)
+                    var gump0 = Orion.GetGump('last');
+                    if ((gump0 !== null) && (gump0.ID() === '0x38920ABD')) {
 
-    Orion.UseObject(rune.Serial());
-    if (Orion.WaitForPrompt(1000)) {
-        Orion.SendPrompt('test')
+                        gump0.Select(Orion.CreateGumpHook(21));
+                    }
+                }
+            }
+        }
     }
-    Orion.Wait(1000);
-    //Add Rune to new book
-    Orion.MoveItem(rune.Serial(), 0, newBook.Serial());
-
 }
+
 function CopyRuneBook() {
     DebugStart();
 
@@ -33,6 +40,7 @@ function CopyRuneBook() {
     var originalBookName = originalBook.Properties()
         .match(/(?:.*\n)*((?:\w|\s|.)*){1}/i)[1];
 
+    //Select Books to copy to and name them
     Orion.Print('Select news books, press escape to start')
     var newBooks = [];
     var newSelectedBook = 1;
@@ -77,6 +85,7 @@ function CopyRuneBook() {
         Orion.ToggleScript('CopyRuneBook');
     }
 
+    //If the book to copy isnt in the backpack set up a recall system
     var runeBookRune;
     if (originalBook.Container() != Orion.ObjAtLayer(21).Serial()) {
         Orion.Print('Select runebook location rune')
@@ -99,7 +108,7 @@ function CopyRuneBook() {
             locations++;
     }
     var runesNeeded = (locations * newBooks.length)
-    Orion.Print(locations)
+    Orion.Print('Need to use ' + runesNeeded + ' runes')
     //Get X runes
     //Orion.ClearFindList('Runes');
     var findList = Orion.GetFindList('Runes')
@@ -108,13 +117,14 @@ function CopyRuneBook() {
     runeitem.SetCount(runesNeeded);
     Orion.UpdateFindList(findList);
     Restock('Runes')
-    if (!Orion.Count(runeitem.Graphic(), runeitem.Color(), backpack, '', '', true) >= runesNeeded) {
+    var runesInBackpack = Orion.Count(runeitem.Graphic(), runeitem.Color(), backpack, '', '', true)
+    if (!runesInBackpack >= runesNeeded) {
         Orion.Print('Not Enough Runes, collect ' + (runesNeeded - Orion.Count(runeitem.Graphic(), runeitem.Color(), backpack, '', '', true)) + ' runes and continue')
         Orion.PauseScript();
     }
     var runes = Orion.FindTypeEx('0x1F14', any, backpack).filter(function (rune) { return runeBookRune == null || rune.Serial() != runeBookRune.Serial() })
     if (runes.length < runesNeeded) {
-        Orion.Print('You need more blank runes')
+        Orion.Print('You need more another ' + (runesNeeded - runesInBackpack) + ' runes')
         Orion.ToggleScript('CopyRuneBook');
     }
     //For 0+2 to X+2
@@ -122,6 +132,7 @@ function CopyRuneBook() {
     for (var recallId = 1; recallId <= locations; recallId++) {
         MeditateSafely(safeSpot);
         if (runeBookRune != null) {
+            Orion.Print('Going back to source book')
             var lastX = Player.X()
             var lastY = Player.Y()
             if (!firstMove)
@@ -134,16 +145,17 @@ function CopyRuneBook() {
         while (firstTry || Orion.InJournal('You have not yet recovered', '', '0', '-1', startCastTime, Orion.Now()) != null) {
             firstTry = false;
             Orion.UseObject(originalBook.Serial());
+            Orion.WaitForGump(4000)
             var recallbutton = (49 + recallId);
             var lastX = Player.X()
             var lastY = Player.Y()
             var locationName = gumpinfo[recallId + 1];
             Orion.Print('Recalling to ' + locationName + ' button: ' + recallbutton)
             var startCastTime = Orion.Now();
-            if (Orion.WaitForGump(1000)) {
+            if (Orion.WaitForGump(4000)) {
                 Orion.Wait(200)
                 var gump0 = Orion.GetGump('last');
-
+                Orion.Wait(200)
                 Orion.Print(recallbutton)
                 if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x00000059')) {
                     gump0.Select(Orion.CreateGumpHook(recallbutton));
@@ -159,12 +171,12 @@ function CopyRuneBook() {
                 Orion.PauseScript();
             }
         }
+        Orion.Wait(600)
+        Orion.Step(Orion.Random(0, 7))
+        Orion.Wait(200)
+        Orion.Step(Orion.Random(0, 7))
+        
         newBooks.forEach(function (newBook) {
-            Orion.Wait(600)
-            Orion.Step(Orion.Random(0, 7))
-            Orion.Wait(200)
-            Orion.Step(Orion.Random(0, 7))
-
             //Mark Rune
             var rune = runes.shift();
             MarkRune(rune);

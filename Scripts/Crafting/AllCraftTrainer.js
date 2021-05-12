@@ -49,7 +49,7 @@ function StartBlacksmith() {
     var tool = '0x0FBB';
     CraftCreateLoop('Blacksmithy', 'Blacksmithy', 750, 22, 44, tool, trashBarrel); //makeTongs
     CraftCreateLoop('Blacksmithy', 'Blacksmithy', 900, 22, 107, tool, Player.BankSerial()); //makeLockpicks
-    CraftCreateLoop('Blacksmithy', 'Blacksmithy', 1000, 8, 93, tool, trashBarrel); //makeHeatingStand
+    CraftCreateLoop('Blacksmithy', 'Blacksmithy', 1000, 8, 93, tool, backpack); //makeHeatingStand
     BotPush(Orion.Time() + "GM Blacksmithy");
 
 }

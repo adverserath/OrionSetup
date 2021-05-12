@@ -68,6 +68,43 @@ function WalkTo(object, distance, timeMS, walking) {
   //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
 }
 
+function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, walking) {
+  if (distance == null) {
+    distance = 2;
+  }
+  if (timeMS == null) {
+    timeMS = 30000;
+  }
+  if (walking == null) {
+    walking = 1;
+  }
+  if (avoiddistance == null) {
+    avoiddistance = 4;
+  }
+  var start = Orion.Now()
+  var finished = false;
+  
+  while (Orion.Now() - start < timeMS && !finished) {
+    avoidarray.forEach(function (object) {
+      if(object.Distance()<avoiddistance)
+      {
+        StayAway(object.Serial(), avoiddistance+2)
+
+      }
+      Orion.GetTilesInRect('land', object.X() - avoiddistance, object.Y() - avoiddistance, object.X() + avoiddistance, object.Y() + avoiddistance).forEach(function (tile) {
+        //Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+        Orion.SetBadLocation(tile.X(), tile.Y());
+      })
+    })
+
+    finished = Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, 300);
+    Orion.ClearBadLocations();
+ //   Orion.ClearFakeMapObjects();
+  }
+
+  //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
+}
+
 function InRange(p1, p2, range) {
 
   return (p1.X() >= (p2.X() - range))
@@ -86,7 +123,7 @@ function BorderEdge(x, y, p2, range) {
 
 }
 
-function GetDistanceToSqrt() {
+function GetDistanceToSqrt(_private) {
   var p1 = Player
   var p2 = SelectTarget()
   while (true) {
@@ -144,6 +181,7 @@ function coordinate(xLoc, yLoc, zLoc) {
     x: xLoc,
     y: yLoc,
     z: zLoc,
+    visited: false,
     X: function () {
       return this.x;
     },
@@ -152,6 +190,13 @@ function coordinate(xLoc, yLoc, zLoc) {
     },
     Z: function () {
       return this.z;
+    },
+    Visited: function (val) {
+      if(val!=null)
+      {
+        this.visited = val
+      }
+      return this.visited;
     },
   }
 }

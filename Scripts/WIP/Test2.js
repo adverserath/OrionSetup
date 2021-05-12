@@ -1,19 +1,3 @@
-function TimeRun() {
-	while (true) {
-		var npc = Orion.FindTypeEx(any, any, ground,
-			'mobile', 15, 'yellow|blue')
-		//.
-		//filter(function (mob) {
-		//	return mob.Notoriety() >= 3 && mob.Notoriety() <= 6 && mob.Name() != ''
-		//})
-		npc.forEach(function (npc) {
-			Orion.ActivateClient();
-
-		})
-		Orion.Wait(1000)
-	}
-}
-
 function HerdEverything() {
 	while (true) {
 		var npc = Orion.FindTypeEx(any, any, ground,
@@ -33,5 +17,4 @@ function HerdEverything() {
 		})
 		Orion.Wait(4000)
 	}
-
 }

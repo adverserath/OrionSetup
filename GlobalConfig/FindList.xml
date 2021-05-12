@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="20">
+<data version="0" size="21">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -121,7 +121,7 @@
         <item graphic="0x3199" color="0x0000" comment="Brilliant Amber" count="0"/>
     </findlist>
     <findlist name="Runes">
-        <item graphic="0x1F14" color="any" comment="Recall Rune" count="42"/>
+        <item graphic="0x1F14" color="any" comment="Recall Rune" count="60"/>
     </findlist>
     <findlist name="Fishies">
         <item graphic="0x09CC" color="0x0000" comment="Fish" count="0"/>
@@ -153,5 +153,13 @@
         <item graphic="0x9F16" color="0x0000" comment="Easter Egg" count="0"/>
         <item graphic="0x9F15" color="0x0000" comment="Easter Egg" count="0"/>
         <item graphic="0x9F18" color="0x0000" comment="Easter Egg" count="0"/>
+    </findlist>
+    <findlist name="MinaxFountain">
+        <item graphic="0x9BF4" color="0x09C4" comment="Canal EW" count="0"/>
+        <item graphic="0x9BE7" color="0x09C4" comment="Canal NS" count="0"/>
+        <item graphic="0x9BEB" color="0x09C4" comment="Canal NW" count="0"/>
+        <item graphic="0x9BEF" color="0x09C4" comment="Canal NE" count="0"/>
+        <item graphic="0x9BFC" color="0x09C4" comment="Canal SE" count="0"/>
+        <item graphic="0x9BF8" color="0x09C4" comment="Canal SW" count="0"/>
     </findlist>
 </data>

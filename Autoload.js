@@ -4,7 +4,8 @@
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Gumps.js
-//#include Scripts/Bods.js
+//#include Scripts/Bod/Bods.js
+//#include ./*.js
 
 function test() {
         Orion.Print('Going Home')
@@ -17,7 +18,7 @@ function test() {
         Orion.CloseUO();
 }
 function Autostart() {
-        //GetBods()
+        GetBods()
         Orion.Wait(4000)
         SortBods()
         Orion.Print('Good Bye')

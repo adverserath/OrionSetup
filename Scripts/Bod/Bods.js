@@ -25,7 +25,7 @@ function test() {
 
 function SortBods() {
     Orion.Wait(500);
-    var chest = Orion.FindObject('0x40148DC5')
+    var chest = Orion.FindObject('0x40148DBE')
     WalkTo(chest);
     Orion.UseObject(chest.Serial());
     Orion.Wait(1000);
@@ -117,7 +117,7 @@ function GetBods() {
         }
         Orion.Print('Runes:' + locations);
 
-        var npcs = ['0x0000511D', '0x0000EC37', '0x0000ED92', '0x0000A68F', '0x0000A6E2', '0x000002F4']
+        var npcs = ['0x0000511D', '0x0000C052', '0x0000ED92', '0x000000AE', '0x0000A6E2', '0x000002F4']
         //0x0000511D -ins
         //0x0000EC37 -weav
         //0x0000ED92 -tink
@@ -182,7 +182,7 @@ function GetBods() {
 
                 Orion.Print('Move Stuff to Book')
                 MoveItemsFromPlayer(Orion.FindTypeEx('0x2259')[0], '0x2258')
-
+				skip = true
             }
 
             if (!skip) {
@@ -203,9 +203,7 @@ function GetBods() {
                         }
                     }
                     Orion.Wait(500);
-
                 }
-
             }
         }
     }

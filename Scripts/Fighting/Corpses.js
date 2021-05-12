@@ -26,26 +26,31 @@ function MoveHides(corpse) {
 }
 
 function CutCorpses() {
-    Orion.IgnoreReset();
-    var knife = Orion.FindType('0x0EC4|0x13F6', any, backpack).shift();
+while(true)
+{
+Orion.Wait(300)
 
-    var corpses = Orion.FindTypeEx('0x2006', any, ground, 'near', 2);
+    var knife = Orion.FindType('0x2D2F|0x0EC4|0x13F6', any, backpack).shift();
+
+    var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 2);
     corpses.forEach(function (corpse) {
-        Orion.Wait(400);
+    Orion.Print('Open')
+    Orion.UseObject(corpse.Serial())
+        Orion.Wait(1000);
+            Orion.Print('Cut')
         Orion.UseObject(knife);
         if (Orion.WaitForTarget(1000)) {
             Orion.TargetObject(corpse.Serial());
         }
-    });
-    corpses.forEach(function (corpse) {
-        Orion.Wait(400);
-        Orion.OpenContainer(corpse);
         Orion.Wait(600);
+            Orion.Print('Move')
         MoveHides(corpse);
-        CutHides();
-        BankLeather();
+        Orion.Wait(600);
         Orion.Ignore(corpse.Serial());
     });
+
+     CutHides();
+    }
 
 }
 

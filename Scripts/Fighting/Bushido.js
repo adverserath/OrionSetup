@@ -1,7 +1,7 @@
 //#include Scripts/helpers/Target.js
 
 function BushKnight() {
-    var range = 2;
+    var range = 1;
     var bow = Orion.ObjAtLayer('LeftHand');
     if (bow != null) {
         range = (bow.Properties().match(/Range\s(\d*)/i) || [0, 2])[1]
@@ -9,8 +9,8 @@ function BushKnight() {
     Orion.Print(range)
 
     TextWindow.Open();
-    while (Player.IsHuman()) {
-        while (Player.WarMode()) {
+    while (true) {
+        while (!Player.Dead() && Player.WarMode()) {
             Orion.Wait(500);
 
             var attacker = Orion.FindObject(Orion.ClientLastAttack());
@@ -25,6 +25,29 @@ function BushKnight() {
                         && mob.Notoriety() < 7;
                 });
 
+                Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 15, 3)
+                .filter(function (mob) {
+                    return mob.Notoriety() >= 3
+                        && mob.Notoriety() < 7;
+                }).forEach(function (closemob){
+			 Orion.ClientLastAttack(closemob.Serial())
+			 Orion.Wait(50)
+			 })
+			 
+			 if(attacker==null || attacker.Distance()>1)
+			 {
+			 Orion.Print('attack new')
+			 entireAreaMobs.forEach(function (closemob){
+			 Orion.ClientLastAttack(closemob.Serial())
+			 })
+			 }
+			 else{
+			 			 Orion.Print('attack last')
+			 			 Orion.ClientLastAttack(attacker.Serial())
+			 }
+			 Orion.Wait(50)
+			 attacker = Orion.FindObject(Orion.ClientLastAttack());
             // if(attacker!=null)
             //   {
             //   if (Player.Mana() > 10 && !Orion.BuffExists('Confidence')) {
@@ -91,7 +114,7 @@ function BushyArcher() {
             var attacker = Orion.FindObject(Orion.ClientLastAttack());
 
             var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', (range), 3)
+                'nothumanmobile|live|ignoreself|ignorefriends', (range), 'gray|criminal|orange|red')
                 .filter(function (mob) {
                     return mob.Notoriety() >= 3
                         && mob.Notoriety() < 7;
@@ -99,7 +122,7 @@ function BushyArcher() {
             var mobsAroundAttacker = entireAreaMobs.filter(function (mob) {
                 return attacker != null && attacker.Exists() && mob.Exists() && InRange(attacker, mob, 5)
             }).length
-            Orion.Print("Mobs arround attacker:" + mobsAroundAttacker)
+
             if (Orion.SpellStatus('Honorable Execution') &&
                 (attacker == null || attacker.Hits() > 5)) {
                 Orion.Print("Disabled Honorable Execution")
@@ -135,14 +158,14 @@ function BushyArcher() {
 
 
             if (entireAreaMobs.length > 0) {
-                //   if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
-                //       Orion.Cast('consecrate weapon');
-                //       Orion.Wait(1000);
-                //   }
+                   if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
+                       Orion.Cast('consecrate weapon');
+                       Orion.Wait(1000);
+                }
 
                 if (Player.Mana() > 10 && !Orion.BuffExists('divine fury')) {
-                    //   Orion.Cast('divine fury');
-                    //   Orion.Wait(1000);
+                       Orion.Cast('divine fury');
+                       Orion.Wait(1000);
                 }
             }
         }

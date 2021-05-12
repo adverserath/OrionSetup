@@ -3,6 +3,7 @@
 //#include Scripts/helpers/Magic.js
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/helpers/Notifier.js
+//#include Scripts/helpers/Detectors.js
 
 function StartMining() {
     //Use Mark and Recall spells to move to storage and back to last location
@@ -18,7 +19,8 @@ var debug = true;
 var pickAxe = '0xE86|0x0F39'
 var storageBox;
 var storageRune;
-var lastLocationRune;
+var lastLocationRune
+var startRune;
 var useMagic;
 var range;
 var usedRocks = [];
@@ -53,6 +55,7 @@ function AutoMiner(magicOption, _range) {
     storageFile = file.Read();
     storageRuneFile = file.Read();
     lastLocationRuneFile = file.Read();
+    startRuneFile = file.Read();
     file.Close();
     storageBox = SelectTarget(' Storage Box. Press Escape to use the previous saved value');
     if (storageBox != null) {
@@ -68,15 +71,27 @@ function AutoMiner(magicOption, _range) {
         newFile.Write(storageRune.Serial() + ' ');
         lastLocationRune = SelectTarget(' Rune to continue the job. ');
         newFile.Write(lastLocationRune.Serial() + ' ');
+        startRune = SelectTarget(' Rune to start the job. ');
+        newFile.Write(startRune.Serial() + ' ');
         newFile.Close();
     }
     else {
         storageBox = Orion.FindObject(storageFile);
         storageRune = Orion.FindObject(storageRuneFile);
+        startRune = Orion.FindObject(startRuneFile);
         lastLocationRune = Orion.FindObject(lastLocationRuneFile);
     }
     var rocks = [];
+    var startTime = Orion.Now();
+    RecallRune(startRune);
+
     while (!Player.Dead()) {
+        if (Orion.Now() - startTime > 1200000) {
+            //Start again after 20 minutes
+            startTime = Orion.Now();
+            RecallRune(startRune);
+            usedRocks = [];
+        }
         rocks = GetRocks(usedRocks);
 
         usedRocks = usedRocks.concat(rocks.map(function (stRock) {

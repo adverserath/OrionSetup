@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="0" size="1">
-    <organizer name="Inscribe" from="0x4010C338" to="0x4011F953" find_list="Gold/Arrows/Artis" ignore_list="Not use" restock="true" stack_items="true"/>
+    <organizer name="Inscribe" from="myTarget" to="myTarget" find_list="Gold/Arrows/Artis" ignore_list="Not use" restock="true" stack_items="true"/>
 </data>
