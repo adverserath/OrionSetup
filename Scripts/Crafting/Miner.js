@@ -25,6 +25,7 @@ var useMagic;
 var range;
 var usedRocks = [];
 var beetleMobile;
+var mineSand = true
 
 function AutoMiner(magicOption, _range) {
     if (usingBeetle) {
@@ -92,8 +93,12 @@ function AutoMiner(magicOption, _range) {
             RecallRune(startRune);
             usedRocks = [];
         }
-        rocks = GetRocks(usedRocks);
-
+        if(mineSand){
+        rocks = GetSand(usedRocks)
+     		}
+        else{
+                rocks = GetRocks(usedRocks);
+			}
         usedRocks = usedRocks.concat(rocks.map(function (stRock) {
             return stRock.X().toString() + stRock.Y().toString()
         }));
@@ -135,7 +140,7 @@ function Mine(tile) {
     walkBack = false;
 
     while (Orion.GetDistance(tile.X(), tile.Y()) <= 1 && (Orion.LastJournalMessage() == null ||
-        (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)|(metal\sbefore)|(far\saway)/gi) || []).length == 0)) {
+        (Orion.LastJournalMessage().Text().match(/(mine\sthat)|(no\smetal)|(cannot\sbe\sseen)|(metal\sbefore)|(far\saway)|(no\ssand)/gi) || []).length == 0)) {
         Orion.Wait(100);
         if (Player.WarMode()) {
             Orion.Print('In War Mode');
@@ -261,6 +266,26 @@ function GetRocks(oldRocks) {
     });
     return rocks;
 }
+
+function GetSand(oldSand) {
+    var rocks = Orion.GetTilesInRect('land', Player.X() - 8, Player.Y() - 8, Player.X() + 8, Player.Y() + 8)
+        .filter(function (rock) {
+            return rock.Graphic()==='0x0018'
+        })
+                .filter(function (rock) {
+            return oldSand.indexOf(rock.X().toString() + rock.Y().toString()) == -1;
+        })
+        .sort(function (t1, t2) {
+            return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
+        });
+    Orion.ClearFakeMapObjects();
+    rocks.forEach(function (rock) {
+        Orion.AddFakeMapObject(rock.X().toString() + rock.Y().toString(), '0x1BF7', '', rock.X(), rock.Y(), rock.Z());
+    });
+    return rocks;
+}
+
+
 function printJournal() {
     while (!Player.Dead()) {
         Orion.Wait(100);

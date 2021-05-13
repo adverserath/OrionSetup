@@ -20,7 +20,7 @@ function test() {
 function Autostart() {
         GetBods()
         Orion.Wait(4000)
-        SortBods()
+       // SortBods()
         Orion.Print('Good Bye')
         Orion.CloseUO();
 }

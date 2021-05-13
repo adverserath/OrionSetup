@@ -75,6 +75,7 @@
         <item graphic="0x5732" color="0x0000" comment="Crystalline Blackrock" count="0"/>
         <item graphic="0x0F28" color="0x0497" comment="A Small Piece Of Blackrock" count="0"/>
         <item graphic="0x3193" color="0x0000" comment="Turquoise" count="0"/>
+        <item graphic="0x423A" color="any" comment="Sand" count="0"/>
     </findlist>
     <findlist name="Mining">
         <item graphic="0x0F39|0x0F39" color="0x0000" comment="Shovel" count="5"/>
