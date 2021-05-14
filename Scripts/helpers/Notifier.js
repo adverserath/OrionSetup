@@ -1,9 +1,6 @@
 var hook;
 var key;
-function BotPush1(){
-TelegramPost('test')
 
-}
 function BotPush(message){
 TelegramPost(message)
 DiscordPost(message)

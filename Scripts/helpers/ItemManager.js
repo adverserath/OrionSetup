@@ -5,7 +5,8 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color) {
         color = any;
     }
     DebugText('Walking');
-    Orion.WalkTo(fromContainer.X(), fromContainer.Y(), fromContainer.Z(), 2, 1, 1, 1);
+    if(fromContainer!=backpack)
+        Orion.WalkTo(fromContainer.X(), fromContainer.Y(), fromContainer.Z(), 2, 1, 1, 1);
     DebugText('Here');
     for (var attempt = 0; attempt < 2; attempt++) {
         Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial()).forEach(function (items) {

@@ -59,7 +59,7 @@ function WalkTo(object, distance, timeMS, walking) {
     distance = 1;
   }
   if (timeMS == null) {
-    timeMS = 30000;
+    timeMS = 300000;
   }
   if (walking == null) {
     walking = 1;
@@ -83,12 +83,11 @@ function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, wal
   }
   var start = Orion.Now()
   var finished = false;
-  
+
   while (Orion.Now() - start < timeMS && !finished) {
     avoidarray.forEach(function (object) {
-      if(object.Distance()<avoiddistance)
-      {
-        StayAway(object.Serial(), avoiddistance+2)
+      if (object.Distance() < avoiddistance) {
+        StayAway(object.Serial(), avoiddistance + 2)
 
       }
       Orion.GetTilesInRect('land', object.X() - avoiddistance, object.Y() - avoiddistance, object.X() + avoiddistance, object.Y() + avoiddistance).forEach(function (tile) {
@@ -99,7 +98,7 @@ function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, wal
 
     finished = Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, 300);
     Orion.ClearBadLocations();
- //   Orion.ClearFakeMapObjects();
+    //   Orion.ClearFakeMapObjects();
   }
 
   //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
@@ -192,8 +191,7 @@ function coordinate(xLoc, yLoc, zLoc) {
       return this.z;
     },
     Visited: function (val) {
-      if(val!=null)
-      {
+      if (val != null) {
         this.visited = val
       }
       return this.visited;
