@@ -81,49 +81,79 @@ function CancelCrate(crate) {
 function GetItem(crate) {
 	Orion.SetCatchBag(crate.Serial())
 	Orion.Print('crate found')
-	var crateprop = (crate.Properties().match(
-		/%\n([\w\s]*):\s\d*\/(\d*)/i) || [])
-	var actualName = crateprop[1];
-	var itemName = crateprop[1];
-	var amount = crateprop[2];
+	var crateprop = crate.Properties().match(/^[\w\s]*:\s\d*\/\d*$/img)
 
-	Orion.Print(itemName)
-	var clilocIds = getIDs(itemName)
-	clilocIds.forEach(function (id) {
-		Orion.Print("cliloc:" + id)
+	crateprop.forEach(function (rowMatch) {
+		var itemMatch = rowMatch.match(/([\w\s]*):\s(\d*)\/(\d*)/i)
+		Orion.Print(itemMatch[1]);//itemName
+		Orion.Print(itemMatch[2]);//amount
+		var actualName = itemMatch[1];
+		var itemName = itemMatch[1];
+		var fullfilled = itemMatch[2];
+		var amount = itemMatch[3];
+		if (!(fullfilled === amount)) {
+			Orion.Print('Item is:' + itemName)
+			var clilocIds = getIDs(itemName)
+			clilocIds.forEach(function (id) {
+				Orion.Print("cliloc:" + id)
+			})
+
+			Orion.Wait(1000)
+			Orion.Print('found items:' + clilocIds.length)
+			var itemset = tradeItems.filter(function (set) {
+				return clilocIds.indexOf(set[0]) > -1
+			})[0]
+
+			Orion.Print(itemset[0])//cliloc
+			Orion.Print(itemset[1])//name
+			Orion.Print(itemset[2])//id
+			Orion.Print(itemset[3])//npc
+			Orion.Print(itemset[4])//X
+			Orion.Print(itemset[5])//Y
+			var havecount = Orion.Count(itemset[2], any, backpack)
+			if (havecount < amount) {
+				Orion.WalkTo(itemset[4], itemset[5], 0, 1, 255, 1)
+				var shoplist = Orion.GetShopList('Trader')
+
+				var items =
+					[
+						new ShopListItem(itemset[2], '0xFFFF', actualName, amount, 0, itemName)
+					];
+				shoplist.SetItems(items)
+				Orion.UpdateShopList(shoplist);
+				//	Orion.GetShopList('Trader').Items().forEach(function (_item) {
+				//		Orion.Print(_item)
+
+				var npc = GoToNPC(itemset[3])
+				Orion.BuyRestock('Trader', npc.Name())
+				Orion.Wait(2000)
+				havecount = Orion.Count(itemset[2], any, backpack)
+				if (havecount < amount) {
+					Orion.Print(havecount + '/' + amount + ' : Try Buy directly')
+					var items =
+						[
+							new ShopListItem('0xFFFF', '0xFFFF', actualName, (amount - havecount), 0, itemName)
+						];
+					shoplist.SetItems(items)
+					Orion.UpdateShopList(shoplist);
+					Orion.Buy('Trader', npc.Name())
+				}
+			}
+			Orion.Wait(1000)
+			MoveItemsFromPlayer(crate, itemset[2])
+			havecount = Orion.Count(itemset[2], any, crate.Serial())
+				if (havecount < amount) {
+					BotPush('Cannot Get '+ actualName)
+					Orion.PauseScript();
+				}
+			//	})
+			Orion.Print(amount)
+
+			Orion.Wait(2000)
+		}
 	})
 
-	Orion.Wait(1000)
-	var itemset = tradeItems.filter(function (set) {
-		return clilocIds.indexOf(set[0]) > -1
-	})[0]
-	
-	Orion.Print(itemset[0])//cliloc
-	Orion.Print(itemset[1])//name
-	Orion.Print(itemset[2])//id
-	Orion.Print(itemset[3])//npc
-	Orion.Print(itemset[4])//X
-	Orion.Print(itemset[5])//Y
 
-	Orion.WalkTo(itemset[4], itemset[5], 0, 1, 255, 1)
-	var shoplist = Orion.GetShopList('Trader')
-
-	var items =
-		[
-			new ShopListItem(itemset[2], '0x0000', actualName, amount, 0, itemName)
-		];
-	shoplist.SetItems(items)
-	Orion.UpdateShopList(shoplist);
-	Orion.GetShopList('Trader').Items().forEach(function (_item) {
-		Orion.Print(_item)
-		var npc = GoToNPC(itemset[3])
-		Orion.BuyRestock('Trader', npc.Name())
-		Orion.Wait(1000)
-		MoveItemsFromPlayer(crate, itemset[2])
-	})
-	Orion.Print(amount)
-
-	Orion.Wait(2000)
 	Orion.UnsetCatchBag();
 }
 function StartTradeRoute() {
@@ -160,13 +190,13 @@ function StartTradeRoute() {
 				Orion.Print('I canny do it')
 				BotPush('Skipping route to:' + city)
 				CancelCrate(crate)
+				MoveItemsFromPlayer(Orion.FindObject('0x4015E22C'), '0x2831')
 			}
-
 		}
 	}
 }
 
-function MonitorTrade(_priv) {
+function MonitorTrade() {
 	Orion.Wait(1000)
 	while (Orion.ScriptRunning('StartTradeRoute') > 0) {
 		Orion.Wait(1000);

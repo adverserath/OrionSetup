@@ -25,6 +25,6 @@
         <shopitem enabled="true" graphic="0x1F5F" color="0x0000" name="Flamestrike" count="0" price="0" comment=""/>
     </shoplist>
     <shoplist name="Trader">
-        <shopitem enabled="true" graphic="0xF7B" color="0x0000" name="Blood Moss" count="10" price="0" comment="Blood Moss"/>
+        <shopitem enabled="true" graphic="0x9F1" color="0xFFFF" name="Cut Of Raw Ribs" count="20" price="0" comment="Cut Of Raw Ribs"/>
     </shoplist>
 </data>
