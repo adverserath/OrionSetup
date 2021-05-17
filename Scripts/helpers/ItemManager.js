@@ -1,4 +1,4 @@
-function MoveItems(fromContainer, toContainer, graphicIDs, color) {
+function MoveItems(fromContainer, toContainer, graphicIDs, color, amount) {
     DebugText('Sorting');
     if (color == null) {
         DebugText('Any color');
@@ -11,14 +11,14 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color) {
     for (var attempt = 0; attempt < 2; attempt++) {
         Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial()).forEach(function (items) {
             DebugText('Moving:' + items.Name());
-            Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
+            Orion.MoveItem(items.Serial(), 0, toContainer.Serial(), amount);
             Orion.Wait(800);
         });
     }
 }
 
-function MoveItemsFromPlayer(toContainer, graphicIDs) {
-    MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, any);
+function MoveItemsFromPlayer(toContainer, graphicIDs, amount) {
+    MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, any, amount);
 }
 //#include Scripts/helpers/Target.js
 

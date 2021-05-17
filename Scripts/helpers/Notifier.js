@@ -1,9 +1,9 @@
 var hook;
 var key;
 
-function BotPush(message){
-TelegramPost(message)
-DiscordPost(message)
+function BotPush(message) {
+    TelegramPost(message)
+    DiscordPost(message)
 }
 //Create discord.conf in "Orion Launcher" folder
 //First Word 1  = Discord hook ID
@@ -52,9 +52,9 @@ function TelegramPost(message) {
         + hook
         + ":"
         + key
-        + '/sendMessage?chat_id=' + chatId +'&text='+message; // Webhook url
+        + '/sendMessage?chat_id=' + chatId + '&text=' + message; // Webhook url
     var paramText = '';
-	Orion.HttpPost(bot, paramText);
+    Orion.HttpPost(bot, paramText);
 }
 
 var shouldNotify = [];
