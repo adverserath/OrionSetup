@@ -49,7 +49,7 @@ function GetCrate(_private) {
 	}
 }
 
-function StartBritain(_private) {
+function GoToStart(_private) {
 	var runebook = Orion.FindTypeEx('0x22C5', '0x0851', backpack).shift()
 	RecallRune(runebook)
 	Orion.Wait(500)
@@ -75,6 +75,7 @@ function HandIn(crate) {
 	if (Orion.WaitForTarget()) {
 		Orion.TargetObject(crate.Serial())
 	}
+	Orion.Wait(4000)
 }
 function CancelCrate(crate) {
 	Orion.RequestContextMenu(crate.Serial());
@@ -287,7 +288,7 @@ function StartTradeRoute() {
 		if (crates.length == 0) {
 			if (startMinister == null || startMinister.Distance() > 10) {
 
-				StartBritain()
+				GoToStart()
 				if (Player.WarMode()) {
 					Orion.PauseScript();
 				}
@@ -405,4 +406,8 @@ Orion.UseType('0x0F6C|0x4BCB', '0xFFFF', 'ground');
 		}
 	}
 	}
+}
+function GoTo()
+{
+GateTo('Skara Brae')
 }
