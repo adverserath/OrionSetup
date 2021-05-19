@@ -8,15 +8,11 @@
 
 var walkableCities = ['Vesper', 'Trinsic', 'Minoc', 'Yew', 'Skara Brae']
 var paths = [
-	['Britain', ['gate', coordinate(1330, 1904),coordinate(1434, 1762)]],
-	['Vesper', ['gate', coordinate(3007, 828)]],
-	['Trinsic', ['gate', coordinate(2054, 2854)]],
-	['Minoc', ['gate', coordinate(2502, 400)]],
-	['Yew', ['gate', coordinate(620, 1048)]],
-	['Skara Brae', ['gate',coordinate(642, 2229)]],
-	['Moonglow', ['gate',coordinate(4415, 1047)]],
-	['New Magincia', ['gate',coordinate(3678, 2251)]],
-	['Jhelom', ['gate',coordinate(1378, 3880)]]
+	['Vesper', [coordinate(1664, 1512), coordinate(2028, 920), coordinate(2116, 898), coordinate(2473, 978), coordinate(3007, 828)]],
+	['Trinsic', [coordinate(1367, 1757), coordinate(1348, 1963), coordinate(1471, 2148), coordinate(1696, 2731), coordinate(2054, 2854)]],
+	['Minoc', [coordinate(1664, 1512), coordinate(2028, 920), coordinate(2407, 751), coordinate(2502, 400)]],
+	['Yew', [coordinate(1367, 1757), coordinate(1090, 1939), coordinate(716, 1336), coordinate(620, 1048)]],
+	['Skara Brae', [coordinate(1367, 1757), coordinate(1090, 1939), coordinate(720, 2235)]]
 ]
 
 function GoToNPC(typeName) {
@@ -308,7 +304,7 @@ function StartTradeRoute() {
 				/Destination\sCity:\s([\w|\s]*)\n/i) || [])[1] || '')
 			Orion.Print(city)
 			BotPush('Trade route to:' + city + '\n' + crate.Properties())
-			if (CheckIfCanDo(crate)) {
+			if (walkableCities.indexOf(city) != -1 && CheckIfCanDo(crate)) {
 				Orion.Print('I can do it')
 				GetItem(crate)
 				GoToDestination(city);
