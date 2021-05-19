@@ -8,15 +8,19 @@
 
 var walkableCities = ['Vesper', 'Trinsic', 'Minoc', 'Yew', 'Skara Brae']
 var paths = [
-	['Vesper', [coordinate(1664, 1512), coordinate(2028, 920), coordinate(2116, 898), coordinate(2473, 978), coordinate(3007, 828)]],
-	['Trinsic', [coordinate(1367, 1757), coordinate(1348, 1963), coordinate(1471, 2148), coordinate(1696, 2731), coordinate(2054, 2854)]],
-	['Minoc', [coordinate(1664, 1512), coordinate(2028, 920), coordinate(2407, 751), coordinate(2502, 400)]],
-	['Yew', [coordinate(1367, 1757), coordinate(1090, 1939), coordinate(716, 1336), coordinate(620, 1048)]],
-	['Skara Brae', [coordinate(1367, 1757), coordinate(1090, 1939), coordinate(720, 2235)]]
+	['Britain', ['gate', coordinate(1330, 1904),coordinate(1434, 1762)]],
+	['Vesper', ['gate', coordinate(3007, 828)]],
+	['Trinsic', ['gate', coordinate(2054, 2854)]],
+	['Minoc', ['gate', coordinate(2502, 400)]],
+	['Yew', ['gate', coordinate(620, 1048)]],
+	['Skara Brae', ['gate',coordinate(642, 2229)]],
+	['Moonglow', ['gate',coordinate(4415, 1047)]],
+	['New Magincia', ['gate',coordinate(3678, 2251)]],
+	['Jhelom', ['gate',coordinate(1378, 3880)]]
 ]
 
 function GoToNPC(typeName) {
-	var npc = Orion.FindTypeEx('any', any, ground, 'mobile', 30, 'yellow')
+	var npc = Orion.FindTypeEx('any', any, ground, 'mobile', 45, 'yellow')
 		.filter(function (_npc) {
 			return Orion.Contains(_npc.Properties(), typeName);
 		})
@@ -53,7 +57,13 @@ function StartBritain(_private) {
 
 function GoToDestination(destination) {
 	paths.filter(function (_path) { return _path[0] === destination })[0][1].forEach(function (coord) {
-		WalkTo(coord);
+		if(coord==='gate')
+		{
+			GateTo(destination)
+			Orion.Wait(1000)
+		}
+		else
+			WalkTo(coord);
 	})
 
 }
@@ -108,10 +118,10 @@ function CheckIfCanDo(crate) {
 function GetItem(crate) {
 	Orion.SetCatchBag(crate.Serial())
 	Orion.Print('crate found')
-	var crateprop = crate.Properties().match(/^[\w\s]*:\s\d*\/\d*$/img)
+	var crateprop = crate.Properties().match(/^[\w\s']*:\s\d*\/\d*$/img)
 
 	crateprop.forEach(function (rowMatch) {
-		var itemMatch = rowMatch.match(/([\w\s]*):\s(\d*)\/(\d*)/i)
+		var itemMatch = rowMatch.match(/([\w\s']*):\s(\d*)\/(\d*)/i)
 		var actualName = itemMatch[1];
 		var nameNoSpace = itemMatch[1];
 		var fullfilled = itemMatch[2];
@@ -160,73 +170,101 @@ function GetItem(crate) {
 					havecount = CountCurrent(actualName)
 					needed = (amount - havecount)
 					buying = needed / (itemset[2].split('|').length)
-										if(buying!=0)
-										{
-					var items =
-						[
-							//buy by graphic id and name
-							new ShopListItem(itemset[2], '0xFFFF', actualName, buying, 0, actualName)
-						];
-					shoplist.SetItems(items)
-					Orion.UpdateShopList(shoplist);
+					if (buying != 0) {
+						var items =
+							[
+								//buy by graphic id and name
+								new ShopListItem(itemset[2], '0xFFFF', actualName, buying, 0, actualName)
+							];
+						shoplist.SetItems(items)
+						Orion.UpdateShopList(shoplist);
 
-					var npc = GoToNPC(itemset[3])
-					Orion.Print('have'+havecount)
-					Orion.Print('need'+needed)
+						var npc = GoToNPC(itemset[3])
+						Orion.Print('have' + havecount)
+						Orion.Print('need' + needed)
 
-					Orion.Print('types'+itemset[2].split('|').length)
+						Orion.Print('types' + itemset[2].split('|').length)
 
-					Orion.Print('buying '+ buying +' '+actualName)
+						Orion.Print('buying ' + buying + ' ' + actualName)
 
 						Orion.BuyRestock('Trader', npc.Name())
-					Orion.Wait(2000)
-					MoveItemsFromPlayer(crate, itemset[2], needed)
-					Orion.Wait(1000)
+						Orion.Wait(600)
+						MoveItemsFromPlayer(crate, itemset[2], needed)
+						Orion.Wait(500)
 					}
 				}
 
+				havecount = CountCurrent(actualName)
+				needed = amount - havecount
+				Orion.Print('Need To Buy:'+needed)
+				if (needed > 0) {
+					Orion.Print(havecount + '/' + amount + ' : Try Buy directly')
+					var items =
+						[
+							//buy by graphic id
+							new ShopListItem('0xFFFF', '0xFFFF', actualName, 1, 0, actualName)
+						];
+					shoplist.SetItems(items)
+					Orion.UpdateShopList(shoplist);
+					Orion.Buy('Trader', npc.Name())
+					Orion.Wait(1000)
+					if (CountCurrent(actualName) > havecount) {
+						Orion.Print('BUYING without Name')
+						fullfilled = crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) > -1
+						havecount = CountCurrent(actualName)
+						needed = (amount - havecount)
+						buying = needed / (itemset[2].split('|').length)
+					
+						items =
+							[
+								//buy by graphic id
+								new ShopListItem('0xFFFF', '0xFFFF', actualName, needed, 0, actualName)
+							];
+						shoplist.SetItems(items)
+						Orion.UpdateShopList(shoplist);
+						Orion.Buy('Trader', npc.Name())
+					}
 
+					Orion.Wait(500)
+					MoveItemsFromPlayer(crate, itemset[2], amount)
+					Orion.Wait(500)
+				}
 
+				havecount = CountCurrent(actualName)
+				needed = amount - havecount
+				Orion.Print('Need To Buy:'+needed)
+				if (needed > 0) {
+					Orion.Print(havecount + '/' + amount + ' : Try Buy directly')
+					var items =
+						[
+							//buy by graphic id
+							new ShopListItem(itemset[2], '0xFFFF', '', 1, 0, actualName)
+						];
+					shoplist.SetItems(items)
+					Orion.UpdateShopList(shoplist);
+					Orion.Buy('Trader', npc.Name())
+					Orion.Wait(1000)
+					if (CountCurrent(actualName) > havecount) {
+						Orion.Print('BUYING without Name')
+						fullfilled = crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) > -1
+						havecount = CountCurrent(actualName)
+						needed = (amount - havecount)
+						buying = needed / (itemset[2].split('|').length)
+					
+						items =
+							[
+								//buy by graphic id
+								new ShopListItem(itemset[2], '0xFFFF', '', needed, 0, actualName)
+							];
+						shoplist.SetItems(items)
+						Orion.UpdateShopList(shoplist);
+						Orion.Buy('Trader', npc.Name())
+					}
 
-				// fullfilled = crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) > -1
-				// havecount = CountCurrent(actualName)
-				// needed = amount - havecount
-
-				// if (needed>0) {
-				// 	Orion.Print(havecount + '/' + amount + ' : Try Buy directly')
-				// 	var items =
-				// 		[
-				// 			//buy by graphic id
-				// 			new ShopListItem(itemset[2], '0xFFFF', '', needed, 0, actualName)
-				// 		];
-				// 	shoplist.SetItems(items)
-				// 	Orion.UpdateShopList(shoplist);
-				// 	Orion.Buy('Trader', npc.Name())
-				// 	Orion.Wait(2000)
-				// 	MoveItemsFromPlayer(crate, itemset[2], amount)
-				// 	Orion.Wait(1000)
-				// }
-
-				// fullfilled = crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) > -1
-				// havecount = CountCurrent(actualName)
-				// needed = amount - havecount
-
-				// if (needed>0) {
-				// 	Orion.Print(havecount + '/' + amount + ' : Try Buy directly')
-				// 	var items =
-				// 		[
-				// 			//buy by name
-				// 			new ShopListItem('0xFFFF', '0xFFFF', actualName, (amount - havecount), 0, actualName)
-
-				// 		];
-				// 	shoplist.SetItems(items)
-				// 	Orion.UpdateShopList(shoplist);
-				// 	Orion.Buy('Trader', npc.Name())
-				// 	Orion.Wait(2000)
-				// 	MoveItemsFromPlayer(crate, itemset[2], amount)
-				// 	Orion.Wait(1000)
-				// }
-
+					Orion.Wait(500)
+					MoveItemsFromPlayer(crate, itemset[2], amount)
+					Orion.Wait(500)
+				}
 			}
 			havecount = Orion.Count(itemset[2], any, crate.Serial())
 			if (havecount < amount) {
@@ -248,11 +286,11 @@ function StartTradeRoute() {
 		})
 		if (crates.length == 0) {
 			if (startMinister == null || startMinister.Distance() > 10) {
-			if(Player.WarMode())
-			{
-			Orion.PauseScript();
-			}
+
 				StartBritain()
+				if (Player.WarMode()) {
+					Orion.PauseScript();
+				}
 			}
 			Orion.Wait(1000)
 			GetCrate()
@@ -266,11 +304,10 @@ function StartTradeRoute() {
 			var crate = crates[0]
 			Orion.Print('crate found')
 			var city = ((crate.Properties().match(
-				/Destination\sCity:\s(\w*)/i) || [])[1] || '')
+				/Destination\sCity:\s([\w|\s]*)\n/i) || [])[1] || '')
 			Orion.Print(city)
-
-			if (walkableCities.indexOf(city) != -1 && CheckIfCanDo(crate)) {
-				BotPush('Trade route to:' + city + '\n' + crate.Properties())
+			BotPush('Trade route to:' + city + '\n' + crate.Properties())
+			if (CheckIfCanDo(crate)) {
 				Orion.Print('I can do it')
 				GetItem(crate)
 				GoToDestination(city);
@@ -279,7 +316,6 @@ function StartTradeRoute() {
 			}
 			else {
 				Orion.Print('I canny do it')
-				//	BotPush('Skipping route to:' + city)
 				CancelCrate(crate)
 				MoveItemsFromPlayer(Orion.FindObject('0x4015E22C'), '0x2831')
 			}
@@ -314,7 +350,59 @@ function CountCurrent(itemName) {
 	}, 0);
 }
 
-function AddBadTile()
+function AddBadTile() {
+	Orion.SetBadLocation(Player.X(), Player.Y());
+}
+
+
+var britGate = coordinate(1417, 1687)
+
+var gatePoints = [
+	['Moonglow', 0],
+	['Britain', 1],
+	['Jhelom', 2],
+	['Yew', 3],
+	['Minoc', 4],
+	['Vesper', 4],
+	['Trinsic', 5],
+	['Skara Brae', 6],
+	['New Magincia', 7],
+	['New Haven', 8],
+	['Delucia', 9],
+	['Papua', 10],
+	['Mistas', 100],
+	['Compassion', 101],
+	['Honesty', 102],
+	['Honor', 103],
+	['Humility', 104],
+	['Justice', 105],
+	['Sacrifice', 106],
+	['Spirituality', 107],
+	['Valor', 108],
+	['Chaos', 109]
+]
+
+function GateTo(placeName)
 {
-Orion.SetBadLocation(Player.X(), Player.Y());
+WalkTo(britGate,0)
+var id = gatePoints.filter(function (place){
+return place[0] ===placeName
+})
+if(id!=null){
+Orion.Print(id[0][0])
+var gateId = id[0][1]
+
+Orion.UseType('0x0F6C|0x4BCB', '0xFFFF', 'ground');
+	if (Orion.WaitForGump(1000)||Orion.GumpExists(any,any,'0xE0E675B8'))
+	{
+		var gump0 = Orion.GetGump('last');
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8'))
+		{
+			var gumpHook0 = Orion.CreateGumpHook(1);
+			gumpHook0.AddCheck(gateId, true);
+			gump0.Select(gumpHook0);
+			Orion.Wait(100);
+		}
+	}
+	}
 }

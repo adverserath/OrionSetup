@@ -1,8 +1,11 @@
-function MoveItems(fromContainer, toContainer, graphicIDs, color, amount) {
+function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recursive) {
     DebugText('Sorting');
     if (color == null) {
         DebugText('Any color');
         color = any;
+        if(recursive==null){
+            recursive = true
+        }
     }
     DebugText('Walking');
     if(fromContainer!=backpack)

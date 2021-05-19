@@ -25,6 +25,6 @@
         <shopitem enabled="true" graphic="0x1F5F" color="0x0000" name="Flamestrike" count="0" price="0" comment=""/>
     </shoplist>
     <shoplist name="Trader">
-        <shopitem enabled="true" graphic="0xF07" color="0xFFFF" name="Lesser Cure Potion" count="10" price="0" comment="Lesser Cure Potion"/>
+        <shopitem enabled="true" graphic="0x0EB3" color="0xFFFF" name="" count="1" price="0" comment="Lute"/>
     </shoplist>
 </data>

@@ -34,8 +34,7 @@ function VetMultiPets() {
             })
             .forEach(function (pet) {
 
-                if (pet != null) {
-                    Orion.Wait(300);
+                if (pet != null && !Player.Paralyzed()) {
                     if (pet.Distance()<=2 && Orion.SkillValue('veterinary')>300 && pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits() - 2) || pet.Dead())
                         && !Orion.BuffExists('veterinary')) {
                         Orion.WaitWhileTargeting(1000);
@@ -59,6 +58,7 @@ function VetMultiPets() {
                     Orion.CastTarget('Gift of renewal',pet.Serial())   
                     gorTime = Orion.Now()    
                     }
+                    Orion.Wait(300);
                 }
             })
     }

@@ -1,7 +1,6 @@
 function CastWOD() {
 var lastUpdate = Orion.Now()
 
-Orion.Print('0x00A1', 'test')
     while (true) {
         var focus = Orion.FindTypeEx('0x3155')
                 .filter(function (gem) {
@@ -20,16 +19,19 @@ Orion.Print('0x00A1', 'test')
         var target = Orion.ClientLastAttack();
         var enemy = Orion.FindObject(target)
 
-        if (enemy != null) {
+        while (enemy != null && enemy.Exists() && enemy.Distance()<10) {
+  Orion.Wait(500)
             if (enemy.Hits() < (parseInt(0.05 * gemstr * 25) + 1)) {
+
                 Orion.Cast('Word Of Death')
                 if (Orion.WaitForTarget(4000)) {
                     while (enemy.Exists() && enemy.Hits() > (parseInt(0.05 * gemstr * 25))) {
-                        Orion.Wait(100)
+                        
                         Orion.Print('waiting')
                     }
                     Orion.Print('casting')
                     Orion.TargetObject(enemy.Serial());
+                    Orion.Wait(1000)
                 }
 
             }

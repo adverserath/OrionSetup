@@ -22,7 +22,7 @@ function TrainComabt() {
 	}
 	Orion.Print('Select pet or escape')
 	var pet = SelectTarget();
-	var range = 1;
+	var range = 3;
 	var bow = Orion.ObjAtLayer('LeftHand');
 
 	if (bow != null) {
@@ -32,7 +32,7 @@ function TrainComabt() {
 		range = 5
 	}
 
-	Orion.Print(range);
+	Orion.Print('Range:'+range);
 	var start = {
 		x: Player.X(),
 		y: Player.Y(),
@@ -98,44 +98,47 @@ function TrainComabt() {
 
 				if (!mob.InLOS()) {
 					WalkTo(mob, 1, 20000, 1);
-					Orion.Step(1)
-					Orion.Step(1)
+
 				}
 				if (pet != null) {
 					Orion.Wait(2000)
-					WalkTo(pet, 1, 20000, 1);
-					Orion.Follow(pet.Serial(), false);
+					if(mob.Distance()>pet.Distance()){
+					var dir = pet.Direction()
+										Orion.Step(dir)
+										Orion.Step(dir)
+										Orion.Step(dir)
+					}				
 				}
 				else {
 					WalkTo(mob, 1, 20000, 1);
 					Orion.Follow(mob.Serial());
 				}
 				Orion.InvokeVirtue('Honor');
-				if (Orion.WaitForTarget(1000)) {
+				if (Orion.WaitForTarget(2000)) {
 					Orion.TargetObject(mob.Serial());
+					Orion.Wait(500)
 				}
 				if (pet.Distance() > 4) {
-					Orion.Wait(5000)
+					Orion.Wait(3000)
 				}
-				WalkTo(pet, 0, 20000, 1);
+
 				Orion.Attack(mob.Serial());
-
+				Orion.ClientLastAttack(mob.Serial());
 				Orion.Wait(300)
-
-
+								
 				while (mob.Exists()) {
-					WalkTo(pet, 1, 20000, 1);
-					HealPet(pet);
+					//WalkTo(pet, 1, 20000, 1);
+				//	HealPet(pet);
 					Orion.PrintFast(mob.Serial(), '0x0501', 1, mob.Hits());
 					Orion.Wait(300)
 				}
 				WalkTo(mob, 0, 3000, 1);
-				Orion.Wait(1000)
+				Orion.Wait(4000)
 				i++;
 			}
 		}
 		Orion.Wait(300);
-		if (mobs.length == 0) { WalkTo(start) }
+	//	if (mobs.length == 0) { WalkTo(start) }
 	}
 	BotPush('Dead')
 }
