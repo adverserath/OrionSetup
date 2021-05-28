@@ -1,27 +1,38 @@
 function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recursive) {
     DebugText('Sorting');
+    DebugText('From:'+fromContainer.Serial());
+    DebugText('To:'+toContainer.Serial());
+    DebugText('Graphic:'+graphicIDs);
+    DebugText('Color:'+color);
+    DebugText('Amount:'+amount);
+    DebugText('Recursive:'+recursive);
+
     if (color == null) {
         DebugText('Any color');
         color = any;
-        if(recursive==null){
+        if (recursive == null) {
             recursive = true
         }
     }
     DebugText('Walking');
-    if(fromContainer!=backpack)
+    if (fromContainer.Serial() != backpack) {
         Orion.WalkTo(fromContainer.X(), fromContainer.Y(), fromContainer.Z(), 2, 1, 1, 1);
-    DebugText('Here');
+        DebugText('Here');
+    }
     for (var attempt = 0; attempt < 2; attempt++) {
-        Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial()).forEach(function (items) {
-            DebugText('Moving:' + items.Name());
-            Orion.MoveItem(items.Serial(), 0, toContainer.Serial(), amount);
-            Orion.Wait(800);
+        var items = Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial(), '', 'finddistance', '', recursive);
+        DebugText('Moving:' + items.length);
+
+        items.forEach(function (item) {
+            DebugText('Moving:' + item.Name());
+            Orion.MoveItem(item.Serial(), 0, toContainer.Serial(), amount);
+            Orion.Wait(900);
         });
     }
 }
 
-function MoveItemsFromPlayer(toContainer, graphicIDs, amount) {
-    MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, any, amount);
+function MoveItemsFromPlayer(toContainer, graphicIDs, color, amount) {
+    MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, color, amount);
 }
 //#include Scripts/helpers/Target.js
 

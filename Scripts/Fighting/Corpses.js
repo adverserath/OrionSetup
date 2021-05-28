@@ -2,54 +2,38 @@
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/helpers/Debug.js
 
-function CutHides() {
-    var scissors = Orion.FindTypeEx('0x0F9F').shift();
-    var hides = Orion.FindTypeEx('0x1079');
-    UseItemOnTargets(scissors, hides);
-
-}
-
-function BankLeather() {
-    Orion.Print("bank leather")
-    var leather = Orion.FindTypeEx('0x1081');
-    if (leather.length > 0) {
-        Orion.Wait(200);
-        MoveItems(Orion.FindObject(backpack), Orion.FindObject(Player.BankSerial()), '0x1081', any)
+function WarCleaveCorpses() {
+    var warcleaver = Orion.FindTypeEx('0x2D2F', any, backpack).shift();
+    var beetleMobile = null;
+    Orion.UseObject(Player.Serial());
+    Orion.Wait(200);
+    var beetles = Orion.FindTypeEx('0x0317', any, ground, 'mobile', 4).filter(function (beetle) {
+        Orion.RequestContextMenu(beetle.Serial());
+        return Orion.WaitForContextMenu(500);
+    });
+    if (beetles.length > 0) {
+        beetleMobile = beetles.shift();
+    }
+    else {
+        Orion.Print('No beetle')
     }
 
-}
-
-function MoveHides(corpse) {
-    Orion.Print("move hide")
-    MoveItems(corpse, Orion.FindObject(backpack), '0x1079', any)
-    Orion.Wait(600);
-}
-
-function CutCorpses() {
-while(true)
-{
-Orion.Wait(300)
-
-    var knife = Orion.FindType('0x2D2F|0x0EC4|0x13F6', any, backpack).shift();
-
-    var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 2);
-    corpses.forEach(function (corpse) {
-    Orion.Print('Open')
-    Orion.UseObject(corpse.Serial())
-        Orion.Wait(1000);
-            Orion.Print('Cut')
-        Orion.UseObject(knife);
-        if (Orion.WaitForTarget(1000)) {
-            Orion.TargetObject(corpse.Serial());
+    while (warcleaver.Exists()) {
+        Orion.Wait(300)
+        var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 2);
+        corpses.forEach(function (corpse) {
+        WalkTo(corpse)
+            Orion.UseObject(warcleaver.Serial());
+            if (Orion.WaitForTarget(1000)) {
+                Orion.TargetObject(corpse.Serial());
+            }
+            Orion.Wait(1000)
+            Orion.Ignore(corpse.Serial())
+        });
+        if (Player.Weight() > (Player.MaxWeight() - 10) && beetleMobile != null) {
+            MoveItemsFromPlayer(beetleMobile, '0x1079', 0)
+            Orion.Wait(600);
         }
-        Orion.Wait(600);
-            Orion.Print('Move')
-        MoveHides(corpse);
-        Orion.Wait(600);
-        Orion.Ignore(corpse.Serial());
-    });
-
-     CutHides();
     }
 
 }

@@ -6,7 +6,7 @@
 //#include Scripts/helpers/cliloc.js
 //#include Scripts/helpers/Notifier.js
 
-var walkableCities = ['Vesper', 'Trinsic', 'Minoc', 'Yew', 'Skara Brae']
+var walkableCities = ['Vesper', 'Trinsic', 'Minoc', 'Yew']
 var paths = [
 	['Vesper', [coordinate(1664, 1512), coordinate(2028, 920), coordinate(2116, 898), coordinate(2473, 978), coordinate(3007, 828)]],
 	['Trinsic', [coordinate(1367, 1757), coordinate(1348, 1963), coordinate(1471, 2148), coordinate(1696, 2731), coordinate(2054, 2854)]],
@@ -263,6 +263,18 @@ function GetItem(crate) {
 					Orion.Wait(500)
 				}
 			}
+			var itemsInBp = Orion.FindTypeEx(itemset[2],any,backpack,'','','',false)
+			if(itemsInBp.length>0)
+			{
+			itemsInBp.forEach(function (item){
+			Orion.MoveItem(item,0,crate.Serial())
+			Orion.Wait(1000)
+			})
+			}
+			havecount = Orion.Count(itemset[2], any, crate.Serial())
+			if (havecount < amount) {
+								MoveItemsFromPlayer(crate, itemset[2], amount)
+}
 			havecount = Orion.Count(itemset[2], any, crate.Serial())
 			if (havecount < amount) {
 				BotPush('Cannot Get ' + actualName + ' ' + havecount + '/' + amount)
@@ -285,8 +297,8 @@ function StartTradeRoute() {
 			if (startMinister == null || startMinister.Distance() > 10) {
 
 				GoToStart()
-				if (Player.WarMode()) {
-					Orion.PauseScript();
+				while (Player.WarMode()) {
+					Orion.Wait(1000)
 				}
 			}
 			Orion.Wait(1000)
@@ -335,6 +347,7 @@ function MonitorTrade() {
 		}
 		if (Orion.ScriptRunning('StartTradeRoute') < 0) {
 			Orion.ActivateClient();
+			Orion.PauseScript();
 		}
 	}
 

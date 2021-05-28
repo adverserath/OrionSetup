@@ -7,7 +7,8 @@ function TrainDiscord() {
     var bardRange = 8 + ((parseInt(Orion.SkillValue('Discordance')) / 10) / 15);
     Orion.Print(bardRange)
     Orion.ActivateClient();
-    Orion.WalkTo(2274, 1059, 27, 0, 1)
+  Orion.Print('Stand away from the target')
+  var awayPoint = coordinate(Player.X(),Player.Y())
     var animal = SelectTarget();
     while (!Player.Dead()) {
         var startTime = Orion.Now();
@@ -25,8 +26,8 @@ function TrainDiscord() {
             Orion.Print(animal.InLOS())
             if (Orion.InJournal(discordMessage, '', '0', '-1', startTime, Orion.Now()) != null) {
                 isDiscorded = true;
-                Orion.WalkTo(2273, 1060, 27, 0, 1)
-                Orion.Wait(15000)
+                WalkTo(awayPoint)
+                Orion.Wait(16000)
             }
             while (Orion.DisplayTimerExists('SkillInUse')) {
                 Orion.Wait(1000);

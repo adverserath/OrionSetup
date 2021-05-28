@@ -18,9 +18,9 @@ function test() {
         Orion.CloseUO();
 }
 function Autostart() {
-        GetBods()
-        Orion.Wait(4000)
-       // SortBods()
+       // GetBods()
+        Orion.Wait(2000)
+        SortBods()
         Orion.Print('Good Bye')
         Orion.CloseUO();
 }

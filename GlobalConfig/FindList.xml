@@ -42,6 +42,9 @@
         <item graphic="any" color="any" comment="Damange Increase" count="0">
             <property name="Damage Increase" value_min="35" value_max="35"/>
         </item>
+        <item graphic="any" color="any" comment="Luck" count="0">
+            <property name="Luck" value_min="130" value_max="140"/>
+        </item>
     </findlist>
     <findlist name="Inscription">
         <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>

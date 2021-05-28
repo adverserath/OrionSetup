@@ -25,6 +25,8 @@ function PopulateBookIDs(map) {
                 ) || [])[1] || 0) < 495
         })
     if (books.length > 0) {
+        Orion.Print(books[0].Serial())
+        TextWindow.Print(books[0].Serial())
         map.SetSerial(books[0].Serial())
     }
     else {
@@ -56,7 +58,7 @@ function SortBods() {
 
 
     var bodBook = Orion.FindTypeEx('0x2259')[0];
-    MoveItems(chest, Player, '0x2259', '0x0000')
+    MoveItems(chest, Player, '0x2259', any)
 
     //emptybods
     while (((bodBook.Properties().match(
@@ -104,12 +106,16 @@ function SortBods() {
         Orion.Wait(200)
 
         bodMap.forEach(function (map) {
-            MoveItems(Player, map, '0x2258', map.BodColor())
+            TextWindow.Print('Book:' + map.BookName()+ ' ' + map.Serial() + ' ' + map.BodColor())
+            //MoveItems(Player, map, '0x2258', map.BodColor())
+            MoveItemsFromPlayer(map, '0x2258', map.BodColor(), 0)
         });
     }
-
-    MoveItems(Player, chest, '0x2259', any)
-    Orion.MoveItem(bodBook.Serial(), 0, Player.Serial());
+    Orion.Ignore(bodBook.Serial())
+    MoveItemsFromPlayer(chest, '0x2259', any)
+    Orion.Wait(1000)
+    //Orion.MoveItem(bodBook.Serial(), 0, Player.Serial());
+  //  Orion.Wait(1000)
 }
 
 function GetBods() {

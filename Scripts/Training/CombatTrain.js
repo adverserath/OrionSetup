@@ -1,6 +1,6 @@
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Target.js
-var fightParagons = true
+var fightParagons = false
 function TrainComabt() {
 	TextWindow.Open()
 
@@ -91,7 +91,7 @@ function TrainComabt() {
 			while (Player.Hits() < (Player.MaxHits() - 10) || Player.Poisoned()) {
 				Orion.Wait(1000)
 			}
-			if (mob != null) {
+			if (mob != null && mob.Exists()) {
 				Orion.Print(mob.Serial())
 				Orion.AddHighlightCharacter(mob.Serial(), '0x0AB0', true)
 				WalkTo(mob, 5, 20000, 1);
@@ -113,6 +113,7 @@ function TrainComabt() {
 					WalkTo(mob, 1, 20000, 1);
 					Orion.Follow(mob.Serial());
 				}
+				Orion.Print('Honor '+mob.Name())
 				Orion.InvokeVirtue('Honor');
 				if (Orion.WaitForTarget(2000)) {
 					Orion.TargetObject(mob.Serial());
@@ -125,20 +126,28 @@ function TrainComabt() {
 				Orion.Attack(mob.Serial());
 				Orion.ClientLastAttack(mob.Serial());
 				Orion.Wait(300)
-								
+	
 				while (mob.Exists()) {
 					//WalkTo(pet, 1, 20000, 1);
 				//	HealPet(pet);
+			//	Orion.CastTarget('Energy Bolt', mob.Serial())
 					Orion.PrintFast(mob.Serial(), '0x0501', 1, mob.Hits());
-					Orion.Wait(300)
+					Orion.Wait(1500)
 				}
-				WalkTo(mob, 0, 3000, 1);
-				Orion.Wait(4000)
+				var corpses = Orion.FindTypeEx('0x2006', any, ground, '', 16);
+				corpses.forEach(function (corpse){
+					var corpse = corpses[0]
+					Orion.Print(corpse + ' ' + mob.Y())
+					WalkTo(corpse, 0, 3000, 1);
+					Orion.Wait(4000)
+					Orion.Ignore(corpse.Serial());
+				})
+				
 				i++;
 			}
 		}
 		Orion.Wait(300);
-	//	if (mobs.length == 0) { WalkTo(start) }
+		if (mobs.length == 0) { WalkTo(start) }
 	}
 	BotPush('Dead')
 }

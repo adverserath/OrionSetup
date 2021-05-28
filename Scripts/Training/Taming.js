@@ -37,11 +37,11 @@ function TrainTaming() {
     Orion.Print("Select a rune bag")
     var runeBag = SelectTarget();
 
-    var useRunes = runeBag!=null;
+    var useRunes = runeBag != null;
     var runes;
-    if(useRunes)
-		runes = Orion.FindTypeEx('0x1F14', any, runeBag.Serial());
-    
+    if (useRunes)
+        runes = Orion.FindTypeEx('0x1F14', any, runeBag.Serial());
+
     var startingSkill = Orion.SkillValue('Animal Taming', 'real')
     var animals = [];
     var lastDirection;
@@ -164,7 +164,7 @@ function TrainTaming() {
         animals = [];
     }
     BotPush("You died")
-  //  Orion.ShutdownWindows('forced')
+    //  Orion.ShutdownWindows('forced')
 }
 
 function Rename(petId) {
@@ -364,6 +364,26 @@ function Escape() {
             BotPush('You went to a safe location')
             Orion.PauseScript('TrainTaming');
             Orion.PauseScript();
+        }
+    }
+}
+
+function TrainVet() {
+    while (true) {
+        Orion.UseObject('0x400E314C');
+        if (Orion.WaitForTarget(1000))
+            Orion.TargetObject('0x000021AB');
+        Orion.Wait(2500)
+    }
+}
+function TrainLore() {
+    while (true) {
+        Orion.UseSkill('2');
+        if (Orion.WaitForTarget(1000))
+            Orion.TargetObject('0x000021AB');
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            gump0.Close()
         }
     }
 }

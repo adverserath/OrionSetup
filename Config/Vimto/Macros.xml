@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="macro" looped="true" delay="900">
-        <action type="8" convert_type="0" waiting_time="1000" value="743"/>
-    </macro>
-    <macro name="PeaceArea" looped="false" delay="1"/>
-    <macro name="Moongate" looped="false" delay="1">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x4012F148" graphic="0x4BCB" color="0x0000"/>
-    </macro>
-    <macro name="DigTreasure" looped="false" delay="1">
-        <action type="1" convert_type="1" waiting_time="1000" serial="0x400D07AB" graphic="0x0F39" color="0x0000"/>
-        <action type="3" convert_type="1" waiting_time="1000" serial="0x4018696E" graphic="0x14EC" color="0x0000"/>
-    </macro>
-    <macro name="vet" looped="true" delay="2.5">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x4018A584" graphic="0x0E21" color="0x0000"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x00013CF5" graphic="0x0084" color="0x0000"/>
+    <macro name="RecallSafe" looped="false" delay="1">
+        <action type="8" convert_type="0" waiting_time="1000" value="210"/>
+        <action type="3" convert_type="0" waiting_time="3000" serial="0x4012AEDD" graphic="0x22C5" color="0x084C"/>
     </macro>
 </data>

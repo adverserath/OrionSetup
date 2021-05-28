@@ -65,7 +65,6 @@ function WalkTo(object, distance, timeMS, walking) {
     walking = 1;
   }
   return Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
-  //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
 }
 
 function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, walking) {
@@ -197,9 +196,4 @@ function coordinate(xLoc, yLoc, zLoc) {
       return this.visited;
     },
   }
-}
-
-function WalkToArrow()
-{
-WalkTo(Orion.QuestArrowPosition())
 }
