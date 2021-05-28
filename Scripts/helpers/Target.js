@@ -198,3 +198,8 @@ function coordinate(xLoc, yLoc, zLoc) {
     },
   }
 }
+
+function WalkToArrow()
+{
+WalkTo(Orion.QuestArrowPosition())
+}
