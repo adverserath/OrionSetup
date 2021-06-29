@@ -53,8 +53,7 @@ function GoToStart(_private) {
 
 function GoToDestination(destination) {
 	paths.filter(function (_path) { return _path[0] === destination })[0][1].forEach(function (coord) {
-		if(coord==='gate')
-		{
+		if (coord === 'gate') {
 			GateTo(destination)
 			Orion.Wait(1000)
 		}
@@ -193,7 +192,7 @@ function GetItem(crate) {
 
 				havecount = CountCurrent(actualName)
 				needed = amount - havecount
-				Orion.Print('Need To Buy:'+needed)
+				Orion.Print('Need To Buy:' + needed)
 				if (needed > 0) {
 					Orion.Print(havecount + '/' + amount + ' : Try Buy directly')
 					var items =
@@ -211,7 +210,7 @@ function GetItem(crate) {
 						havecount = CountCurrent(actualName)
 						needed = (amount - havecount)
 						buying = needed / (itemset[2].split('|').length)
-					
+
 						items =
 							[
 								//buy by graphic id
@@ -229,7 +228,7 @@ function GetItem(crate) {
 
 				havecount = CountCurrent(actualName)
 				needed = amount - havecount
-				Orion.Print('Need To Buy:'+needed)
+				Orion.Print('Need To Buy:' + needed)
 				if (needed > 0) {
 					Orion.Print(havecount + '/' + amount + ' : Try Buy directly')
 					var items =
@@ -247,7 +246,7 @@ function GetItem(crate) {
 						havecount = CountCurrent(actualName)
 						needed = (amount - havecount)
 						buying = needed / (itemset[2].split('|').length)
-					
+
 						items =
 							[
 								//buy by graphic id
@@ -263,18 +262,17 @@ function GetItem(crate) {
 					Orion.Wait(500)
 				}
 			}
-			var itemsInBp = Orion.FindTypeEx(itemset[2],any,backpack,'','','',false)
-			if(itemsInBp.length>0)
-			{
-			itemsInBp.forEach(function (item){
-			Orion.MoveItem(item,0,crate.Serial())
-			Orion.Wait(1000)
-			})
+			var itemsInBp = Orion.FindTypeEx(itemset[2], any, backpack, '', '', '', false)
+			if (itemsInBp.length > 0) {
+				itemsInBp.forEach(function (item) {
+					Orion.MoveItem(item, 0, crate.Serial())
+					Orion.Wait(1000)
+				})
 			}
 			havecount = Orion.Count(itemset[2], any, crate.Serial())
 			if (havecount < amount) {
-								MoveItemsFromPlayer(crate, itemset[2], amount)
-}
+				MoveItemsFromPlayer(crate, itemset[2], amount)
+			}
 			havecount = Orion.Count(itemset[2], any, crate.Serial())
 			if (havecount < amount) {
 				BotPush('Cannot Get ' + actualName + ' ' + havecount + '/' + amount)
@@ -392,31 +390,27 @@ var gatePoints = [
 	['Chaos', 109]
 ]
 
-function GateTo(placeName)
-{
-WalkTo(britGate,0)
-var id = gatePoints.filter(function (place){
-return place[0] ===placeName
-})
-if(id!=null){
-Orion.Print(id[0][0])
-var gateId = id[0][1]
+function GateTo(placeName) {
+	WalkTo(britGate, 0)
+	var id = gatePoints.filter(function (place) {
+		return place[0] === placeName
+	})
+	if (id != null) {
+		Orion.Print(id[0][0])
+		var gateId = id[0][1]
 
-Orion.UseType('0x0F6C|0x4BCB', '0xFFFF', 'ground');
-	if (Orion.WaitForGump(1000)||Orion.GumpExists(any,any,'0xE0E675B8'))
-	{
-		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8'))
-		{
-			var gumpHook0 = Orion.CreateGumpHook(1);
-			gumpHook0.AddCheck(gateId, true);
-			gump0.Select(gumpHook0);
-			Orion.Wait(100);
+		Orion.UseType('0x0F6C|0x4BCB', '0xFFFF', 'ground');
+		if (Orion.WaitForGump(1000) || Orion.GumpExists(any, any, '0xE0E675B8')) {
+			var gump0 = Orion.GetGump('last');
+			if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8')) {
+				var gumpHook0 = Orion.CreateGumpHook(1);
+				gumpHook0.AddCheck(gateId, true);
+				gump0.Select(gumpHook0);
+				Orion.Wait(100);
+			}
 		}
 	}
-	}
 }
-function GoTo()
-{
-GateTo('Skara Brae')
+function GoTo() {
+	GateTo('Skara Brae')
 }

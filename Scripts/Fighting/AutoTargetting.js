@@ -12,11 +12,11 @@ var lastSearchMobsIds = [];
 
 //////END OF CONFIG///////
 function ShowEnemiesByDistance() {
-	//var gump = Orion.CreateCustomGump(15);
-//	gump.Clear();
-//gump.AddResizepic(0, 0, '13BE', 900, 500);
+    //var gump = Orion.CreateCustomGump(15);
+    //	gump.Clear();
+    //gump.AddResizepic(0, 0, '13BE', 900, 500);
 
-	//	gump.Update();
+    //	gump.Update();
 
 
     while (true) {
@@ -41,7 +41,7 @@ function ShowEnemiesByDistance() {
                 return mobA.Distance() - mobB.Distance()
             });
 
-            //Filter out mobs removed since the last iteration
+        //Filter out mobs removed since the last iteration
         lastSearchMobsIds.filter(function (mob) {
             return entireAreaMobs.map(function (mobile) { return mobile.Serial() }).indexOf(mob.Serial()) < 0;
         }).forEach(function (mobile) {
@@ -50,16 +50,16 @@ function ShowEnemiesByDistance() {
         });
         lastSearchMobsIds = entireAreaMobs;
 
-                //Group mobs into object by distance
-                entireAreaMobs.forEach(function (mob) {
-                    if (mob != null) {
-                        var mobInRange = mobileByDistance[mob.Distance()];
-                        if (mobInRange != null) {
-                            mobInRange.push(mob);
-                        }
-                    }
-                });
-                
+        //Group mobs into object by distance
+        entireAreaMobs.forEach(function (mob) {
+            if (mob != null) {
+                var mobInRange = mobileByDistance[mob.Distance()];
+                if (mobInRange != null) {
+                    mobInRange.push(mob);
+                }
+            }
+        });
+
         //Show Gumps and Manage Attacks
         for (var distanceFromPlayer in mobileByDistance) {
             var mobInArea = mobileByDistance[distanceFromPlayer]
@@ -74,11 +74,11 @@ function ShowEnemiesByDistance() {
                 var x = indexX * 130;
                 var y = (distanceFromPlayer * 35) + 200;
                 Orion.ShowStatusbar(mobId, x, y);
-               // gump.AddButton(mobId, x, y, '0x00F3', '0x00F2', '0x00F1', '0');
-               // gump.AddText(x, y, '#FF0000', mobile.Name());
-            //    		gump.AddColoredPolygone(x, y/2, 100, 10, '0x000f', 1, 2, 1, mobId);
+                // gump.AddButton(mobId, x, y, '0x00F3', '0x00F2', '0x00F1', '0');
+                // gump.AddText(x, y, '#FF0000', mobile.Name());
+                //    		gump.AddColoredPolygone(x, y/2, 100, 10, '0x000f', 1, 2, 1, mobId);
             })
-         //   gump.Update();
+            //   gump.Update();
         }
     }
 }

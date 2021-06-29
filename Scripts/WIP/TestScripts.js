@@ -2,35 +2,21 @@
 //#include Scripts/helpers/Target.js
 //#include Scripts/helpers/Notifier.js
 
-function PlayerDetected() {
+function DanDar() {
   while (true) {
-    Orion.Wait(500)
+    Orion.Wait(1000)
     var npc = Orion.FindTypeEx(any, any, ground,
-      'mobile|human', 15, 'yellow|criminal')
-    npc.forEach(function (npc) {
-      if (npc.Properties().indexOf('Shop') == -1) {
-        Orion.Print(npc.Properties().indexOf('Shop'))
-        Orion.ActivateClient();
-        BotPush('Detected : ' + npc.Name())
-        Orion.PlayWav('C:\\Sounds\\Windows Background.wav');
-      }
-    })
-    Orion.Wait(2000)
-    if (Player.Hits() < Player.MaxHits()) {
-      BotPush('Injured')
+      'mobile', 15, 'yellow|criminal').filter(function (mob) {
+        return mob.Name() === 'Dan'
+      })
+    if (npc.length > 0) {
       Orion.ActivateClient();
-      Orion.Wait(10000)
-    }
-    var paragonCorpse = Orion.FindTypeEx('0x2006', '0x0501', ground,
-      '', 10);
-    if (paragonCorpse.length > 0) {
-      Orion.Ignore(paragonCorpse.shift().Serial())
-      Orion.ActivateClient();
+      BotPush('Detected : ' + npc.Name())
+      Orion.PlayWav('C:\\Sounds\\Windows Background.wav');
       Orion.Wait(10000)
     }
   }
 }
-
 
 function DrawLOS() {
   while (true) {

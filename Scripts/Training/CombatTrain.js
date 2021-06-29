@@ -11,8 +11,8 @@ function TrainComabt() {
 	var tGraphic;
 	if (target != null) {
 		tColor = target.Color();
-		if(fightParagons)
-					tColor = any
+		if (fightParagons)
+			tColor = any
 		tGraphic = target.Graphic()
 	}
 	else {
@@ -32,7 +32,7 @@ function TrainComabt() {
 		range = 5
 	}
 
-	Orion.Print('Range:'+range);
+	Orion.Print('Range:' + range);
 	var start = {
 		x: Player.X(),
 		y: Player.Y(),
@@ -102,18 +102,18 @@ function TrainComabt() {
 				}
 				if (pet != null) {
 					Orion.Wait(2000)
-					if(mob.Distance()>pet.Distance()){
-					var dir = pet.Direction()
-										Orion.Step(dir)
-										Orion.Step(dir)
-										Orion.Step(dir)
-					}				
+					if (mob.Distance() > pet.Distance()) {
+						var dir = pet.Direction()
+						Orion.Step(dir)
+						Orion.Step(dir)
+						Orion.Step(dir)
+					}
 				}
 				else {
 					WalkTo(mob, 1, 20000, 1);
 					Orion.Follow(mob.Serial());
 				}
-				Orion.Print('Honor '+mob.Name())
+				Orion.Print('Honor ' + mob.Name())
 				Orion.InvokeVirtue('Honor');
 				if (Orion.WaitForTarget(2000)) {
 					Orion.TargetObject(mob.Serial());
@@ -126,23 +126,23 @@ function TrainComabt() {
 				Orion.Attack(mob.Serial());
 				Orion.ClientLastAttack(mob.Serial());
 				Orion.Wait(300)
-	
+
 				while (mob.Exists()) {
 					//WalkTo(pet, 1, 20000, 1);
-				//	HealPet(pet);
-			//	Orion.CastTarget('Energy Bolt', mob.Serial())
+					//	HealPet(pet);
+					//	Orion.CastTarget('Energy Bolt', mob.Serial())
 					Orion.PrintFast(mob.Serial(), '0x0501', 1, mob.Hits());
 					Orion.Wait(1500)
 				}
 				var corpses = Orion.FindTypeEx('0x2006', any, ground, '', 16);
-				corpses.forEach(function (corpse){
+				corpses.forEach(function (corpse) {
 					var corpse = corpses[0]
 					Orion.Print(corpse + ' ' + mob.Y())
 					WalkTo(corpse, 0, 3000, 1);
 					Orion.Wait(4000)
 					Orion.Ignore(corpse.Serial());
 				})
-				
+
 				i++;
 			}
 		}

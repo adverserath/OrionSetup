@@ -52,13 +52,17 @@
         <action type="3" convert_type="9" waiting_time="1000" serial="0x00006EF6" graphic="0x0190" color="0x841B"/>
     </macro>
     <macro name="fish" looped="true" delay="9">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x400426B7" graphic="0x0DC0" color="0x0000"/>
-        <action type="4" convert_type="8" waiting_time="1000" graphic="0x1799" x="3544" y="2582" z="65531" relative_x="0" relative_y="3" relative_z="65534"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000CF2" id="0xA125B54A" button="4"/>
     </macro>
     <macro name="Secure" looped="false" delay="1">
         <action type="9" convert_type="0" waiting_time="1000" value="i wish to secure this"/>
     </macro>
     <macro name="Release" looped="false" delay="1">
         <action type="9" convert_type="0" waiting_time="1000" value="i wish to release this"/>
+    </macro>
+    <macro name="Imbue" looped="true" delay="1">
+        <action type="5" convert_type="0" waiting_time="1000" value="56"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x000006B5" id="0x65290B89" button="10008"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x40091DF7" graphic="0x13FF" color="0x0000"/>
     </macro>
 </data>

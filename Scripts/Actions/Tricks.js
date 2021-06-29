@@ -1,8 +1,8 @@
 //#include Scripts/helpers/Target.js
 
-function SurroundInTables() {
+function SurroundInBoxes() {
     var target = SelectTarget()
-    var tables = Orion.FindTypeEx('0x0B35');
+    var tables = Orion.FindTypeEx('0x09AA');
     Orion.WalkTo(target.X(), target.Y(), target.Z(), 0)
     Orion.WalkTo(target.X(), target.Y(), target.Z(), 0)
     Orion.Wait(750)

@@ -6,3 +6,4 @@
 //#include Scripts/Training/CombatTrain.js
 //#include Scripts/helpers/Target.js
 //#include Scripts/WIP/TestScripts.js
+//#include Scripts/Actions/Automated/ShortCuts.js

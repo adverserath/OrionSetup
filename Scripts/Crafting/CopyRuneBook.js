@@ -175,7 +175,7 @@ function CopyRuneBook() {
         Orion.Step(Orion.Random(0, 7))
         Orion.Wait(200)
         Orion.Step(Orion.Random(0, 7))
-        
+
         newBooks.forEach(function (newBook) {
             //Mark Rune
             var rune = runes.shift();

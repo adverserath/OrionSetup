@@ -96,7 +96,7 @@ function ShowEnemiesByDistance() {
             //Agro everything
             if (attackEverythingAtOnce && distanceFromPlayer < pullTargetDistance) {
                 mobInArea.forEach(function (mobile) {
- 					var mobId = mobile.Serial();
+                    var mobId = mobile.Serial();
                     if (autoAttack &&
                         Player.WarMode() &&
                         mobile != null
@@ -145,15 +145,14 @@ function ShowEnemiesByDistance() {
                         });
                         //var newTarget = vicinity[Orion.Random(vicinity.length)];
                         var newTarget = vicinity.shift();
-                        if(lastAttacker== null || newTarget.Distance()<lastAttacker.Distance())
-                        {
+                        if (lastAttacker == null || newTarget.Distance() < lastAttacker.Distance()) {
                             if (walkToNextTarget == true) {
                                 if (archer == true) {
                                     WalkTo(newTarget, 8);
                                 }
                                 else
                                     WalkTo(newTarget, 1);
-                                    
+
                                 AttackMobile(newTarget);
                                 Orion.Follow(newTarget.Serial());
                             }

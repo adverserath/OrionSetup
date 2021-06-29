@@ -1,11 +1,11 @@
 function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recursive) {
     DebugText('Sorting');
-    DebugText('From:'+fromContainer.Serial());
-    DebugText('To:'+toContainer.Serial());
-    DebugText('Graphic:'+graphicIDs);
-    DebugText('Color:'+color);
-    DebugText('Amount:'+amount);
-    DebugText('Recursive:'+recursive);
+    DebugText('From:' + fromContainer.Serial());
+    DebugText('To:' + toContainer.Serial());
+    DebugText('Graphic:' + graphicIDs);
+    DebugText('Color:' + color);
+    DebugText('Amount:' + amount);
+    DebugText('Recursive:' + recursive);
 
     if (color == null) {
         DebugText('Any color');

@@ -1,7 +1,7 @@
 //#include Scripts/helpers/Target.js
 
 function OrchardRun() {
-var startTime = Orion.Now()
+    var startTime = Orion.Now()
     var apples = Orion.FindTypeEx('0x09D0', 'any', backpack)
     var trees = Orion.FindTypeEx('0x0D01', 'any', ground, '', 40)
         .sort(function (t1, t2) {
@@ -40,7 +40,7 @@ var startTime = Orion.Now()
         Orion.UseObject(apples[0].Serial())
         Orion.Wait(200)
         while (apples.length != 0 && apples[0].Exists()) {
-        Orion.Print('apples:' + apples.length)
+            Orion.Print('apples:' + apples.length)
             if (!Orion.HaveTarget()) {
                 Orion.UseObject(apples[0].Serial())
             }
@@ -50,5 +50,5 @@ var startTime = Orion.Now()
         Orion.CancelTarget()
         apples = []
     }
-Orion.Print('Finished in ' + ((startTime-Orion.Now())/1000) + ' seconds')
+    Orion.Print('Finished in ' + ((startTime - Orion.Now()) / 1000) + ' seconds')
 }

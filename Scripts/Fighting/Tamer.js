@@ -8,7 +8,7 @@ function VetMultiPets() {
     var selected;
     var selecting = true;
     var pets = [];
-    var gorTime = Orion.Now()-60000;
+    var gorTime = Orion.Now() - 60000;
     while (selecting) {
         selected = SelectTarget();
         if (selected == null) {
@@ -35,7 +35,7 @@ function VetMultiPets() {
             .forEach(function (pet) {
 
                 if (pet != null && !Player.Paralyzed()) {
-                    if (pet.Distance()<=2 && Orion.SkillValue('veterinary')>300 && pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits() - 2) || pet.Dead())
+                    if (pet.Distance() <= 2 && Orion.SkillValue('veterinary') > 300 && pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits() - 2) || pet.Dead())
                         && !Orion.BuffExists('veterinary')) {
                         Orion.WaitWhileTargeting(1000);
                         Orion.BandageTarget(pet.Serial());
@@ -45,18 +45,15 @@ function VetMultiPets() {
                             'any', -1, '0x0000FFFE');
                         Orion.DisplayTimerSetIcon('veterinary', 'Top', '0x0E21');
                     }
-                    else if(Orion.SkillValue('Magery')>300 && pet != null && pet.Poisoned())
-                    {
-                    Orion.CastTarget('Cure',pet.Serial())
+                    else if (Orion.SkillValue('Magery') > 300 && pet != null && pet.Poisoned()) {
+                        Orion.CastTarget('Cure', pet.Serial())
                     }
-                    else if(Orion.SkillValue('Magery')>30 && pet != null && !pet.Poisoned() && pet.Hits()<(pet.MaxHits()-5))
-                    {
-                    Orion.CastTarget('Greater Heal',pet.Serial())                    
+                    else if (Orion.SkillValue('Magery') > 30 && pet != null && !pet.Poisoned() && pet.Hits() < (pet.MaxHits() - 5)) {
+                        Orion.CastTarget('Greater Heal', pet.Serial())
                     }
-                    else if(Orion.SkillValue('Spellweaving')>300 && pet != null && pet.Hits()<(pet.MaxHits()-2) && gorTime<(Orion.Now()-60000))
-                    {
-                    Orion.CastTarget('Gift of renewal',pet.Serial())   
-                    gorTime = Orion.Now()    
+                    else if (Orion.SkillValue('Spellweaving') > 300 && pet != null && pet.Hits() < (pet.MaxHits() - 2) && gorTime < (Orion.Now() - 60000)) {
+                        Orion.CastTarget('Gift of renewal', pet.Serial())
+                        gorTime = Orion.Now()
                     }
                     Orion.Wait(300);
                 }

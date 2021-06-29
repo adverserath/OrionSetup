@@ -200,9 +200,8 @@ function Chop(tile) {
 function EquipAxe() {
     if (axe == null) {
         axe = Orion.FindTypeEx(axes, any, backpack)
-        if(beetle!=null)
-        {
-        axe.concat(Orion.FindTypeEx(axes, any, beetleMobile.Serial()))
+        if (beetle != null) {
+            axe.concat(Orion.FindTypeEx(axes, any, beetleMobile.Serial()))
         }
     }
     if (axe.Layer() == 0) {

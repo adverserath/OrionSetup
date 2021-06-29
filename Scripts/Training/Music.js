@@ -7,8 +7,8 @@ function TrainDiscord() {
     var bardRange = 8 + ((parseInt(Orion.SkillValue('Discordance')) / 10) / 15);
     Orion.Print(bardRange)
     Orion.ActivateClient();
-  Orion.Print('Stand away from the target')
-  var awayPoint = coordinate(Player.X(),Player.Y())
+    Orion.Print('Stand away from the target')
+    var awayPoint = coordinate(Player.X(), Player.Y())
     var animal = SelectTarget();
     while (!Player.Dead()) {
         var startTime = Orion.Now();

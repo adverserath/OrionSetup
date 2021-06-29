@@ -18,3 +18,24 @@ function HerdEverything() {
 		Orion.Wait(4000)
 	}
 }
+
+function SpellTimer()
+{
+var total = 0
+var count = 0
+while(true)
+{
+Orion.Wait(2000)
+var start = Orion.Now()
+Orion.Cast("Magic Arrow")
+if(Orion.WaitForTarget(3000))
+{
+var fin = Orion.Now()
+count++
+total += fin-start
+Orion.Print(Orion.GetPing('avg'))
+Orion.Print('AvgTime:'+(total/count))
+Orion.CancelTarget()
+}
+}
+}

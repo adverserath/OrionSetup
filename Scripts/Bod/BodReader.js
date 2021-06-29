@@ -48,6 +48,9 @@ function CreateLargeBod(_bookId) {
     toString: function () {
       return 'LargeBod:\n\t' + this.smallBods.join('\n\t');
     },
+    getId: function () {
+      return 'L:' + this.smallBods[0].Quality()[0] + this.smallBods[0].Count() + this.smallBods[0].Material()[0] + this.smallBods[0].Material()[1] + this.smallBods.map(function (valMap) { return valMap.Name()[0] }).join('');
+    },
     canFill: function () {
 
       var completable = this.smallBods.every(function (sb) {
@@ -61,7 +64,7 @@ function CreateLargeBod(_bookId) {
         return found;
       })
       if (completable) {
-        TextWindow.Print(counter++ + ' Fillable Large Bod: - ' + this.bookId)
+        TextWindow.Print(counter++ + ' Fillable Large Bod: - ' + this.bookId + ' ' + this.getID())
         this.smallBods.forEach(function (sb) {
           var found = false;
           smallBodsLibrary.forEach(function (sbl) {
@@ -77,7 +80,6 @@ function CreateLargeBod(_bookId) {
           }
         })
       }
-      Orion.Wait(5)
       return;
     },
     partFull: function () {
@@ -94,7 +96,7 @@ function CreateLargeBod(_bookId) {
       })
 
       if (!completable && hasOne) {
-        TextWindow.Print(counter++ + ' Partial Large Bod: - ' + this.bookId)
+        TextWindow.Print(counter++ + ' Partial Large Bod: - ' + this.bookId + ' ' + this.getID())
 
         this.smallBods.forEach(function (sb) {
           var found = false;
@@ -114,7 +116,7 @@ function CreateLargeBod(_bookId) {
       return;
     },
     canBribe: function () {
-      TextWindow.Print(counter++ + ' Bribary Large Bod: - ' + this.bookId)
+      TextWindow.Print(counter++ + ' Bribary Large Bod: - ' + this.bookId + ' ' + this.getID())
       return this.smallBods.forEach(function (sb) {
         var found = false;
         smallBodsLibrary.forEach(function (sbl) {
@@ -197,7 +199,7 @@ function ReadBook(bookId) {
 }
 
 function ReadPage(bookId) {
-  Orion.Wait(100);
+  //Orion.Wait(20);
   var gump = Orion.GetLastGump();
   var gumpinfo = gump.CommandList();
   var line = gumpinfo.join() + ','
@@ -216,7 +218,7 @@ function ReadPage(bookId) {
       smallBodsLibrary.push(CreateSmallBod(GetString(matches[2]), GetString(matches[3]), '', loc, bookId))
     }
   })
-  
+
   var largeBods = (line.match(/.?\w*\s61(?:\d*\s){4}\d*1062225\s(?:\d*\s){3},(.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4})?,(?:\s\w*\s\d*\s\d*\s\d*\s\d*\s,)+)+/ig) || []);
   largeBods.forEach(function (bigBod) {
     var innerBods = (bigBod.match(/.?\w*\s103(?:\d*\s){4}(?:\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(?:\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(?:\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(?:\d*)/ig) || []);

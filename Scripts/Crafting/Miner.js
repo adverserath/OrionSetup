@@ -93,12 +93,12 @@ function AutoMiner(magicOption, _range) {
             RecallRune(startRune);
             usedRocks = [];
         }
-        if(mineSand){
-        rocks = GetSand(usedRocks)
-     		}
-        else{
-                rocks = GetRocks(usedRocks);
-			}
+        if (mineSand) {
+            rocks = GetSand(usedRocks)
+        }
+        else {
+            rocks = GetRocks(usedRocks);
+        }
         usedRocks = usedRocks.concat(rocks.map(function (stRock) {
             return stRock.X().toString() + stRock.Y().toString()
         }));
@@ -270,9 +270,9 @@ function GetRocks(oldRocks) {
 function GetSand(oldSand) {
     var rocks = Orion.GetTilesInRect('land', Player.X() - 8, Player.Y() - 8, Player.X() + 8, Player.Y() + 8)
         .filter(function (rock) {
-            return rock.Graphic()==='0x0018'
+            return rock.Graphic() === '0x0018'
         })
-                .filter(function (rock) {
+        .filter(function (rock) {
             return oldSand.indexOf(rock.X().toString() + rock.Y().toString()) == -1;
         })
         .sort(function (t1, t2) {

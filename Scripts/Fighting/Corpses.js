@@ -22,7 +22,7 @@ function WarCleaveCorpses() {
         Orion.Wait(300)
         var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 2);
         corpses.forEach(function (corpse) {
-        WalkTo(corpse)
+            WalkTo(corpse)
             Orion.UseObject(warcleaver.Serial());
             if (Orion.WaitForTarget(1000)) {
                 Orion.TargetObject(corpse.Serial());

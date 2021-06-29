@@ -48,7 +48,7 @@ function AutoLockpicking() {
 
 			}
 		});
-
+Orion.Print("part 2")
 		uniqueChestIds.forEach(function (chestId) {
 			var chest = Orion.FindObject(chestId);
 
@@ -60,7 +60,7 @@ function AutoLockpicking() {
 			var keepPicking = true;
 			while (chest.Distance() < 2 && keepPicking == true && ((chest.Properties().match(/contents/gi) || []).length) == 0) {
 				Orion.Wait(200);
-				Orion.UseType('0x14FC', '0xFFFF');
+				Orion.UseType('0x14FB|0x14FC', '0xFFFF');
 				if (Orion.WaitForTarget(1000)) {
 					Orion.TargetObject(chest.Serial());
 				}
@@ -74,7 +74,7 @@ function AutoLockpicking() {
 					Orion.AddFakeMapObject(chest.Serial(), chest.Graphic(), '0x26', chest.X(), chest.Y(), chest.Z());
 				}
 
-				if (((chest.Properties().match(/contents/gi) || []).length) > 0) {
+				if ((Orion.InJournal('yields', '', '0', '-1', startTime, Orion.Now()) != null||(chest.Properties().match(/contents/gi) || []).length) > 0) {
 					keepPicking = false;
 					uniqueChestIds.pop(chestId);
 					Orion.Print(chestId + ' open')
@@ -82,7 +82,8 @@ function AutoLockpicking() {
 					Orion.AddFakeMapObject(chest.Serial(), chest.Graphic(), '0x3', chest.X(), chest.Y(), chest.Z());
 				}
 			}
-
+Orion.Wait(1000);
+Orion.UseSkillTarget('Remove Trap', chest.Serial())
 		});
 		Orion.Wait(1000);
 	}
@@ -124,7 +125,27 @@ function HighlightLocked() {
 	//		Orion.TargetObject(box.Serial());
 	//Orion.Wait(50);
 	//}
+}
+
+function HighlightArtifact() {
 
 
+	var uniqueChestIds = [];
+	while (!Player.Dead()) {
+		Orion.ClearFakeMapObjects();
+		Orion.IgnoreReset();
+		var chestIds = Orion.FindTypeEx(
+			any
+			, any, any, 'item', 160).filter(function (item) {
+				return Orion.Contains(item.Properties(), 'Rarity');
+			});
 
+		chestIds.forEach(function (chest) {
+			var chestId = chest.Serial();
+			Orion.AddFakeMapObject(chestId, chest.Graphic(), '0x35', chest.X(), chest.Y(), chest.Z());
+		});
+
+		Orion.Wait(1000);
+
+	}
 }

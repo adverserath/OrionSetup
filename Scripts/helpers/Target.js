@@ -53,8 +53,33 @@ function RandomTarget(_private) {
   return nearby[Orion.Random(nearby.length)];
 }
 
-function WalkTo(object, distance, timeMS, walking) {
+function PrintContainer(object, mobile, ignoreBlessed) {
+  Orion.Print('PrintContainer')
+  var items = ''
+  if (mobile != null) {
+    items = mobile.Name() + '\n'
+  }
+  items = object.Name() + ' ' + object.Serial() + '\n'
+  Orion.Wait(100)
+  Orion.FindTypeEx(any, any, object.Serial())
+    .filter(function (item) {
+      if (ignoreBlessed) {
+        return Orion.Contains(item.Properties(), 'Blessed') || Orion.Contains(item.Properties(), 'Insured')
+      }
+      else {
+        return true
+      }
+    })
+    .forEach(function (item) {
+      items += '--' + item.Name() + '\n'
+      items += '\t' + item.Properties() + '\n'
+    })
+  TextWindow.Print(items)
+  BotPush(items)
+}
 
+function WalkTo(object, distance, timeMS, walking) {
+  Orion.Print("Walking to " + object.Name())
   if (distance == null) {
     distance = 1;
   }
@@ -68,6 +93,7 @@ function WalkTo(object, distance, timeMS, walking) {
 }
 
 function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, walking) {
+  Orion.Print('Going to' + object.X() + ' ' + object.Y())
   if (distance == null) {
     distance = 2;
   }
@@ -84,6 +110,11 @@ function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, wal
   var finished = false;
 
   while (Orion.Now() - start < timeMS && !finished) {
+    var path = Orion.GetPathArray(object.X(), object.Y())
+    if (path == null || path.length == 0) {
+      return
+    }
+
     avoidarray.forEach(function (object) {
       if (object.Distance() < avoiddistance) {
         StayAway(object.Serial(), avoiddistance + 2)
@@ -101,6 +132,26 @@ function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, wal
   }
 
   //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
+}
+
+function FelWalkTo(object, distance, timeMS, walking) {
+
+  if (distance == null) {
+    distance = 1;
+  }
+  if (timeMS == null) {
+    timeMS = 300000;
+  }
+  if (walking == null) {
+    walking = 1;
+  }
+  var count = 0;
+  while (!Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS) && count < 20) {
+    //Clear blocked tiles
+    //add blocked tiles
+    count++
+  }
+
 }
 
 function InRange(p1, p2, range) {

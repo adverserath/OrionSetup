@@ -4,6 +4,7 @@
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Gumps.js
+
 var bodChestSerial = '0x40148DBE'
 
 var bodMap = []
@@ -106,7 +107,7 @@ function SortBods() {
         Orion.Wait(200)
 
         bodMap.forEach(function (map) {
-            TextWindow.Print('Book:' + map.BookName()+ ' ' + map.Serial() + ' ' + map.BodColor())
+            TextWindow.Print('Book:' + map.BookName() + ' ' + map.Serial() + ' ' + map.BodColor())
             //MoveItems(Player, map, '0x2258', map.BodColor())
             MoveItemsFromPlayer(map, '0x2258', map.BodColor(), 0)
         });
@@ -115,7 +116,7 @@ function SortBods() {
     MoveItemsFromPlayer(chest, '0x2259', any)
     Orion.Wait(1000)
     //Orion.MoveItem(bodBook.Serial(), 0, Player.Serial());
-  //  Orion.Wait(1000)
+    //  Orion.Wait(1000)
 }
 
 function GetBods() {
@@ -275,7 +276,7 @@ function BodReader() {
     });
 }
 
-function ReadCliLoc() {
+function ReadCliLoc(_private) {
     var clilocs = []
     var file = Orion.NewFile();
 

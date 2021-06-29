@@ -1,8 +1,8 @@
 var hook;
 var key;
 
-function BotPush(message) {
-    TelegramPost(message)
+function BotPush(message, disableNotify) {
+    TelegramPost(message, disableNotify)
     DiscordPost(message)
 }
 //Create discord.conf in "Orion Launcher" folder
@@ -35,7 +35,10 @@ function DiscordPost(message) {
 //Second Word =  second part of key
 //single space
 //Third Word =  chat id
-function TelegramPost(message) {
+function TelegramPost(message, disableNotify) {
+    if (disableNotify == null) {
+        disableNotify = false;
+    }
     if (hook == null && key == null) {
         var file = Orion.NewFile();
         open = file.Open('telegramkey.conf');
@@ -52,7 +55,7 @@ function TelegramPost(message) {
         + hook
         + ":"
         + key
-        + '/sendMessage?chat_id=' + chatId + '&text=' + message; // Webhook url
+        + '/sendMessage?chat_id=' + chatId + '&text=' + message + '&disable_notification=' + disableNotify; // Webhook url
     var paramText = '';
     Orion.HttpPost(bot, paramText);
 }

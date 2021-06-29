@@ -36,15 +36,6 @@
             <property name="Weight" value_min="1" value_max="2"/>
         </item>
         <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0"/>
-        <item graphic="any" color="any" comment="Spell Damage Increase" count="0">
-            <property name="Spell Damage Increase" value_min="17" value_max="18"/>
-        </item>
-        <item graphic="any" color="any" comment="Damange Increase" count="0">
-            <property name="Damage Increase" value_min="35" value_max="35"/>
-        </item>
-        <item graphic="any" color="any" comment="Luck" count="0">
-            <property name="Luck" value_min="130" value_max="140"/>
-        </item>
     </findlist>
     <findlist name="Inscription">
         <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>

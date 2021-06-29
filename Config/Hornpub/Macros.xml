@@ -5,4 +5,8 @@
         <action type="3" convert_type="0" waiting_time="1000" serial="0x00015E3F" graphic="0x0115" color="0x0000"/>
         <action type="15" convert_type="0" waiting_time="1000" serial="0x00000BBA" id="0xD937D1DB" button="0"/>
     </macro>
+    <macro name="Wraith" looped="true" delay="1">
+        <action type="8" convert_type="0" waiting_time="1000" value="3"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x0000D36C" graphic="0x0115" color="0x05A7"/>
+    </macro>
 </data>

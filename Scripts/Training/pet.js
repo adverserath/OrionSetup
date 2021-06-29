@@ -2,7 +2,7 @@
 function CuHealing() {
     var target = SelectTarget()
     while (true) {
-        if (!target.Poisoned() && target.Hits() > 5) {
+        if (!target.Poisoned() && target.Hits() > (target.MaxHits() / 2)) {
             Orion.CastTarget('Poison', target.Serial())
             Orion.Wait(1000)
         }

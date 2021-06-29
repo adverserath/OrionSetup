@@ -49,19 +49,27 @@ function TakeOffClothesAndMeditate(_private) {
 	Orion.Wait(4000);
 }
 
-function KeepGateOpen()
-{
-var gateTarget = SelectTarget()
-while(true)
-{
-var gates = Orion.FindTypeEx('0x0F6C',any,ground,'',1).length
-if(gates<1)
-{
-Orion.Cast('Gate Travel')
-	if (Orion.WaitForTarget(4000))
-		Orion.TargetObject(gateTarget.Serial());
-Orion.Wait(3000)
+function KeepGateOpen() {
+	var gateTarget = SelectTarget()
+	while (true) {
+		var gates = Orion.FindTypeEx('0x0F6C', any, ground, '', 1).length
+		if (gates < 1) {
+			Orion.Cast('Gate Travel')
+			if (Orion.WaitForTarget(4000))
+				Orion.TargetObject(gateTarget.Serial());
+			Orion.Wait(3000)
+		}
+		Orion.Wait(1000)
+	}
 }
-Orion.Wait(1000)
-}
+
+
+function StayHiddenMagically() {
+	while (true) {
+		if (!Player.Hidden()) {
+			Orion.CastTarget('Invisibility', self)
+			Orion.Wait(2000)
+		}
+		Orion.Wait(200)
+	}
 }
