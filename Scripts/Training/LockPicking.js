@@ -127,25 +127,3 @@ function HighlightLocked() {
 	//}
 }
 
-function HighlightArtifact() {
-
-
-	var uniqueChestIds = [];
-	while (!Player.Dead()) {
-		Orion.ClearFakeMapObjects();
-		Orion.IgnoreReset();
-		var chestIds = Orion.FindTypeEx(
-			any
-			, any, any, 'item', 160).filter(function (item) {
-				return Orion.Contains(item.Properties(), 'Rarity');
-			});
-
-		chestIds.forEach(function (chest) {
-			var chestId = chest.Serial();
-			Orion.AddFakeMapObject(chestId, chest.Graphic(), '0x35', chest.X(), chest.Y(), chest.Z());
-		});
-
-		Orion.Wait(1000);
-
-	}
-}

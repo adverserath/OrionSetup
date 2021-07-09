@@ -1,7 +1,24 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/ItemManager.js
+function SeaFish()
+{
+while(true)
+{
+if(            Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 16, 'gray|criminal|red').length==0)
+                {
+	Orion.Say('forward');
+	Orion.Wait(4000);
+	Orion.Say('stop');
+	Orion.UseObject('0x40026413');
+	if (Orion.WaitForTarget(1000))
+		Orion.TargetTileRelative('any', -4, 1, 65533);
+	Orion.Wait(10000);
+	}
+	else{
+	Orion.Say('Stop')
+		Orion.Wait(1000);
+		}
+}
+}
 
 
 function StartFishing() {
@@ -50,7 +67,7 @@ function AutoFisherman(_range) {
     Orion.Print("Go into war mode to stop the script at any point");
 
     storageBox = SelectTarget('Select a storage Box');
-    bin = Orion.FindObject('0x40033ED7');
+    bin = Orion.FindObject('0x40034372');
     fishingRod = Orion.FindTypeEx(fishingRods, any, backpack | Player.Serial()).shift();
 
     var waterTiles = [];
@@ -150,8 +167,9 @@ function Fish(tile) {
                 MoveItemsFromPlayer(storageBox, fish.Graphic(), any);
             })
             Orion.Wait(1000);
-            WalkTo(bin)
+            WalkTo(storageBox)
             Orion.FindListEx('UnwantedStuff').forEach(function (notFish) {
+            //Orion.DropHere(notFish.Serial());
                 MoveItemsFromPlayer(bin, notFish.Graphic(), any);
             })
             walkBack = true;
@@ -364,3 +382,8 @@ function GetWater2(range) {
     });
     return waterTiles;
 }
+
+//#include Scripts/helpers/Target.js
+//#include Scripts/helpers/Magic.js
+//#include Scripts/helpers/Debug.js
+//#include Scripts/helpers/ItemManager.js

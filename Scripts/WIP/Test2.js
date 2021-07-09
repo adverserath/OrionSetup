@@ -39,3 +39,35 @@ Orion.CancelTarget()
 }
 }
 }
+
+
+ function Tracking() 
+{ 
+TextWindow.Open()
+var count = 0
+var found = 0
+  while (!Player.Dead()) {
+    var Gump;
+    Orion.UseSkill("Tracking");
+    Orion.Wait(500);
+    Gump = Orion.GetLastGump();
+    Gump.Select(Orion.CreateGumpHook(4));
+      Orion.Wait(1000);
+      Gump = Orion.GetLastGump();
+      count++
+            Orion.Print(Gump.Text(0))
+      if(Gump.Text(0)==='ningar')
+      {
+      found++
+      TextWindow.Print('found :'+found+'/'+count)
+
+      }
+      TextWindow.Print(found/count)
+
+    Gump.Close()
+Orion.Wait(9000);
+    }
+      Orion.Wait(1000);
+  } 
+  
+  

@@ -53,7 +53,7 @@ function RandomTarget(_private) {
   return nearby[Orion.Random(nearby.length)];
 }
 
-function PrintContainer(object, mobile, ignoreBlessed) {
+function PrintContainer(object, mobile, ignoreNonStealable) {
   Orion.Print('PrintContainer')
   var items = ''
   if (mobile != null) {
@@ -63,16 +63,17 @@ function PrintContainer(object, mobile, ignoreBlessed) {
   Orion.Wait(100)
   Orion.FindTypeEx(any, any, object.Serial())
     .filter(function (item) {
-      if (ignoreBlessed) {
-        return Orion.Contains(item.Properties(), 'Blessed') || Orion.Contains(item.Properties(), 'Insured')
+      if (ignoreNonStealable) {
+        return !Orion.Contains(item.Properties(), 'Blessed') && !Orion.Contains(item.Properties(), 'Insured')
+        && ((item.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 20)<=10;
       }
       else {
         return true
       }
     })
     .forEach(function (item) {
-      items += '--' + item.Name() + '\n'
-      items += '\t' + item.Properties() + '\n'
+      items += '--<b>' + item.Name() + '</b>\n'
+      items += '<code>' + item.Properties() + '</code>\n'
     })
   TextWindow.Print(items)
   BotPush(items)
@@ -89,7 +90,8 @@ function WalkTo(object, distance, timeMS, walking) {
   if (walking == null) {
     walking = 1;
   }
-  return Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
+  var result = Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
+  return result
 }
 
 function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, walking) {

@@ -4,4 +4,7 @@
         <action type="8" convert_type="0" waiting_time="1000" value="210"/>
         <action type="3" convert_type="0" waiting_time="3000" serial="0x4012AEDD" graphic="0x22C5" color="0x084C"/>
     </macro>
+    <macro name="TrainPet" looped="true" delay="60">
+        <action type="8" convert_type="0" waiting_time="1000" value="743"/>
+    </macro>
 </data>

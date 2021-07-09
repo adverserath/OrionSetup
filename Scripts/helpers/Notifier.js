@@ -55,7 +55,7 @@ function TelegramPost(message, disableNotify) {
         + hook
         + ":"
         + key
-        + '/sendMessage?chat_id=' + chatId + '&text=' + message + '&disable_notification=' + disableNotify; // Webhook url
+        + '/sendMessage?chat_id=' + chatId + '&text=' + message + '&disable_notification=' + disableNotify + '&parse_mode=HTML'; // Webhook url
     var paramText = '';
     Orion.HttpPost(bot, paramText);
 }

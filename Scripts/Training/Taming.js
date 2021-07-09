@@ -377,10 +377,24 @@ function TrainVet() {
     }
 }
 function TrainLore() {
+var t = SelectTarget()
     while (true) {
+    if(Orion.SkillValue('Animal Taming')<=1100)
+    {
+    Orion.SetSkillStatus('Animal Taming', 'Lock');
+    }
+        if(Orion.SkillValue('Evaluating Intelligence')<=1000)
+    {
+    Orion.SetSkillStatus('Evaluating Intelligence', 'Lock');
+    }
+       if(Orion.SkillValue('Spellweaving')<=1000)
+    {
+    Orion.SetSkillStatus('Spellweaving', 'Lock');
+    }
+    
         Orion.UseSkill('2');
         if (Orion.WaitForTarget(1000))
-            Orion.TargetObject('0x000021AB');
+            Orion.TargetObject(t.Serial());
         if (Orion.WaitForGump(1000)) {
             var gump0 = Orion.GetGump('last');
             gump0.Close()

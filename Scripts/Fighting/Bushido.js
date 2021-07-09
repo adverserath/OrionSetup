@@ -1,4 +1,5 @@
 //#include Scripts/helpers/Target.js
+//#include Tamer.js
 
 function BushKnight() {
     var range = 1;
@@ -113,23 +114,33 @@ function BushKnight() {
 
 function BushyArcher() {
     var range = 8;
+var attackall = true;
     var bow = Orion.ObjAtLayer('LeftHand');
     if (bow != null) {
         range = (bow.Properties().match(/Range\s(\d*)/i) || [0, 2])[1]
     }
     Orion.Print(!Player.Dead())
     while (!Player.Dead()) {
+    while (!Player.WarMode()) {
+    Orion.Wait(1000)
+    }
         while (Player.WarMode()) {
             Orion.Wait(500);
 
+if(attackall)
+{
+            Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 16, 'gray|criminal|orange')
+				.forEach(function (closemob) {
+                    Orion.Attack(closemob.Serial())
+                    Orion.Wait(50)
+                })
+}
             var attacker = Orion.FindObject(Orion.ClientLastAttack());
 
             var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', (range), 'gray|criminal|orange|red')
-                .filter(function (mob) {
-                    return mob.Notoriety() >= 3
-                        && mob.Notoriety() < 7;
-                });
+                'nothumanmobile|live|ignoreself|ignorefriends', (range), 'gray|criminal|orange')
+
             var mobsAroundAttacker = entireAreaMobs.filter(function (mob) {
                 return attacker != null && attacker.Exists() && mob.Exists() && InRange(attacker, mob, 5)
             }).length
@@ -167,8 +178,7 @@ function BushyArcher() {
             }
             Orion.Wait(500)
 
-
-            if (entireAreaMobs.length > 0) {
+            if (entireAreaMobs.filter(function (mob){return mob.Distance()<12}).length > 0) {
                 if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
                     CastSpell('consecrate weapon');
                     Orion.Wait(1000);

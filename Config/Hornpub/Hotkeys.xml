@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="18" action="35" key="84" modifiers="4"/>
-    <hotkey type="31" action="0" key="123" modifiers="8"/>
     <hotkey type="8" action="0" key="65" modifiers="4"/>
-    <hotkey type="16" action="15" key="36" modifiers="16"/>
+    <hotkey type="16" action="9" key="45" modifiers="16"/>
+    <hotkey type="31" action="0" key="123" modifiers="8"/>
+    <hotkey type="18" action="35" key="84" modifiers="4"/>
     <hotkey type="16" action="22" key="33" modifiers="16"/>
     <hotkey type="3" action="1" key="34" modifiers="16" meta="{&#10;    &quot;external_code&quot;: &quot;  Orion.WaitForAddObject('myTarget');\n  Orion.TargetObject('myTarget');\n  var target = Orion.FindObject('myTarget');\n  \n    Orion.WaitForAddObject('myTarget2');\n  Orion.TargetObject('myTarget2');\n  var target2 = Orion.FindObject('myTarget2');\n  \n  while(target.Distance()&gt;15 || target2.Distance()&gt;15){\n  Orion.Wait(100)\n  }\n  Orion.UseSkill('Provocation')\n\tif (Orion.WaitForTarget(1000))\n\t\tOrion.TargetObject(target.Serial());\n\tif (Orion.WaitForTarget(1000))\n\t\tOrion.TargetObject(target2.Serial());&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
-    <hotkey type="16" action="9" key="45" modifiers="16"/>
+    <hotkey type="16" action="15" key="36" modifiers="16"/>
 </data>

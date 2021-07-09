@@ -66,6 +66,28 @@ function AutoLootAssist() {
     }
 }
 
+function OpenParagonCorpses() {
+    while (!Player.Dead()) {
+        Orion.Wait(1000)
+        
+        if (Player.WarMode()) {
+            if (Player.Weight() < Player.MaxWeight()) {
+                var corpses = Orion.FindTypeEx('0x2006', '0x0501', 'ground', any, 8);
+                corpses.forEach(function (corpse) {
+                    Orion.Print("Walking to " + corpse.Serial())
+                    WalkTo(corpse, 2);
+                    Orion.UseObject(corpse.Serial())
+                    Orion.Wait(1000);
+                    //      Orion.Hide(corpse.Serial())
+                    Orion.Ignore(corpse.Serial());
+                });
+
+                Orion.Wait(1000);
+            }
+        }
+    }
+}
+
 function HideCorpse() {
     var target = SelectTarget()
     Orion.Hide(target.Serial())

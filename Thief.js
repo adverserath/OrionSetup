@@ -3,7 +3,7 @@ function StealStuff() {
 	var checkedPlayers = []
 	while (Player.Hidden()) {
 		while (Orion.FindTypeEx(any, any, ground,
-			'ignoreself|mobile', 24, 'blue|gray|criminal|red').filter(function (player) {
+			'ignoreself|mobile', 24, 'blue|gray|green|criminal|red').filter(function (player) {
 				return player.Properties().indexOf('Legacy') != -1
 					&& checkedPlayers.indexOf(player.Serial()) == -1
 			}).length == 0) {
@@ -16,7 +16,7 @@ function StealStuff() {
 		Orion.Screenshot();
 
 		while (Player.Hidden() && Orion.FindTypeEx(any, any, ground,
-			'ignoreself|mobile', 2, 'blue|gray|criminal|red').filter(function (player) {
+			'ignoreself|mobile', 2, 'blue|gray|green|criminal|red').filter(function (player) {
 				return player.Properties().indexOf('Legacy') != -1
 			}).length == 0) {
 			Orion.Wait(50)
@@ -24,17 +24,18 @@ function StealStuff() {
 		TextWindow.Print('Active Moment')
 
 		var allplayers = Orion.FindTypeEx(any, any, ground,
-			'ignoreself|mobile', 20, 'blue|gray|criminal|red').filter(function (player) {
+			'ignoreself|mobile', 20, 'blue|gray|green|criminal|red').filter(function (player) {
 				return player.Properties().indexOf('Legacy') != -1
 			})
 		var players = Orion.FindTypeEx(any, any, ground,
-			'ignoreself|mobile', 2, 'blue|gray|criminal|red').filter(function (player) {
+			'ignoreself|mobile', 2, 'blue|gray|green|criminal|red').filter(function (player) {
 				return player.Properties().indexOf('Legacy') != -1
 			})
 		var player = null
 		if (players.length > 0) {
 			player = players.shift()
 			Orion.Print(player.Name())
+			WalkTo(player,1)
 		}
 
 		if (!Player.Hidden() && player == null) {
@@ -48,8 +49,9 @@ function StealStuff() {
 			Orion.Wait(100)
 			Orion.UseObject(backpackId)
 		}
-		BotPush(player.Name())
-		PrintContainer(Orion.FindObject(backpackId), player, true)
+
+		Orion.ToggleScript('PrintContainer', true, [Orion.FindObject(backpackId), player, true]);
+		//PrintContainer(Orion.FindObject(backpackId), player, true)
 		Orion.Print('Check for Powerscroll')
 		var item = FindPowerscroll(backpackId)
 		if (item == null) {
@@ -77,18 +79,19 @@ function StealStuff() {
 			item = FindItem(backpackId, any, any, 'Smoke')
 		}
 		if (item != null) {
-			while (player.Distance() > 1 || player.Distance() < 4) {
+			while (player.Distance() > 1) {
 				WalkTo(player)
-				Orion.Wait(50)
+				Orion.Wait(100)
 			}
 
 			Orion.UseSkillTarget('Stealing', item.Serial())
-			Orion.Wait(200)
+			Orion.Wait(400)
 			GetOut()
 			Orion.Wait(10000)
 			checkedPlayers = []
 		}
 		else {
+		Orion.Print('checked'+player.Name())
 			checkedPlayers.push(player.Serial())
 		}
 		if (!Player.Hidden()) {
@@ -117,7 +120,7 @@ function GetOut() {
 	}
 	else {
 		var gate = Orion.FindTypeEx('0x4BCB|0x4B8F', any, ground, 'item|near', 15).shift()
-		WalkTo(gate)
+		WalkTo(gate,1)
 		Orion.UseObject(gate.Serial());
 		Orion.WaitForGump(1000)
 		var gump0 = Orion.GetGump('last');
@@ -254,7 +257,69 @@ function PrintAnimation() {
 		}
 	}
 }
+function StealTarget(){
+var target = SelectTarget()
+if(Orion.Contains(target.Properties(), 'Rarity'))
+{
+WalkTo(target)
+Orion.UseSkillTarget('Stealing',target.Serial())
+}
+}
 
+function HighlightArtifact() {
+	var uniqueChestIds = [];
+	while (!Player.Dead()) {
+		Orion.ClearFakeMapObjects();
+		Orion.IgnoreReset();
+		var chestIds = Orion.FindTypeEx(
+			any
+			, any, any, 'item', 160).filter(function (item) {
+				return Orion.Contains(item.Properties(), 'Rarity');
+			});
+
+		chestIds.forEach(function (chest) {
+			var chestId = chest.Serial();
+			Orion.AddFakeMapObject(chestId, chest.Graphic(), '0x35', chest.X(), chest.Y(), chest.Z());
+		});
+		Orion.Wait(1000);
+	}
+}
+
+function TrainHiding() {
+    while (!Player.Dead()) {
+        Orion.Wait(500)
+        Orion.UseSkill('Hiding')
+        Orion.WalkTo(Player.X(), Player.Y() + 20, Player.Z(), 8, 8, 0);
+        Orion.UseSkill('Hiding')
+        Orion.WalkTo(Player.X(), Player.Y() - 20, Player.Z(), 8, 8, 0);
+    }
+}
+function TrainStealth() {
+    while (!Player.Dead()) {
+
+        if (Orion.SkillValue('Stealth') > 999) {
+            Orion.CloseUO();
+        }
+        var gate = Orion.FindTypeEx('0x4BCB', any, any, any, 20).shift();
+        if (gate != null) {
+
+            Orion.Wait(50);
+        }
+        WalkTo(gate, 0, 2000, 0)
+
+        Orion.UseObject(gate.Serial());
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8')) {
+                var gumpHook0 = Orion.CreateGumpHook(1);
+                gumpHook0.AddCheck(200, true);
+                gump0.Select(gumpHook0);
+            }
+        }
+        Orion.Wait(500)
+        Orion.Step(1)
+    }
+}
 //#include Scripts/helpers/Target.js
 //#include Stealther.js
 //#include Scripts/Actions/Tricks.js

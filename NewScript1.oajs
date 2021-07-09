@@ -1,6 +1,121 @@
-//#include 
+var fishedWater = [];
 
-function test()
-{
-BotPush("test")
+function WaterTest() {
+    GetWater2(32);
+}
+function GetWater(_range) {
+    Orion.Wait(300)
+    Orion.Print('Range ' + _range);
+    var waterTiles = Orion.GetTilesInRect('water', (Player.X() - _range), (Player.Y() - _range), (Player.X() + _range), (Player.Y() + _range))
+        .concat(
+            Orion.GetTilesInRect('land', (Player.X() - _range), (Player.Y() - _range), (Player.X() + _range), (Player.Y() + _range))
+        ).filter(function (tile) {
+            return tile.Graphic() == '0x00A8'
+                || tile.Graphic() == '0x00A9'
+                || tile.Graphic() == '0x00AA'
+                || tile.Graphic() == '0x00AB'
+                || tile.Graphic() == '00x0136'
+                || tile.Graphic() == '0x0137'
+                || tile.Graphic() == '0x1797'
+                || tile.Graphic() == '0x1798'
+                || tile.Graphic() == '0x1799'
+                || tile.Graphic() == '0x179A'
+                || tile.Graphic() == '0x179B'
+                || tile.Graphic() == '0x179C'
+        })
+        .filter(function (tile) {
+            return (IsReachable(tile, 5)) && (tile.X() - 1) % 8 != 0 && (tile.Y() - 1) % 8 != 0
+        })
+
+        .filter(function (tile) {
+            return fishedWater.map(
+                function (e) {
+                    return e.X();
+                })
+                .indexOf(parseInt((tile.X() / 8)))
+                && fishedWater.map(
+                    function (e) {
+                        return e.Y();
+                    })
+                    .indexOf(parseInt((tile.Y() / 8)));
+
+        })
+        .sort(function (t1, t2) {
+            return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
+        });
+    Orion.ClearFakeMapObjects();
+    waterTiles.forEach(function (water) {
+        Orion.AddFakeMapObject(water.X().toString() + water.Y().toString(), '0x09CC', '', water.X(), water.Y(), water.Z());
+    });
+    return waterTiles;
+}
+
+function IsReachable(tile, _range) {
+    var result = Orion.GetTilesInRect('land', (tile.X() - _range), (tile.Y() - _range), 0, (tile.X() + _range), (tile.Y() + _range), 255).length;
+    //Orion.GetTilesInRect('tileFlags', startX, startY, endX, endY);
+    return result >= 9 && result < 30;
+}
+
+
+function GetWater2(range) {
+    var waterTiles = [];
+    Orion.Print('Range ' + range);
+    for (var xLoc = (Player.X() - range); xLoc < (Player.X() + range); xLoc++) {
+        for (var yLoc = (Player.Y() - range); yLoc < (Player.Y() + range); yLoc++) {
+            var tiles = Orion.GetTilesInRect('', xLoc, yLoc, xLoc, yLoc)
+
+            if (tiles.length > 1 && (tiles[0].Graphic() == '0x00A8'
+                || tiles[0].Graphic() == '0x00A9'
+                || tiles[0].Graphic() == '0x00AA'
+                || tiles[0].Graphic() == '0x00AB'
+                || tiles[0].Graphic() == '00x0136'
+                || tiles[0].Graphic() == '0x0137')) {
+                TextWindow.Print(tiles[0].Graphic())
+                var newTile = {
+                    x: xLoc,
+                    y: yLoc,
+                    z: tiles[0].Z(),
+                    X: function () {
+                        return this.x;
+                    },
+                    Y: function () {
+                        return this.y;
+                    },
+                    Z: function () {
+                        return this.z;
+                    }
+                }
+                TextWindow.Print(newTile.X())
+                waterTiles.push(newTile);
+
+            } else if (tiles.length == 0) {
+                TextWindow.Print("create tile")
+                var newTile = {
+                    x: xLoc,
+                    y: yLoc,
+                    z: -5,
+                    X: function () {
+                        return this.x;
+                    },
+                    Y: function () {
+                        return this.y;
+                    },
+                    Z: function () {
+                        return this.z;
+                    }
+                }
+                TextWindow.Print(newTile.X())
+                waterTiles.push(newTile)
+            }
+
+        }
+    }
+    waterTiles = waterTiles.sort(function (t1, t2) {
+        return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
+    });
+    Orion.ClearFakeMapObjects();
+    waterTiles.forEach(function (water) {
+        Orion.AddFakeMapObject(water.X().toString() + water.Y().toString(), '0x09CC', '', water.X(), water.Y(), water.Z());
+    });
+    return waterTiles;
 }

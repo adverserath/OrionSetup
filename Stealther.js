@@ -15,9 +15,49 @@ function DoorOpened() {
             }
         }
     }
-
 }
 
-function WalkToCursor() {
+function RunHiddenOwnCounter() {
+	var x = Player.X()
+	var y = Player.Y()
+	var lastReset = Orion.Now()
+	var lastStepTime = Orion.Now()
+	var steps = 0
+	var lastStepNumber = 0
+	var StealthLimit = Orion.SkillValue('Stealth') / 50
+	Orion.Print('StealthLimit:' + StealthLimit)
+	while (true) {
+		Orion.Wait(10)
+		if (Player.Hidden() && (x != Player.X() || y != Player.Y())) {
+			x = Player.X()
+			y = Player.Y()
+			var steps = 1
+			if (Player.Direction() > 127) {
+				steps = 2
+			}
 
+
+			lastStepNumber += steps;
+			Orion.Print(lastStepNumber)
+			if (Player.Hidden() && Player.StealthSteps() == 0) {
+				Orion.Step(1, false)
+				Orion.AddDisplayTimer('hide', 10000, 'AboveChar');
+			}
+			var startTime = Orion.Now()
+			if (!Player.WarMode() && !Orion.DisplayTimerExists('hide') && lastStepNumber >= 15) {
+				Orion.UseSkill('Stealth')
+				Orion.AddDisplayTimer('hide', 10000, 'AboveChar');
+			}
+
+			var stealthReset = Orion.InJournal('You begin to move quietly', '', '0', '-1', lastStepTime, Orion.Now()) != null;
+			if (stealthReset) {
+				Orion.Print('Reset Stealth')
+				lastStepNumber = 0
+			}
+
+			Orion.ClientOptionSet('BlockRunWhileHidden', lastStepNumber >= 15);
+
+			lastStepTime = Orion.Now()
+		}
+	}
 }

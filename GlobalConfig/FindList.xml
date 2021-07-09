@@ -132,6 +132,8 @@
         <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0"/>
         <item graphic="0x09CD" color="0x0000" comment="Smallmouth Bass" count="0"/>
         <item graphic="0x44C6" color="0x0000" comment="Green Catfish" count="0"/>
+        <item graphic="0x4304" color="0x0000" comment="Blue Marlin" count="0"/>
+        <item graphic="0x44C3" color="0x0000" comment="Yellowtail Barracuda" count="0"/>
     </findlist>
     <findlist name="UnwantedStuff">
         <item graphic="0x170F" color="0x06AB" comment="Shoes" count="0"/>

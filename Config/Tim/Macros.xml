@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="true" delay="0.1">
-        <action type="1" convert_type="1" waiting_time="1000" serial="0x4004EF18" graphic="0x0F39" color="0x0000"/>
-        <action type="1000" convert_type="0" waiting_time="500"/>
-        <action type="4" convert_type="8" waiting_time="1000" graphic="0x0000" x="2734" y="1093" z="0" relative_x="1" relative_y="-1" relative_z="0"/>
+        <action type="9" convert_type="0" waiting_time="1000" value="forward"/>
+        <action type="1000" convert_type="0" waiting_time="8000"/>
+        <action type="9" convert_type="0" waiting_time="1000" value="stop"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x40026413" graphic="0x0DC0" color="0x0000"/>
+        <action type="4" convert_type="5" waiting_time="1000" graphic="0x0000" x="4223" y="1102" z="65531" relative_x="-4" relative_y="1" relative_z="65533"/>
+        <action type="1000" convert_type="0" waiting_time="10000"/>
     </macro>
 </data>
