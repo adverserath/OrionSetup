@@ -74,7 +74,7 @@ function Calculate(item) {
         }
       }
     });
-    return value
+    return value/propertiesCount
   })
 
   Orion.Print(item.Name() + propertiesCount + '/' + maxPropertiesCount);
@@ -94,12 +94,15 @@ function CheckItem(target, loot) {
     while (Orion.DisplayTimerExists('hide')) {
       Orion.Wait(1000)
     }
+    BotPush(target.Name())
+        BotPush(target.Properties())
     Orion.MoveItem(target.Serial(), 0, backpack);
     Orion.Wait(500)
-DoHide()
+    DoHide()
   }
 }
 
+var StartLocation = coordinate(Player.X(),Player.Y())
 var jewels = '0x1086|0x1F06|0x108A|0x1F09';
 var maps = '0x14EC'
 function SuperSmartLooter() {
@@ -115,6 +118,7 @@ function SuperSmartLooter() {
       }).length;
 
     Orion.Wait(1000)
+
     if (corpses.length > 0) {
       var corpse = corpses.shift()
       Orion.Print("Walking to " + corpse.Serial())
@@ -143,9 +147,9 @@ function SuperSmartLooter() {
       var maps = Orion.FindTypeEx('0x14EC', any, corpse.Serial());
       maps.forEach(function (item) { CheckItem(item, true) })
 
-      var gold = Orion.FindTypeEx('0x0EED', any, corpse.Serial());
-      gold.forEach(function (item) { CheckItem(item, true) })
-      
+      //var gold = Orion.FindTypeEx('0x0EED', any, corpse.Serial());
+     // gold.forEach(function (item) { CheckItem(item, true) })
+
       Orion.Hide(corpse.Serial())
       Orion.Ignore(corpse.Serial());
     }
@@ -168,19 +172,21 @@ function SlimeTest() {
     })
 }
 
-function DoHide()
-{
-if(!Player.Hidden())
-{
+function DoHide() {
+
+  if (!Player.Hidden()) {
     Orion.UseSkill('Hiding')
     Orion.AddDisplayTimer('hide', 10000, 'AboveChar');
     Orion.Wait(200)
     Orion.Step(1, false)
+  
+  if (!Player.Hidden()) {
+  WalkTo(StartLocation)
+    Orion.ActivateClient()
+    Orion.PauseScript()
     }
-    if (!Player.Hidden()) {
-      Orion.ActivateClient()
-      Orion.PauseScript()
-    }
+  }
 }
 //#include Stealther.js
 //#include Scripts/helpers/Target.js
+//#include Scripts/helpers/Notifier.js

@@ -8,35 +8,38 @@ function OrchardRun() {
             return parseInt(t1.Serial()) - parseInt(t2.Serial())
         })
 
-    if (trees.length > 16) {
-        trees.slice(0, trees.length - 16).forEach(function (oldTree) {
-            Orion.Forget(oldTree.Serial());
-
-        })
-        trees = Orion.FindTypeEx('0x0D01', 'any', ground, '', 40)
-            .sort(function (t1, t2) {
-                return parseInt(t1.Serial()) - parseInt(t2.Serial())
-            })
-    }
-
     Orion.Print(trees.length)
 
     while (trees.length > 0) {
         var startTree = trees.shift()
-        Orion.Wait(100)
+        var startTreeLoc = coordinate(startTree.X(), startTree.Y(),0)
+        Orion.Wait(1000)
         var nextTree = trees.shift()
+        var nextTreeLoc = coordinate(nextTree.X(), nextTree.Y(),0)
 
         Orion.Print('Get Apple : ' + startTree.Serial())
-        WalkTo(startTree, 1, 30000, 1)
+        
+        while(Orion.GetDistance(startTreeLoc.X(), startTreeLoc.Y())>1)
+        {
+        WalkTo(startTreeLoc, 1, 30000, 1)
+        Orion.Wait(100)
+        }
+        
         while (apples.length == 0) {
             Orion.UseObject(startTree.Serial())
-            Orion.Wait(200)
+            Orion.Wait(400)
             apples = Orion.FindTypeEx('0x09D0', 'any', backpack)
         }
         Orion.Print('apples:' + apples.length)
 
         Orion.Print('Goto throw apple: ' + nextTree.Serial())
-        WalkTo(nextTree, 10, 30000, 1)
+        
+        while(Orion.GetDistance(nextTreeLoc.X(), nextTreeLoc.Y())>8)
+        {
+        WalkTo(nextTreeLoc, 8, 30000, 1)
+        Orion.Wait(100)
+        }
+        
         Orion.UseObject(apples[0].Serial())
         Orion.Wait(200)
         while (apples.length != 0 && apples[0].Exists()) {
@@ -49,6 +52,7 @@ function OrchardRun() {
         }
         Orion.CancelTarget()
         apples = []
+        Orion.Wait(800)
     }
     Orion.Print('Finished in ' + ((startTime - Orion.Now()) / 1000) + ' seconds')
 }

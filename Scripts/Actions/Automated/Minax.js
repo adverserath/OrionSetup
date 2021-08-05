@@ -2,12 +2,13 @@
 
 function BottleThrower() {
     while (true) {
-        Orion.FindTypeEx('0x0190', any, ground, '', 40).forEach(function (bottle) {
-            Orion.Forget(bottle.Serial);
-        })
-        Orion.FindTypeEx('0x099B', any, ground, '', 40).forEach(function (bottle) {
-            Orion.Forget(bottle.Serial);
-        })
+        //Orion.FindTypeEx('0x0190', any, ground, '', 40).forEach(function (bottle) {
+       //     Orion.Forget(bottle.Serial);
+      //  })
+       // Orion.FindTypeEx('0x099B', any, ground, '', 40).forEach(function (bottle) {
+     //       Orion.Forget(bottle.Serial);
+      //  })
+      Orion.Resend()
         Orion.Wait(500)
         Orion.Print('Start Check')
         var pirates = Orion.FindTypeEx('0x0190', any, ground, '', 40, 'red')
@@ -323,6 +324,7 @@ function FountainTest() {
             });
             Orion.Wait(1000)
         }
+        Orion.Resend();
         //PICK UP PARTS
         Orion.Wait(100)
         choosenRoute.RequiredParts().forEach(function (reqPart) {
@@ -339,7 +341,6 @@ function FountainTest() {
                     var part = fp;
                     Orion.WalkTo(part.X(), part.Y(), part.Z(), 1, 0, 1)
                     Orion.MoveItem(part.Serial())
-                    Orion.Forget(part.Serial())
                     Orion.Wait(800)
                 })
             }
@@ -383,7 +384,7 @@ function FountainTest() {
                 })
             Orion.Wait(300);
             Orion.Drop(partObj.Serial(), 1, loc.Location().X(), loc.Location().Y(), Player.Z());
-            Orion.Wait(300);
+            Orion.Wait(500);
 
             Orion.Ignore(partObj.Serial(), true)
             //Orion.Print(loc.Location().X()+':'+loc.Location().Y())

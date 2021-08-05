@@ -32,6 +32,9 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recurs
 }
 
 function MoveItemsFromPlayer(toContainer, graphicIDs, color, amount) {
+    if(typeof toContainer==="string"){
+		toContainer = Orion.FindObject(toContainer)
+	}
     Orion.Print('Moving objects to ' + toContainer.Serial())
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, color, amount);
     Orion.Print('Finished MoveItemsFromPlayer')

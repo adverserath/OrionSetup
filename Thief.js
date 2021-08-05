@@ -316,8 +316,12 @@ function TrainStealth() {
                 gump0.Select(gumpHook0);
             }
         }
-        Orion.Wait(500)
-        Orion.Step(1)
+        Orion.Wait(300)
+        Orion.Step('s')
+         Orion.Wait(300)
+        Orion.Step('n')
+                Orion.Say('.')
+
     }
 }
 //#include Scripts/helpers/Target.js

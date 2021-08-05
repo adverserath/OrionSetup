@@ -134,11 +134,21 @@
         <item graphic="0x44C6" color="0x0000" comment="Green Catfish" count="0"/>
         <item graphic="0x4304" color="0x0000" comment="Blue Marlin" count="0"/>
         <item graphic="0x44C3" color="0x0000" comment="Yellowtail Barracuda" count="0"/>
+        <item graphic="0x44C5" color="0x0000" comment="Captain Snook" count="0"/>
+        <item graphic="0x573A" color="0x0000" comment="Delicate Scales" count="0"/>
+        <item graphic="0x3196" color="0x0000" comment="White Pearl" count="0"/>
+        <item graphic="0xA30C" color="0x0000" comment="A Message In A Bottle" count="0"/>
+        <item graphic="0x14EC" color="0x0000" comment="A Tattered Treasure Map Leading To A Mage's Stash" count="0"/>
+        <item graphic="0x0DCA" color="0x08A0" comment="A Special Fishing Net" count="0"/>
+        <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0"/>
+        <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0"/>
     </findlist>
     <findlist name="UnwantedStuff">
         <item graphic="0x170F" color="0x06AB" comment="Shoes" count="0"/>
         <item graphic="0x1711" color="0x0000" comment="Thigh Boots" count="0"/>
         <item graphic="0x170D" color="0x0000" comment="Sandals" count="0"/>
+        <item graphic="0x170B" color="0x0000" comment="Boots" count="0"/>
+        <item graphic="0x170F" color="0x0000" comment="Shoes" count="0"/>
     </findlist>
     <findlist name="mushrooms">
         <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0"/>

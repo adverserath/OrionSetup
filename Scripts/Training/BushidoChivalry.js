@@ -48,3 +48,25 @@ function TrainChivalryAndBushido() {
         }
     }
 }
+
+function TrainBushTo120()
+{
+while(true){
+if (Orion.SkillValue('Bushido') < 1100) {
+            Orion.Cast('Evasion');
+            Orion.Wait(2000);
+        }
+}
+while(true)
+{
+Orion.Wait(1000)
+if(!Orion.SpellStatus('Momentum Strike')){
+Orion.Cast('Momentum Strike')}
+  Orion.Attack('0x0000F22F');
+}
+Orion.Wait(1000)
+if(!Orion.SpellStatus('Momentum Strike')){
+
+  Orion.Attack('0x00000000');
+}
+}

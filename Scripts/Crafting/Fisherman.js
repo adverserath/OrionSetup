@@ -1,23 +1,125 @@
-function SeaFish()
-{
-while(true)
-{
-if(            Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 16, 'gray|criminal|red').length==0)
-                {
-	Orion.Say('forward');
-	Orion.Wait(4000);
-	Orion.Say('stop');
-	Orion.UseObject('0x40026413');
-	if (Orion.WaitForTarget(1000))
-		Orion.TargetTileRelative('any', -4, 1, 65533);
-	Orion.Wait(10000);
-	}
-	else{
-	Orion.Say('Stop')
-		Orion.Wait(1000);
-		}
+var seabook = '0x40019854'
+var seakey = '0x4003D723'
+var seaBox = '0x40055745'
+var seaBin = '0x400F63CF'
+
+
+function GetSOSLocation() {
+var sos = SelectTarget()
+Orion.UseObject(sos.Serial())
+Orion.Wait(500)
+    var gump0 = Orion.GetGump('last');
+    if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x550A461B')) {
+        var com = gump0.CommandList()[2]
+        //Orion.Print(com)
+        Orion.Print(com.match(/.*@(.*)@.*/i)[1])
+        var pos = Orion.SextantToXY(com.match(/.*@(.*)@.*/i)[1]);
+        Orion.Print('X:' + pos.X() + ' Y: ' + pos.Y())
+        gump0.Select(Orion.CreateGumpHook(0));
+        Orion.Wait(1000);
+        SteerTo(pos.X(), pos.Y())
+    }
 }
+
+function SeaFish() {
+    var startTime = Orion.Now()
+    while (true) {
+        if (Orion.FindTypeEx(any, any, ground,
+            'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').length == 0) {
+            if (Orion.InJournal('look like a fish', '', '0', '-1', (startTime), Orion.Now()) != null) {
+                //Wait for corpse
+                var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 2);
+                while (corpses.length == 0) {
+                    Orion.Wait(1000)
+                    corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 16);
+                }
+                var startX = Player.X()
+                corpses.forEach(function (corpse) {
+                    if (corpse.Y() < Player.Y()) {
+                        Orion.Say('forward')
+                        while (corpse.Y() < Player.Y()) {
+                            Orion.Wait(50)
+                        }
+                        Orion.Say('stop')
+                    }
+                    else if (corpse.Y() > Player.Y()) {
+                        Orion.Say('back')
+                        while (corpse.Y() > Player.Y()) {
+                            Orion.Wait(50)
+                        }
+                        Orion.Say('stop')
+                    }
+                     Orion.Wait(200)
+
+                    if (corpse.X() < Player.X()) {
+                        Orion.Say('left')
+                        while (corpse.X() < Player.X()) {
+                            Orion.Wait(50)
+                        }
+                        Orion.Say('stop')
+                    }
+                    else if (corpse.X() > Player.X()) {
+                        Orion.Say('right')
+                        while (corpse.X() > Player.X()) {
+                            Orion.Wait(50)
+                        }
+                        Orion.Say('stop')
+                    }
+					WalkTo(corpse);
+                    Orion.UseObject(corpse.Serial())
+                    Orion.Ignore(corpse.Serial())
+                    Orion.Wait(2000)
+                    if (startX < Player.X()) {
+                        Orion.Say('left')
+                        while (startX < Player.X()) {
+                            Orion.Wait(50)
+                        }
+                        Orion.Say('stop')
+                    }
+                    else if (startX > Player.X()) {
+                        Orion.Say('right')
+                        while (startX > Player.X()) {
+                            Orion.Wait(50)
+                        }
+                        Orion.Say('stop')
+                    }
+                });
+            }
+            if (Player.Weight() > Player.MaxWeight()) {
+                Orion.ActivateClient();
+                Orion.PauseScript();
+            }
+            if (Player.Weight() > (Player.MaxWeight() - 100)) {
+                RecallRune(seabook);
+                Orion.Wait(1000);
+                WalkTo(seaBox)
+                Orion.Wait(1000);
+                Orion.FindListEx('Fishies').forEach(function (fish) {
+                    MoveItemsFromPlayer(seaBox, fish.Graphic(), any);
+                })
+                Orion.Wait(1000);
+                WalkTo(seaBin)
+                Orion.FindListEx('UnwantedStuff').forEach(function (notFish) {
+                    //Orion.DropHere(notFish.Serial());
+                    MoveItemsFromPlayer(seaBin, notFish.Graphic(), any);
+                })
+                RecallRune(seakey);
+                Orion.Wait(2000);
+            }
+            startTime = Orion.Now()
+            Orion.UseObject('0x40026413');
+            if (Orion.WaitForTarget(1000))
+                Orion.TargetTileRelative('any', -3, -3, 65533);
+            Orion.Say('forward');
+            Orion.Wait(2000);
+            Orion.Say('stop');
+            Orion.Wait(8000);
+        }
+        else {
+            Orion.Say('Stop')
+            Orion.Wait(5000);
+        }
+    }
 }
 
 
@@ -52,6 +154,7 @@ function HighLightWater() {
     });
     return waterTiles;
 }
+
 var debug = true;
 var fishingRods = '0x0DC0'
 var range;
@@ -169,7 +272,7 @@ function Fish(tile) {
             Orion.Wait(1000);
             WalkTo(storageBox)
             Orion.FindListEx('UnwantedStuff').forEach(function (notFish) {
-            //Orion.DropHere(notFish.Serial());
+                //Orion.DropHere(notFish.Serial());
                 MoveItemsFromPlayer(bin, notFish.Graphic(), any);
             })
             walkBack = true;
@@ -265,7 +368,7 @@ function EquipRod() {
 
 }
 function WaterTest() {
-    GetWater(32);
+    GetWater(2);
 }
 function GetWater(_range) {
     Orion.Wait(300)
@@ -287,9 +390,9 @@ function GetWater(_range) {
                 || tile.Graphic() == '0x179B'
                 || tile.Graphic() == '0x179C'
         })
-        .filter(function (tile) {
-            return (IsReachable(tile, 5)) && (tile.X() - 1) % 8 != 0 && (tile.Y() - 1) % 8 != 0
-        })
+    //    .filter(function (tile) {
+   //         return (IsReachable(tile, 5)) && (tile.X() - 1) % 8 != 0 && (tile.Y() - 1) % 8 != 0
+   //     })
 
         .filter(function (tile) {
             return fishedWater.map(
@@ -311,6 +414,7 @@ function GetWater(_range) {
     waterTiles.forEach(function (water) {
         Orion.AddFakeMapObject(water.X().toString() + water.Y().toString(), '0x09CC', '', water.X(), water.Y(), water.Z());
     });
+    Orion.Print(waterTiles.length)
     return waterTiles;
 }
 
@@ -387,3 +491,6 @@ function GetWater2(range) {
 //#include Scripts/helpers/Magic.js
 //#include Scripts/helpers/Debug.js
 //#include Scripts/helpers/ItemManager.js
+//#include Scripts/Actions/Automated/DriveBoat.js
+//#include Scripts/helpers/Map.js
+//#include Scripts/helpers/PathFinding.js

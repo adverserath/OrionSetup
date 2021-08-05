@@ -107,7 +107,13 @@ function HighlightLocked() {
 				Orion.Print("Adding " + chestId)
 				uniqueChestIds.push(chestId);
 				Orion.AddFakeMapObject(chestId, chest.Graphic(), '0x35', chest.X(), chest.Y(), chest.Z());
-
+			}
+			if(chest.Distance()<2 && Player.Hits() > Player.MaxHits()-10){
+							Orion.Wait(500);
+				Orion.UseType('0x14FB|0x14FC', '0xFFFF');
+				if (Orion.WaitForTarget(1000)) {
+					Orion.TargetObject(chest.Serial());
+				}
 			}
 		});
 

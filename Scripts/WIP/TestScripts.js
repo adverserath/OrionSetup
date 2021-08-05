@@ -48,35 +48,6 @@ Orion.SetLOSOptions('ignoredestpos');
 }
 
 
-function BardRange() {
-  var range = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-  Orion.ClearFakeMapObjects();
-
-  var target = Player
-  var x = target.X();
-  var y = target.Y();
-
-  range.forEach(function (distance) {
-    Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance).concat()
-
-      .forEach(function (tile) {
-        var xDelta = tile.X() - Player.X()
-        var yDelta = tile.Y() - Player.Y()
-        var sqrt = Math.sqrt((xDelta * xDelta) + (yDelta * yDelta))
-
-        if (sqrt < 15) {
-          Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x0197', tile.X(), tile.Y(), tile.Z());
-
-        }
-        else {
-          Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
-        }
-      }
-      )
-  })
-
-}
-
 
 function NotEnoughResourcesGump() {
   TextWindow.Open();
@@ -98,36 +69,24 @@ function getFlags() {
   TextWindow.Print(a.trim());
 }
 
-function getTileData() {
-  Orion.WaitForAddObject('myTarget');
-  Orion.TargetObject('myTarget');
-  var target = Orion.FindObject('myTarget');
-
-  var tiles = Orion.GetTiles('land', Player.X(), Player.Y(), 0, 100);
-  TextWindow.Print('tile' + tiles.length);
-  TextWindow.Print('tile' + tiles[0].Z());
+function DropAndLock()
+{
+var t = SelectTarget()
+Orion.DragItem(t.Serial());
+Orion.Wait(200)
+Orion.DropDraggedItemRelative(1,0)
+Orion.Wait(200)
+Orion.Say("I wish to secure this")
+if(Orion.WaitForTarget())
+{
+Orion.TargetObject(t.Serial())
+}
 }
 
-function test() {
-  TextWindow.Clear()
-  TextWindow.Print('watertile')
-  Orion.GetTiles(any, 2273, 1032).forEach(function (tile) {
-    TextWindow.Print(tile.Flags())
-    TextWindow.Print((tile.Flags() & 524288) == 524288)
-  })
-  TextWindow.Print('staticwater')
-  Orion.GetTiles('any', 2276, 1053).forEach(function (tile) {
-    TextWindow.Print(tile.Flags())
-    TextWindow.Print((tile.Flags() & 524288) == 524288)
-  })
-  TextWindow.Print('grass')
-  Orion.GetTiles('any', 2276, 1061).forEach(function (tile) {
-    TextWindow.Print(tile.Flags())
-    TextWindow.Print((tile.Flags() & 524288) == 524288)
-  })
+function PrintArrow()
+{while(true)
+{
+Orion.Wait(2000)
+Orion.Print(Orion.QuestArrowPosition().X() + "  " + Orion.QuestArrowPosition().Y())
 }
-
-
-function sell() {
-  Orion.Buy('bInscribe');
 }

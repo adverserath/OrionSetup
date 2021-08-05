@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="Provoke" looped="true" delay="3">
-        <action type="5" convert_type="0" waiting_time="1000" value="2"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x00015E3F" graphic="0x0115" color="0x0000"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000BBA" id="0xD937D1DB" button="0"/>
+    <macro name="Provoke" looped="true" delay="5">
+        <action type="8" convert_type="0" waiting_time="1000" value="701"/>
+        <action type="1" convert_type="1" waiting_time="1000" serial="0x4014FDB6" graphic="0x2805" color="0x0000"/>
     </macro>
     <macro name="Wraith" looped="true" delay="1">
         <action type="8" convert_type="0" waiting_time="1000" value="3"/>
         <action type="3" convert_type="0" waiting_time="1000" serial="0x0000D36C" graphic="0x0115" color="0x05A7"/>
+    </macro>
+    <macro name="train music" looped="true" delay="1">
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x400242FE" graphic="0x0E9D" color="0x0000"/>
+        <action type="5" convert_type="0" waiting_time="1000" value="9"/>
+        <action type="3" convert_type="9" waiting_time="1000" serial="0x0000A923" graphic="0x0190" color="0x83EA"/>
     </macro>
 </data>

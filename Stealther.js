@@ -44,7 +44,7 @@ function RunHiddenOwnCounter() {
 				Orion.AddDisplayTimer('hide', 10000, 'AboveChar');
 			}
 			var startTime = Orion.Now()
-			if (!Player.WarMode() && !Orion.DisplayTimerExists('hide') && lastStepNumber >= 15) {
+			if (!Player.WarMode() && !Orion.DisplayTimerExists('hide') && lastStepNumber >=(StealthLimit-4)) {
 				Orion.UseSkill('Stealth')
 				Orion.AddDisplayTimer('hide', 10000, 'AboveChar');
 			}
@@ -55,7 +55,7 @@ function RunHiddenOwnCounter() {
 				lastStepNumber = 0
 			}
 
-			Orion.ClientOptionSet('BlockRunWhileHidden', lastStepNumber >= 15);
+			Orion.ClientOptionSet('BlockRunWhileHidden', lastStepNumber >= (StealthLimit-4));
 
 			lastStepTime = Orion.Now()
 		}

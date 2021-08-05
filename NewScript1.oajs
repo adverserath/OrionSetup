@@ -119,3 +119,54 @@ function GetWater2(range) {
     });
     return waterTiles;
 }
+
+function TargetNext()
+{
+    for (var ind = 0; ind < 2; ind++)
+    {
+        var mobileID = Orion.FindType("-1", "-1", ground, "near|live|ignoreself|ignorefriends", 18);
+
+        if (mobileID.length != 0)
+        {
+            var enemyObj = Orion.FindObject(mobileID[0]);
+
+            var notoColor;
+
+            if (enemyObj)
+            {
+                switch (enemyObj.Notoriety())
+                {
+                    case 1:
+                        notoColor = 900;
+                        break;
+
+                    case 3:
+                        notoColor = 900;
+                        break;
+
+                    case 6:
+                        notoColor =900;
+                        break;
+
+                    default:
+                        notoColor =900;
+                }
+
+
+                Orion.CharPrint(mobileID[0], notoColor, "*** Target: " + Orion.RequestName(mobileID[0]) + " " + enemyObj.Hits("%") + "% HP");
+            }
+
+            Orion.Attack(mobileID[0]);
+            Orion.SetGlobal("global_enemy", mobileID[0]);
+            Orion.ClientLastTarget(mobileID[0]);
+            Orion.Ignore(mobileID[0]);
+            return;
+        }
+        else if (ind == 0)
+        {
+            Orion.IgnoreReset();
+        }
+    }
+
+    Orion.Print("No enemies around!");
+}

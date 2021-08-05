@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
     <profile serial="0x00000D0D" file="Atten"/>
+    <profile serial="0x00002D7D" file="Yuna"/>
     <profile serial="0x00004F3B" file="Atten"/>
     <profile serial="0x00005DC9" file="Tyr"/>
     <profile serial="0x00006A06" file="Tyr"/>

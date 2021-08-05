@@ -65,7 +65,7 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
     .filter(function (item) {
       if (ignoreNonStealable) {
         return !Orion.Contains(item.Properties(), 'Blessed') && !Orion.Contains(item.Properties(), 'Insured')
-        && ((item.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 20)<=10;
+          && ((item.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 20) <= 10;
       }
       else {
         return true
@@ -80,7 +80,14 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
 }
 
 function WalkTo(object, distance, timeMS, walking) {
-  Orion.Print("Walking to " + object.Name())
+  if (typeof object === "string") {
+    object = Orion.FindObject(object)
+  }
+
+  if (object.Name() != null && object.Name() != '')
+    Orion.Print("Walking to " + object.Name())
+  else
+    Orion.Print("Walking to " + object.X() + ' ' + object.Y())
   if (distance == null) {
     distance = 1;
   }
@@ -248,5 +255,8 @@ function coordinate(xLoc, yLoc, zLoc) {
       }
       return this.visited;
     },
+    Name: function (val) {
+      return 'coordinate';
+    }
   }
 }

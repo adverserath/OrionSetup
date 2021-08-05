@@ -22,11 +22,18 @@ function MarkRune(runeItem) {
 }
 
 function RecallRune(runeItem) {
+	if(typeof runeItem==="string"){
+		runeItem = Orion.FindObject(runeItem)
+	}
 	var startCastTime = Orion.Now();
 	var x = Player.X();
 	var y = Player.Y();
-	CastSpellOnTarget("Recall", runeItem.Serial());
-
+	if(Orion.SkillValue('Magery', 'base')>40){
+		CastSpellOnTarget("Recall", runeItem.Serial());
+	}
+	if(Orion.SkillValue('Chivalry', 'base')>30){
+		CastSpellOnTarget("Sacred Journey", runeItem.Serial());
+	}
 	if (Orion.InJournal('blocking the location', '', '0', '-1', startCastTime, Orion.Now() + 1500) != null) {
 		BotPush('Location is blocked')
 		Orion.PauseScript();
@@ -70,6 +77,6 @@ function StayHiddenMagically() {
 			Orion.CastTarget('Invisibility', self)
 			Orion.Wait(2000)
 		}
-		Orion.Wait(200)
+		Orion.Wait(500)
 	}
 }
