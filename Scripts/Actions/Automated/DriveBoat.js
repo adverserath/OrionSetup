@@ -45,15 +45,20 @@ function SteerPath(route) {
     Orion.Print('next')
     //        while (Player.X() < (target.X() - 2) || Player.X() > (target.X() + 2) &&
     //           Player.Y() < (target.Y() - 2) || Player.Y() > (target.Y() + 2)) {
-    while ((Player.X() > (target.X() + steerSize) || Player.X() < (target.X() - steerSize)) ||
-      (Player.Y() > (target.Y() + steerSize) || Player.Y() < (target.Y() - steerSize))) {
-      Orion.Print('player ' + Player.X() + ' ' + Player.Y())
-      Orion.Print('to ' + target.X() + ' ' + target.Y())
-      Orion.Print('dir ' + GetDirection(target))
-      Orion.Print('todo ' + (route.length - index))
-      Orion.SailOnBoat(GetDirection(target), true)
-      Orion.Wait(2000)
-      Orion.StopSailOnBoat()
+    //STOP when within 55 tiles of chest (fishable at 60)
+    if(Orion.GetDistance(route[(route.length-1)].X(),route[(route.length-1)].Y()) > 55)
+    {
+	    while ((Player.X() > (target.X() + steerSize) || Player.X() < (target.X() - steerSize)) ||
+	      (Player.Y() > (target.Y() + steerSize) || Player.Y() < (target.Y() - steerSize))) {
+	      Orion.Print('player ' + Player.X() + ' ' + Player.Y())
+	      Orion.Print('to ' + target.X() + ' ' + target.Y())
+	      Orion.Print('dir ' + GetDirection(target))
+	      Orion.Print('todo ' + (route.length - index))
+	      Orion.Print('Distance:' + Orion.GetDistance(route[(route.length-1)].X(),route[(route.length-1)].Y()))
+	      Orion.SailOnBoat(GetDirection(target), true)
+	      Orion.Wait(2000)
+	      Orion.StopSailOnBoat()
+	    }
     }
   }
   Orion.StopSailOnBoat()

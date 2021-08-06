@@ -3,6 +3,7 @@ var seakey = '0x4003D723'
 var seaBox = '0x40055745'
 var seaBin = '0x400F63CF'
 
+
 function GetSoSFromGroup() {
     Orion.Print('Make sure you have all SOS in sos.txt')
     Orion.Print('Enter Groups')
@@ -20,6 +21,14 @@ function GetSoSFromGroup() {
     if (file != null) {
         var soses = JSON.parse(file.ReadLine());
     }
+    else{
+        var SOSs = Orion.FindTypeEx('0x14EE', any, box.Serial())
+    SOSs.forEach(function (sos) {
+        var pos = GetSOSLocation(sos)
+        var zone = GetZone(pos.X(), pos.Y())
+        soses.push([sos.Serial(), pos.X(), pos.Y(), zone])
+    })
+    }
     file.Close();
     soses.forEach(function (sos) {
         Orion.Print(groups[0].length)
@@ -29,8 +38,8 @@ function GetSoSFromGroup() {
             Orion.Wait(850)
         }
     })
-
 }
+
 function ReadAllSOSToFile() {
     var soses = []
     var SOSs = Orion.FindTypeEx('0x14EE', any, backpack)
@@ -73,26 +82,28 @@ function GoToSOS() {
     SteerTo(pos.X(), pos.Y())
 }
 
+var sosOrder = []
 function GoToClosestSOS() {
-    var soses = []
-    Orion.Print(soses.length)
-
-    var SOSs = Orion.FindTypeEx('0x14EE', any, backpack)
-    SOSs.forEach(function (sos) {
-        var pos = GetSOSLocation(sos)
-        soses.push([sos.Serial(), pos.X(), pos.Y()])
-    })
-    soses = soses.sort(function (z1, z2) {
+	if(sosOrder.length == 0)
+	{
+	    var SOSs = Orion.FindTypeEx('0x14EE', any, backpack)
+	    SOSs.forEach(function (sos) {
+	        var pos = GetSOSLocation(sos)
+	        sosOrder.push([sos.Serial(), pos.X(), pos.Y()])
+	    })
+    }
+    sosOrder = sosOrder.sort(function (z1, z2) {
         return Orion.GetDistance(z1[1], z1[2]) - Orion.GetDistance(z2[1], z2[2])
     }
     )
-    var sosId = soses.shift()[0];
+    var sosId = sosOrder.shift()[0];
     var pos = GetSOSLocation(Orion.FindObject(sosId))
     Orion.Wait(1000)
     SteerTo(pos.X(), pos.Y())
     return sosId
 }
 
+///#include Scripts/soslocations.jpg
 function DoSOSInOrder() {
     while (Orion.FindTypeEx('0x14EE', any, backpack).length != 0) {
         var sosId = GoToClosestSOS()

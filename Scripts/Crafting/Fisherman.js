@@ -350,7 +350,7 @@ function EquipRod() {
 
 }
 function WaterTest() {
-    GetWater(2);
+    GetWater(20);
 }
 function GetWater(_range) {
     Orion.Wait(300)
