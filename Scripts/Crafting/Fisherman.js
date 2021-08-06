@@ -3,24 +3,6 @@ var seakey = '0x4003D723'
 var seaBox = '0x40055745'
 var seaBin = '0x400F63CF'
 
-
-function GetSOSLocation() {
-var sos = SelectTarget()
-Orion.UseObject(sos.Serial())
-Orion.Wait(500)
-    var gump0 = Orion.GetGump('last');
-    if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x550A461B')) {
-        var com = gump0.CommandList()[2]
-        //Orion.Print(com)
-        Orion.Print(com.match(/.*@(.*)@.*/i)[1])
-        var pos = Orion.SextantToXY(com.match(/.*@(.*)@.*/i)[1]);
-        Orion.Print('X:' + pos.X() + ' Y: ' + pos.Y())
-        gump0.Select(Orion.CreateGumpHook(0));
-        Orion.Wait(1000);
-        SteerTo(pos.X(), pos.Y())
-    }
-}
-
 function SeaFish() {
     var startTime = Orion.Now()
     while (true) {
@@ -49,7 +31,7 @@ function SeaFish() {
                         }
                         Orion.Say('stop')
                     }
-                     Orion.Wait(200)
+                    Orion.Wait(200)
 
                     if (corpse.X() < Player.X()) {
                         Orion.Say('left')
@@ -65,7 +47,7 @@ function SeaFish() {
                         }
                         Orion.Say('stop')
                     }
-					WalkTo(corpse);
+                    WalkTo(corpse);
                     Orion.UseObject(corpse.Serial())
                     Orion.Ignore(corpse.Serial())
                     Orion.Wait(2000)
@@ -390,9 +372,9 @@ function GetWater(_range) {
                 || tile.Graphic() == '0x179B'
                 || tile.Graphic() == '0x179C'
         })
-    //    .filter(function (tile) {
-   //         return (IsReachable(tile, 5)) && (tile.X() - 1) % 8 != 0 && (tile.Y() - 1) % 8 != 0
-   //     })
+        //    .filter(function (tile) {
+        //         return (IsReachable(tile, 5)) && (tile.X() - 1) % 8 != 0 && (tile.Y() - 1) % 8 != 0
+        //     })
 
         .filter(function (tile) {
             return fishedWater.map(
@@ -493,4 +475,6 @@ function GetWater2(range) {
 //#include Scripts/helpers/ItemManager.js
 //#include Scripts/Actions/Automated/DriveBoat.js
 //#include Scripts/helpers/Map.js
+//#include Scripts/helpers/SOS.js
 //#include Scripts/helpers/PathFinding.js
+//#include Scripts/WIP/TestScripts.js

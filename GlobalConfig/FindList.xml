@@ -139,7 +139,7 @@
         <item graphic="0x3196" color="0x0000" comment="White Pearl" count="0"/>
         <item graphic="0xA30C" color="0x0000" comment="A Message In A Bottle" count="0"/>
         <item graphic="0x14EC" color="0x0000" comment="A Tattered Treasure Map Leading To A Mage's Stash" count="0"/>
-        <item graphic="0x0DCA" color="0x08A0" comment="A Special Fishing Net" count="0"/>
+        <item graphic="0x0DCA" color="any" comment="A Special Fishing Net" count="0"/>
         <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0"/>
         <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0"/>
     </findlist>

@@ -6,7 +6,7 @@ function DanDar() {
   while (true) {
     Orion.Wait(1000)
     var npc = Orion.FindTypeEx(any, any, ground,
-      'mobile', 15, 'yellow|criminal').filter(function (mob) {
+      'mobile', 20, any).filter(function (mob) {
         return mob.Name() === 'Dan'
       })
     if (npc.length > 0) {
@@ -19,7 +19,7 @@ function DanDar() {
 }
 
 function DrawLOS() {
-Orion.SetLOSOptions('ignoredestpos');
+  Orion.SetLOSOptions('ignoredestpos');
   while (true) {
     Orion.ClearFakeMapObjects();
 
@@ -69,24 +69,21 @@ function getFlags() {
   TextWindow.Print(a.trim());
 }
 
-function DropAndLock()
-{
-var t = SelectTarget()
-Orion.DragItem(t.Serial());
-Orion.Wait(200)
-Orion.DropDraggedItemRelative(1,0)
-Orion.Wait(200)
-Orion.Say("I wish to secure this")
-if(Orion.WaitForTarget())
-{
-Orion.TargetObject(t.Serial())
-}
+function DropAndLock() {
+  var t = SelectTarget()
+  Orion.DragItem(t.Serial());
+  Orion.Wait(200)
+  Orion.DropDraggedItemRelative(1, 0)
+  Orion.Wait(200)
+  Orion.Say("I wish to secure this")
+  if (Orion.WaitForTarget()) {
+    Orion.TargetObject(t.Serial())
+  }
 }
 
-function PrintArrow()
-{while(true)
-{
-Orion.Wait(2000)
-Orion.Print(Orion.QuestArrowPosition().X() + "  " + Orion.QuestArrowPosition().Y())
-}
+function PrintArrow() {
+  while (true) {
+    Orion.Wait(2000)
+    Orion.Print(Orion.QuestArrowPosition().X() + "  " + Orion.QuestArrowPosition().Y())
+  }
 }

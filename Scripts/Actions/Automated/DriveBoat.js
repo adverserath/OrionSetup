@@ -4,6 +4,14 @@
 
 var scale = 16
 var gridscale = 0;
+var vessel = '0x40030BED'
+function DriveBoatTo() {
+  Orion.Print('Enter X')
+  var x = Orion.InputText();
+  Orion.Print('Enter Y')
+  var y = Orion.InputText();
+  SteerTo(x, y)
+}
 function SteerTo(x, y) {
   var path = GetAStar(x, y)
   SteerPath(path)
@@ -30,6 +38,8 @@ function GetAStar(xLocation, yLocation) {
 
 var steerSize = 20;
 function SteerPath(route) {
+  var tiller = Orion.FindTypeEx('0x3E50', any, ground, 'near').shift()
+  Orion.UseObject(vessel)
   for (var index = 0; index < route.length; index++) {
     var target = route[index];
     Orion.Print('next')
@@ -47,6 +57,7 @@ function SteerPath(route) {
     }
   }
   Orion.StopSailOnBoat()
+  Orion.UseObject(vessel)
 }
 
 function GetDirection(item) {
