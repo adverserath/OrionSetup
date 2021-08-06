@@ -14,7 +14,7 @@ var astar = {
             }
         }
     },
-    search: function (grid, start, end, heuristic) {
+    search: function (grid, start, end, heuristic, diagonal) {
         astar.init(grid);
         heuristic = heuristic || astar.manhattan;
 
@@ -38,6 +38,25 @@ var astar = {
                     ret.push(curr);
                     curr = curr.parent;
                 }
+
+                // if(diagonal)
+                // {
+                //     for (var i = 0; index < ret.length; index++) {
+                //         //Not going to be out of bounds
+                //         if(i>(ret.length-2))
+                //         {
+                //             //has a diagonal
+                //             if(Math.abs(ret[i].x - ret[i+2].x) == 1 && Math.abs(ret[i].y - ret[i+2].y) == 1)
+                //             {
+                //                 //is surrounded by water
+                //                 if(ret[i].)
+                //                 ret.splice(i+1, 1);
+                //             }
+                //             //ret.splice(i, 1);
+                //         }  
+                //     }
+                // }
+
                 return ret.reverse();
             }
 
@@ -111,6 +130,20 @@ var astar = {
         if (grid[x][y + 1] && grid[x][y + 1]) {
             ret.push(grid[x][y + 1]);
         }
+        //diag
+        if (grid[x - 1] && grid[x - 1][y - 1]) {
+            ret.push(grid[x - 1][y - 1]);
+        }
+        if (grid[x + 1] && grid[x + 1][y - 1]) {
+            ret.push(grid[x + 1][y - 1]);
+        }
+        if (grid[x - 1] && grid[x - 1][y + 1]) {
+            ret.push(grid[x - 1][y + 1]);
+        }
+        if (grid[x + 1] && grid[x + 1][y + 1]) {
+            ret.push(grid[x + 1][y + 1]);
+        }
+
         return ret;
     }
 };

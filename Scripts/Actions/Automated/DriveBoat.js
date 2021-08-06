@@ -46,7 +46,7 @@ function SteerPath(route) {
     //        while (Player.X() < (target.X() - 2) || Player.X() > (target.X() + 2) &&
     //           Player.Y() < (target.Y() - 2) || Player.Y() > (target.Y() + 2)) {
     //STOP when within 55 tiles of chest (fishable at 60)
-    if(Orion.GetDistance(route[(route.length-1)].X(),route[(route.length-1)].Y()) > 55)
+    if(Orion.GetDistance(route[(route.length-1)].X(),route[(route.length-1)].Y()) > 40)
     {
 	    while ((Player.X() > (target.X() + steerSize) || Player.X() < (target.X() - steerSize)) ||
 	      (Player.Y() > (target.Y() + steerSize) || Player.Y() < (target.Y() - steerSize))) {
