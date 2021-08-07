@@ -98,6 +98,10 @@ function GoToClosestSOS() {
     )
     var sosId = sosOrder.shift()[0];
     var pos = GetSOSLocation(Orion.FindObject(sosId))
+    if(pos===null)
+    {
+    return null
+    }
     Orion.Wait(1000)
     SteerTo(pos.X(), pos.Y())
     return sosId
@@ -107,6 +111,10 @@ function GoToClosestSOS() {
 function DoSOSInOrder() {
     while (Orion.FindTypeEx('0x14EE', any, backpack).length != 0) {
         var sosId = GoToClosestSOS()
+        if(sosId===null)
+        {
+        	continue;
+        }
         Orion.Wait(1000)
         while (Orion.ObjectExists(sosId)) {
             //Fish
