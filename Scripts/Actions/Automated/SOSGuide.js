@@ -90,6 +90,7 @@ function GoToSOS() {
 var sosOrder = []
 function GoToClosestSOS(distance) {
     if (sosOrder.length == 0) {
+    	Orion.Resend()
         var SOSs = Orion.FindTypeEx('0x14EE', any, backpack)
         SOSs.forEach(function (sos) {
             var pos = GetSOSLocation(sos)
@@ -101,7 +102,10 @@ function GoToClosestSOS(distance) {
     }
     )
     var sosId = sosOrder.shift()[0];
-    var pos = GetSOSLocation(Orion.FindObject(sosId))
+    var sosObj = Orion.FindObject(sosId)
+    if(sosObj == null)
+    	return null
+    var pos = GetSOSLocation(sosObj)
     if (pos === null) {
         return null
     }
@@ -163,6 +167,7 @@ function ChestLootManager(_) {
 
     }
     WalkTo(seaBin)
+    Orion.ActivateClient();
     Orion.PauseScript()
 }
 

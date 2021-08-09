@@ -79,6 +79,37 @@ function SteerPath(route, distance) {
   }
 }
 
+
+function SteerToObject(target, distance) {
+  if (distance == null) {
+    distance = 2
+  }
+
+  var startTime = Orion.Now()
+  while (Orion.InJournal('You are now piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
+    Orion.UseObject(vessel)
+    Orion.Wait(1000)
+  }
+
+  if (Orion.GetDistance(target.X(), target.Y()) > distance) {
+    while ((Player.X() > (target.X()) || Player.X() < (target.X())) ||
+      (Player.Y() > (target.Y()) || Player.Y() < (target.Y()))) {
+
+      Orion.SailOnBoat(GetDirection(target), true)
+      Orion.Wait(200)
+      Orion.StopSailOnBoat()
+    }
+  }
+
+  Orion.Wait(1000);
+  Orion.StopSailOnBoat()
+  startTime = Orion.Now()
+  while (Orion.InJournal('You are no longer piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
+    Orion.UseObject(vessel)
+    Orion.Wait(1000)
+  }
+}
+
 function GetDirection(item) {
   var x = item.X()
   var y = item.Y()
@@ -180,13 +211,13 @@ function SailToCorpse(checkOnly) {
   var startX = Player.X()
   var startY = Player.Y()
   corpses.forEach(function (corpse) {
-    SteerTo(corpse.X(), corpse.Y(), 1)
+    SteerToObject(corpse, 1)
     WalkTo(corpse)
     Orion.Wait(2000)
     Orion.UseObject(corpse.Serial())
     Orion.Ignore(corpse.Serial())
     Orion.Wait(2000)
-    SteerTo(startX, startY, 1)
+    SteerToObject(coordinate(startX, startY), 1)
 
   });
 }
