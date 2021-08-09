@@ -2,7 +2,7 @@ var seabook = '0x40019854'
 var seakey = '0x4003D723'
 var seaBox = '0x40055745'
 var seaBin = '0x400F63CF'
-var goldChestId  = '0x40026602' 
+var goldChestId = '0x40026602'
 var essenceBox = '0x400C5E3B'
 var shipwreckLoot = '0x40005936'
 var netLoot = '0x400DEE70'
@@ -26,13 +26,13 @@ function GetSoSFromGroup() {
     if (file != null) {
         var soses = JSON.parse(file.ReadLine());
     }
-    else{
+    else {
         var SOSs = Orion.FindTypeEx('0x14EE', any, box.Serial())
-    SOSs.forEach(function (sos) {
-        var pos = GetSOSLocation(sos)
-        var zone = GetZone(pos.X(), pos.Y())
-        soses.push([sos.Serial(), pos.X(), pos.Y(), zone])
-    })
+        SOSs.forEach(function (sos) {
+            var pos = GetSOSLocation(sos)
+            var zone = GetZone(pos.X(), pos.Y())
+            soses.push([sos.Serial(), pos.X(), pos.Y(), zone])
+        })
     }
     file.Close();
     soses.forEach(function (sos) {
@@ -89,13 +89,12 @@ function GoToSOS() {
 
 var sosOrder = []
 function GoToClosestSOS(distance) {
-	if(sosOrder.length == 0)
-	{
-	    var SOSs = Orion.FindTypeEx('0x14EE', any, backpack)
-	    SOSs.forEach(function (sos) {
-	        var pos = GetSOSLocation(sos)
-	        sosOrder.push([sos.Serial(), pos.X(), pos.Y()])
-	    })
+    if (sosOrder.length == 0) {
+        var SOSs = Orion.FindTypeEx('0x14EE', any, backpack)
+        SOSs.forEach(function (sos) {
+            var pos = GetSOSLocation(sos)
+            sosOrder.push([sos.Serial(), pos.X(), pos.Y()])
+        })
     }
     sosOrder = sosOrder.sort(function (z1, z2) {
         return Orion.GetDistance(z1[1], z1[2]) - Orion.GetDistance(z2[1], z2[2])
@@ -103,12 +102,11 @@ function GoToClosestSOS(distance) {
     )
     var sosId = sosOrder.shift()[0];
     var pos = GetSOSLocation(Orion.FindObject(sosId))
-    if(pos===null)
-    {
-    return null
+    if (pos === null) {
+        return null
     }
     Orion.Wait(1000)
-    SteerTo(pos.X(), pos.Y(),distance)
+    SteerTo(pos.X(), pos.Y(), distance)
     return sosId
 }
 
@@ -116,80 +114,83 @@ function GoToClosestSOS(distance) {
 function DoSOSInOrder() {
     while (Orion.FindTypeEx('0x14EE', any, backpack).length != 0) {
         var sosId = GoToClosestSOS(50)
-        if(sosId===null)
-        {
-        	continue;
+        if (sosId === null) {
+            continue;
         }
         Orion.Wait(1000)
         Orion.Step(7)
         while (Orion.ObjectExists(sosId)) {
             //Fish
             Orion.UseObject('0x40026413');
-            if (Orion.WaitForTarget(1000))
-            {
-            	SailToCorpse(true)
+            if (Orion.WaitForTarget(1000)) {
+                SailToCorpse(true)
+
                 Orion.TargetTileRelative('any', -3, -3, 65533);
-             }
+            }
             Orion.Wait(10000)
         }
         Orion.Wait(1000)
         RecallRune(seabook);
-       		ChestLootManager()
+        ChestLootManager()
         RecallRune(seakey);
         Orion.Wait(1000)
     }
 }
 
-function ChestLootManager(_)
-{
-        //Walk to goldchest
-        Orion.Print("Move Gold")
-        WalkTo(goldChestId)
-        MoveItemsFromPlayer(goldChestId, '0x0EED')
-        MoveItemText("Essence|Crafting Resource",essenceBox)
-        MoveItemText("Fishing Net",netLoot)
-        MoveItemText("Salted|Live Rock|Aquarium|Polkadot|Wedding|Kelp|Driftwood|Valkyrie|Grape|Large Fish",rareBox)
+function ChestLootManager(_) {
+    //Walk to goldchest
+    Orion.Print("Move Gold")
+    WalkTo(goldChestId)
+    MoveItemsFromPlayer(goldChestId, '0x0EED')
+    MoveItemText("Essence|Crafting Resource", essenceBox)
+    MoveItemText("Fishing Net", netLoot)
+    MoveItemText("Salted|Live Rock|Aquarium|Polkadot|Wedding|Kelp|Driftwood|Valkyrie|Grape|Large Fish", rareBox, true)
 
-	    MoveItemText("Fishing Net",netLoot)
-        MoveScrolls()
-         
-        if(Orion.FindTypeEx(any,any,backpack).filter(function (item){return Orion.Contains(item.Properties(),"The Shipwreck")}).length>0)
-        {
+    MoveItemText("Fishing Net", netLoot)
+    MoveScrolls()
+
+    MoveItemText("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", scrollBox)
+    var chests = Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Name(), "Chest") })
+    chests.forEach(function (chest) {
+        Orion.UseObject(chest.Serial())
+        Orion.Wait(1000)
+    })
+    if (Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Properties(), "The Shipwreck") }).length > 0) {
+        BotPush('ancient!!')
         Orion.Print('ancient!!')
-        	Orion.PauseScript()
-        	        MoveItemText("The Shipwreck",shipwreckLoot)
+        Orion.PauseScript()
+        MoveItemText("The Shipwreck", shipwreckLoot)
 
+    }
+    WalkTo(seaBin)
+    Orion.PauseScript()
+}
+
+function MoveItemText(text, container, alert) {
+    Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Properties(), text) }).forEach(function (loot) {
+        Orion.Print(text)
+        if (alert) {
+            BotPush('Looted' + loot.Name())
         }
-        MoveItemText("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron",scrollBox)
-
-         Orion.PauseScript()
-
-        //Walk to trash
-        //Move chest
-        //Move shipwreck items
+        MoveItemsFromPlayer(container, loot.Graphic())
+    })
 }
 
-function MoveItemText(text,container)
-{
-        Orion.FindTypeEx(any,any,backpack).filter(function (item){return Orion.Contains(item.Properties(),text)}).forEach(function(loot){
-        	Orion.Print(text)
-            MoveItemsFromPlayer(container, loot.Graphic())
-        })
-}
-function MoveScrolls(_)
-{
+function MoveScrolls(_) {
     var scrollIndex = 0;
     var firstScroll = parseInt('0x1F2D');
     for (var index = 0; index < 65; index++) {
         var scrollId = '0x' + (firstScroll + index).toString(16).toUpperCase();
         Orion.Print(scrollId)
-        Orion.FindTypeEx(scrollId,any,backpack)
-        .forEach(function(loot){
-            Orion.Print("Move " + loot.Name())
-            MoveItemsFromPlayer(scrollBox, loot.Graphic())
-        })
+        Orion.FindTypeEx(scrollId, any, backpack)
+            .forEach(function (loot) {
+                Orion.Print("Move " + loot.Name())
+                MoveItemsFromPlayer(scrollBox, loot.Graphic())
+            })
     }
 }
+
+//#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Target.js
 //#include Scripts/helpers/Magic.js
 //#include Scripts/helpers/Debug.js
