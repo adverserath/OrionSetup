@@ -1,3 +1,5 @@
+//#include Scripts/helpers/Target.js
+
 function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recursive) {
     DebugText('Sorting');
     DebugText('From:' + fromContainer.Serial());
@@ -14,9 +16,12 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recurs
             recursive = true
         }
     }
-    Orion.Print('Walking');
     if (fromContainer.Serial() != backpack) {
-        Orion.WalkTo(fromContainer.X(), fromContainer.Y(), fromContainer.Z(), 2, 1, 1, 1);
+        WalkTo(fromContainer,1)
+        DebugText('Here');
+    }
+    if (toContainer.Serial() != backpack) {
+        WalkTo(toContainer,1)
         DebugText('Here');
     }
     for (var attempt = 0; attempt < 2; attempt++) {
@@ -25,6 +30,7 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recurs
 
         items.forEach(function (item) {
             DebugText('Moving:' + item.Name());
+            Orion.Print('Moving:' + item.Name());
             Orion.MoveItem(item.Serial(), 0, toContainer.Serial(), amount);
             Orion.Wait(900);
         });

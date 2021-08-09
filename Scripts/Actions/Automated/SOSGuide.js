@@ -173,7 +173,6 @@ function ChestLootManager(_) {
 
 function MoveItemText(text, container, alert) {
     Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Properties(), text) }).forEach(function (loot) {
-        Orion.Print(text)
         if (alert) {
             BotPush('Looted' + loot.Name())
         }
@@ -189,7 +188,6 @@ function MoveScrolls(_) {
         Orion.Print(scrollId)
         Orion.FindTypeEx(scrollId, any, backpack)
             .forEach(function (loot) {
-                Orion.Print("Move " + loot.Name())
                 MoveItemsFromPlayer(scrollBox, loot.Graphic())
             })
     }
