@@ -2,10 +2,12 @@ var seabook = '0x40019854'
 var seakey = '0x4003D723'
 var seaBox = '0x40055745'
 var seaBin = '0x400F63CF'
+var mapMibBox = '0x4006BE64'
+var netLoot = '0x400DEE70'
 
 function SeaFish() {
     var startTime = Orion.Now()
-    while (true) {
+    while (!Player.Dead()) {
         if (Orion.FindTypeEx(any, any, ground,
             'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').length == 0) {
             if (Orion.InJournal('look like a fish', '', '0', '-1', (startTime), Orion.Now()) != null) {
@@ -71,11 +73,14 @@ function SeaFish() {
                 Orion.ActivateClient();
                 Orion.PauseScript();
             }
-            if (Player.Weight() > (Player.MaxWeight() - 100)) {
+            if (Player.Weight() > (Player.MaxWeight() - 100) || Player.WarMode()) {
                 RecallRune(seabook);
                 Orion.Wait(1000);
                 WalkTo(seaBox)
                 Orion.Wait(1000);
+			    MoveItemText("Message In|Treasure Map", mapMibBox)
+  				MoveItemText("Fishing Net", netLoot)
+
                 Orion.FindListEx('Fishies').forEach(function (fish) {
                     MoveItemsFromPlayer(seaBox, fish.Graphic(), any);
                 })
@@ -85,6 +90,8 @@ function SeaFish() {
                     //Orion.DropHere(notFish.Serial());
                     MoveItemsFromPlayer(seaBin, notFish.Graphic(), any);
                 })
+                if(Player.WarMode())
+                	Orion.PauseScript();
                 RecallRune(seakey);
                 Orion.Wait(2000);
             }
@@ -102,6 +109,7 @@ function SeaFish() {
             Orion.Wait(5000);
         }
     }
+    BotPush('Fisher is dead')
 }
 
 
@@ -478,3 +486,4 @@ function GetWater2(range) {
 //#include Scripts/helpers/SOS.js
 //#include Scripts/helpers/PathFinding.js
 //#include Scripts/WIP/TestScripts.js
+//#include Scripts/helpers/ItemManager.js

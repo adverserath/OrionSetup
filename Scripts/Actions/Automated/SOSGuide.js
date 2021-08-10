@@ -1,13 +1,14 @@
 var seabook = '0x40019854'
 var seakey = '0x4003D723'
 var seaBox = '0x40055745'
-var seaBin = '0x400F63CF'
+var seaBin = '0x400C1129'
 var goldChestId = '0x40026602'
 var essenceBox = '0x400C5E3B'
 var shipwreckLoot = '0x40005936'
 var netLoot = '0x400DEE70'
 var scrollBox = '0x400F48A7'
 var rareBox = '0x4014460B'
+var mapMibBox = '0x4006BE64'
 
 function GetSoSFromGroup() {
     Orion.Print('Make sure you have all SOS in sos.txt')
@@ -53,18 +54,27 @@ function ReadAllSOSToFile() {
         var zone = GetZone(pos.X(), pos.Y())
         soses.push([sos.Serial(), pos.X(), pos.Y(), zone])
     })
-    soses = sosList.sort(function (z1, z2) { return z1[2] - z2[2] })
-    soses = sosList.sort(function (z1, z2) { return z1[3] - z2[3] })
+    soses = soses.sort(function (z1, z2) { return z1[2] - z2[2] })
+    soses = soses.sort(function (z1, z2) { return z1[3] - z2[3] })
     var newFile = Orion.NewFile();
-    newFile.Open('sos.txt');
-    newFile.WriteLine(JSON.stringify(soses))
+    newFile.Open('OA\\Scripts\\helpers\\SOSList.js');
+    newFile.WriteLine('var sosList = ' + JSON.stringify(soses))
+    TextWindow.Print('var sosList = ' + JSON.stringify(soses))
     newFile.Close();
 }
 
 function GetSOSLocation(sos) {
-    var pos = null
     if (sos == null)
         sos = SelectTarget()
+
+    Orion.Print('Checking')
+    var pos = SoSInSoSList(sos.Serial())
+    if (pos !== null) {
+        return pos;
+    }
+    Orion.Print('Failed')
+    Orion.Wait(2000)
+
     Orion.UseObject(sos.Serial())
     Orion.Wait(500)
     var gump0 = Orion.GetGump('last');
@@ -90,7 +100,7 @@ function GoToSOS() {
 var sosOrder = []
 function GoToClosestSOS(distance) {
     if (sosOrder.length == 0) {
-    	Orion.Resend()
+        Orion.Resend()
         var SOSs = Orion.FindTypeEx('0x14EE', any, backpack)
         SOSs.forEach(function (sos) {
             var pos = GetSOSLocation(sos)
@@ -103,8 +113,8 @@ function GoToClosestSOS(distance) {
     )
     var sosId = sosOrder.shift()[0];
     var sosObj = Orion.FindObject(sosId)
-    if(sosObj == null)
-    	return null
+    if (sosObj == null)
+        return null
     var pos = GetSOSLocation(sosObj)
     if (pos === null) {
         return null
@@ -116,6 +126,7 @@ function GoToClosestSOS(distance) {
 
 ///#include Scripts/soslocations.jpg
 function DoSOSInOrder() {
+    Orion.Print("ALL SOS must be parsed into \OA\Scripts\helpers\SOSList.js, using ReadAllSOSToFile")
     while (Orion.FindTypeEx('0x14EE', any, backpack).length != 0) {
         var sosId = GoToClosestSOS(50)
         if (sosId === null) {
@@ -123,7 +134,8 @@ function DoSOSInOrder() {
         }
         Orion.Wait(1000)
         Orion.Step(7)
-        while (Orion.ObjectExists(sosId)) {
+        var startWeight = Player.Weight()
+        while (Orion.ObjectExists(sosId) && Player.Weight() < (startWeight + 150)) {
             //Fish
             Orion.UseObject('0x40026413');
             if (Orion.WaitForTarget(1000)) {
@@ -141,14 +153,15 @@ function DoSOSInOrder() {
     }
 }
 
-function ChestLootManager(_) {
+function ChestLootManager() {
     //Walk to goldchest
     Orion.Print("Move Gold")
     WalkTo(goldChestId)
     MoveItemsFromPlayer(goldChestId, '0x0EED')
     MoveItemText("Essence|Crafting Resource", essenceBox)
+    MoveItemText("Message In|Treasure Map", mapMibBox)
     MoveItemText("Fishing Net", netLoot)
-    MoveItemText("Salted|Live Rock|Aquarium|Polkadot|Wedding|Kelp|Driftwood|Valkyrie|Grape|Large Fish", rareBox, true)
+    MoveItemText("Oars|Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Wedding|Kelp|Driftwood|Valkyrie|Grape|Large Fish", rareBox, true)
 
     MoveItemText("Fishing Net", netLoot)
     MoveScrolls()
@@ -162,37 +175,22 @@ function ChestLootManager(_) {
     if (Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Properties(), "The Shipwreck") }).length > 0) {
         BotPush('ancient!!')
         Orion.Print('ancient!!')
-        Orion.PauseScript()
+        //  Orion.PauseScript()
         MoveItemText("The Shipwreck", shipwreckLoot)
 
     }
     WalkTo(seaBin)
-    Orion.ActivateClient();
-    Orion.PauseScript()
+    MoveItemText("Shipwreck", seaBin)
+
+    //Orion.ActivateClient();
+    //   BotPush('Paused')
+    if (Player.WarMode())
+        Orion.PauseScript()
 }
 
-function MoveItemText(text, container, alert) {
-    Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Properties(), text) }).forEach(function (loot) {
-        if (alert) {
-            BotPush('Looted' + loot.Name())
-        }
-        MoveItemsFromPlayer(container, loot.Graphic())
-    })
+function Resume() {
+    Orion.ResumeScript('all');
 }
-
-function MoveScrolls(_) {
-    var scrollIndex = 0;
-    var firstScroll = parseInt('0x1F2D');
-    for (var index = 0; index < 65; index++) {
-        var scrollId = '0x' + (firstScroll + index).toString(16).toUpperCase();
-        Orion.Print(scrollId)
-        Orion.FindTypeEx(scrollId, any, backpack)
-            .forEach(function (loot) {
-                MoveItemsFromPlayer(scrollBox, loot.Graphic())
-            })
-    }
-}
-
 //#include Scripts/helpers/Notifier.js
 //#include Scripts/helpers/Target.js
 //#include Scripts/helpers/Magic.js
@@ -203,3 +201,4 @@ function MoveScrolls(_) {
 //#include Scripts/helpers/SOS.js
 //#include Scripts/helpers/PathFinding.js
 //#include Scripts/WIP/TestScripts.js
+//#include Scripts/helpers/SOSList.js

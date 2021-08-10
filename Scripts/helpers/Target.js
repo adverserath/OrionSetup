@@ -81,6 +81,7 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
 
 function WalkTo(object, distance, timeMS, walking) {
   if (typeof object === "string") {
+    Orion.Print('finding ' + object)
     object = Orion.FindObject(object)
   }
 
@@ -234,12 +235,13 @@ function StayAway(targetId, distance) {
   }
 }
 
-function coordinate(xLoc, yLoc, zLoc) {
+function coordinate(xLoc, yLoc, zLoc, _name) {
   return {
     x: xLoc,
     y: yLoc,
     z: zLoc,
     visited: false,
+    locName: _name,
     X: function () {
       return this.x;
     },
@@ -255,8 +257,23 @@ function coordinate(xLoc, yLoc, zLoc) {
       }
       return this.visited;
     },
-    Name: function (val) {
-      return 'coordinate';
-    }
+    Name: function () {
+      if (this.locName == null)
+        return 'coordinate';
+      else
+        return this.locName;
+    },
+    DistanceTo: function (tx, ty) {
+        var dx = Math.abs(tx - this.X());
+        var dy = Math.abs(ty - this.Y());
+        var min = Math.min(dx, dy);
+        var max = Math.max(dx, dy);
+    
+        var diagonalSteps = min;
+        var straightSteps = max - min;
+        var ret = Math.sqrt(2) * diagonalSteps + straightSteps
+        return ret;
+    },
+    
   }
 }

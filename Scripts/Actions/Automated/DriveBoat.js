@@ -59,13 +59,14 @@ function SteerPath(route, distance) {
     if (Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()) > distance) {
       while ((Player.X() > (target.X() + steerSize) || Player.X() < (target.X() - steerSize)) ||
         (Player.Y() > (target.Y() + steerSize) || Player.Y() < (target.Y() - steerSize))) {
-        Orion.Print('player ' + Player.X() + ' ' + Player.Y())
-        Orion.Print('to ' + target.X() + ' ' + target.Y())
-        Orion.Print('dir ' + GetDirection(target))
-        Orion.Print('todo ' + (route.length - index))
-        Orion.Print('Distance:' + Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()))
+        TextWindow.Clear();
+        TextWindow.Print('player ' + Player.X() + ' ' + Player.Y())
+        TextWindow.Print('to ' + target.X() + ' ' + target.Y())
+        TextWindow.Print('dir ' + GetDirection(target))
+        TextWindow.Print('todo ' + (route.length - index))
+        TextWindow.Print('Distance:' + Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()))
         Orion.SailOnBoat(GetDirection(target), true)
-        Orion.Wait(1000)
+        Orion.Wait(2000)
         Orion.StopSailOnBoat()
       }
     }

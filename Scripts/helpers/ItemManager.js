@@ -17,11 +17,11 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recurs
         }
     }
     if (fromContainer.Serial() != backpack) {
-        WalkTo(fromContainer,1)
+        WalkTo(fromContainer, 1)
         DebugText('Here');
     }
     if (toContainer.Serial() != backpack) {
-        WalkTo(toContainer,1)
+        WalkTo(toContainer, 1)
         DebugText('Here');
     }
     for (var attempt = 0; attempt < 2; attempt++) {
@@ -38,9 +38,9 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recurs
 }
 
 function MoveItemsFromPlayer(toContainer, graphicIDs, color, amount) {
-    if(typeof toContainer==="string"){
-		toContainer = Orion.FindObject(toContainer)
-	}
+    if (typeof toContainer === "string") {
+        toContainer = Orion.FindObject(toContainer)
+    }
     Orion.Print('Moving objects to ' + toContainer.Serial())
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, color, amount);
     Orion.Print('Finished MoveItemsFromPlayer')
@@ -55,7 +55,11 @@ function EmptyContainerToAnother(fromContainer, toContainer) {
     WalkTo(toContainer, 2);
     Orion.FindTypeEx(any, any, fromContainer.Serial(), 3).forEach(function (items) {
         Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
-        Orion.Wait(800);
+        Orion.Wait(850);
+    });
+    Orion.FindTypeEx(any, any, fromContainer.Serial(), 3).forEach(function (items) {
+        Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
+        Orion.Wait(850);
     });
 }
 
@@ -116,4 +120,63 @@ function GetEmptyFromListInBackpack(listName) {
 
 function listHasEmptyInBackpack(listName) {
     return GetEmptyFromListInBackpack(listName).length > 0;
+}
+
+function MoveItemText(text, to, alert) {
+    if (typeof to === "string") {
+        Orion.Print('finding '+ to)
+        to = Orion.FindObject(to)
+      }
+    Orion.FindTypeEx(any, any, backpack)
+        .filter(function (item) { return Orion.Contains(item.Properties(), text) })
+        .forEach(function (loot) {
+            if (alert) {
+                BotPush('Looted' + loot.Name())
+            }
+            Orion.MoveItem(loot.Serial(), 0, to.Serial())
+            Orion.Wait(850);
+        })
+}
+
+function MoveItemTextFromTo(text, from, to) {
+    if (typeof to === "string") {
+        Orion.Print('finding '+ to)
+        to = Orion.FindObject(to)
+      }
+      if (typeof from === "string") {
+        Orion.Print('finding '+ from)
+        from = Orion.FindObject(from)
+      }
+      Orion.Print('Searching '+from.Name())
+
+    WalkTo(to);
+    WalkTo(from);
+
+    Orion.FindTypeEx(any, any, from.Serial(),'','',10,true)
+        .filter(function (item) { return Orion.Contains(item.Properties(), text) })
+        .forEach(function (loot) {
+            Orion.MoveItem(loot.Serial(), 0, to.Serial())
+            Orion.Wait(850);
+        })
+
+    Orion.FindTypeEx(any, any, from.Serial())
+    .filter(function (item) { return Orion.Contains(item.Properties(), 'Contents') })
+    .forEach(function (container) {
+        Orion.UseObject(container.Serial())
+        Orion.Wait(300)
+        MoveItemTextFromTo(text, container, to)
+    })
+    }
+
+function MoveScrolls(_) {
+    var scrollIndex = 0;
+    var firstScroll = parseInt('0x1F2D');
+    for (var index = 0; index < 65; index++) {
+        var scrollId = '0x' + (firstScroll + index).toString(16).toUpperCase();
+        Orion.Print(scrollId)
+        Orion.FindTypeEx(scrollId, any, backpack)
+            .forEach(function (loot) {
+                MoveItemsFromPlayer(scrollBox, loot.Graphic())
+            })
+    }
 }

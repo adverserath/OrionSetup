@@ -5,6 +5,6 @@
     <hotkeys passhotkeys="false" commandprefix="_"/>
     <scripts sortscripts="false" showallscripts="false" pause_scripts_on_disconnect="true" scriptfile="A:\Orion Launcher\OA/NewScript1.oajs" script_load_mode="0" script_directory="A:/Orion Launcher/OA" script_directory_file="Scripts/Crafting/Fisherman.js" wordwrap="false" helplang="EN" last_fast_call_gump_background="0x0BB8" show_scripts_list_gump="true"/>
     <shop autobuylistname="Trader" autoselllistname="Wood" useautobuylist="true" useautoselllist="false" vendor_name="Jonathan"/>
-    <macro looped="true" loop_delay="1.1" last_fast_call_gump_background="0x13EC"/>
+    <macro looped="true" loop_delay="0.1" last_fast_call_gump_background="0x13EC"/>
     <filter_sound use_allow_sound_in_area="false" allow_sound_in_area_start_x="0" allow_sound_in_area_start_y="0" allow_sound_in_area_end_x="0" allow_sound_in_area_end_y="0"/>
 </data>
