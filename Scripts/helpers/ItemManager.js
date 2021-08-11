@@ -124,9 +124,9 @@ function listHasEmptyInBackpack(listName) {
 
 function MoveItemText(text, to, alert) {
     if (typeof to === "string") {
-        Orion.Print('finding '+ to)
+        Orion.Print('finding ' + to)
         to = Orion.FindObject(to)
-      }
+    }
     Orion.FindTypeEx(any, any, backpack)
         .filter(function (item) { return Orion.Contains(item.Properties(), text) })
         .forEach(function (loot) {
@@ -140,19 +140,19 @@ function MoveItemText(text, to, alert) {
 
 function MoveItemTextFromTo(text, from, to) {
     if (typeof to === "string") {
-        Orion.Print('finding '+ to)
+        Orion.Print('finding ' + to)
         to = Orion.FindObject(to)
-      }
-      if (typeof from === "string") {
-        Orion.Print('finding '+ from)
+    }
+    if (typeof from === "string") {
+        Orion.Print('finding ' + from)
         from = Orion.FindObject(from)
-      }
-      Orion.Print('Searching '+from.Name())
+    }
+    Orion.Print('Searching ' + from.Name())
 
     WalkTo(to);
     WalkTo(from);
-
-    Orion.FindTypeEx(any, any, from.Serial(),'','',10,true)
+    Orion.Wait(500)
+    Orion.FindTypeEx(any, any, from.Serial(), '', '', 10, true)
         .filter(function (item) { return Orion.Contains(item.Properties(), text) })
         .forEach(function (loot) {
             Orion.MoveItem(loot.Serial(), 0, to.Serial())
@@ -160,13 +160,15 @@ function MoveItemTextFromTo(text, from, to) {
         })
 
     Orion.FindTypeEx(any, any, from.Serial())
-    .filter(function (item) { return Orion.Contains(item.Properties(), 'Contents') })
-    .forEach(function (container) {
-        Orion.UseObject(container.Serial())
-        Orion.Wait(300)
-        MoveItemTextFromTo(text, container, to)
-    })
-    }
+        .filter(function (item) { return Orion.Contains(item.Properties(), 'Contents') })
+        .forEach(function (container) {
+            if (!Orion.GumpExists('container', container.Serial())) {
+                Orion.UseObject(container.Serial())
+                Orion.Wait(800)
+            }
+            MoveItemTextFromTo(text, container, to)
+        })
+}
 
 function MoveScrolls(_) {
     var scrollIndex = 0;
