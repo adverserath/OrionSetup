@@ -45,6 +45,7 @@ var portalLocation = [
     //coordinate(4195,3263,5,'dungeon underworld')//locked land
 ]
 
+var rareBox = '0x4014460B'
 var goldChestId = '0x40026602'
 var essenceBox = '0x400C5E3B'
 var beetleMobileId = '0x0000C412'
@@ -65,7 +66,10 @@ function DoAllMapsInBag(inMaps) {
 var maps;
 if(inMaps==null)
 {
-    RecallRune(home)
+	if(Orion.FindTypeEx('0x468A', any, ground, 'item', 20)<=0)
+	{
+    	RecallRune(home)
+    }
     maps = Orion.FindTypeEx('0x14EC', '0x0000', backpack)
         .filter(function (map1) {
             return Orion.Contains(map1.Properties(), 'Treasure') &&
@@ -80,14 +84,21 @@ else{
 maps= inMaps
 }
     maps.forEach(function (map) {
+    Orion.Wait(1000)
+    if(Player.WarMode())
+    {
+    Orion.PauseScript()
+    }
         Orion.UseObject(map.Serial())
         Orion.Wait(1000)
+		mount(true)
 
         if (!GoToClosestPortal()) {
             RecallRune(home)
             Orion.UseObject(Player.Serial())
             Orion.Wait(1000)
             Orion.MoveItem(map.Serial(), 1, beetleMobileId)
+            Orion.Wait(1000)
             Orion.UseObject(beetleMobileId)
             Orion.Wait(1000)
         }
@@ -108,12 +119,23 @@ maps= inMaps
                 Orion.TargetTile('any', Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y(), 0);
                 Orion.Wait(26000)
                 Orion.UseSkill('Hiding')
+                Orion.Wait(1000)
+                
+                Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal')
+					.forEach(function (closemob) {
+                    Orion.Attack(closemob.Serial())
+                    Orion.Wait(50)
+                })
+                
+                 Orion.Wait(10000)
             }
-            Orion.Wait(2000)
+            Orion.Wait(1000)
             while (Orion.FindTypeEx(any, any, ground,
                 'mobile|ignoreself|ignorefriends', 10, 'criminal|gray').length > 0) {
                 Orion.Wait(1000)
             }
+
             var chestid = LootChest()
             if (chestid == null) {
                 Orion.PauseScript()
@@ -137,12 +159,12 @@ maps= inMaps
             Orion.UseObject(beetleMobileId)
             Orion.Wait(1000)
             ReturnHomeSortLoot()
-            Orion.UseObject(beetleMobileId)
-            Orion.Wait(1000)
+
             WalkTo(bin)
             if (Orion.Contains(map.Properties(), 'Completed'))
                 Orion.MoveItem(map.Serial(), 1, bin)
             Orion.Wait(500)
+            Orion.UseObject(beetleMobileId)
         }
     })
 
@@ -152,11 +174,15 @@ function WalkToQuestArrow() {
 }
 
 function LootChest() {
+	Orion.Print('Start Loot Script')
     beetleMobile = Orion.FindObject(beetleMobileId)
 
+	while(Orion.ObjAtLayer('mount')!=null)
+	{
+	        Orion.UseObject(Player.Serial());
+	        Orion.Wait(800);
+	}
     if (usingBeetle && beetleMobile == null) {
-        Orion.UseObject(Player.Serial());
-        Orion.Wait(200);
         var beetles = Orion.FindTypeEx('0x0317', any, ground, 'mobile', 4).filter(function (beetle) {
             Orion.RequestContextMenu(beetle.Serial());
             return Orion.WaitForContextMenu(500);
@@ -174,7 +200,7 @@ function LootChest() {
     if (chest != null) {
         WalkTo(chest)
         Orion.Wait(2000);
-        while (Orion.OpenContainer(chest.Serial(), 1000,'reach that|too away|appears to be trapped')) {
+        while (!Orion.OpenContainer(chest.Serial(), 1000,'reach that|too away|appears to be trapped')) {
             WalkTo(chest)
             Orion.Wait(1000)
             Orion.UseType('0x14FB|0x14FC', '0xFFFF');
@@ -189,7 +215,11 @@ function LootChest() {
         MoveItems(chest, beetleMobile, '0xA331|0x0EED') //Gold
         MoveItems(chest, beetleMobile, '0xA32F') //Reg
         MoveItems(chest, beetleMobile, '0xA333') //Gem
+		MoveItems(chest, beetleMobile, '0xE75') //Artifact bag
+        MoveItemTextFromTo('Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', chest, beetleMobile)
+
         MoveItemTextFromTo('Board|Ingot|Cut Leather|Cloth', chest, beetleMobile)
+        
         return chest.Serial()
     }
 
@@ -204,6 +234,8 @@ function ReturnHomeSortLoot() {
 
     MoveItemsFromPlayer(goldChestId, '0x0EED')
     MoveItemText("Essence|Crafting Resource", essenceBox)
+    MoveItemText("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", regBoxId)
+
     if (usingBeetle) {
         Orion.RequestContextMenu(beetleMobile.Serial());
         Orion.WaitContextMenuCliloc(beetleMobile.Serial(), 3006145);
@@ -219,10 +251,16 @@ function ReturnHomeSortLoot() {
         MoveItemTextFromTo("Essence|Crafting Resource", beetleMobile, Orion.FindObject(essenceBox))//Gems
         Orion.Print('Move Stuff')
         MoveItemTextFromTo('Board|Ingot|Leather|Cloth', beetleMobile, Orion.FindObject(goldChestId))
+		Orion.Print('Move Artifact')
+        MoveItems(beetleMobile, rareBox, '0xE75') //Artifact bag
+        Orion.Print('Move Fragment')
+        MoveItemTextFromTo('Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', beetleMobile, rareBox)
+        
+		Orion.Print('Bin Bags')
+        MoveItemTextFromTo('A Bag', beetleMobile, Orion.FindObject(bin))
+        
     }
-    MoveItemText("Essence|Crafting Resource", essenceBox)
-    MoveItemsFromPlayer(goldChestId, '0x0EED')
-    MoveItemText("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", regBoxId)
+
 
 }
 
@@ -252,6 +290,26 @@ function GoToClosestPortal() {
         return Orion.WalkTo(x, y, 0, 3, 255, 1)
 }
 
+function mount(getOn)
+{
+
+if(getOn)
+{
+	while(Orion.ObjAtLayer('mount')==null)
+	{
+	        Orion.UseObject(beetleMobileId);
+	        Orion.Wait(800);
+	}
+	}
+	else
+	{
+	while(Orion.ObjAtLayer('mount')!=null)
+	{
+	        Orion.UseObject(Player.Serial());
+	        Orion.Wait(800);
+	}
+	}
+}
 //#include Scripts/helpers/Target.js
 //#include Scripts/helpers/Magic.js
 //#include Scripts/helpers/Notifier.js

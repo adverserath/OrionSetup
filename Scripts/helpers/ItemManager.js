@@ -1,6 +1,12 @@
 //#include Scripts/helpers/Target.js
 
 function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recursive) {
+    if (typeof fromContainer === "string") {
+        fromContainer = Orion.FindObject(fromContainer)
+    }
+    if (typeof toContainer === "string") {
+        toContainer = Orion.FindObject(toContainer)
+    }
     DebugText('Sorting');
     DebugText('From:' + fromContainer.Serial());
     DebugText('To:' + toContainer.Serial());
@@ -140,31 +146,31 @@ function MoveItemText(text, to, alert) {
 
 function MoveItemTextFromTo(text, from, to) {
     if (typeof to === "string") {
-        Orion.Print('finding ' + to)
         to = Orion.FindObject(to)
     }
     if (typeof from === "string") {
-        Orion.Print('finding ' + from)
         from = Orion.FindObject(from)
     }
-    Orion.Print('Searching ' + from.Name())
-
-    WalkTo(to);
-    WalkTo(from);
-    Orion.Wait(500)
+    if(to.Distance()>2 || from.Distance()>2){
+        WalkTo(to);
+        WalkTo(from);
+    }
     Orion.FindTypeEx(any, any, from.Serial(), '', '', 10, true)
         .filter(function (item) { return Orion.Contains(item.Properties(), text) })
         .forEach(function (loot) {
+            Orion.Wait(400)
             Orion.MoveItem(loot.Serial(), 0, to.Serial())
-            Orion.Wait(850);
+            Orion.Wait(400);
         })
 
     Orion.FindTypeEx(any, any, from.Serial())
         .filter(function (item) { return Orion.Contains(item.Properties(), 'Contents') })
         .forEach(function (container) {
             if (!Orion.GumpExists('container', container.Serial())) {
+                Orion.Print('Searching ' + from.Name())
+                Orion.Wait(400)
                 Orion.UseObject(container.Serial())
-                Orion.Wait(800)
+                Orion.Wait(600)
             }
             MoveItemTextFromTo(text, container, to)
         })
