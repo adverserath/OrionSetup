@@ -152,8 +152,9 @@ function MoveItemTextFromTo(text, from, to) {
         from = Orion.FindObject(from)
     }
     if(to.Distance()>2 || from.Distance()>2){
-        WalkTo(to);
         WalkTo(from);
+        WalkTo(to);
+        Orion.Wait(500)
     }
     Orion.FindTypeEx(any, any, from.Serial(), '', '', 10, true)
         .filter(function (item) { return Orion.Contains(item.Properties(), text) })

@@ -6,6 +6,7 @@ var vowel = ['a', 'e', 'i', 'o', 'u']
 var cons = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
 var selectedTarget;
 var startingPetCount;
+var walkLocations = [];
 
 function TrainTaming() {
     if (selectedTarget == null) {
@@ -38,10 +39,30 @@ function TrainTaming() {
     var runeBag = SelectTarget();
 
     var useRunes = runeBag != null;
+    Orion.Print(useRunes)
     var runes;
+    walkLocations.push(coordinate(Player.X(), Player.Y(),Player.Z(),'start'))
     if (useRunes)
+    {
         runes = Orion.FindTypeEx('0x1F14', any, runeBag.Serial());
+	}
+	else
+	{
+	    Orion.WarMode(1);
+    Orion.Wait(500);
 
+    while (Player.WarMode() == true) {
+	Orion.Print("Select Walk Location")
+        var tile = SelectCoordinate();
+        if (tile != null) {
+            walkLocations.push(tile)
+        }
+        else {
+			Orion.WarMode(0);
+        }
+        Orion.Wait(1000);
+    }
+	}
     var startingSkill = Orion.SkillValue('Animal Taming', 'real')
     var animals = [];
     var lastDirection;
@@ -81,6 +102,10 @@ function TrainTaming() {
         })
 
         TextWindow.Print("Found:" + animals.length);
+        if(animals.length==0)
+        {
+        WalkTo(walkLocations[Orion.Random(walkLocations.length-1)])
+        }
         while (Player.WarMode() == true) {
             Orion.Print("Select More type of animal then leave war mode")
             var newTame = SelectTarget();

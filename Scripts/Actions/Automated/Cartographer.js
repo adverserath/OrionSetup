@@ -54,7 +54,9 @@ var bin = '0x400F63CF'
 var beetleMobile
 var usingBeetle = true
 var home = '0x401111EF'
-
+var TranscendenceBook = '0x4013C7B3'
+var bankGold = true
+var bankRune = '0x400CFB2E'
 function DoSpecificMap()
 {
 var maps = []
@@ -66,15 +68,17 @@ function DoAllMapsInBag(inMaps) {
 var maps;
 if(inMaps==null)
 {
-	if(Orion.FindTypeEx('0x468A', any, ground, 'item', 20)<=0)
-	{
-    	RecallRune(home)
-    }
     maps = Orion.FindTypeEx('0x14EC', '0x0000', backpack)
         .filter(function (map1) {
             return Orion.Contains(map1.Properties(), 'Treasure') &&
                 Orion.Contains(map1.Properties(), 'Trammel') &&
                 Orion.Contains(map1.Properties(), 'Stash')
+        })
+	maps.filter(function (map1) {
+            return Orion.Contains(map1.Properties(), 'Blessed')
+        }).forEach(function (m2){
+        Orion.UseObject(m2.Serial())
+        Orion.Wait(1200)
         })
     Orion.Print('maps:' + maps.length)
     maps = maps.filter(function (map2) { return !Orion.Contains(map2.Properties(), 'Completed') })
@@ -85,10 +89,7 @@ maps= inMaps
 }
     maps.forEach(function (map) {
     Orion.Wait(1000)
-    if(Player.WarMode())
-    {
-    Orion.PauseScript()
-    }
+
         Orion.UseObject(map.Serial())
         Orion.Wait(1000)
 		mount(true)
@@ -124,15 +125,21 @@ maps= inMaps
                 Orion.FindTypeEx(any, any, ground,
                 'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal')
 					.forEach(function (closemob) {
-                    Orion.Attack(closemob.Serial())
+                    Orion.ClientLastAttack(closemob.Serial())
                     Orion.Wait(50)
                 })
+                Orion.WarMode(0);
                 
                  Orion.Wait(10000)
             }
+            Orion.WarMode(0);
             Orion.Wait(1000)
+                           
             while (Orion.FindTypeEx(any, any, ground,
-                'mobile|ignoreself|ignorefriends', 10, 'criminal|gray').length > 0) {
+                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                .filter(function (mob) {
+                    return mob.WarMode();
+                }).length > 0) {
                 Orion.Wait(1000)
             }
 
@@ -141,7 +148,7 @@ maps= inMaps
                 Orion.PauseScript()
             }
             Orion.Print('Destroy')
-            Orion.PauseScript()
+           // Orion.PauseScript()
             //DestroyChest
             Orion.RequestContextMenu(chestid);
             Orion.WaitContextMenuID(chestid, 0);
@@ -158,11 +165,26 @@ maps= inMaps
             //ReturnHome
             Orion.UseObject(beetleMobileId)
             Orion.Wait(1000)
+            
+        if(bankGold)
+        {
+                RecallRune(bankRune);
+                Orion.Wait(1000)
+                Orion.UseObject(Player.Serial())
+                Orion.Say("bank")
+                Orion.Wait(500)
+		        Orion.RequestContextMenu(beetleMobileId);
+		        Orion.WaitContextMenuCliloc(beetleMobileId, 3006145);
+		        Orion.Wait(1000);
+		        //From Beetle
+		        Orion.Print('Move Gold')
+		        MoveItemTextFromTo("Gold Coin", beetleMobileId, Player.BankSerial())
+
+                Orion.Wait(1000)
+        }
+        
             ReturnHomeSortLoot()
 
-            WalkTo(bin)
-            if (Orion.Contains(map.Properties(), 'Completed'))
-                Orion.MoveItem(map.Serial(), 1, bin)
             Orion.Wait(500)
             Orion.UseObject(beetleMobileId)
         }
@@ -216,7 +238,7 @@ function LootChest() {
         MoveItems(chest, beetleMobile, '0xA32F') //Reg
         MoveItems(chest, beetleMobile, '0xA333') //Gem
 		MoveItems(chest, beetleMobile, '0xE75') //Artifact bag
-        MoveItemTextFromTo('Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', chest, beetleMobile)
+        MoveItemTextFromTo('Transc|Treasure Map|Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', chest, beetleMobile)
 
         MoveItemTextFromTo('Board|Ingot|Cut Leather|Cloth', chest, beetleMobile)
         
@@ -224,6 +246,7 @@ function LootChest() {
     }
 
 }
+
 function ReturnHomeSortLoot() {
     RecallRune(home)
     Orion.Wait(400)
@@ -254,26 +277,51 @@ function ReturnHomeSortLoot() {
 		Orion.Print('Move Artifact')
         MoveItems(beetleMobile, rareBox, '0xE75') //Artifact bag
         Orion.Print('Move Fragment')
-        MoveItemTextFromTo('Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', beetleMobile, rareBox)
+        MoveItemTextFromTo('Treasure Map|Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', beetleMobile, rareBox)
+        Orion.Print('Move Transendance')
+        MoveItemTextFromTo('Transcendence', beetleMobile, TranscendenceBook)
         
 		Orion.Print('Bin Bags')
         MoveItemTextFromTo('A Bag', beetleMobile, Orion.FindObject(bin))
         
     }
-
+    MoveItemTextFromTo("Completed", backpack, bin)
 
 }
 
 function GoToClosestPortal() {
     var x = Orion.QuestArrowPosition().X()
     var y = Orion.QuestArrowPosition().Y()
-
-    portal = portalLocation.sort(function (loc1, loc2) {
+    
+    portalLocation = portalLocation.sort(function (loc1, loc2) {
         return (loc1.DistanceTo(x, y) - loc2.DistanceTo(x, y))
-    }).shift()
-    var i = 1;
+    })
+	Orion.Print("Try first")
+	if(!TryLocation(portalLocation.shift()))
+	{
+		Orion.Print("Try second")
+		return TryLocation(portalLocation.shift())
+	}
+	return true
+}
 
-    var portalCrystal = Orion.FindTypeEx('0x468A', any, ground, 'item', 20).shift()
+function TryLocation(portal)
+{
+	Orion.Print(portal.Name())
+    var x = Orion.QuestArrowPosition().X()
+    var y = Orion.QuestArrowPosition().Y()
+    
+    var portalCrystals = Orion.FindTypeEx('0x468A', any, ground, 'item', 20)
+    
+    if(portalCrystals.length ==0){
+    Orion.Print('Going Home')
+    RecallRune(home)
+    Orion.Wait(2000)
+    portalCrystals = Orion.FindTypeEx('0x468A', any, ground, 'item', 20)
+    }
+    
+    var portalCrystal = portalCrystals.shift()
+    
     if (portalCrystal != null) {
         WalkTo(portalCrystal)
         Orion.Say(portal.Name())

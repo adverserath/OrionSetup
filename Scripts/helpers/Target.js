@@ -14,20 +14,7 @@ function SelectCoordinate(_private) {
   }
   Orion.Wait(100)
 
-  return {
-    x: SelectedTile.X(),
-    y: SelectedTile.Y(),
-    z: SelectedTile.Z(),
-    X: function () {
-      return this.x;
-    },
-    Y: function () {
-      return this.y;
-    },
-    Z: function () {
-      return this.z;
-    }
-  }
+  return coordinate(SelectedTile.X(),SelectedTile.Y(),SelectedTile.Z(),'coordinate')
 }
 
 function UseItemOnTarget(item, target) {
@@ -231,7 +218,7 @@ function StayAway(targetId, distance) {
           return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
         });
     var closest = tiles.shift()
-    WalkTo(closest, 1)
+    WalkTo(coordinate(closest.X(),closest.Y()), 1)
   }
 }
 
