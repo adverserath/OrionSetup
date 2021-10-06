@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="21">
+<data version="0" size="23">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -168,5 +168,20 @@
         <item graphic="0x9BEF" color="0x09C4" comment="Canal NE" count="0"/>
         <item graphic="0x9BFC" color="0x09C4" comment="Canal SE" count="0"/>
         <item graphic="0x9BF8" color="0x09C4" comment="Canal SW" count="0"/>
+    </findlist>
+    <findlist name="ImbueItems">
+        <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
+        <item graphic="0x0F3F" color="0x0000" comment="Arrow" count="0"/>
+        <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0"/>
+        <item graphic="any" color="any" comment="item" count="0">
+            <property name="PropertiesCount" value_min="2" value_max="100"/>
+            <property name="Weight" value_min="1" value_max="2"/>
+        </item>
+    </findlist>
+    <findlist name="ImbueIngred">
+        <item graphic="0x5744" color="0x0000" comment="Silver Snake Skin" count="0"/>
+        <item graphic="0x3196" color="0x0000" comment="White Pearl" count="0"/>
+        <item graphic="0x0E24" color="0x0483" comment="Silver Serpent Venom" count="0"/>
+        <item graphic="0x5731" color="0x0000" comment="Undying Flesh" count="0"/>
     </findlist>
 </data>

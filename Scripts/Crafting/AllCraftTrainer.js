@@ -1,10 +1,10 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Gumps.js
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/Crafting/LumberJack.js
+//#include helpers/Target.js
+//#include helpers/Debug.js
+//#include helpers/Magic.js
+//#include helpers/ItemManager.js
+//#include helpers/Gumps.js
+//#include helpers/Notifier.js
+//#include Crafting/LumberJack.js
 
 //Opens the carpentry window and created the last item
 //Uses a FindList for saws and boards, labelled Carpentry

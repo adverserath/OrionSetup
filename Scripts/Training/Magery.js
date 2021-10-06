@@ -1,6 +1,6 @@
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Magic.js
+//#include helpers/Notifier.js
+//#include helpers/Target.js
+//#include helpers/Magic.js
 
 function TrainMagery() {
     Orion.SetDress("magery");

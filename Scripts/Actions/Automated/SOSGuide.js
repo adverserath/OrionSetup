@@ -12,6 +12,8 @@ var mapMibBox = '0x4006BE64'
 var bankGold = true
 var bankRune = '0x4011634E'
 
+
+
 function GetSoSFromGroup() {
     Orion.Print('Make sure you have all SOS in sos.txt')
     Orion.Print('Enter Groups')
@@ -125,7 +127,7 @@ function GoToClosestSOS(distance) {
     return sosId
 }
 
-///#include Scripts/soslocations.jpg
+///#include soslocations.jpg
 function DoSOSInOrder() {
     Orion.Print("ALL SOS must be parsed into \OA\Scripts\helpers\SOSList.js, using ReadAllSOSToFile")
     while (Orion.FindTypeEx('0x14EE', any, backpack).length != 0) {
@@ -138,16 +140,16 @@ function DoSOSInOrder() {
         var startWeight = Player.Weight()
         while (Orion.ObjectExists(sosId) && Player.Weight() < (startWeight + 150) && !HasChest()) {
             //Fish
+            SailToCorpse(true)
+
             Orion.UseObject('0x40026413');
             if (Orion.WaitForTarget(1000)) {
-                SailToCorpse(true)
-
                 Orion.TargetTileRelative('any', -3, -3, 65533);
             }
             Orion.Wait(10000)
         }
         Orion.Wait(1000)
-        if(bankGold)
+        if(bankGold && Player.Gold()>0)
         {
                 RecallRune(bankRune);
                 Orion.Wait(1000)
@@ -181,7 +183,7 @@ function ChestLootManager() {
     MoveItemText("Essence|Crafting Resource", essenceBox)
     MoveItemText("Message In|Treasure Map", mapMibBox)
     MoveItemText("Fishing Net", netLoot)
-    MoveItemText("Oars|Copper Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Wedding|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", rareBox, true)
+    MoveItemText("Backpack|Wedding|Oars|Copper Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Wedding|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", rareBox, true)
 
     MoveItemText("Fishing Net", netLoot)
     MoveScrolls()
@@ -211,14 +213,14 @@ function ChestLootManager() {
 function Resume() {
     Orion.ResumeScript('all');
 }
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/Actions/Automated/DriveBoat.js
-//#include Scripts/helpers/Map.js
-//#include Scripts/helpers/SOS.js
-//#include Scripts/helpers/PathFinding.js
-//#include Scripts/WIP/TestScripts.js
-//#include Scripts/helpers/SOSList.js
+//#include helpers/Notifier.js
+//#include helpers/Target.js
+//#include helpers/Magic.js
+//#include helpers/Debug.js
+//#include helpers/ItemManager.js
+//#include Actions/Automated/DriveBoat.js
+//#include helpers/Map.js
+//#include helpers/SOS.js
+//#include helpers/PathFinding.js
+//#include WIP/TestScripts.js
+//#include helpers/SOSList.js

@@ -1,4 +1,4 @@
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js
 var currentTargetId;
 var targetHits;
 var targetDistance;

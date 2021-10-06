@@ -1,5 +1,5 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Debug.js
+//#include helpers/Target.js
+//#include helpers/Debug.js
 //#include helpers/ItemManager.js
 
 //////START OF CONFIG///////

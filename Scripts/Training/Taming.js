@@ -1,6 +1,6 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/helpers/Magic.js
+//#include helpers/Target.js
+//#include helpers/Notifier.js
+//#include helpers/Magic.js
 
 var vowel = ['a', 'e', 'i', 'o', 'u']
 var cons = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
@@ -41,34 +41,35 @@ function TrainTaming() {
     var useRunes = runeBag != null;
     Orion.Print(useRunes)
     var runes;
-    walkLocations.push(coordinate(Player.X(), Player.Y(),Player.Z(),'start'))
-    if (useRunes)
-    {
+    walkLocations.push(coordinate(Player.X(), Player.Y(), Player.Z(), 'start'))
+    if (useRunes) {
         runes = Orion.FindTypeEx('0x1F14', any, runeBag.Serial());
-	}
-	else
-	{
-	    Orion.WarMode(1);
-    Orion.Wait(500);
-
-    while (Player.WarMode() == true) {
-	Orion.Print("Select Walk Location")
-        var tile = SelectCoordinate();
-        if (tile != null) {
-            walkLocations.push(tile)
-        }
-        else {
-			Orion.WarMode(0);
-        }
-        Orion.Wait(1000);
     }
-	}
+    else {
+        Orion.WarMode(1);
+        Orion.Wait(500);
+
+        while (Player.WarMode() == true) {
+            Orion.Print("Select Walk Location")
+            var tile = SelectCoordinate();
+            if (tile != null) {
+                walkLocations.push(tile)
+            }
+            else {
+                Orion.WarMode(0);
+            }
+            Orion.Wait(1000);
+        }
+    }
     var startingSkill = Orion.SkillValue('Animal Taming', 'real')
     var animals = [];
     var lastDirection;
+    var walkLocation = 0;
+    WalkTo(walkLocations[walkLocation])
+
     while (!Player.Dead()) {
         var animals = [];
-        Orion.Wait(800);
+    //    Orion.Wait(800);
         TextWindow.Print("Looking for tamables");
 
         if (selectedTarget.length > 0) {
@@ -83,11 +84,6 @@ function TrainTaming() {
             .sort(function (mobA, mobB) {
                 return mobA.Distance() - mobB.Distance()
             });
-        animals.forEach(function (animal) {
-            TextWindow.Print(animal.Name());
-
-        })
-
 
         animals = animals.filter(function (animal) {
 
@@ -98,13 +94,16 @@ function TrainTaming() {
             });
         animals.forEach(function (animal) {
             TextWindow.Print(animal.Name());
-
         })
 
         TextWindow.Print("Found:" + animals.length);
-        if(animals.length==0)
-        {
-        WalkTo(walkLocations[Orion.Random(walkLocations.length-1)])
+        if (animals.length == 0 && walkLocations.length > 0) {
+            walkLocation++;
+            if(walkLocation>=walkLocations.length){
+                walkLocation = 0;
+            }
+
+            WalkTo(walkLocations[walkLocation],5,10000)
         }
         while (Player.WarMode() == true) {
             Orion.Print("Select More type of animal then leave war mode")
@@ -151,7 +150,6 @@ function TrainTaming() {
 
             }
         }
-        TextWindow.Print('Entering Tame Loop');
 
         animals.forEach(function (animal) {
             //     TakeOffClothesAndMeditate();
@@ -167,9 +165,6 @@ function TrainTaming() {
 
             if (Orion.WaitForContextMenu() && (Player.Followers() < 5) && Orion.WalkTo(animal.X(), animal.Y(), animal.Z(), 8, 255, 1, 2, 15000)) {
                 Orion.CancelContextMenu();
-
-                var animalId = animal.Serial();
-                //     Orion.Follow(animalId);
 
                 var successfulTame = Tame(animal);
                 TextWindow.Print('Taming ' + successfulTame);
@@ -198,6 +193,7 @@ function Rename(petId) {
 
     var name = cons[Orion.Random(21)] + vowel[Orion.Random(5)] + cons[Orion.Random(21)] + vowel[Orion.Random(5)];
     Orion.RenameMount(petId, name);
+    Orion.Ignore(petId);
 }
 
 var tamingPass = 'seems to accept|even challenging|tame already';
@@ -221,7 +217,7 @@ function Tame(animal) {
         attempt++;
         TextWindow.Print("Taming attempt:" + attempt)
         var startTime = Orion.Now();
-        StayAway(animal.Serial(), 2);
+        StayAway(animal.Serial(), 1);
         Orion.UseSkill('Animal Taming', animal.Serial());
         Orion.AddDisplayTimer('SkillInUse', 12000, 'AboveChar');
         Orion.Wait(300);
@@ -239,13 +235,13 @@ function Tame(animal) {
             Orion.Wait(200);
         }
         while ((Orion.DisplayTimerExists('SkillInUse')
-            || Orion.InJournal('saving', '', '0', '-1', Orion.Now() - 300, Orion.Now()) != null)
+            || Orion.InJournal('saving', '', '0', '-1', Orion.Now() - 500, Orion.Now()) != null)
             && Orion.InJournal('fail to tame', '', '0', '-1', startTime, Orion.Now()) == null
             && Orion.InJournal(tamingPass, '', '0', '-1', startTime, Orion.Now()) == null) {
             //Orion.UseObject('0x40156CE2');
             //   TextWindow.Print('Waiting because timer is active')
-            StayAway(animal.Serial(), 6);
-            Orion.Wait(300);
+           // StayAway(animal.Serial(), );
+            Orion.Wait(500);
         }
         Orion.RemoveDisplayTimer('SkillInUse');
         if (Player.Followers() > pets || Orion.InJournal(tamingPass, '', '0', '-1', startTime, Orion.Now()) != null) {
@@ -402,21 +398,18 @@ function TrainVet() {
     }
 }
 function TrainLore() {
-var t = SelectTarget()
+    var t = SelectTarget()
     while (true) {
-    if(Orion.SkillValue('Animal Taming')<=1100)
-    {
-    Orion.SetSkillStatus('Animal Taming', 'Lock');
-    }
-        if(Orion.SkillValue('Evaluating Intelligence')<=1000)
-    {
-    Orion.SetSkillStatus('Evaluating Intelligence', 'Lock');
-    }
-       if(Orion.SkillValue('Spellweaving')<=1000)
-    {
-    Orion.SetSkillStatus('Spellweaving', 'Lock');
-    }
-    
+        if (Orion.SkillValue('Animal Taming') <= 1100) {
+            Orion.SetSkillStatus('Animal Taming', 'Lock');
+        }
+        if (Orion.SkillValue('Evaluating Intelligence') <= 1000) {
+            Orion.SetSkillStatus('Evaluating Intelligence', 'Lock');
+        }
+        if (Orion.SkillValue('Spellweaving') <= 1000) {
+            Orion.SetSkillStatus('Spellweaving', 'Lock');
+        }
+
         Orion.UseSkill('2');
         if (Orion.WaitForTarget(1000))
             Orion.TargetObject(t.Serial());

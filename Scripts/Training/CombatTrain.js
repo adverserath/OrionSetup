@@ -1,5 +1,5 @@
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/helpers/Target.js
+//#include helpers/Notifier.js
+//#include helpers/Target.js
 var fightParagons = false
 function TrainComabt() {
 	TextWindow.Open()

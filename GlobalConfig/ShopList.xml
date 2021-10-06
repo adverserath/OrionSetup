@@ -24,7 +24,4 @@
         <shopitem enabled="true" graphic="0x1F4A" color="0x0000" name="Lightning" count="0" price="0" comment=""/>
         <shopitem enabled="true" graphic="0x1F5F" color="0x0000" name="Flamestrike" count="0" price="0" comment=""/>
     </shoplist>
-    <shoplist name="Trader">
-        <shopitem enabled="true" graphic="0x1537" color="0xFFFF" name="Kilt" count="15" price="0" comment="Kilt"/>
-    </shoplist>
 </data>

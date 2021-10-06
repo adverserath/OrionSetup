@@ -29,6 +29,14 @@ function HerdEverything() {
   }
 }
 
+function ShowTime()
+{
+while(true)
+{Orion.Wait(1000)
+Orion.PrintFast(Player.Serial(),43,0,Orion.Time('ss'))
+}
+}
+
 function SpellTimer() {
   var total = 0
   var count = 0

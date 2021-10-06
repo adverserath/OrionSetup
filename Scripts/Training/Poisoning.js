@@ -1,6 +1,6 @@
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Debug.js
+//#include helpers/Notifier.js
+//#include helpers/ItemManager.js
+//#include helpers/Debug.js
 
 function TrainPoison() {
 	TextWindow.Print(JSON.stringify(Orion.FindTypeEx(any).map(function (item) { return item.Properties().split('\n') })))

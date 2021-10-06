@@ -1,6 +1,6 @@
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Notifier.js
+//#include helpers/Debug.js
+//#include helpers/Target.js
+//#include helpers/Notifier.js
 
 function DanDar() {
   while (true) {

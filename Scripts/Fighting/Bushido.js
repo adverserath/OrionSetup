@@ -7,7 +7,7 @@ function BushKnight() {
         range = (bow.Properties().match(/Range\s(\d*)/i) || [0, 1])[1]
     }
     Orion.Print(range)
-Orion.ToggleScript('ActiveCounter', true, []);
+    Orion.ToggleScript('ActiveCounter', true, []);
 
     TextWindow.Open();
     while (true) {
@@ -15,8 +15,8 @@ Orion.ToggleScript('ActiveCounter', true, []);
         while (!Player.Dead() && Player.WarMode()) {
             Orion.Wait(500);
 
-			  var attacker = Orion.FindObject(Orion.ClientLastAttack());
-          
+            var attacker = Orion.FindObject(Orion.ClientLastAttack());
+
             Orion.FindTypeEx(any, any, ground,
                 'nothumanmobile|live|ignoreself|ignorefriends', 16, 'gray|criminal|red|enemy')
                 .filter(function (mob) {
@@ -37,19 +37,18 @@ Orion.ToggleScript('ActiveCounter', true, []);
                 Orion.Print('attack new')
                 entireAreaMobs.forEach(function (closemob) {
                     Orion.Attack(closemob.Serial())
-                    attacker=closemob;
+                    attacker = closemob;
                 })
             }
             else {
                 Orion.Print('attack last')
                 Orion.Attack(attacker.Serial())
             }
-             if(attacker != null && attacker.Hits()==25)
-                {
+            if (attacker != null && attacker.Hits() == 25) {
                 Orion.InvokeVirtue('Honor')
-                if(Orion.WaitForTarget())
-                	Orion.TargetObject(attacker.Serial())
-               	}
+                if (Orion.WaitForTarget())
+                    Orion.TargetObject(attacker.Serial())
+            }
             Orion.Wait(50)
             attacker = Orion.FindObject(Orion.ClientLastAttack());
             // if(attacker!=null)
@@ -58,23 +57,23 @@ Orion.ToggleScript('ActiveCounter', true, []);
             //       Orion.Cast('Confidence');
             //       Orion.Wait(1000);
             //   }
-          //  if (Player.Mana() > 10 && !Orion.SpellStatus('Counter Attack') &&
-          //      entireAreaMobs.length > 0) {
-          //      TextWindow.Print('Counter')
-          //      Orion.Cast('Counter Attack');
-           //     Orion.Wait(1000);
+            //  if (Player.Mana() > 10 && !Orion.SpellStatus('Counter Attack') &&
+            //      entireAreaMobs.length > 0) {
+            //      TextWindow.Print('Counter')
+            //      Orion.Cast('Counter Attack');
+            //     Orion.Wait(1000);
             //}
-//            if (Orion.SpellStatus('Honorable Execution') &&
-//                (attacker == null || attacker.Hits() > 5)) {
-//                TextWindow.Print("Disabled Honorable Execution")
-//                Orion.Cast('Honorable Execution');
-//                Orion.Wait(200)
-//            }
-//            if (!Orion.SpellStatus('Honorable Execution')
-//                && attacker != null && attacker.Hits() < 5) {
-//                TextWindow.Print("Honorable Execution")
-//                Orion.Cast('Honorable Execution');
-//            }
+            //            if (Orion.SpellStatus('Honorable Execution') &&
+            //                (attacker == null || attacker.Hits() > 5)) {
+            //                TextWindow.Print("Disabled Honorable Execution")
+            //                Orion.Cast('Honorable Execution');
+            //                Orion.Wait(200)
+            //            }
+            //            if (!Orion.SpellStatus('Honorable Execution')
+            //                && attacker != null && attacker.Hits() < 5) {
+            //                TextWindow.Print("Honorable Execution")
+            //                Orion.Cast('Honorable Execution');
+            //            }
             if (Player.Mana() > 10 &&
                 !Orion.SpellStatus('Lightning Strike') &&
                 !Orion.SpellStatus('Honorable Execution') &&
@@ -96,7 +95,7 @@ Orion.ToggleScript('ActiveCounter', true, []);
                 Orion.Cast('Momentum Strike');
             }
             if (entireAreaMobs.length > 0) {
-                if (Player.Hits()<(Player.MaxHits()/2) && Player.Mana() > 10 && !Orion.BuffExists('curse weapon') && Orion.ScriptRunning('CastSpell') != 1) {
+                if (Player.Hits() < (Player.MaxHits() / 2) && Player.Mana() > 10 && !Orion.BuffExists('curse weapon') && Orion.ScriptRunning('CastSpell') != 1) {
                     Orion.ToggleScript('CastSpell', true, ['curse weapon']);
                     Orion.Wait(100);
                 }
@@ -115,49 +114,78 @@ Orion.ToggleScript('ActiveCounter', true, []);
 }
 
 function BushyArcher() {
+    var honorTarget
     var range = 8;
-var attackall = true;
+    var attackall = true;
     var bow = Orion.ObjAtLayer('LeftHand');
     if (bow != null) {
         range = (bow.Properties().match(/Range\s(\d*)/i) || [0, 2])[1]
     }
     Orion.Print(!Player.Dead())
     while (!Player.Dead()) {
-    while (!Player.WarMode()) {
-    Orion.Wait(1000)
-    }
+        while (!Player.WarMode()) {
+            Orion.Wait(1000)
+        }
         while (Player.WarMode()) {
-            Orion.Wait(500);
+            Orion.Wait(200);
 
-if(attackall)
-{
-            Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 16, 'gray|criminal|orange')
-				.forEach(function (closemob) {
+
+            var targets = Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends|inlos', 12, 'gray|criminal|orange')
+
+            var ht = targets.filter(function (ft) {
+                return ft.Hits() == 25
+            }).shift()
+
+            if (!Orion.ObjectExists(honorTarget) && ht != null && ht.Hits() == 25 && !Orion.BuffExists('Honor')) {
+                Orion.InvokeVirtue('Honor')
+                Orion.WaitWhileTargeting(200)
+                   Orion.TargetObject(ht.Serial()); 
+                   Orion.AddWaitTargetObject(ht.Serial());
+                   Orion.Wait(1000)
+                                          Orion.TargetObject(ht.Serial()); 
+
+                honorTarget = ht.Serial()
+            }
+            if (attackall) {
+               
+                targets.forEach(function (closemob) {
                     Orion.Attack(closemob.Serial())
-                    Orion.Wait(50)
+                    Orion.Wait(20)
                 })
-}
-            var attacker = Orion.FindObject(Orion.ClientLastAttack());
 
+            }
+            var attacker
+            if(Orion.ObjectExists(honorTarget))
+            {
+                Orion.Attack(honorTarget)
+                attacker = Orion.FindObject(honorTarget);
+            }
+            else
+            {
+                attacker = Orion.FindObject(Orion.ClientLastAttack());
+            }
             var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
                 'nothumanmobile|live|ignoreself|ignorefriends', (range), 'gray|criminal|orange')
+                .filter(function (at) {
+                    return at.WarMode()
+                })
 
             var mobsAroundAttacker = entireAreaMobs.filter(function (mob) {
                 return attacker != null && attacker.Exists() && mob.Exists() && InRange(attacker, mob, 5)
             }).length
 
-        //    if (Orion.SpellStatus('Honorable Execution') &&
-        //        (attacker == null || attacker.Hits() > 5)) {
-        //        Orion.Print("Disabled Honorable Execution")
-        //        Orion.Cast('Honorable Execution');
-        //        Orion.Wait(200)
-        //    }
-        //    if (!Orion.SpellStatus('Honorable Execution')
-        //        && attacker != null && attacker.Hits() < 5) {
-        //        Orion.Print("Honorable Execution")
-        //        Orion.Cast('Honorable Execution');
-        //    }
+            //    if (Orion.SpellStatus('Honorable Execution') &&
+            //        (attacker == null || attacker.Hits() > 5)) {
+            //        Orion.Print("Disabled Honorable Execution")
+            //        Orion.Cast('Honorable Execution');
+            //        Orion.Wait(200)
+            //    }
+            //    if (!Orion.SpellStatus('Honorable Execution')
+            //        && attacker != null && attacker.Hits() < 5) {
+            //        Orion.Print("Honorable Execution")
+            //        Orion.Cast('Honorable Execution');
+            //    }
             if (Player.Mana() > 10 &&
                 !Orion.SpellStatus('Lightning Strike') &&
                 !Orion.SpellStatus('Honorable Execution') &&
@@ -178,9 +206,9 @@ if(attackall)
                 Orion.Print("Momentum Strike")
                 Orion.Cast('Momentum Strike');
             }
-            Orion.Wait(500)
+          //  Orion.Wait(500)
 
-            if (entireAreaMobs.filter(function (mob){return mob.Distance()<12}).length > 0) {
+            if (entireAreaMobs.filter(function (mob) { return mob.Distance() < 12 }).length > 0) {
                 if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
                     CastSpell('consecrate weapon');
                     Orion.Wait(1000);
@@ -200,24 +228,24 @@ function mobsInArea() {
 }
 
 function CastSpell(spell) {
-	TextWindow.Print(spell);
+    TextWindow.Print(spell);
 
     Orion.Cast(spell);
     Orion.Wait(1000);
 }
 
-function ActiveCounter()
-{
-while(true){
-Orion.Wait(100);
-while(Player.WarMode()){
-Orion.Wait(50);
+function ActiveCounter() {
+    while (true) {
+        Orion.Wait(100);
+        while (Player.WarMode()) {
+            Orion.Wait(50);
             if (Player.Mana() > 10 && !Orion.SpellStatus('Counter Attack')) {
-			Orion.PrintFast(self, '0x0111', 1, 'Counter');
+                Orion.PrintFast(self, '0x0111', 1, 'Counter');
                 Orion.Cast('Counter Attack');
                 Orion.Wait(150);
             }
-            }
-            }
+        }
+    }
 }
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js
+//#include Fighting/Tamer.js

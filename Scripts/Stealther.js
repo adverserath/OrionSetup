@@ -1,7 +1,7 @@
-//#include Scripts/Actions/Automated/ShortCuts.js
-//#include Scripts/Actions/Automated/Pickup.js
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Notifier.js
+//#include Actions/Automated/ShortCuts.js
+//#include Actions/Automated/Pickup.js
+//#include helpers/Target.js
+//#include helpers/Notifier.js
 
 function DoorOpened() {
     lastdoors = Orion.FindType('0x06CD', any, ground).length

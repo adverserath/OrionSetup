@@ -1,4 +1,4 @@
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js
 
 function OrchardRun() {
     var startTime = Orion.Now()

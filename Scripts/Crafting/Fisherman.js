@@ -477,13 +477,13 @@ function GetWater2(range) {
     return waterTiles;
 }
 
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/Actions/Automated/DriveBoat.js
-//#include Scripts/helpers/Map.js
-//#include Scripts/helpers/SOS.js
-//#include Scripts/helpers/PathFinding.js
-//#include Scripts/WIP/TestScripts.js
-//#include Scripts/helpers/ItemManager.js
+//#include helpers/Target.js
+//#include helpers/Magic.js
+//#include helpers/Debug.js
+//#include helpers/ItemManager.js
+//#include Actions/Automated/DriveBoat.js
+//#include helpers/Map.js
+//#include helpers/SOS.js
+//#include helpers/PathFinding.js
+//#include WIP/TestScripts.js
+//#include helpers/ItemManager.js

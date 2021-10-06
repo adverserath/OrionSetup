@@ -1,4 +1,4 @@
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js
 
 var intoDespise = coordinate(5682, 1440, 255)
 var exitgate = coordinate(5153, 1760, 255)

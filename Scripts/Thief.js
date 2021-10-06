@@ -324,6 +324,6 @@ function TrainStealth() {
 
     }
 }
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js
 //#include Stealther.js
-//#include Scripts/Actions/Tricks.js
+//#include Actions/Tricks.js

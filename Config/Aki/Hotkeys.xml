@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="9" action="39" key="35" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="32" action="0" key="112" modifiers="4" override_pass_key_to_client="0"/>
-    <hotkey type="16" action="21" key="8" modifiers="64" override_pass_key_to_client="0"/>
-    <hotkey type="16" action="9" key="116" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="21" key="117" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="5" action="0" key="119" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="10" action="-4" key="112" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="10" action="-29" key="113" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="41" action="7" key="111" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="16" action="22" key="114" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="16" action="15" key="115" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="1" key="120" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="262" key="19" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="3" key="121" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="2" key="122" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="0" key="123" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="6" key="117" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="5" key="118" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="507" key="16" modifiers="64" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="261" key="34" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="29" action="263" key="145" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="507" key="16" modifiers="64" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="6" key="117" modifiers="8" override_pass_key_to_client="0"/>
     <hotkey type="29" action="260" key="35" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="49" action="0" key="1" modifiers="1" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="261" key="34" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="5" key="118" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="3" key="121" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="1" key="120" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="0" key="123" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="41" action="7" key="111" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="2" key="122" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="21" key="117" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="16" action="9" key="116" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="262" key="19" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="47" action="0" key="119" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="16" action="2" key="118" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="10" action="-29" key="113" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="10" action="-4" key="112" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="16" action="15" key="115" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="16" action="22" key="114" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="16" action="21" key="8" modifiers="64" override_pass_key_to_client="0"/>
+    <hotkey type="32" action="0" key="112" modifiers="4" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="39" key="35" modifiers="0" override_pass_key_to_client="0"/>
 </data>

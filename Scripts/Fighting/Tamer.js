@@ -1,9 +1,24 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Notifier.js
+//#include helpers/Target.js
+//#include helpers/Debug.js
+//#include helpers/Magic.js
+//#include helpers/ItemManager.js
+//#include helpers/Notifier.js
 
+function AttackAll()
+{
+while(true)
+{
+Orion.FindTypeEx(any, any, ground,
+        'live|ignoreself|ignorefriends', 20, 3)
+        .filter(function (mob) {
+            return mob.Notoriety() >= 3
+                && mob.Notoriety() <=6
+        }).forEach(function (mobile) {
+Orion.Attack(mobile.Serial())
+    })
+    Orion.Wait(1000)
+}
+}
 function VetMultiPets() {
     var selected;
     var selecting = true;

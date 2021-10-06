@@ -1,7 +1,7 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/ItemManager.js
+//#include helpers/Target.js
+//#include helpers/Magic.js
+//#include helpers/Debug.js
+//#include helpers/ItemManager.js
 
 //Cut trees within a defined range of Player.
 //Once all trees are cut in the grid, the script will terminate!

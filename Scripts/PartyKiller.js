@@ -44,4 +44,4 @@ function HostCast(SpellName) {
 function FollowMe() {
 	Orion.SayParty('F:::' + Player.Serial())
 }
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js

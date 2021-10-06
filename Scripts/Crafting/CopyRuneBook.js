@@ -1,9 +1,9 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/helpers/Gumps.js
+//#include helpers/Target.js
+//#include helpers/Debug.js
+//#include helpers/Magic.js
+//#include helpers/ItemManager.js
+//#include helpers/Notifier.js
+//#include helpers/Gumps.js
 
 function ScrollMaker() {
     while (true) {

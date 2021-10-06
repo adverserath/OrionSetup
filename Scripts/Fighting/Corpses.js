@@ -1,6 +1,6 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Debug.js
+//#include helpers/Target.js
+//#include helpers/ItemManager.js
+//#include helpers/Debug.js
 
 function WarCleaveCorpses() {
     var warcleaver = Orion.FindTypeEx('0x2D2F', any, backpack).shift();

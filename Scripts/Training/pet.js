@@ -1,4 +1,4 @@
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js
 function CuHealing() {
     var target = SelectTarget()
     while (true) {

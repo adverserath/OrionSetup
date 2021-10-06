@@ -1,4 +1,4 @@
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js
 
 function WalkToQueen1() {
     WalkTo(coordinate(5879, 1890, 0))

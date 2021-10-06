@@ -1,3 +1,4 @@
+
 function TestResponseAllControls(unused)
 {
 	var code = CustomGumpResponse.ReturnCode();

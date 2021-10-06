@@ -94,6 +94,7 @@
     <property name="Greater Artifact"/>
     <property name="Major Artifact"/>
     <property name="Legendary Artifact"/>
+    <property name="Weight"/>
     <ignored_property name="Physical Damage"/>
     <ignored_property name="Fire Damage"/>
     <ignored_property name="Poison Damage"/>

@@ -14,7 +14,7 @@ function SelectCoordinate(_private) {
   }
   Orion.Wait(100)
 
-  return coordinate(SelectedTile.X(),SelectedTile.Y(),SelectedTile.Z(),'coordinate')
+  return coordinate(SelectedTile.X(), SelectedTile.Y(), SelectedTile.Z(), 'coordinate')
 }
 
 function UseItemOnTarget(item, target) {
@@ -131,6 +131,16 @@ function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, wal
   //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
 }
 
+function AddBadLocationGrid()
+{
+var start = SelectCoordinate()
+var end = SelectCoordinate();
+
+  Orion.GetTilesInRect('land', start.X(), start.Y(), end.X(), end.Y()).forEach(function (tile) {
+    Orion.SetBadLocation(tile.X(), tile.Y());
+  })
+}
+
 function FelWalkTo(object, distance, timeMS, walking) {
 
   if (distance == null) {
@@ -218,7 +228,7 @@ function StayAway(targetId, distance) {
           return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
         });
     var closest = tiles.shift()
-    WalkTo(coordinate(closest.X(),closest.Y()), 1)
+    WalkTo(coordinate(closest.X(), closest.Y()), 1)
   }
 }
 
@@ -251,16 +261,16 @@ function coordinate(xLoc, yLoc, zLoc, _name) {
         return this.locName;
     },
     DistanceTo: function (tx, ty) {
-        var dx = Math.abs(tx - this.X());
-        var dy = Math.abs(ty - this.Y());
-        var min = Math.min(dx, dy);
-        var max = Math.max(dx, dy);
-    
-        var diagonalSteps = min;
-        var straightSteps = max - min;
-        var ret = Math.sqrt(2) * diagonalSteps + straightSteps
-        return ret;
+      var dx = Math.abs(tx - this.X());
+      var dy = Math.abs(ty - this.Y());
+      var min = Math.min(dx, dy);
+      var max = Math.max(dx, dy);
+
+      var diagonalSteps = min;
+      var straightSteps = max - min;
+      var ret = Math.sqrt(2) * diagonalSteps + straightSteps
+      return ret;
     },
-    
+
   }
 }

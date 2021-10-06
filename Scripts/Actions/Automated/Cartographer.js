@@ -48,107 +48,163 @@ var portalLocation = [
 var rareBox = '0x4014460B'
 var goldChestId = '0x40026602'
 var essenceBox = '0x400C5E3B'
-var beetleMobileId = '0x0000C412'
+
 var regBoxId = '0x400F48A7'
 var bin = '0x400F63CF'
-var beetleMobile
-var usingBeetle = true
-var home = '0x401111EF'
+
+var mount = null;
+var home = '0x40144BF0'
 var TranscendenceBook = '0x4013C7B3'
 var bankGold = true
-var bankRune = '0x400CFB2E'
-function DoSpecificMap()
-{
-var maps = []
-maps.push(SelectTarget())
-DoAllMapsInBag(maps)
+var bankRune = '0x40145441'
+var usingPet = true;
+var incompleteBox = ''
+
+function DoSpecificMap() {
+    var maps = []
+    maps.push(SelectTarget())
+    DoAllMapsInBag(maps)
 }
 
 function DoAllMapsInBag(inMaps) {
-var maps;
-if(inMaps==null)
-{
-    maps = Orion.FindTypeEx('0x14EC', '0x0000', backpack)
-        .filter(function (map1) {
-            return Orion.Contains(map1.Properties(), 'Treasure') &&
-                Orion.Contains(map1.Properties(), 'Trammel') &&
-                Orion.Contains(map1.Properties(), 'Stash')
-        })
-	maps.filter(function (map1) {
-            return Orion.Contains(map1.Properties(), 'Blessed')
-        }).forEach(function (m2){
-        Orion.UseObject(m2.Serial())
-        Orion.Wait(1200)
-        })
-    Orion.Print('maps:' + maps.length)
-    maps = maps.filter(function (map2) { return !Orion.Contains(map2.Properties(), 'Completed') })
-    Orion.Print('maps:' + maps.length)
-}
-else{
-maps= inMaps
-}
+
+    if (usingPet) {
+        Mount(false)
+        Orion.Print('Select Pet')
+        mount = SelectTarget()
+        Orion.Print('Mount =' + mount.Name())
+        Mount(true)
+    }
+    var maps;
+    //Find all in bag when not single
+    Orion.Print('Get Maps')
+    maps = GetMaps(inMaps)
+
+    //Complete Map
     maps.forEach(function (map) {
-    Orion.Wait(1000)
 
-        Orion.UseObject(map.Serial())
-        Orion.Wait(1000)
-		mount(true)
+        //Open Map
+        Orion.Print('Open Map')
+        while (!Orion.GumpExists('map')) {
+            Orion.UseObject(map.Serial())
+            Orion.Wait(1000)
+        }
 
-        if (!GoToClosestPortal()) {
+        //Mount Pet
+        Mount(true)
+
+		Heal()
+        if (!GoToClosestPortal() && 
+        Orion.GetDistance(Orion.QuestArrowPosition().X(),Orion.QuestArrowPosition().Y())>5) {
+            Orion.Print('No Portal Found')
             RecallRune(home)
-            Orion.UseObject(Player.Serial())
             Orion.Wait(1000)
-            Orion.MoveItem(map.Serial(), 1, beetleMobileId)
-            Orion.Wait(1000)
-            Orion.UseObject(beetleMobileId)
+            Orion.MoveItem(map.Serial(), 1, incompleteBox)
             Orion.Wait(1000)
         }
         else {
-            var followers = Player.Followers()
-            //SummonDaemon
-            while (Player.Followers() == followers && followers < 2) {
-                Orion.Cast('Summon Daemon')
-                Orion.Wait(5000)
-            }
-            var daemonId = Orion.FindType('0x000A', '0x0000', ground, 10)
-            Orion.Say('All guard')
+            if (!usingPet) {
+                //use daemon to fight
+                var followers = Player.Followers()
+                //SummonDaemon
+                while (Player.Followers() == followers && followers < 2) {
+                    Orion.Cast('Summon Daemon')
+                    Orion.Wait(5000)
+                }
+                var daemonId = Orion.FindType('0x000A', '0x0000', ground, 10)
+                Orion.Wait(100)
+                Orion.Say('All guard')
 
-            //DigChest
+            }
+            if (usingPet) {
+               Mount(false)
+                //Getting pet to guard
+                Orion.Print('Set Pet to guard')
+                while (!Orion.Contains(mount.Properties(), "Guarding")) {
+                    Orion.Wait(100)
+                    Orion.Say('All guard')
+                }
+            }
+
+			Heal()
+            //Dig Chest
+            Orion.Print('Dig Chest Up')
+
             Orion.RequestContextMenu(map.Serial());
             Orion.WaitContextMenuID(map.Serial(), 1);
             if (Orion.WaitForTarget(1000)) {
                 Orion.TargetTile('any', Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y(), 0);
                 Orion.Wait(26000)
-                Orion.UseSkill('Hiding')
+                Orion.Print('Hide')
+//                Orion.UseSkill('Hiding')
+
+				while (!Player.Hidden()) {
+						Orion.CastTarget('Invisibility', self)
+						Orion.Wait(2000)
+				}
+	
                 Orion.Wait(1000)
-                
+
+                Orion.Print('Fight Monsters')
                 Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal')
-					.forEach(function (closemob) {
-                    Orion.ClientLastAttack(closemob.Serial())
-                    Orion.Wait(50)
-                })
+                    'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal')
+                    .forEach(function (closemob) {
+                        Orion.ClientLastAttack(closemob.Serial())
+                        Orion.Wait(50)
+                    })
                 Orion.WarMode(0);
-                
-                 Orion.Wait(10000)
+
+                Orion.Wait(10000)
             }
             Orion.WarMode(0);
             Orion.Wait(1000)
-                           
+
+            Orion.Print('Fight More Monsters')
             while (Orion.FindTypeEx(any, any, ground,
                 'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
                 .filter(function (mob) {
                     return mob.WarMode();
                 }).length > 0) {
+                Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                .filter(function (mob) {
+                    return mob.WarMode();
+                }).forEach(function (mob){
+                if(Orion.ObjectExists(mob.Serial()))
+                {
+                Orion.ClientLastAttack(mob.Serial())
                 Orion.Wait(1000)
+                }
+                })
             }
 
+			Heal()
             var chestid = LootChest()
             if (chestid == null) {
                 Orion.PauseScript()
             }
-            Orion.Print('Destroy')
-           // Orion.PauseScript()
+            
+            while (Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                .filter(function (mob) {
+                    return mob.WarMode();
+                }).length > 0) {
+                Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                .filter(function (mob) {
+                    return mob.WarMode();
+                }).forEach(function (mob){
+                if(Orion.ObjectExists(mob.Serial()))
+                {
+                Orion.ClientLastAttack(mob.Serial())
+                Orion.Wait(1000)
+                }
+                })
+            }
+            
+            Orion.Print('Destroy Chest')
+            Orion.Wait(2000)
+            // Orion.PauseScript()
             //DestroyChest
             Orion.RequestContextMenu(chestid);
             Orion.WaitContextMenuID(chestid, 0);
@@ -159,89 +215,64 @@ maps= inMaps
                     Orion.Wait(100);
                 }
             }
-            //ReleaseDaemon
-            Orion.RequestContextMenu(daemonId);
-            Orion.WaitContextMenuID(daemonId, 5);
+            if (!usingPet) {
+                //ReleaseDaemon
+                Orion.RequestContextMenu(daemonId);
+                Orion.WaitContextMenuID(daemonId, 5);
+            }
             //ReturnHome
-            Orion.UseObject(beetleMobileId)
+            Mount(true)
             Orion.Wait(1000)
-            
-        if(bankGold)
-        {
-                RecallRune(bankRune);
-                Orion.Wait(1000)
-                Orion.UseObject(Player.Serial())
-                Orion.Say("bank")
-                Orion.Wait(500)
-		        Orion.RequestContextMenu(beetleMobileId);
-		        Orion.WaitContextMenuCliloc(beetleMobileId, 3006145);
-		        Orion.Wait(1000);
-		        //From Beetle
-		        Orion.Print('Move Gold')
-		        MoveItemTextFromTo("Gold Coin", beetleMobileId, Player.BankSerial())
-
-                Orion.Wait(1000)
-        }
-        
-            ReturnHomeSortLoot()
-
-            Orion.Wait(500)
-            Orion.UseObject(beetleMobileId)
+			SortLoot()
         }
     })
-
 }
+
+function SortLoot()
+{
+            if (bankGold) {
+                RecallRune(bankRune);
+                Orion.Say("bank")
+                Orion.Wait(500)
+                Orion.Print('Move Gold')
+                MoveItemTextFromTo("Gold Coin", Player.Serial(), Player.BankSerial())
+                Orion.Wait(1000)
+            }
+            ReturnHomeSortLoot()
+}
+
 function WalkToQuestArrow() {
     WalkTo(coordinate(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y()))
 }
 
 function LootChest() {
-	Orion.Print('Start Loot Script')
-    beetleMobile = Orion.FindObject(beetleMobileId)
+    Orion.Print('Start Loot Script')
 
-	while(Orion.ObjAtLayer('mount')!=null)
-	{
-	        Orion.UseObject(Player.Serial());
-	        Orion.Wait(800);
-	}
-    if (usingBeetle && beetleMobile == null) {
-        var beetles = Orion.FindTypeEx('0x0317', any, ground, 'mobile', 4).filter(function (beetle) {
-            Orion.RequestContextMenu(beetle.Serial());
-            return Orion.WaitForContextMenu(500);
-        });
-        if (beetles.length > 0) {
-            beetleMobile = beetles.shift();
-            Orion.Print(beetleMobile.Serial())
-            Orion.Print(((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0));
-        }
-        else {
-            usingBeetle = false;
-        }
-    }
     var chest = Orion.FindTypeEx(any, any, ground, 'item', 10).filter(function (item) { return Orion.Contains(item.Name(), 'Treasure Chest') }).shift()
     if (chest != null) {
         WalkTo(chest)
-        Orion.Wait(2000);
-        while (!Orion.OpenContainer(chest.Serial(), 1000,'reach that|too away|appears to be trapped')) {
+        while (!Orion.OpenContainer(chest.Serial(), 1000, 'reach that|too away|appears to be trapped')) {
             WalkTo(chest)
-            Orion.Wait(1000)
-            Orion.UseType('0x14FB|0x14FC', '0xFFFF');
-            if (Orion.WaitForTarget(1000)) {
-                Orion.TargetObject(chest.Serial());
-            }
+            Orion.Wait(500)
+            
+            CastSpellOnTarget('Unlock', chest.Serial())
+            //Orion.UseType('0x14FB|0x14FC', '0xFFFF');
+            //if (Orion.WaitForTarget(1000)) {
+            //    Orion.TargetObject(chest.Serial());
+            //}
             Orion.Wait(2000);
             Orion.UseSkillTarget('Remove Trap', chest.Serial())
             Orion.Wait(11000);
         }
 
-        MoveItems(chest, beetleMobile, '0xA331|0x0EED') //Gold
-        MoveItems(chest, beetleMobile, '0xA32F') //Reg
-        MoveItems(chest, beetleMobile, '0xA333') //Gem
-		MoveItems(chest, beetleMobile, '0xE75') //Artifact bag
-        MoveItemTextFromTo('Transc|Treasure Map|Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', chest, beetleMobile)
+        MoveItems(chest, backpack, '0xA331|0x0EED') //Gold
+        MoveItems(chest, backpack, '0xA32F') //Reg
+        MoveItems(chest, backpack, '0xA333') //Gem
+        MoveItems(chest, backpack, '0xE75') //Artifact bag
+        MoveItemTextFromTo('Transc|Treasure Map|Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', chest, backpack)
 
-        MoveItemTextFromTo('Board|Ingot|Cut Leather|Cloth', chest, beetleMobile)
-        
+        MoveItemTextFromTo('Board|Ingot|Cut Leather|Cloth', chest, backpack)
+
         return chest.Serial()
     }
 
@@ -249,117 +280,168 @@ function LootChest() {
 
 function ReturnHomeSortLoot() {
     RecallRune(home)
-    Orion.Wait(400)
-    Orion.UseObject(Player.Serial());
-    Orion.Wait(200);
-    beetleMobile = Orion.FindObject(beetleMobileId)
-
 
     MoveItemsFromPlayer(goldChestId, '0x0EED')
     MoveItemText("Essence|Crafting Resource", essenceBox)
     MoveItemText("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", regBoxId)
 
-    if (usingBeetle) {
-        Orion.RequestContextMenu(beetleMobile.Serial());
-        Orion.WaitContextMenuCliloc(beetleMobile.Serial(), 3006145);
-        Orion.Wait(1000);
-        //From Beetle
-        Orion.Print('Move Gold')
-        MoveItemTextFromTo("Gold Coin", beetleMobile, Orion.FindObject(goldChestId))
+    Orion.Print('Move Gold')
+    MoveItemTextFromTo("Gold Coin", backpack, Orion.FindObject(goldChestId))
 
-        MoveItems(beetleMobile, Orion.FindObject(goldChestId), '0x0EED', any, 0, true) //Gold
-        Orion.Print('Move Reg')
-        MoveItemTextFromTo("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", beetleMobile, Orion.FindObject(regBoxId))
-        Orion.Print('Move Gem')
-        MoveItemTextFromTo("Essence|Crafting Resource", beetleMobile, Orion.FindObject(essenceBox))//Gems
-        Orion.Print('Move Stuff')
-        MoveItemTextFromTo('Board|Ingot|Leather|Cloth', beetleMobile, Orion.FindObject(goldChestId))
-		Orion.Print('Move Artifact')
-        MoveItems(beetleMobile, rareBox, '0xE75') //Artifact bag
-        Orion.Print('Move Fragment')
-        MoveItemTextFromTo('Treasure Map|Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', beetleMobile, rareBox)
-        Orion.Print('Move Transendance')
-        MoveItemTextFromTo('Transcendence', beetleMobile, TranscendenceBook)
-        
-		Orion.Print('Bin Bags')
-        MoveItemTextFromTo('A Bag', beetleMobile, Orion.FindObject(bin))
-        
-    }
+    MoveItems(backpack, Orion.FindObject(goldChestId), '0x0EED', any, 0, true) //Gold
+    Orion.Print('Move Reg')
+    MoveItemTextFromTo("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", backpack, Orion.FindObject(regBoxId))
+    Orion.Print('Move Gem')
+    MoveItemTextFromTo("Essence|Crafting Resource", backpack, Orion.FindObject(essenceBox))//Gems
+    Orion.Print('Move Stuff')
+    MoveItemTextFromTo('Board|Ingot|Leather|Cloth', backpack, Orion.FindObject(goldChestId))
+    Orion.Print('Move Artifact')
+    MoveItems(backpack, rareBox, '0xE75') //Artifact bag
+    Orion.Print('Move Fragment')
+    MoveItemTextFromTo('Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', backpack, rareBox)
+    Orion.Print('Move Transendance')
+    MoveItemTextFromTo('Transcendence', backpack, TranscendenceBook)
+
+    Orion.Print('Bin Bags')
+    MoveItemTextFromTo('A Bag', backpack, Orion.FindObject(bin))
+
     MoveItemTextFromTo("Completed", backpack, bin)
 
 }
 
 function GoToClosestPortal() {
+    Orion.Print('Find Portals')
     var x = Orion.QuestArrowPosition().X()
     var y = Orion.QuestArrowPosition().Y()
-    
+
     portalLocation = portalLocation.sort(function (loc1, loc2) {
         return (loc1.DistanceTo(x, y) - loc2.DistanceTo(x, y))
     })
-	Orion.Print("Try first")
-	if(!TryLocation(portalLocation.shift()))
-	{
-		Orion.Print("Try second")
-		return TryLocation(portalLocation.shift())
-	}
-	return true
+    Orion.Print("Try first")
+    if (!TryLocation(portalLocation.shift())) {
+        Orion.Print("Try second")
+        RecallRune(home)
+    if (!TryLocation(portalLocation.shift())) {
+        Orion.Print("Try third")
+        RecallRune(home)
+        return TryLocation(portalLocation.shift())
+    }    }
+
+    return true
 }
 
-function TryLocation(portal)
-{
-	Orion.Print(portal.Name())
+function TryLocation(portal) {
+    Orion.Print(portal.Name())
     var x = Orion.QuestArrowPosition().X()
     var y = Orion.QuestArrowPosition().Y()
-    
+
     var portalCrystals = Orion.FindTypeEx('0x468A', any, ground, 'item', 20)
-    
-    if(portalCrystals.length ==0){
-    Orion.Print('Going Home')
-    RecallRune(home)
-    Orion.Wait(2000)
-    portalCrystals = Orion.FindTypeEx('0x468A', any, ground, 'item', 20)
+
+
+    if (portalCrystals.length == 0) {
+        Orion.Wait(2000)
+        portalCrystals = Orion.FindTypeEx('0x468A', any, ground, 'item', 20)
     }
-    
+
     var portalCrystal = portalCrystals.shift()
-    
+
     if (portalCrystal != null) {
         WalkTo(portalCrystal)
         Orion.Say(portal.Name())
-        }
-        Orion.Wait(1000)
-        if (!Orion.WalkTo(x, y, 0, 3, 255, 1)) {
-            var nx = parseInt(x + (Player.X() - x) / 2)
-            var ny = parseInt(y + (Player.Y() - y) / 2)
-            Orion.Print(Player.X() + '  ' + x + ' ' + nx)
-            Orion.Print(Player.Y() + '  ' + y + ' ' + ny)
-            Orion.WalkTo(nx, ny, 0, 10, 255, 1)
-            Orion.WalkTo(x, y, 0, 3, 255, 1)
-        }
-        return Orion.WalkTo(x, y, 0, 3, 255, 1)
+    }
+    Orion.Wait(1000)
+    
+    //Cross water at skara
+    if(Orion.Contains(portal.Name(), 'skara'))
+    {
+    if (!Orion.WalkTo(x, y, 1, 1, 255, 1)) {
+    Orion.WalkTo(683, 2234, 0, 1, 255, 1)
+    Orion.Say('cross')
+    Orion.Wait(1000)
+    }
+    }
+    
+    if (!Orion.WalkTo(x, y, 1, 2, 255, 1)) {
+        var nx = parseInt(x + (Player.X() - x) / 2)
+        var ny = parseInt(y + (Player.Y() - y) / 2)
+        Orion.Print(Player.X() + '  ' + x + ' ' + nx)
+        Orion.Print(Player.Y() + '  ' + y + ' ' + ny)
+        Orion.WalkTo(nx, ny, 1, 10, 255, 1)
+        Orion.WalkTo(x, y, 1, 2, 255, 1)
+    }
+    return Orion.WalkTo(x, y, 0, 2, 255, 1)
 }
 
-function mount(getOn)
-{
-
-if(getOn)
-{
-	while(Orion.ObjAtLayer('mount')==null)
-	{
-	        Orion.UseObject(beetleMobileId);
-	        Orion.Wait(800);
-	}
-	}
-	else
-	{
-	while(Orion.ObjAtLayer('mount')!=null)
-	{
-	        Orion.UseObject(Player.Serial());
-	        Orion.Wait(800);
-	}
-	}
+function Mount(getOn) {
+    Orion.Print('Mount')
+    if (getOn) {
+        Orion.Print('Mount')
+        while (Orion.ObjAtLayer('mount') == null) {
+        	Orion.Print('Mount '+mount.Name())
+            Orion.UseObject(mount.Serial());
+            Orion.Wait(1000);
+        }
+    }
+    else {
+        Orion.Print('Unmount')
+        while (Orion.ObjAtLayer('mount') != null) {
+            Orion.UseObject(Player.Serial());
+            Orion.Wait(800);
+        }
+    }
 }
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Debug.js
+
+function Heal()
+{
+if(Player.Hits()<Player.MaxHits())
+{
+Orion.CastTarget('Greater Heal',self)
+Orion.Wait(2000)
+}
+}
+
+function GetMaps(inMaps) {
+var maps;
+    if (inMaps == null) {
+        maps = Orion.FindTypeEx('0x14EC', '0x0000', backpack)
+            .filter(function (map1) {
+                return Orion.Contains(map1.Properties(), 'Treasure') &&
+                    Orion.Contains(map1.Properties(), 'Trammel') &&
+                    Orion.Contains(map1.Properties(), 'Stash|Supply')
+            })
+        maps.filter(function (map1) {
+            return !Orion.Contains(map1.Properties(), 'Blessed')
+            && !Orion.Contains(map1.Properties(), 'Completed')
+        }).forEach(function (m2) {
+            Orion.UseObject(m2.Serial())
+            Orion.Wait(1500)
+        })
+        Orion.Print('maps:' + maps.length)
+    }
+    else {
+        maps = inMaps
+    }
+    Orion.Print('Found '+maps.length)
+    return maps
+}
+
+function TestPrintLayers()
+{
+TextWindow.Clear()
+
+TextWindow.Open()
+for(i=1;i<30;i++)
+{
+	TextWindow.Print(i)
+
+if(Orion.ObjAtLayer(i)!=null)
+
+	TextWindow.Print(Orion.ObjAtLayer(i).Name())
+	
+}
+}
+//#include helpers/Target.js
+//#include helpers/Magic.js
+//#include helpers/Notifier.js
+//#include helpers/ItemManager.js
+//#include helpers/Debug.js

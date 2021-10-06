@@ -1,7 +1,7 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/helpers/Debug.js
+//#include helpers/Target.js
+//#include helpers/ItemManager.js
+//#include helpers/Notifier.js
+//#include helpers/Debug.js
 
 var udpPort = 2598;
 

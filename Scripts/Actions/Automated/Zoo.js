@@ -1,10 +1,10 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/TradeItems.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/cliloc.js
-//#include Scripts/helpers/Notifier.js
+//#include helpers/Target.js
+//#include helpers/Magic.js
+//#include helpers/TradeItems.js
+//#include helpers/ItemManager.js
+//#include helpers/Debug.js
+//#include helpers/cliloc.js
+//#include helpers/Notifier.js
 
 var counter = 0;
 var startBot = null

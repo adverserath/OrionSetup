@@ -1,4 +1,4 @@
-//#include Scripts/helpers/Notifier.js
+//#include helpers/Notifier.js
 
 function PickItUp() {
 	while (true) {

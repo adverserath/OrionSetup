@@ -1,9 +1,9 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Debug.js
-//#include Scripts/helpers/Magic.js
-//#include Scripts/helpers/ItemManager.js
-//#include Scripts/helpers/Notifier.js
-//#include Scripts/helpers/Detectors.js
+//#include helpers/Target.js
+//#include helpers/Debug.js
+//#include helpers/Magic.js
+//#include helpers/ItemManager.js
+//#include helpers/Notifier.js
+//#include helpers/Detectors.js
 
 function StartMining() {
     //Use Mark and Recall spells to move to storage and back to last location

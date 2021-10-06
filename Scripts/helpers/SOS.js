@@ -1,5 +1,5 @@
-//#include Scripts/helpers/SOSList.js
-//#include Scripts/helpers/Target.js
+//#include helpers/SOSList.js
+//#include helpers/Target.js
 
 var sosZones = [
 /*0*/    [8, 88, (88 + 8), (3927 + 88)],

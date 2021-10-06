@@ -1,4 +1,4 @@
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js
 
 function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recursive) {
     if (typeof fromContainer === "string") {
@@ -51,7 +51,7 @@ function MoveItemsFromPlayer(toContainer, graphicIDs, color, amount) {
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, color, amount);
     Orion.Print('Finished MoveItemsFromPlayer')
 }
-//#include Scripts/helpers/Target.js
+//#include helpers/Target.js
 
 function EmptyTargetXToTargetY() {
     EmptyContainerToAnother(SelectTarget(), SelectTarget())
@@ -154,7 +154,6 @@ function MoveItemTextFromTo(text, from, to) {
     if(to.Distance()>2 || from.Distance()>2){
         WalkTo(from);
         WalkTo(to);
-        Orion.Wait(500)
     }
     Orion.FindTypeEx(any, any, from.Serial(), '', '', 10, true)
         .filter(function (item) { return Orion.Contains(item.Properties(), text) })
@@ -170,7 +169,8 @@ function MoveItemTextFromTo(text, from, to) {
             if (!Orion.GumpExists('container', container.Serial())) {
                 Orion.Print('Searching ' + from.Name())
                 Orion.Wait(400)
-                Orion.UseObject(container.Serial())
+                Orion.OpenContainer(container.Serial())
+                Orion.Boxhack(container.Serial());
                 Orion.Wait(600)
             }
             MoveItemTextFromTo(text, container, to)

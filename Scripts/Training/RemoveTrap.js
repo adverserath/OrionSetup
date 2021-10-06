@@ -62,6 +62,8 @@ function ensureRunning() {
 
     }
 }
+
+var trapId = '0x40018CF8'
 var fail = 'You fail to disarm|You successfully'
 var pass = 'You successfully'
 function RemoveTrapTraining() {
@@ -72,7 +74,7 @@ function RemoveTrapTraining() {
 
         Orion.UseSkill('48');
         if (Orion.WaitForTarget(1000))
-            Orion.TargetObject('0x4011D933');
+            Orion.TargetObject(trapId);
         if (Orion.WaitForGump(1000)) {
             var gump1 = Orion.GetGump('last');
             var cells = Orion.GetGump('last').CommandList().filter(function (text) { return text.indexOf('9720') != -1 }).length;
@@ -95,7 +97,7 @@ function RemoveTrapTraining() {
             var startAttemptTime = Orion.Now();
             Orion.UseSkill('48');
             if (Orion.WaitForTarget(1000))
-                Orion.TargetObject('0x4011D933');
+                Orion.TargetObject(trapId);
             if (Orion.WaitForGump(1000)) {
                 var gump1 = Orion.GetGump('last');
                 if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x26F70A6A')) {

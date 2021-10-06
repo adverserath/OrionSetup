@@ -1,6 +1,6 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Map.js
-//#include Scripts/helpers/PathFinding.js
+//#include helpers/Target.js
+//#include helpers/Map.js
+//#include helpers/PathFinding.js
 
 var scale = 16
 var gridscale = 0;
@@ -47,6 +47,11 @@ function SteerPath(route, distance) {
 
   var startTime = Orion.Now()
   while (Orion.InJournal('You are now piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
+    var boat = Orion.FindObject(vessel)
+    if(boat.Distance()>1)
+    {
+      WalkTo(boat)
+    }
     Orion.UseObject(vessel)
     Orion.Wait(1000)
   }

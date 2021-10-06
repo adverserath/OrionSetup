@@ -1,5 +1,5 @@
-//#include Scripts/helpers/Target.js
-//#include Scripts/helpers/Notifier.js
+//#include helpers/Target.js
+//#include helpers/Notifier.js
 
 var discordMessage = 'jarring music|already in'
 
