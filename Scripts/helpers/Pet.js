@@ -10,7 +10,7 @@ function PetGuard() {
 
 function PetAttack(targetId) {
     var mount = Orion.FindObject('mount')
-    var target  = Orion.FindObject(targetId)
+    var target = Orion.FindObject(targetId)
     if (mount != null) {
         Orion.Print(targetId)
 
@@ -19,8 +19,7 @@ function PetAttack(targetId) {
         while (Orion.Contains(mount.Properties(), "Guarding") && target != null && target.Exists()) {
             Orion.Print(target.Exists())
             Orion.Say('All Kill')
-            if(Orion.WaitForTarget())
-            {
+            if (Orion.WaitForTarget()) {
                 Orion.TargetObject(targetId)
             }
             Orion.Wait(300)
@@ -41,19 +40,37 @@ function PetCome() {
     }
 }
 
-function MountPet() {
-    if (Orion.ObjAtLayer('mount') == null) {
-        var mount = Orion.FindObject('mount')
-        while (Orion.ObjAtLayer('mount') == null && mount != null) {
-            WalkTo(mount)
-            Orion.UseObject(mount.Serial());
-            Orion.Wait(800);
+function MountPet(getOn) {
+    if (getOn == null) {
+        if (Orion.ObjAtLayer('mount') == null) {
+            var mount = Orion.FindObject('mount')
+            while (Orion.ObjAtLayer('mount') == null && mount != null) {
+                WalkTo(mount)
+                Orion.UseObject(mount.Serial());
+                Orion.Wait(800);
+            }
+        }
+        else {
+            while (Orion.ObjAtLayer('mount') != null) {
+                Orion.UseObject(Player.Serial());
+                Orion.Wait(800);
+            }
         }
     }
     else {
-        while (Orion.ObjAtLayer('mount') != null) {
-            Orion.UseObject(Player.Serial());
-            Orion.Wait(800);
+        if (Orion.ObjAtLayer('mount') == null && getOn) {
+            var mount = Orion.FindObject('mount')
+            while (Orion.ObjAtLayer('mount') == null && mount != null) {
+                WalkTo(mount)
+                Orion.UseObject(mount.Serial());
+                Orion.Wait(800);
+            }
+        }
+        else {
+            while (Orion.ObjAtLayer('mount') != null && !getOn) {
+                Orion.UseObject(Player.Serial());
+                Orion.Wait(800);
+            }
         }
     }
 }

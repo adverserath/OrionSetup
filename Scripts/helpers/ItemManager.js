@@ -47,6 +47,7 @@ function MoveItemsFromPlayer(toContainer, graphicIDs, color, amount) {
     if (typeof toContainer === "string") {
         toContainer = Orion.FindObject(toContainer)
     }
+    TextWindow.Print('MoveItemsFromPlayer:'+' Graphic:'+graphicIDs + ' Colour:'+color + 'Amount:'+amount)
     Orion.Print('Moving objects to ' + toContainer.Serial())
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, color, amount);
     Orion.Print('Finished MoveItemsFromPlayer')

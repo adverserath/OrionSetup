@@ -6,25 +6,34 @@ function IDOCAlert() {
     var selecting = true;
     var signs = [];
     while (selecting) {
-        selected = SelectTarget();
-        if (selected == null) {
+        var selectedObj = SelectTarget();
+        if (selectedObj == null) {
             selecting = false
         }
-        else if (selected.Mobile()) {
+        else {
+        selected = selectedObj.Serial()
+
             signs.push(selected)
+            Orion.Print('added '+selected)
         }
     }
     var fallen = false;
     while (!fallen) {
     Orion.Wait(1000)
     signs.forEach(function (house){
-    if(!house.Exists()){
+    var sign = Orion.FindObject(house)
+    if(sign==null){
     fallen=true
     }
     })
     }
     Orion.ActivateClient();
+    var now = Orion.Date
+    while(true)
+    {
     BotPush('House Fallen')
+Orion.Wait(10000)
+}
 }
 
 function PlaceHouse()
@@ -52,13 +61,20 @@ function PlaceHouse()
 		Orion.TargetTile('any', 1011, 987, 65466);
 }
 
-function IdocFinder(){
+function IDOCWalker()
+{
+
+
+
+}
+function IDOCScanner(){
 while(true){
 Orion.Wait(500)
 var houseSigns = Orion.FindTypeEx(any,any,ground,'item',30).filter(function (item){
 return item.Name()==='A House Sign' 
 && (item.Properties().match(/Condition..This\sstructure\sis\sin\sdanger\sof\scollapsing/gi)
-|| item.Properties().match(/Condition..This\sstructure\sis\sgreatly\sworn/gi))
+//|| item.Properties().match(/Condition..This\sstructure\sis\sgreatly\sworn/gi)
+)
 })
 houseSigns.forEach(function (houseSign){
 BotPush('X: ' + houseSign.X() + ' Y: '+ houseSign.Y())

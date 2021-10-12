@@ -249,12 +249,12 @@ var tradeItems =
         [1023709, "WoodenBox", "0x0E7D", "the provisioner", 1469, 1668],
         [1022649, "Bedroll", "0x0A59", "the provisioner", 1469, 1668],
         [1023553, "Kindling", "0x0DE1", "the provisioner", 1469, 1668],
-        [1041060, "HairDye", "0x0EFF", "the provisioner", 1469, 1668],
+        //[1041060, "HairDye", "0x0EFF", "the provisioner", 1469, 1668], COSTS 2750
         [1024010, "MahjongGame", "0x0FAA", "the provisioner", 1469, 1668],
         [1028790, "SmallBagBall", "0x2256", "the provisioner", 1469, 1668],
         [1028791, "LargeBagBall", "0x2257", "the provisioner", 1469, 1668],
         [1079931, "SalvageBag", "0x0E76", "the provisioner", 1469, 1668],
-        [1114770, "SkinTingeingTincture", "0x0EFF", "the provisioner", 1469, 1668],
+        //[1114770, "SkinTingeingTincture", "0x0EFF", "the provisioner", 1469, 1668], COSTS 1225 
         [1025905, "ThighBoots", "0x1711", "the tailor", 1471, 1690],
         [1025903, "Shoes", "0x170F", "the tailor", 1471, 1690],
         [1025899, "Boots", "0x170B", "the tailor", 1471, 1690],
@@ -335,7 +335,7 @@ var tradeItems =
         [1028004, "WallOfStoneScroll", "0x1F44", "the mage", 1493, 1554],
         [1023739, "MortarPestle", "0x0E9B", "the alchemist", 1493, 1554],
         [1026217, "HeatingStand", "0x1849", "the alchemist", 1493, 1554],
-        [1023617, "Clean Bandage", "0x0E21", "the healer", 1508, 1647],
+        [1023617, "Clean Bandage", "0x0E21", "the healer", 1472, 1611],
         [1023195, "Cabbage", "0x0C7B", "the farmer", 1250, 1703],
         [1023193, "Cantaloupe", "0x0C79", "the farmer", 1250, 1703],
         [1023192, "Carrot", "0x0C78", "the farmer", 1250, 1703],

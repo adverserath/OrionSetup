@@ -250,7 +250,7 @@ function CheckForGateSound() {
 function PrintAnimation() {
 	TextWindow.Open()
 	while (true) {
-		var msg = Orion.WaitJournal('anim', Orion.Now(), Orion.Now() + 1000)
+		var msg = Orion.WaitJournal('', Orion.Now(), Orion.Now() + 1000)
 		if (msg != null) {
 			TextWindow.Print(Orion.Time());
 			TextWindow.Print(msg.Text());

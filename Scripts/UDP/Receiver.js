@@ -3,6 +3,8 @@
 //#include helpers/Notifier.js
 //#include helpers/Debug.js
 //#include helpers/Pet.js
+//#include helpers/Magic.js
+//#include helpers/Gumps.js
 
 var udpPort = 2598;
 
@@ -41,6 +43,13 @@ function Message_Receiver() {
                     if (recvp[0] == 'PC') {
                 PetCome()
             }
+                    if (recvp[0] == 'RH') {
+            GoHome()
+            }
+                    if (recvp[0] == 'AG') {
+            AcceptGump()
+            }
+
         }
         else
             Orion.Wait(50);

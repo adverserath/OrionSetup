@@ -48,6 +48,8 @@ var portalLocation = [
 var rareBox = '0x4014460B'
 var goldChestId = '0x40026602'
 var essenceBox = '0x400C5E3B'
+var recipeBox = '0x4006968E'
+var talismanBox = '0x400CD952'
 
 var regBoxId = '0x400F48A7'
 var bin = '0x400F63CF'
@@ -279,6 +281,11 @@ function LootChest() {
 }
 
 function ReturnHomeSortLoot() {
+    if(Orion.FindObject(home)==null)
+    {
+        home = 	Orion.FindTypeEx('0x22C5', any, backpack)
+        .filter(function (book){return Orion.Contains(book.Properties(), 'Home')}).shift().Serial()
+    }
     RecallRune(home)
 
     MoveItemsFromPlayer(goldChestId, '0x0EED')
@@ -292,7 +299,7 @@ function ReturnHomeSortLoot() {
     Orion.Print('Move Reg')
     MoveItemTextFromTo("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", backpack, Orion.FindObject(regBoxId))
     Orion.Print('Move Gem')
-    MoveItemTextFromTo("Essence|Crafting Resource", backpack, Orion.FindObject(essenceBox))//Gems
+    MoveItemTextFromTo("Bottle Of Ichor|Daemon Claw|Essence|Crafting Resource", backpack, Orion.FindObject(essenceBox))//Gems
     Orion.Print('Move Stuff')
     MoveItemTextFromTo('Board|Ingot|Leather|Cloth', backpack, Orion.FindObject(goldChestId))
     Orion.Print('Move Artifact')
@@ -301,12 +308,17 @@ function ReturnHomeSortLoot() {
     MoveItemTextFromTo('Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', backpack, rareBox)
     Orion.Print('Move Transendance')
     MoveItemTextFromTo('Transcendence', backpack, TranscendenceBook)
+   
+    Orion.Print('Move Recipes')
+    MoveItemTextFromTo('Recipe', backpack, Orion.FindObject(recipeBox))
+
+    Orion.Print('Move Talismans')
+    MoveItemTextFromTo('Talisman', backpack, Orion.FindObject(talismanBox))
 
     Orion.Print('Bin Bags')
     MoveItemTextFromTo('A Bag', backpack, Orion.FindObject(bin))
 
     MoveItemTextFromTo("Completed", backpack, bin)
-
 }
 
 function GoToClosestPortal() {

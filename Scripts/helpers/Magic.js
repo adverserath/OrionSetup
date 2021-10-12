@@ -56,6 +56,18 @@ function TakeOffClothesAndMeditate(_private) {
 	Orion.Wait(4000);
 }
 
+function GoHome()
+{
+	var runebook = Orion.FindTypeEx('0x22C5')
+	.filter(function(book){
+	return Orion.Contains(book.Properties(),'Home')
+	}).shift()
+	if(runebook!=null)
+	{
+	RecallRune(runebook)
+	}
+}
+
 function KeepGateOpen() {
 	var gateTarget = SelectTarget()
 	while (true) {
