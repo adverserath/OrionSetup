@@ -7,61 +7,55 @@
 //#include helpers/Magic.js
 //#include helpers/Gumps.js
 
-function gridX(x) {
-    return x * 105
+function gridX(x,size) {
+    return x * size
 }
 
-function gridY(y) {
-    return y * 30
+function gridY(y,size) {
+    return y * size
 }
-function gridTX(x) {
-    return x * 105 + 5
-}
-
-function gridTY(y) {
-    return y * 30 + 5
+function gridTX(x,size) {
+    return x * size + 5
 }
 
-var buttons = //x y hor ver ID Text
+function gridTY(y,size) {
+    return y * size + 5
+}
+
+var buttons = //x y xsize ysize CallBackID Text FunctionName
     [
-        [[100, 30, 2, "Follow", 'Sender_FollowMe'], [100, 30, 5, "Walk To", 'Sender_WalkToHere'], [100, 30, 3, "Mount", 'Sender_MountPet']],
-        [[100, 30, 4, "Attack", 'Sender_Attack'], [100, 30, 12, "AF and Kill", 'AutoFollowAndKill']],
-        [[100, 30, 8, "Pet Guard", 'Sender_PetGuard'], [100, 30, 9, "Pet Come", 'Sender_PetCome'], [100, 30, 7, "Pet Attack", 'Sender_PetAttack']],
-        [[100, 30, 10, "Go Home", 'Sender_GoHome'], [100, 30, 6, "Say", 'Sender_Speak'], [100, 30, 11, "Accept Gump", 'Sender_AcceptGump']]
+        [[100, 30, 11, "Follow", 'Sender_FollowMe'], [100, 30, 12, "Walk To", 'Sender_WalkToHere'],[100, 30, 13, "Walk To Me", 'Sender_WalkToMe']], 
+        [[50, 30, 21, "Mount", 'Sender_MountPet'], [50, 30, 22, "UnMount", 'Sender_UnmountPet']],
+        [[100, 30, 31, "Attack", 'Sender_Attack'], [100, 30, 32, "AF and Kill", 'AutoFollowAndKill']],
+        [[100, 30, 41, "Pet Guard", 'Sender_PetGuard'], [100, 30, 42, "Pet Come", 'Sender_PetCome'], [100, 30, 43, "Pet Attack", 'Sender_PetAttack']],
+        [[100, 30, 51, "Go Home", 'Sender_GoHome'], [100, 30, 52, "Say", 'Sender_Speak'], [100, 30, 53, "Accept Gump", 'Sender_AcceptGump']],
+        [[100, 30, 61, "Reload", 'Sender_Reload']]
+
     ]
 
 
 function HostGump() {
     Orion.LoadScript('Sender.js');
-    // Create new custom gump with serial 15
-    var gump = Orion.CreateCustomGump(1);
-
-    // This gump will be no closible by a right mouse click
-    gump.SetNoClose(false);
-
-    // Clear gump cpntents (for rebuilds)
+    // Create new custom gump with serial 60
+    var gump = Orion.CreateCustomGump(60);
     gump.Clear();
-
     // Set callback function
     gump.SetCallback('HostCallback');
 
     var widest = Math.max.apply(Math, buttons.map(function (rows) {
-        Orion.Print(rows.length)
-
         return rows.length
     }))
+    //Draw window size to button array size
     gump.AddHtmlGump(1, 0, 0, widest * 100 + 30, buttons.length * 30, '0x0BB8');
+	gump.Select('htmlgump', 1);
 
-    // Select HTML gump as current container for new items
-    gump.Select('htmlgump', 1);
-
+	//Draw buttons from array
     var row = 0;
     var column = 0;
     buttons.forEach(function (rowLayer) {
-
         rowLayer.forEach(function (button) {
-            gump.AddResizepic(gridX(column), gridY(row), '0x24EA', button[0], button[1], button[2], 1);
-            gump.AddText(gridTX(column), gridTY(row), '0', button[3]);
+            gump.AddResizepic(gridX(column,button[0]), gridY(row,button[1]), '0x24EA', button[0], button[1], button[2], 1);
+            gump.AddText(gridTX(column,button[0]), gridTY(row,button[1]), '0', button[3]);
             column++;
         })
         column = 0
@@ -95,12 +89,16 @@ function HostCallback() {
 
 var udpPort = 2598;
 
-function Sender_FollowMe() {
+function Sender_FollowMe(_) {
     Sender('F:' + Player.Serial());
 }
 
-function walkToMe(_) {
-    Sender('W:' + Player.X() + ':' + Player.Y());
+function Sender_WalkToMe(_) {
+    Sender('W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z());
+}
+
+function Sender_Reload(_) {
+    Sender('Reload:');
 }
 
 function Sender_WalkToHere(_) {
@@ -111,7 +109,12 @@ function Sender_WalkToHere(_) {
 
 function Sender_MountPet(_) {
     Sender('M:');
-    MountPet()
+    MountPet(true)
+}
+
+function Sender_UnmountPet(_) {
+    Sender('M:false');
+    MountPet(false)
 }
 
 function Sender_Attack(_) {
@@ -168,7 +171,7 @@ function AutoFollowAndKill(_) {
         while (Player.WarMode()) {
             Orion.Wait(200)
             if (lastX != Player.X() || lastY != Player.Y()) {
-                walkToMe()
+                Sender_WalkToMe()
                 lastX = Player.X()
                 lastY = Player.Y()
             }

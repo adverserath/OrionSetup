@@ -7,7 +7,10 @@
 //#include helpers/Gumps.js
 
 var udpPort = 2598;
-
+function followtest()
+{
+Orion.Follow(SelectTarget().Serial())
+}
 function Message_Receiver() {
     UDPServer()
     while (true) {
@@ -16,7 +19,7 @@ function Message_Receiver() {
         if (recv.length > 0) {
             var recvp = Orion.Split(recv, ':')
             if (recvp[0] == 'F') {
-                Orion.Follow(recvp[1])
+                Orion.Follow(recvp[1],true)
             }
             if (recvp[0] == 'W') {
                 Orion.Print('Walking')
@@ -26,7 +29,10 @@ function Message_Receiver() {
                 //    Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
             }
             if (recvp[0] == 'M') {
-                MountPet()
+            if(recvp[1]=='false')
+            	MountPet(false)
+            else
+                MountPet(true)
             }
             if (recvp[0] == 'A') {
                 Orion.Attack(recvp[1])
@@ -49,15 +55,21 @@ function Message_Receiver() {
             if (recvp[0] == 'AG') {
                 AcceptGump()
             }
-
+            if (recvp[0] == 'Reload') {
+				Orion.ToggleScript('Reload')
+            }
         }
         else
             Orion.Wait(50);
     }
 }
 
-
-
+function Reload()
+{
+	Orion.ToggleScript('Message_Receiver',true)
+	Orion.Wait(100)
+	Orion.ToggleScript('Message_Receiver',true)
+}
 
 function StopServer() {
     Orion.RemoveAllUdpServers();
