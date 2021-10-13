@@ -25,6 +25,6 @@
         <shopitem enabled="true" graphic="0x1F5F" color="0x0000" name="Flamestrike" count="0" price="0" comment=""/>
     </shoplist>
     <shoplist name="Trader">
-        <shopitem enabled="true" graphic="0x0E86" color="0xFFFF" name="Pickaxe" count="15" price="0" comment="Pickaxe"/>
+        <shopitem enabled="true" graphic="0x2BE3" color="0xFFFF" name="" count="1" price="0" comment="Fresh Ginger"/>
     </shoplist>
 </data>

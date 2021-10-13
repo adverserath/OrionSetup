@@ -112,7 +112,6 @@ function CheckIfCanDo(crate) {
 function GetItem(crate) {
 	TextWindow.Print('Catch Bag :' +  crate.Serial())
 	FillFromBackpack(crate)
-	Orion.SetCatchBag(crate.Serial())
 
 	var crateprop = crate.Properties().match(/^[\w\s']*:\s\d*\/\d*$/img)
 
@@ -158,8 +157,10 @@ function GetItem(crate) {
 			if (havecount > 0) {
 				TextWindow.Print('Already have ' + actualName)
 				Orion.Wait(2000)
-				//MoveItemsFromPlayer(crate, itemset[2], any, amount)
+				
 				FillFromBackpack(crate)
+				MoveItemsFromPlayer(crate, itemset[2], any, amount)
+				
 				Orion.Wait(1000)
 				fullfilled = crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) > -1
 				TextWindow.Print('Is now fullfilled: ' + fullfilled)
@@ -193,8 +194,10 @@ function GetItem(crate) {
 
 						Orion.BuyRestock('Trader', npc.Name())
 						Orion.Wait(600)
-						//MoveItemsFromPlayer(crate, itemset[2], any, amount)
+						
 						FillFromBackpack(crate)
+						MoveItemsFromPlayer(crate, itemset[2], any, amount)
+
 						Orion.Wait(500)
 					}
 				}
@@ -231,10 +234,12 @@ function GetItem(crate) {
 					}
 
 					Orion.Wait(500)
-					//MoveItemsFromPlayer(crate, itemset[2], any, amount)
+
 					FillFromBackpack(crate)
+					MoveItemsFromPlayer(crate, itemset[2], any, amount)
+
 					Orion.Wait(500)
-				}
+				
 
 				havecount = CountCurrent(actualName)
 				needed = amount - havecount
@@ -269,9 +274,12 @@ function GetItem(crate) {
 
 					Orion.Wait(500)
 					TextWindow.Print('Move ' + amount + ' ' + itemset[2] + ' to '+ crate.Serial())
-					//MoveItemsFromPlayer(crate, itemset[2], any, amount)
+
 					FillFromBackpack(crate)
+					MoveItemsFromPlayer(crate, itemset[2], any, amount)
+
 					Orion.Wait(500)
+				}
 				}
 			}
 			var itemsInBp = Orion.FindTypeEx(itemset[2], any, backpack, '', '', '', false)
@@ -283,8 +291,10 @@ function GetItem(crate) {
 			}
 			havecount = Orion.Count(itemset[2], any, crate.Serial())
 			if (havecount < amount) {
-				//MoveItemsFromPlayer(crate, itemset[2], any, amount)
+				
 				FillFromBackpack(crate)
+				MoveItemsFromPlayer(crate, itemset[2], any, amount)
+
 			}
 			Orion.OpenContainer(crate.Serial())
 			havecount = Orion.Count(itemset[2], any, crate.Serial())
@@ -296,8 +306,6 @@ function GetItem(crate) {
 		}
 	})
 
-
-	Orion.UnsetCatchBag();
 }
 function StartTradeRoute() {
 	Orion.ToggleScript('MonitorTrade');

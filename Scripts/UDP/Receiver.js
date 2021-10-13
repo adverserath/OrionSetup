@@ -37,17 +37,17 @@ function Message_Receiver() {
             if (recvp[0] == 'PA') {
                 PetAttack(recvp[1])
             }
-                    if (recvp[0] == 'PG') {
+            if (recvp[0] == 'PG') {
                 PetGuard()
             }
-                    if (recvp[0] == 'PC') {
+            if (recvp[0] == 'PC') {
                 PetCome()
             }
-                    if (recvp[0] == 'RH') {
-            GoHome()
+            if (recvp[0] == 'RH') {
+                GoHome()
             }
-                    if (recvp[0] == 'AG') {
-            AcceptGump()
+            if (recvp[0] == 'AG') {
+                AcceptGump()
             }
 
         }

@@ -7,6 +7,29 @@
 //#include helpers/Magic.js
 //#include helpers/Gumps.js
 
+function gridX(x) {
+    return x * 105
+}
+
+function gridY(y) {
+    return y * 30
+}
+function gridTX(x) {
+    return x * 105 + 5
+}
+
+function gridTY(y) {
+    return y * 30 + 5
+}
+
+var buttons = //x y hor ver ID Text
+    [
+        [[100, 30, 2, "Follow", 'Sender_FollowMe'], [100, 30, 5, "Walk To", 'Sender_WalkToHere'], [100, 30, 3, "Mount", 'Sender_MountPet']],
+        [[100, 30, 4, "Attack", 'Sender_Attack'], [100, 30, 12, "AF and Kill", 'AutoFollowAndKill']],
+        [[100, 30, 8, "Pet Guard", 'Sender_PetGuard'], [100, 30, 9, "Pet Come", 'Sender_PetCome'], [100, 30, 7, "Pet Attack", 'Sender_PetAttack']],
+        [[100, 30, 10, "Go Home", 'Sender_GoHome'], [100, 30, 6, "Say", 'Sender_Speak'], [100, 30, 11, "Accept Gump", 'Sender_AcceptGump']]
+    ]
+
 
 function HostGump() {
     Orion.LoadScript('Sender.js');
@@ -22,53 +45,29 @@ function HostGump() {
     // Set callback function
     gump.SetCallback('HostCallback');
 
-    var itemSerial = 1;
+    var widest = Math.max.apply(Math, buttons.map(function (rows) {
+        Orion.Print(rows.length)
 
-    // HTML gump section
-    var htmlSerial = itemSerial++;
-    gump.AddHtmlGump(htmlSerial, 0, 0, 300, 270, '0x0BB8');
+        return rows.length
+    }))
+    gump.AddHtmlGump(1, 0, 0, widest * 100 + 30, buttons.length * 30, '0x0BB8');
 
     // Select HTML gump as current container for new items
-    gump.Select('htmlgump', htmlSerial);
+    gump.Select('htmlgump', 1);
 
+    var row = 0;
+    var column = 0;
+    buttons.forEach(function (rowLayer) {
 
-    var ystep = 30;
-    var xstep = 100;
-    var x = 5;
-    var y = 2;
-    gump.AddResizepic(x, y, '0x24EA', xstep, ystep, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Follow");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Mount");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Attack");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Walk To");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Say");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Pet Attack");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Pet Guard");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Pet Come");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Go Home");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "Accept Gump");
-    y += ystep;
-    gump.AddResizepic(x, y, '0x24EA', 100, 30, itemSerial++, 1);
-    gump.AddText(x + 5, y + 5, '0', "AutoKill");
-    y += ystep;
+        rowLayer.forEach(function (button) {
+            gump.AddResizepic(gridX(column), gridY(row), '0x24EA', button[0], button[1], button[2], 1);
+            gump.AddText(gridTX(column), gridTY(row), '0', button[3]);
+            column++;
+        })
+        column = 0
+        row++;
+    });
+
     // Reset container for new items to gump
     gump.Select('gump');
 
@@ -77,53 +76,21 @@ function HostGump() {
 
 function HostCallback() {
     var code = CustomGumpResponse.ReturnCode();
-    Orion.Print('respond')
+
     if (code == 0) {
         var gump = Orion.CreateCustomGump(15);
         gump.Close();
     }
-    Orion.Print(code)
-    switch (code) {
-        case 2:
-            Sender_FollowMe()
-            break;
-        case 3:
-            Sender_MountPet()
-            break;
-        case 4:
-            Sender_Attack()
-            break;
-        case 5:
-            Sender_WalkToHere()
-            break;
-        case 6:
-            Sender_Speak()
-            break;
-        case 7:
-            Sender_PetAttack()
-            break;
-        case 8:
-            PetGuard()
-            Sender('PG');
-            break;
-        case 9:
-            PetCome()
-            Sender('PC');
-            break;
-        case 10:
-            GoHome()
-            Sender('RH');
-            break;
-        case 11:
-            AcceptGump()
-            Sender('AG');
-            break;
-        case 12:
-            Orion.ToggleScript('AutoFollowAndKill')
-            break;
-        default:
-            break;
-    }
+
+    buttons.forEach(function (rowLayer) {
+        rowLayer.forEach(function (button) {
+            if (button[2] == code) {
+                Orion.Print('Execute ' + button[4])
+                Orion.ToggleScript(button[4])
+                return
+            }
+        })
+    });
 }
 
 var udpPort = 2598;
@@ -142,28 +109,49 @@ function Sender_WalkToHere(_) {
     Orion.WalkTo(pathLocation.X(), pathLocation.Y(), pathLocation.Z(), 0, 3, 1)
 }
 
-function SenderMountPet(_) {
+function Sender_MountPet(_) {
     Sender('M:');
     MountPet()
 }
 
 function Sender_Attack(_) {
     var target = SelectTarget().Serial();
-    Orion.Attack(target)
-    Sender('A:' + target);
+    if (target != null) {
+        Orion.Attack(target)
+        Sender('A:' + target);
+    }
 }
-function Sender_Speak(_)
-{
+function Sender_Speak(_) {
     var entry = Orion.InputText()
     Orion.Say(entry)
     Sender('S:' + entry);
 }
 
-function Sender_PetAttack(_)
-{
+function Sender_PetAttack(_) {
     var target = SelectTarget();
-    Sender('PA:' + target.Serial());
-    PetAttack(target.Serial())
+    if (target != null) {
+        Sender('PA:' + target.Serial());
+        PetAttack(target.Serial())
+    }
+}
+
+function Sender_PetGuard() {
+    Sender('PG');
+    PetGuard()
+}
+function Sender_PetCome() {
+    Sender('PC');
+    PetCome()
+
+}
+function Sender_GoHome() {
+    Sender('RH');
+    GoHome()
+}
+
+function Sender_AcceptGump() {
+    Sender('AG');
+    AcceptGump()
 }
 
 function Sender(message) {
