@@ -29,8 +29,14 @@ var buttons = //x y CallBackID Text FunctionName
         [[100, 30, 31, "Attack", 'Sender_Attack'], [100, 30, 32, "AF and Kill", 'AutoFollowAndKill']],
         [[100, 30, 41, "Pet Guard", 'Sender_PetGuard'], [100, 30, 42, "Pet Come", 'Sender_PetCome'], [100, 30, 43, "Pet Attack", 'Sender_PetAttack']],
         [[100, 30, 51, "Go Home", 'Sender_GoHome'], [100, 30, 52, "Say", 'Sender_Speak'], [100, 30, 53, "Accept Gump", 'Sender_AcceptGump']],
-        [[100, 30, 61, "Reload", 'Sender_Reload']]
+        [[100, 30, 61, "Reload", 'Sender_Reload'],[100, 30, 62, "CloseUO", 'Sender_CloseUO']]
     ]
+
+function Sender_CloseUO(serial) {
+    Sender(serial, 'CloseUO:');
+    if (serial === '*')
+        Orion.CloseUO()
+}
 
 function Sender_FollowMe(serial) {
     Sender(serial, 'F:' + Player.Serial());
@@ -143,7 +149,7 @@ function HostCallback(_) {
         }
         return
     }
-    var players = JSON.parse(Orion.GetGlobal('updPlayers'));
+    var players = LoadPlayerJson()
 
     var clientSerial = '*'
     if (code.toString().length == 3) {
@@ -164,7 +170,7 @@ function HostCallback(_) {
 }
 
 function Sender(serial, message, playerName) {
-    var players = JSON.parse(Orion.GetGlobal('updPlayers'));
+    var players = LoadPlayerJson()
 
     players.forEach(function (player) {
         //Orion.Print('Send To:' + player.name + ' on ' + player.port)
@@ -173,19 +179,23 @@ function Sender(serial, message, playerName) {
     })
 }
 
+function LoadPlayerJson() {
+    if (Orion.GetGlobal('updPlayers') == null || Orion.GetGlobal('updPlayers') == '') {
+        return JSON.parse('[]')
+    }
+    else {
+        return JSON.parse(Orion.GetGlobal('updPlayers'));
+    }
+}
+
 function HostGump() {
     var gumpId = 60
     var gump = Orion.CreateCustomGump(gumpId);
     gump.Clear()
     gump.SetCallback('HostCallback');
 
-    var players = []
-    if (Orion.GetGlobal('updPlayers') == null || Orion.GetGlobal('updPlayers') == '') {
-        players = JSON.parse('[]')
-    }
-    else {
-        players = JSON.parse(Orion.GetGlobal('updPlayers'));
-    }
+    var players = LoadPlayerJson()
+
 
     var partition = Math.max.apply(Math, buttons.map(function (rows) {
         return rows.length
@@ -254,12 +264,8 @@ function Host() {
     while (true) {
         var recv = Orion.UdpRecv(Player.Name());
         if (recv.length > 0) {
-            if (Orion.GetGlobal('updPlayers') == null || Orion.GetGlobal('updPlayers') == '') {
-                players = JSON.parse('[]')
-            }
-            else {
-                players = JSON.parse(Orion.GetGlobal('updPlayers'));
-            }
+            players = LoadPlayerJson()
+
             var recvp = Orion.Split(recv, ':::')
             if (recvp[0] == 'Fail') {
                 Orion.Print(recvp[1])

@@ -70,8 +70,10 @@ function Message_Receiver() {
                 Orion.ToggleScript('Reload')
             }
             if (command[1] == 'WHO') {
-                Orion.Wait(100)
 				SendWho()
+            }
+            if (command[1] == 'CloseUO') {
+				Orion.CloseUO()
             }
         }
         else

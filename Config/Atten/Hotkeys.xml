@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="23" action="1" key="36" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="5" key="118" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="6" key="117" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="259" key="46" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="2" key="122" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="0" key="123" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="1" key="120" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="7" action="0" key="45" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="115" key="50" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="3" key="121" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="10" action="25" key="51" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="616" key="49" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="10" action="44" key="52" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="262" key="19" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="22" key="53" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="41" action="7" key="111" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="610" key="114" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="605" key="115" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="49" action="0" key="8" modifiers="64" override_pass_key_to_client="0"/>
-    <hotkey type="10" action="-29" key="112" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="3" action="6" key="113" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//Word Of Death on weak target\n        var focus = Orion.FindTypeEx('0x3155')\n            .filter(function (gem) {\n                return gem.Properties().indexOf('Strength Bonus') != -1\n            }).shift()\n\n        var gemstr = (focus.Properties().match(/Strength\\sBonus\\s(\\d)/i) || [])[1] || 0;\n        var hitmarker = parseInt(0.05 * gemstr * 25)\n\t\tOrion.Print('Getting targets under:'+(parseInt(0.05 * gemstr * 100))+'%')\n\n        var entireAreaMobs = Orion.FindTypeEx(any, any, ground,\n            'nothumanmobile|live|ignoreself|ignorefriends', 10, 'gray|criminal|orange')\n            .filter(function (enemy) {\n                return enemy.Exists() &amp;&amp; enemy.Hits() &lt;= (hitmarker + 2) &amp;&amp; enemy.Hits() &gt;0\n            })\n            Orion.Print(hitmarker)\n        entireAreaMobs.forEach(function (mob) {\n            Orion.AddHighlightCharacter(mob.Serial(), '0x0161');\n        })\n        Orion.Print('all targets:' + entireAreaMobs.length)\n\n        if (entireAreaMobs.length &gt; 0) {\n            Orion.Cast('Word Of Death')\n            if (Orion.WaitForTarget(4000)) {\n\n                while (!Orion.WaitWhileTargeting(500)) {\n                    Orion.Print('wait')\n                    var entireAreaMobs = Orion.FindTypeEx(any, any, ground,\n                        'nothumanmobile|live|ignoreself|ignorefriends', 10, 'gray|criminal|orange')\n                        .filter(function (enemy) {\n                            return enemy.InLOS() &amp;&amp; enemy.Exists() &amp;&amp; enemy.Hits() &lt;= (hitmarker)\n                        })\n                    Orion.Print('targets:' + entireAreaMobs.length)\n                    entireAreaMobs.forEach(function (mob) {\n                        Orion.AddHighlightCharacter(mob.Serial(), '0x01A1');\n                    })\n\n                    if (entireAreaMobs.length &gt; 0) {\n\t\t\t\t\tvar target = entireAreaMobs.shift()\n                        Orion.TargetObject(target.Serial())\n                    }\n                }\n            }\n        }&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
     <hotkey type="9" action="42" key="118" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="9" action="51" key="119" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="37" key="116" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="39" key="35" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="43" key="117" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="16" action="2" key="122" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="3" action="1" key="123" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;var target = SelectTarget()\n                Orion.Hide(target.Serial())&quot;,&#10;    &quot;name&quot;: &quot;HideCorpse&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
-    <hotkey type="3" action="1" key="120" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;Orion.FindTypeEx(any, any, ground,\n        'nothumanmobile|live|ignoreself|ignorefriends', 20, 3)\n        .filter(function (mob) {\n            return mob.Notoriety() &gt;= 3\n                &amp;&amp; mob.Notoriety() &lt; 6\n        }).forEach(function (mobile) {\n        Orion.Print(mobile.Serial())\nOrion.Attack(mobile.Serial())\n    })&quot;,&#10;    &quot;name&quot;: &quot;TrainTaming&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
-    <hotkey type="29" action="261" key="34" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="18" action="35" key="121" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="260" key="35" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="47" action="0" key="16" modifiers="64" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="256" key="33" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="1" key="120" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="7" action="0" key="45" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="29" action="263" key="145" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="3" key="121" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="259" key="46" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="39" key="35" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="2" key="122" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="0" key="123" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="256" key="33" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="261" key="34" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="260" key="35" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="23" action="1" key="36" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="41" action="7" key="111" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="49" action="0" key="8" modifiers="64" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="6" key="117" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="5" key="118" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="616" key="49" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="115" key="50" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="120" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;Orion.FindTypeEx(any, any, ground,\n        'nothumanmobile|live|ignoreself|ignorefriends', 20, 3)\n        .filter(function (mob) {\n            return mob.Notoriety() &gt;= 3\n                &amp;&amp; mob.Notoriety() &lt; 6\n        }).forEach(function (mobile) {\n        Orion.Print(mobile.Serial())\nOrion.Attack(mobile.Serial())\n    })&quot;,&#10;    &quot;name&quot;: &quot;TrainTaming&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="10" action="25" key="51" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="18" action="35" key="121" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="10" action="44" key="52" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="16" action="2" key="122" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="22" key="53" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="123" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;var target = SelectTarget()\n                Orion.Hide(target.Serial())&quot;,&#10;    &quot;name&quot;: &quot;HideCorpse&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="29" action="262" key="19" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="10" action="-29" key="112" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="6" key="113" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//Word Of Death on weak target\n        var focus = Orion.FindTypeEx('0x3155')\n            .filter(function (gem) {\n                return gem.Properties().indexOf('Strength Bonus') != -1\n            }).shift()\n\n        var gemstr = (focus.Properties().match(/Strength\\sBonus\\s(\\d)/i) || [])[1] || 0;\n        var hitmarker = parseInt(0.05 * gemstr * 25)\n\t\tOrion.Print('Getting targets under:'+(parseInt(0.05 * gemstr * 100))+'%')\n\n        var entireAreaMobs = Orion.FindTypeEx(any, any, ground,\n            'nothumanmobile|live|ignoreself|ignorefriends', 10, 'gray|criminal|orange')\n            .filter(function (enemy) {\n                return enemy.Exists() &amp;&amp; enemy.Hits() &lt;= (hitmarker + 2) &amp;&amp; enemy.Hits() &gt;0\n            })\n            Orion.Print(hitmarker)\n        entireAreaMobs.forEach(function (mob) {\n            Orion.AddHighlightCharacter(mob.Serial(), '0x0161');\n        })\n        Orion.Print('all targets:' + entireAreaMobs.length)\n\n        if (entireAreaMobs.length &gt; 0) {\n            Orion.Cast('Word Of Death')\n            if (Orion.WaitForTarget(4000)) {\n\n                while (!Orion.WaitWhileTargeting(500)) {\n                    Orion.Print('wait')\n                    var entireAreaMobs = Orion.FindTypeEx(any, any, ground,\n                        'nothumanmobile|live|ignoreself|ignorefriends', 10, 'gray|criminal|orange')\n                        .filter(function (enemy) {\n                            return enemy.InLOS() &amp;&amp; enemy.Exists() &amp;&amp; enemy.Hits() &lt;= (hitmarker)\n                        })\n                    Orion.Print('targets:' + entireAreaMobs.length)\n                    entireAreaMobs.forEach(function (mob) {\n                        Orion.AddHighlightCharacter(mob.Serial(), '0x01A1');\n                    })\n\n                    if (entireAreaMobs.length &gt; 0) {\n\t\t\t\t\tvar target = entireAreaMobs.shift()\n                        Orion.TargetObject(target.Serial())\n                    }\n                }\n            }\n        }&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="9" action="610" key="114" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="605" key="115" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="37" key="116" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="43" key="117" modifiers="0" override_pass_key_to_client="0"/>
 </data>
