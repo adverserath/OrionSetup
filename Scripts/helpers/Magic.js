@@ -64,7 +64,12 @@ function GoHome()
 	}).shift()
 	if(runebook!=null)
 	{
-	RecallRune(runebook)
+		if(Orion.SkillValue('Magery', 'base')>40){
+			CastSpellOnTarget("Recall", runebook.Serial());
+		}
+		if(Orion.SkillValue('Chivalry', 'base')>30){
+			CastSpellOnTarget("Sacred Journey", runebook.Serial());
+		}
 	}
 }
 

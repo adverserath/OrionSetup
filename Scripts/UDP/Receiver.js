@@ -7,56 +7,71 @@
 //#include helpers/Gumps.js
 
 var udpPort = 2598;
-function followtest()
-{
-Orion.Follow(SelectTarget().Serial())
-}
+
 function Message_Receiver() {
-    UDPServer()
+    if (!UDPClientServer()) {
+        Orion.UdpSend(2597, "Fail:::" + Player.Name())
+        return
+    }
+    else {
+        SendWho()
+    }
+
     while (true) {
         var recv = Orion.UdpRecv(Player.Name());
         // Result buffer (string) is not empty - package received
         if (recv.length > 0) {
+        Orion.Print(recv)
             var recvp = Orion.Split(recv, ':')
-            if (recvp[0] == 'F') {
-                Orion.Follow(recvp[1],true)
+            var command = Orion.Split(recvp[0], '|')
+            if(command[0]!='*' && command[0] !== Player.Serial())
+            {
+            Orion.Print(command[0] +' '+ Player.Serial())
+            	continue;
             }
-            if (recvp[0] == 'W') {
+            if (command[1] == 'F') {
+                Orion.Follow(recvp[1], true)
+            }
+            if (command[1] == 'W') {
                 Orion.Print('Walking')
                 if (Orion.GetDistance(recvp[1], recvp[2]) > 0) {
                     Orion.WalkTo(recvp[1], recvp[2], recvp[3], 0, 3, 1)
                 }
                 //    Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
             }
-            if (recvp[0] == 'M') {
-            if(recvp[1]=='false')
-            	MountPet(false)
-            else
-                MountPet(true)
+            if (command[1] == 'M') {
+                if (recvp[1] == 'false')
+                    MountPet(false)
+                else
+                    MountPet(true)
             }
-            if (recvp[0] == 'A') {
+            if (command[1] == 'A') {
                 Orion.Attack(recvp[1])
             }
-            if (recvp[0] == 'S') {
+            if (command[1] == 'S') {
                 Orion.Say(recvp[1])
             }
-            if (recvp[0] == 'PA') {
+            if (command[1] == 'PA') {
                 PetAttack(recvp[1])
             }
-            if (recvp[0] == 'PG') {
+            if (command[1] == 'PG') {
                 PetGuard()
             }
-            if (recvp[0] == 'PC') {
+            if (command[1] == 'PC') {
                 PetCome()
             }
-            if (recvp[0] == 'RH') {
+            if (command[1] == 'RH') {
                 GoHome()
             }
-            if (recvp[0] == 'AG') {
+            if (command[1] == 'AG') {
                 AcceptGump()
             }
-            if (recvp[0] == 'Reload') {
-				Orion.ToggleScript('Reload')
+            if (command[1] == 'Reload') {
+                Orion.ToggleScript('Reload')
+            }
+            if (command[1] == 'WHO') {
+                Orion.Wait(100)
+				SendWho()
             }
         }
         else
@@ -64,33 +79,33 @@ function Message_Receiver() {
     }
 }
 
-function Reload()
-{
-	Orion.ToggleScript('Message_Receiver',true)
-	Orion.Wait(100)
-	Orion.ToggleScript('Message_Receiver',true)
+function Reload() {
+    Orion.ToggleScript('Message_Receiver', true)
+    Orion.Wait(100)
+    Orion.ToggleScript('Message_Receiver', true)
 }
 
 function StopServer() {
     Orion.RemoveAllUdpServers();
 }
-function UDPServer() {
+
+function UDPClientServer() {
     Orion.RemoveAllUdpServers();
 
-    TextWindow.Open();
-    TextWindow.Clear();
-
-    var created = Orion.CreateUdpServer(Player.Name(), udpPort);
     for (var index = 0; index < 3; index++) {
-        var created = Orion.CreateUdpServer(Player.Name(), udpPort + index);
+        var created = Orion.CreateUdpServer(Player.Name(), udpPort);
         if (created == 0) {
-            TextWindow.Print('UDP server created and listening port: ' + udpPort + index);
+            Orion.Print('UDP server created and listening port: ' + udpPort);
             Orion.Say('Hi')
-            break;
+            return true;
         }
         else {
-            Orion.CreateUdpServer('test', udpPort + index);
-            Orion.Print('Failed to create UDP server, port: ' + udpPort + ' error: ' + created);
+            udpPort++;
         }
     }
+}
+
+function SendWho()
+{
+        Orion.UdpSend(2597, "Player:::" + '{"name":"' + Player.Name() + '", "port":' + udpPort + ', "serial":"' + Player.Serial() + '"}');
 }
