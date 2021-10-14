@@ -46,8 +46,9 @@ function BushKnight() {
             }
             if (attacker != null && attacker.Hits() == 25) {
                 Orion.InvokeVirtue('Honor')
-                if (Orion.WaitForTarget())
+                if (Orion.WaitForTarget(2000)) {
                     Orion.TargetObject(attacker.Serial())
+                }
             }
             Orion.Wait(50)
             attacker = Orion.FindObject(Orion.ClientLastAttack());
@@ -121,6 +122,7 @@ function BushyArcher() {
     if (bow != null) {
         range = (bow.Properties().match(/Range\s(\d*)/i) || [0, 2])[1]
     }
+    Orion.ToggleScript('AutoHonor', true)
     Orion.Print(!Player.Dead())
     while (!Player.Dead()) {
         while (!Player.WarMode()) {
@@ -133,22 +135,8 @@ function BushyArcher() {
             var targets = Orion.FindTypeEx(any, any, ground,
                 'nothumanmobile|live|ignoreself|ignorefriends|inlos', 12, 'gray|criminal|orange')
 
-            var ht = targets.filter(function (ft) {
-                return ft.Hits() == 25
-            }).shift()
-
-            if (!Orion.ObjectExists(honorTarget) && ht != null && ht.Hits() == 25 && !Orion.BuffExists('Honor')) {
-                Orion.InvokeVirtue('Honor')
-                Orion.WaitWhileTargeting(200)
-                   Orion.TargetObject(ht.Serial()); 
-                   Orion.AddWaitTargetObject(ht.Serial());
-                   Orion.Wait(1000)
-                                          Orion.TargetObject(ht.Serial()); 
-
-                honorTarget = ht.Serial()
-            }
             if (attackall) {
-               
+
                 targets.forEach(function (closemob) {
                     Orion.Attack(closemob.Serial())
                     Orion.Wait(20)
@@ -156,13 +144,11 @@ function BushyArcher() {
 
             }
             var attacker
-            if(Orion.ObjectExists(honorTarget))
-            {
+            if (Orion.ObjectExists(honorTarget)) {
                 Orion.Attack(honorTarget)
                 attacker = Orion.FindObject(honorTarget);
             }
-            else
-            {
+            else {
                 attacker = Orion.FindObject(Orion.ClientLastAttack());
             }
             var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
@@ -191,8 +177,13 @@ function BushyArcher() {
                 !Orion.SpellStatus('Honorable Execution') &&
                 entireAreaMobs.length == 1
             ) {
-                Orion.Print("Lightning Strike")
-                Orion.Cast('Lightning Strike');
+                if (bow.Graphic() == '0x26C3') {
+                    Orion.Print("----DOUBLE SHOT-----")
+                    Orion.UseAbility('Primary', true);
+                } else {
+                    Orion.Print("Lightning Strike")
+                    Orion.Cast('Lightning Strike');
+                }
             }
             else if (!Orion.AbilityStatus('Primary') && bow.Graphic() == '0x2D2B' && mobsAroundAttacker > 2) {
                 Orion.Print("----LIGHTNING ARROW-----")
@@ -206,17 +197,17 @@ function BushyArcher() {
                 Orion.Print("Momentum Strike")
                 Orion.Cast('Momentum Strike');
             }
-          //  Orion.Wait(500)
+            //  Orion.Wait(500)
 
             if (entireAreaMobs.filter(function (mob) { return mob.Distance() < 12 }).length > 0) {
                 if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
                     CastSpell('consecrate weapon');
-                    Orion.Wait(1000);
+                    Orion.Wait(1500);
                 }
 
                 if (Player.Mana() > 10 && !Orion.BuffExists('divine fury')) {
                     CastSpell('divine fury');
-                    Orion.Wait(1000);
+                    Orion.Wait(1500);
                 }
             }
         }
@@ -249,3 +240,4 @@ function ActiveCounter() {
 }
 //#include helpers/Target.js
 //#include Fighting/Tamer.js
+//#include Fighting/AutoHonor.js

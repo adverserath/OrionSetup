@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="RecallSafe" looped="false" delay="1">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x400FAC86" graphic="0x0F6C" color="0x0493"/>
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x400FAC86" graphic="0x0F6C" color="0x0493"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x000034C9" id="0xDD8B146A" button="1"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="5"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="-134"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="134"/>
     </macro>
     <macro name="TrainPet" looped="true" delay="60">
         <action type="8" convert_type="0" waiting_time="1000" value="743"/>

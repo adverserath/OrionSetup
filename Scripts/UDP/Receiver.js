@@ -22,6 +22,7 @@ function Message_Receiver() {
         // Result buffer (string) is not empty - package received
         if (recv.length > 0) {
         Orion.Print(recv)
+        Orion.LoadScript('UDP/Receiver.js')
             var recvp = Orion.Split(recv, ':')
             var command = Orion.Split(recvp[0], '|')
             if(command[0]!='*' && command[0] !== Player.Serial())
@@ -34,6 +35,10 @@ function Message_Receiver() {
             }
             if (command[1] == 'W') {
                 Orion.Print('Walking')
+                if(Orion.IsWalking())
+                {
+                	Orion.StopWalking()
+                }
                 if (Orion.GetDistance(recvp[1], recvp[2]) > 0) {
                     Orion.WalkTo(recvp[1], recvp[2], recvp[3], 0, 3, 1)
                 }
@@ -65,6 +70,13 @@ function Message_Receiver() {
             }
             if (command[1] == 'AG') {
                 AcceptGump()
+            }
+            if (command[1] == 'WAR') {
+                if(recvp[1]==='true')
+                	Orion.WarMode(true)
+                else
+                   Orion.WarMode(false)
+
             }
             if (command[1] == 'Reload') {
                 Orion.ToggleScript('Reload')

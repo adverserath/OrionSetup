@@ -18,7 +18,7 @@ function CastWOD() {
         var target = Orion.ClientLastAttack();
         var enemy = Orion.FindObject(target)
 
-        while (enemy != null && enemy.Exists() && enemy.Distance() < 10) {
+        while (Player.WarMode() && enemy != null && enemy.Exists() && enemy.Distance() < 10) {
             Orion.Wait(500)
             if (enemy.Hits() < (parseInt(0.05 * gemstr * 25) + 1)) {
 
@@ -51,14 +51,14 @@ function WoDKills() {
 
 
         var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
-            'nothumanmobile|live|ignoreself|ignorefriends', 10, 'gray|criminal|orange')
+            'nothumanmobile|live|ignoreself|ignorefriends', 10, 'gray|criminal|orange|red')
             .filter(function (enemy) {
                 return enemy.Exists() && enemy.Hits() < (hitmarker + 4)
             })
         entireAreaMobs.forEach(function (mob) {
             Orion.AddHighlightCharacter(mob.Serial(), '0x0161');
         })
-        if (entireAreaMobs.length > 0) {
+        if (entireAreaMobs.length > 0 && Player.WarMode()) {
             Orion.Cast('Word Of Death')
             if (Orion.WaitForTarget(4000)) {
 
@@ -67,7 +67,7 @@ function WoDKills() {
                     var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
                         'nothumanmobile|live|ignoreself|ignorefriends', 10, 'gray|criminal|orange')
                         .filter(function (enemy) {
-                            return enemy.Exists() && enemy.Hits() <= (hitmarker)
+                            return enemy.Exists() && enemy.Hits() < (hitmarker)
                         })
                     Orion.Print('targets:' + entireAreaMobs.length)
                     entireAreaMobs.forEach(function (mob) {

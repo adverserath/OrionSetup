@@ -3,7 +3,7 @@ var currentTargetId;
 var targetHits;
 var targetDistance;
 function AutoHonor() {
-    while (!Player.Dead()) {
+    while (true) {
         Orion.Wait(400);
 
         if (Orion.ClientLastAttack() != '0x00000000'
@@ -21,7 +21,6 @@ function AutoHonor() {
 function HonorTarget(target) {
     if (!Orion.BuffExists('Honored2') &&
         targetDistance < 13) {
-        Orion.Print('honor')
         Orion.AddHighlightCharacter(currentTargetId, '0xF550', true);
         Orion.InvokeVirtue('Honor');
         if (Orion.WaitForTarget(1000)) {

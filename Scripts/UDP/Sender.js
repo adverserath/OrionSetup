@@ -6,6 +6,8 @@
 //#include helpers/Pet.js
 //#include helpers/Magic.js
 //#include helpers/Gumps.js
+//#include Fighting/Tamer.js
+//#include Fighting/Bushido.js
 
 function gridX(x, size) {
     return x * size
@@ -25,7 +27,7 @@ function gridTY(y, size) {
 var buttons = //x y CallBackID Text FunctionName
     [
         [[100, 30, 11, "Follow", 'Sender_FollowMe'], [100, 30, 12, "Walk To", 'Sender_WalkToHere'], [100, 30, 13, "Walk To Me", 'Sender_WalkToMe']],
-        [[50, 30, 21, "Mount", 'Sender_MountPet'], [50, 30, 22, "UnMount", 'Sender_UnmountPet']],
+        [[50, 30, 21, "Mount", 'Sender_MountPet'], [50, 30, 22, "UnMount", 'Sender_UnmountPet'],[50, 30, 23, "War", 'Sender_War'], [50, 30, 24, "Peace", 'Sender_Peace']],
         [[100, 30, 31, "Attack", 'Sender_Attack'], [100, 30, 32, "AF and Kill", 'AutoFollowAndKill']],
         [[100, 30, 41, "Pet Guard", 'Sender_PetGuard'], [100, 30, 42, "Pet Come", 'Sender_PetCome'], [100, 30, 43, "Pet Attack", 'Sender_PetAttack']],
         [[100, 30, 51, "Go Home", 'Sender_GoHome'], [100, 30, 52, "Say", 'Sender_Speak'], [100, 30, 53, "Accept Gump", 'Sender_AcceptGump']],
@@ -42,8 +44,22 @@ function Sender_FollowMe(serial) {
     Sender(serial, 'F:' + Player.Serial());
 }
 
-function Sender_WalkToMe(serial) {
-    Sender(serial, 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z());
+function Sender_WalkToMe(serial,offset) {
+var xOffset = 0
+var yOffset = 0
+if(Player.Direction()==0)
+{
+Orion.Print('n')
+	xOffset = 1*offset
+	}
+if(Player.Direction()==='s')
+	xOffset = -1*offset
+	if(Player.Direction()=='e')
+	yOffset = 1*offset
+  if(Player.Direction()=='w')
+	yOffset = -1*offset
+    
+    Sender(serial, 'W:' + (Player.X()+xOffset) + ':' + (Player.Y()+yOffset) + ':' + Player.Z());
 }
 
 function Sender_Reload(serial) {
@@ -56,6 +72,17 @@ function Sender_WalkToHere(serial) {
     if (serial === '*')
         Orion.WalkTo(pathLocation.X(), pathLocation.Y(), pathLocation.Z(), 0, 3, 1)
 
+}
+
+function Sender_War(serial) {
+    Sender(serial, 'WAR:true');
+    if (serial === '*')
+        Orion.WarMode(true)
+}
+function Sender_Peace(serial) {
+    Sender(serial, 'WAR:false');
+    if (serial === '*')
+        Orion.WarMode(false)
 }
 
 function Sender_MountPet(serial) {
@@ -119,12 +146,21 @@ function Sender_AcceptGump(serial) {
 function AutoFollowAndKill(serial) {
     var lastX = Player.X()
     var lastY = Player.Y()
+    
+        var players = LoadPlayerJson()
+
     while (true) {
         Orion.Wait(1000)
         while (Player.WarMode()) {
             Orion.Wait(200)
             if (lastX != Player.X() || lastY != Player.Y()) {
-                Sender_WalkToMe(serial)
+//                Sender_WalkToMe(serial)
+var offset=-1
+  players.forEach(function (player) {
+            Sender_WalkToMe(player.serial,offset)
+    offset +=2
+    })
+  
                 lastX = Player.X()
                 lastY = Player.Y()
             }
@@ -179,7 +215,7 @@ function Sender(serial, message, playerName) {
     })
 }
 
-function LoadPlayerJson() {
+function LoadPlayerJson(_) {
     if (Orion.GetGlobal('updPlayers') == null || Orion.GetGlobal('updPlayers') == '') {
         return JSON.parse('[]')
     }
