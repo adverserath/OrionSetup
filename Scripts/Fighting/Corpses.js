@@ -69,7 +69,7 @@ function AutoLootAssist() {
 function OpenParagonCorpses() {
     while (!Player.Dead()) {
         Orion.Wait(1000)
-        
+
         if (Player.WarMode()) {
             if (Player.Weight() < Player.MaxWeight()) {
                 var corpses = Orion.FindTypeEx('0x2006', '0x0501', 'ground', any, 8);
@@ -86,6 +86,14 @@ function OpenParagonCorpses() {
             }
         }
     }
+}
+
+function OpenNearbyCorpses() {
+    var corpses = Orion.FindTypeEx('0x2006', any, 'ground', any, 2);
+    corpses.forEach(function (corpse) {
+        Orion.OpenContainer(corpse.Serial());
+        // Orion.Ignore(corpse.Serial());
+    });
 }
 
 function HideCorpse() {

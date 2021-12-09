@@ -4,20 +4,18 @@
 //#include helpers/ItemManager.js
 //#include helpers/Notifier.js
 
-function AttackAll()
-{
-while(true)
-{
-Orion.FindTypeEx(any, any, ground,
-        'live|ignoreself|ignorefriends', 20, 3)
-        .filter(function (mob) {
-            return mob.Notoriety() >= 3
-                && mob.Notoriety() <=6
-        }).forEach(function (mobile) {
-Orion.Attack(mobile.Serial())
-    })
-    Orion.Wait(1000)
-}
+function AttackAll() {
+    while (true) {
+        Orion.FindTypeEx(any, any, ground,
+            'live|ignoreself|ignorefriends', 20, 3)
+            .filter(function (mob) {
+                return mob.Notoriety() >= 3
+                    && mob.Notoriety() <= 6
+            }).forEach(function (mobile) {
+                Orion.Attack(mobile.Serial())
+            })
+        Orion.Wait(1000)
+    }
 }
 function VetMultiPets() {
     var selected;
@@ -60,15 +58,60 @@ function VetMultiPets() {
                             'any', -1, '0x0000FFFE');
                         Orion.DisplayTimerSetIcon('veterinary', 'Top', '0x0E21');
                     }
-                    else if (Orion.SkillValue('Magery') > 300 && pet != null && pet.Poisoned()) {
-                        Orion.CastTarget('Cure', pet.Serial())
+                    else if (!Player.Frozen()) {
+                        if (Orion.SkillValue('Magery') > 300 && pet != null && pet.Poisoned() && !Player.Frozen()) {
+                            Orion.CastTarget('Cure', pet.Serial())
+                        }
+                        else if (Orion.SkillValue('Magery') > 30 && pet != null && !pet.Poisoned() && pet.Hits() < (pet.MaxHits() - 5)) {
+                            Orion.CastTarget('Greater Heal', pet.Serial())
+                        }
+                        else if (Orion.SkillValue('Spellweaving') > 300 && pet != null && pet.Hits() < (pet.MaxHits() - 2) && gorTime < (Orion.Now() - 60000)) {
+                            Orion.CastTarget('Gift of renewal', pet.Serial())
+                            gorTime = Orion.Now()
+                        }
                     }
-                    else if (Orion.SkillValue('Magery') > 30 && pet != null && !pet.Poisoned() && pet.Hits() < (pet.MaxHits() - 5)) {
-                        Orion.CastTarget('Greater Heal', pet.Serial())
+                    Orion.Wait(300);
+                }
+            })
+    }
+}
+
+function VetAllNearBondedPets() {
+    var pets = [];
+    var gorTime = Orion.Now() - 60000;
+    while (true) {
+        pets = Orion.FindTypeEx(any, any, ground, 'nothuman', 10, 'blue|green').filter(function (_) { return Orion.Contains(_.Properties(), 'bonded') })
+        Orion.Wait(200)
+        pets.filter(function (pet) {
+            return pet.Distance() <= 10
+        })
+            .sort(function (petA, petB) {
+                return petA.Hits() - petB.Hits()
+            })
+            .forEach(function (pet) {
+
+                if (pet != null && !Player.Paralyzed()) {
+                    if (pet.Distance() <= 2 && Orion.SkillValue('veterinary') > 300 && pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits() - 2) || pet.Dead())
+                        && !Orion.BuffExists('veterinary')) {
+                        Orion.WaitWhileTargeting(1000);
+                        Orion.BandageTarget(pet.Serial());
+                        Orion.AddDisplayTimer('bandagePet',
+                            Orion.BuffTimeRemaining('veterinary'),
+                            'Top', 'Circle', 'HealOther', 0, 0,
+                            'any', -1, '0x0000FFFE');
+                        Orion.DisplayTimerSetIcon('veterinary', 'Top', '0x0E21');
                     }
-                    else if (Orion.SkillValue('Spellweaving') > 300 && pet != null && pet.Hits() < (pet.MaxHits() - 2) && gorTime < (Orion.Now() - 60000)) {
-                        Orion.CastTarget('Gift of renewal', pet.Serial())
-                        gorTime = Orion.Now()
+                    else if (!Player.Frozen()) {
+                        if (Orion.SkillValue('Magery') > 300 && pet != null && pet.Poisoned() && !Player.Frozen()) {
+                            Orion.CastTarget('Cure', pet.Serial())
+                        }
+                        else if (Orion.SkillValue('Magery') > 30 && pet != null && !pet.Poisoned() && pet.Hits() < (pet.MaxHits() - 5)) {
+                            Orion.CastTarget('Greater Heal', pet.Serial())
+                        }
+                        else if (Orion.SkillValue('Spellweaving') > 300 && pet != null && pet.Hits() < (pet.MaxHits() - 2) && gorTime < (Orion.Now() - 60000)) {
+                            Orion.CastTarget('Gift of renewal', pet.Serial())
+                            gorTime = Orion.Now()
+                        }
                     }
                     Orion.Wait(300);
                 }

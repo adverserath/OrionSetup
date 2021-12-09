@@ -16,18 +16,19 @@ function TrainPetDiscord() {
 	var waitForStop = false
 	while (true) {
 		//Successful Discord
-		var msg = Orion.WaitJournal('effectecho: type=3', Orion.Now(), Orion.Now() + 2000)
+		var msg = Orion.WaitJournal('effectecho: type=3', Orion.Now() - 500, Orion.Now() + 2000)
 		if ((msg != null && !waitForStop) || (msg == null && waitForStop)) {
 			if (waitForStop) {
 				TextWindow.Print(Orion.Time());
 				TextWindow.Print("Discord wore off");
+				MountPet(false)
 			}
 			else {
 				TextWindow.Print(Orion.Time());
 				TextWindow.Print("Discorded");
+				MountPet(true)
 			}
 			waitForStop = !waitForStop
-			MountPet()
 		}
 	}
 }

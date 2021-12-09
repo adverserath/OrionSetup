@@ -41,11 +41,19 @@ function GetCrate(_private) {
 	}
 }
 
+var startPos
 function GoToStart(_private) {
-	var runebook = Orion.FindTypeEx('0x22C5', 'any', backpack)
-	.filter(function (book){return Orion.Contains(book.Properties(), 'Trade')}).shift()
-	RecallRune(runebook)
-	Orion.Wait(500)
+	if (startPos != null && Orion.GetDistance(startPos.X(), startPos.Y()) < 10) {
+		Orion.WalkTo(startPos.X(), startPos.Y())
+	}
+	else {
+		var runebook = Orion.FindTypeEx('0x22C5', 'any', backpack)
+			.filter(function (book) { return Orion.Contains(book.Properties(), 'Trade') }).shift()
+		RecallRune(runebook)
+		Orion.Wait(500)
+		if (startPos == null)
+			startPos = coordinate(Player.X(), Player.Y())
+	}
 }
 
 function GoToDestination(destination) {
@@ -72,6 +80,8 @@ function HandIn(crate) {
 }
 
 function CancelCrate(crate) {
+	Orion.Print("Cancel in 5 seconds")
+	Orion.Wait(5000)
 	Orion.RequestContextMenu(crate.Serial());
 	Orion.WaitContextMenuID(crate.Serial(), 1)
 	if (Orion.WaitForGump(1000)) {
@@ -110,7 +120,7 @@ function CheckIfCanDo(crate) {
 }
 
 function GetItem(crate) {
-	TextWindow.Print('Catch Bag :' +  crate.Serial())
+	TextWindow.Print('Catch Bag :' + crate.Serial())
 	FillFromBackpack(crate)
 
 	var crateprop = crate.Properties().match(/^[\w\s']*:\s\d*\/\d*$/img)
@@ -122,12 +132,12 @@ function GetItem(crate) {
 		var fullfilled = itemMatch[2];
 		var amount = itemMatch[3];
 
-		TextWindow.Print('itemMatch1 :' +  itemMatch[1])
-		TextWindow.Print('amount :' +  itemMatch[3])
-		TextWindow.Print('fullfilled :' +  itemMatch[2])
+		TextWindow.Print('itemMatch1 :' + itemMatch[1])
+		TextWindow.Print('amount :' + itemMatch[3])
+		TextWindow.Print('fullfilled :' + itemMatch[2])
 
 		nameNoSpace = nameNoSpace.replace(/\s+/g, '');
-		TextWindow.Print('nameNoSpace :' +  nameNoSpace)
+		TextWindow.Print('nameNoSpace :' + nameNoSpace)
 
 		if (!(fullfilled === amount)) {
 			TextWindow.Print('Item is:' + actualName)
@@ -157,10 +167,11 @@ function GetItem(crate) {
 			if (havecount > 0) {
 				TextWindow.Print('Already have ' + actualName)
 				Orion.Wait(2000)
-				
+
 				FillFromBackpack(crate)
-				MoveItemsFromPlayer(crate, itemset[2], any, amount)
-				
+				if (crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) == -1) {
+					MoveItemsFromBackpackTop(crate, itemset[2], any, amount)
+				}
 				Orion.Wait(1000)
 				fullfilled = crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) > -1
 				TextWindow.Print('Is now fullfilled: ' + fullfilled)
@@ -194,10 +205,11 @@ function GetItem(crate) {
 
 						Orion.BuyRestock('Trader', npc.Name())
 						Orion.Wait(600)
-						
-						FillFromBackpack(crate)
-						MoveItemsFromPlayer(crate, itemset[2], any, amount)
 
+						FillFromBackpack(crate)
+						if (crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) == -1) {
+							MoveItemsFromBackpackTop(crate, itemset[2], any, amount)
+						}
 						Orion.Wait(500)
 					}
 				}
@@ -236,50 +248,52 @@ function GetItem(crate) {
 					Orion.Wait(500)
 
 					FillFromBackpack(crate)
-					MoveItemsFromPlayer(crate, itemset[2], any, amount)
-
+					if (crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) == -1) {
+						MoveItemsFromBackpackTop(crate, itemset[2], any, amount)
+					}
 					Orion.Wait(500)
-				
 
-				havecount = CountCurrent(actualName)
-				needed = amount - havecount
-				TextWindow.Print('Need To Buy:' + needed)
-				if (needed > 0) {
-					TextWindow.Print(havecount + '/' + amount + ' : Try Buy directly')
-					var items =
-						[
-							//buy by graphic id
-							new ShopListItem(itemset[2], '0xFFFF', '', 1, 0, actualName)
-						];
-					shoplist.SetItems(items)
-					Orion.UpdateShopList(shoplist);
-					Orion.Buy('Trader', npc.Name())
-					Orion.Wait(1000)
-					if (CountCurrent(actualName) > havecount) {
-						TextWindow.Print('BUYING without Name')
-						fullfilled = crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) > -1
-						havecount = CountCurrent(actualName)
-						needed = (amount - havecount)
-						buying = needed / (itemset[2].split('|').length)
 
-						items =
+					havecount = CountCurrent(actualName)
+					needed = amount - havecount
+					TextWindow.Print('Need To Buy:' + needed)
+					if (needed > 0) {
+						TextWindow.Print(havecount + '/' + amount + ' : Try Buy directly')
+						var items =
 							[
 								//buy by graphic id
-								new ShopListItem(itemset[2], '0xFFFF', '', needed, 0, actualName)
+								new ShopListItem(itemset[2], '0xFFFF', '', 1, 0, actualName)
 							];
 						shoplist.SetItems(items)
 						Orion.UpdateShopList(shoplist);
 						Orion.Buy('Trader', npc.Name())
+						Orion.Wait(1000)
+						if (CountCurrent(actualName) > havecount) {
+							TextWindow.Print('BUYING without Name')
+							fullfilled = crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) > -1
+							havecount = CountCurrent(actualName)
+							needed = (amount - havecount)
+							buying = needed / (itemset[2].split('|').length)
+
+							items =
+								[
+									//buy by graphic id
+									new ShopListItem(itemset[2], '0xFFFF', '', needed, 0, actualName)
+								];
+							shoplist.SetItems(items)
+							Orion.UpdateShopList(shoplist);
+							Orion.Buy('Trader', npc.Name())
+						}
+
+						Orion.Wait(500)
+						TextWindow.Print('Move ' + amount + ' ' + itemset[2] + ' to ' + crate.Serial())
+
+						FillFromBackpack(crate)
+						if (crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) == -1) {
+							MoveItemsFromBackpackTop(crate, itemset[2], any, amount)
+						}
+						Orion.Wait(500)
 					}
-
-					Orion.Wait(500)
-					TextWindow.Print('Move ' + amount + ' ' + itemset[2] + ' to '+ crate.Serial())
-
-					FillFromBackpack(crate)
-					MoveItemsFromPlayer(crate, itemset[2], any, amount)
-
-					Orion.Wait(500)
-				}
 				}
 			}
 			var itemsInBp = Orion.FindTypeEx(itemset[2], any, backpack, '', '', '', false)
@@ -291,10 +305,11 @@ function GetItem(crate) {
 			}
 			havecount = Orion.Count(itemset[2], any, crate.Serial())
 			if (havecount < amount) {
-				
-				FillFromBackpack(crate)
-				MoveItemsFromPlayer(crate, itemset[2], any, amount)
 
+				FillFromBackpack(crate)
+				if (crate.Properties().indexOf(actualName + ': ' + amount + '/' + amount) == -1) {
+					MoveItemsFromBackpackTop(crate, itemset[2], any, amount)
+				}
 			}
 			Orion.OpenContainer(crate.Serial())
 			havecount = Orion.Count(itemset[2], any, crate.Serial())
@@ -312,7 +327,7 @@ function StartTradeRoute() {
 	Orion.ToggleScript('DanDar');
 	while (true) {
 		var crates = Orion.FindTypeEx('any', any, backpack).filter(function (item) {
-			return Orion.Contains(item.Name(), 'Crate');
+			return (Orion.Contains(item.Name(), 'Crate') || Orion.Contains(item.Name(), 'Gift Box'));
 		})
 		if (crates.length == 0) {
 			if (startMinister == null || startMinister.Distance() > 10) {
@@ -328,7 +343,7 @@ function StartTradeRoute() {
 
 		}
 		crates = Orion.FindTypeEx('any', any, backpack).filter(function (item) {
-			return Orion.Contains(item.Name(), 'Crate');
+			return (Orion.Contains(item.Name(), 'Crate') || Orion.Contains(item.Name(), 'Gift Box'));
 		})
 		if (crates.length > 0) {
 			var crate = crates[0]
@@ -336,7 +351,9 @@ function StartTradeRoute() {
 			var city = ((crate.Properties().match(
 				/Destination\sCity:\s([\w|\s]*)\n/i) || [])[1] || '')
 			TextWindow.Print(city)
-			BotPush('Trade route to:' + city + '\n' + crate.Properties())
+			TextWindow.Print('Trade route to:' + city + '\n' + crate.Properties())
+			BotPush('Trade route to:' + city + '\n' + crate.Properties(), true)
+
 			if (walkableCities.indexOf(city) != -1 && CheckIfCanDo(crate)) {
 				TextWindow.Print('I can do it')
 				GetItem(crate)
@@ -349,22 +366,29 @@ function StartTradeRoute() {
 				var startWait = Orion.Now()
 				CancelCrate(crate)
 
-				if(!returned)
-				{
+				if (!returned) {
 					returned = true
-					ReturnHomeSortLoot()			
+					ReturnHomeSortLoot()
 				}
 
 				GoToStart()
-				while(Orion.Now() - startWait <121000)
-				{
-				Orion.Wait(5000)
+				var i = 121
+				while (i != 0) {
+					i--;
+					Orion.Wait(1000)
+					Orion.PrintFast(Player.Serial(), 148, 0, i);
 				}
-				}
+
+			}
 		}
 	}
 }
 
+function ColorGet() {
+	for (var i = 0; i < 150; i++) {
+		Orion.Print(i, i);
+	}
+}
 function MonitorTrade() {
 	Orion.Wait(1000)
 	while (Orion.ScriptRunning('StartTradeRoute') != 0) {
@@ -381,8 +405,7 @@ function MonitorTrade() {
 		if (Orion.ScriptRunning('StartTradeRoute') < 0) {
 			Orion.ActivateClient();
 			BotPush('Script Paused}')
-			while(Orion.ScriptRunning('StartTradeRoute')<0)
-			{
+			while (Orion.ScriptRunning('StartTradeRoute') < 0) {
 				Orion.Wait(2000)
 			}
 		}
@@ -390,10 +413,10 @@ function MonitorTrade() {
 	BotPush('Script Stopped')
 }
 
-function FillFromBackpack(crate)
-{
+function FillFromBackpack(crate) {
 	Orion.RequestContextMenu(crate.Serial());
 	Orion.WaitContextMenuID(crate.Serial(), 0);
+	Orion.Wait(500)
 }
 function CountCurrent(itemName) {
 	return (Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Name(), itemName) })).reduce(function (a, b) {

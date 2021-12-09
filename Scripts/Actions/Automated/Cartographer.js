@@ -67,7 +67,9 @@ function DoSpecificMap() {
     maps.push(SelectTarget())
     DoAllMapsInBag(maps)
 }
-
+function DoAllMaps() {
+    DoAllMapsInBag()
+}
 function DoAllMapsInBag(inMaps) {
 
     if (usingPet) {
@@ -95,9 +97,9 @@ function DoAllMapsInBag(inMaps) {
         //Mount Pet
         Mount(true)
 
-		Heal()
-        if (!GoToClosestPortal() && 
-        Orion.GetDistance(Orion.QuestArrowPosition().X(),Orion.QuestArrowPosition().Y())>5) {
+        Heal()
+        if (!GoToClosestPortal() &&
+            Orion.GetDistance(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y()) > 5) {
             Orion.Print('No Portal Found')
             RecallRune(home)
             Orion.Wait(1000)
@@ -119,7 +121,7 @@ function DoAllMapsInBag(inMaps) {
 
             }
             if (usingPet) {
-               Mount(false)
+                Mount(false)
                 //Getting pet to guard
                 Orion.Print('Set Pet to guard')
                 while (!Orion.Contains(mount.Properties(), "Guarding")) {
@@ -128,7 +130,7 @@ function DoAllMapsInBag(inMaps) {
                 }
             }
 
-			Heal()
+            Heal()
             //Dig Chest
             Orion.Print('Dig Chest Up')
 
@@ -138,13 +140,13 @@ function DoAllMapsInBag(inMaps) {
                 Orion.TargetTile('any', Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y(), 0);
                 Orion.Wait(26000)
                 Orion.Print('Hide')
-//                Orion.UseSkill('Hiding')
+                //                Orion.UseSkill('Hiding')
 
-				while (!Player.Hidden()) {
-						Orion.CastTarget('Invisibility', self)
-						Orion.Wait(2000)
-				}
-	
+                while (!Player.Hidden()) {
+                    Orion.CastTarget('Invisibility', self)
+                    Orion.Wait(2000)
+                }
+
                 Orion.Wait(1000)
 
                 Orion.Print('Fight Monsters')
@@ -168,42 +170,40 @@ function DoAllMapsInBag(inMaps) {
                     return mob.WarMode();
                 }).length > 0) {
                 Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
-                .filter(function (mob) {
-                    return mob.WarMode();
-                }).forEach(function (mob){
-                if(Orion.ObjectExists(mob.Serial()))
-                {
-                Orion.ClientLastAttack(mob.Serial())
-                Orion.Wait(1000)
-                }
-                })
+                    'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                    .filter(function (mob) {
+                        return mob.WarMode();
+                    }).forEach(function (mob) {
+                        if (Orion.ObjectExists(mob.Serial())) {
+                            Orion.ClientLastAttack(mob.Serial())
+                            Orion.Wait(1000)
+                        }
+                    })
             }
 
-			Heal()
+            Heal()
             var chestid = LootChest()
             if (chestid == null) {
                 Orion.PauseScript()
             }
-            
+
             while (Orion.FindTypeEx(any, any, ground,
                 'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
                 .filter(function (mob) {
                     return mob.WarMode();
                 }).length > 0) {
                 Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
-                .filter(function (mob) {
-                    return mob.WarMode();
-                }).forEach(function (mob){
-                if(Orion.ObjectExists(mob.Serial()))
-                {
-                Orion.ClientLastAttack(mob.Serial())
-                Orion.Wait(1000)
-                }
-                })
+                    'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                    .filter(function (mob) {
+                        return mob.WarMode();
+                    }).forEach(function (mob) {
+                        if (Orion.ObjectExists(mob.Serial())) {
+                            Orion.ClientLastAttack(mob.Serial())
+                            Orion.Wait(1000)
+                        }
+                    })
             }
-            
+
             Orion.Print('Destroy Chest')
             Orion.Wait(2000)
             // Orion.PauseScript()
@@ -225,22 +225,21 @@ function DoAllMapsInBag(inMaps) {
             //ReturnHome
             Mount(true)
             Orion.Wait(1000)
-			SortLoot()
+            SortLoot()
         }
     })
 }
 
-function SortLoot()
-{
-            if (bankGold) {
-                RecallRune(bankRune);
-                Orion.Say("bank")
-                Orion.Wait(500)
-                Orion.Print('Move Gold')
-                MoveItemTextFromTo("Gold Coin", Player.Serial(), Player.BankSerial())
-                Orion.Wait(1000)
-            }
-            ReturnHomeSortLoot()
+function SortLoot() {
+    if (bankGold) {
+        RecallRune(bankRune);
+        Orion.Say("bank")
+        Orion.Wait(500)
+        Orion.Print('Move Gold')
+        MoveItemTextFromTo("Gold Coin", Player.Serial(), Player.BankSerial())
+        Orion.Wait(1000)
+    }
+    ReturnHomeSortLoot()
 }
 
 function WalkToQuestArrow() {
@@ -256,7 +255,7 @@ function LootChest() {
         while (!Orion.OpenContainer(chest.Serial(), 1000, 'reach that|too away|appears to be trapped')) {
             WalkTo(chest)
             Orion.Wait(500)
-            
+
             CastSpellOnTarget('Unlock', chest.Serial())
             //Orion.UseType('0x14FB|0x14FC', '0xFFFF');
             //if (Orion.WaitForTarget(1000)) {
@@ -281,10 +280,9 @@ function LootChest() {
 }
 
 function ReturnHomeSortLoot() {
-    if(Orion.FindObject(home)==null)
-    {
-        home = 	Orion.FindTypeEx('0x22C5', any, backpack)
-        .filter(function (book){return Orion.Contains(book.Properties(), 'Home')}).shift().Serial()
+    if (Orion.FindObject(home) == null) {
+        home = Orion.FindTypeEx('0x22C5', any, backpack)
+            .filter(function (book) { return Orion.Contains(book.Properties(), 'Home') }).shift().Serial()
     }
     RecallRune(home)
 
@@ -299,7 +297,7 @@ function ReturnHomeSortLoot() {
     Orion.Print('Move Reg')
     MoveItemTextFromTo("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", backpack, Orion.FindObject(regBoxId))
     Orion.Print('Move Gem')
-    MoveItemTextFromTo("Bottle Of Ichor|Daemon Claw|Essence|Crafting Resource", backpack, Orion.FindObject(essenceBox))//Gems
+    MoveItemTextFromTo("Raptor Teeth|Faery Dust|Wolf Eye|Crushed Glass|Bottle Of Ichor|Daemon Claw|Essence|Crafting Resource|Goblin Blood|Slith Tongue", backpack, Orion.FindObject(essenceBox))//Gems
     Orion.Print('Move Stuff')
     MoveItemTextFromTo('Board|Ingot|Leather|Cloth', backpack, Orion.FindObject(goldChestId))
     Orion.Print('Move Artifact')
@@ -308,7 +306,7 @@ function ReturnHomeSortLoot() {
     MoveItemTextFromTo('Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', backpack, rareBox)
     Orion.Print('Move Transendance')
     MoveItemTextFromTo('Transcendence', backpack, TranscendenceBook)
-   
+
     Orion.Print('Move Recipes')
     MoveItemTextFromTo('Recipe', backpack, Orion.FindObject(recipeBox))
 
@@ -333,11 +331,12 @@ function GoToClosestPortal() {
     if (!TryLocation(portalLocation.shift())) {
         Orion.Print("Try second")
         RecallRune(home)
-    if (!TryLocation(portalLocation.shift())) {
-        Orion.Print("Try third")
-        RecallRune(home)
-        return TryLocation(portalLocation.shift())
-    }    }
+        if (!TryLocation(portalLocation.shift())) {
+            Orion.Print("Try third")
+            RecallRune(home)
+            return TryLocation(portalLocation.shift())
+        }
+    }
 
     return true
 }
@@ -362,17 +361,16 @@ function TryLocation(portal) {
         Orion.Say(portal.Name())
     }
     Orion.Wait(1000)
-    
+
     //Cross water at skara
-    if(Orion.Contains(portal.Name(), 'skara'))
-    {
-    if (!Orion.WalkTo(x, y, 1, 1, 255, 1)) {
-    Orion.WalkTo(683, 2234, 0, 1, 255, 1)
-    Orion.Say('cross')
-    Orion.Wait(1000)
+    if (Orion.Contains(portal.Name(), 'skara')) {
+        if (!Orion.WalkTo(x, y, 1, 1, 255, 1)) {
+            Orion.WalkTo(683, 2234, 0, 1, 255, 1)
+            Orion.Say('cross')
+            Orion.Wait(1000)
+        }
     }
-    }
-    
+
     if (!Orion.WalkTo(x, y, 1, 2, 255, 1)) {
         var nx = parseInt(x + (Player.X() - x) / 2)
         var ny = parseInt(y + (Player.Y() - y) / 2)
@@ -389,7 +387,7 @@ function Mount(getOn) {
     if (getOn) {
         Orion.Print('Mount')
         while (Orion.ObjAtLayer('mount') == null) {
-        	Orion.Print('Mount '+mount.Name())
+            Orion.Print('Mount ' + mount.Name())
             Orion.UseObject(mount.Serial());
             Orion.Wait(1000);
         }
@@ -403,17 +401,15 @@ function Mount(getOn) {
     }
 }
 
-function Heal()
-{
-if(Player.Hits()<Player.MaxHits())
-{
-Orion.CastTarget('Greater Heal',self)
-Orion.Wait(2000)
-}
+function Heal() {
+    if (Player.Hits() < Player.MaxHits()) {
+        Orion.CastTarget('Greater Heal', self)
+        Orion.Wait(2000)
+    }
 }
 
 function GetMaps(inMaps) {
-var maps;
+    var maps;
     if (inMaps == null) {
         maps = Orion.FindTypeEx('0x14EC', '0x0000', backpack)
             .filter(function (map1) {
@@ -423,7 +419,7 @@ var maps;
             })
         maps.filter(function (map1) {
             return !Orion.Contains(map1.Properties(), 'Blessed')
-            && !Orion.Contains(map1.Properties(), 'Completed')
+                && !Orion.Contains(map1.Properties(), 'Completed')
         }).forEach(function (m2) {
             Orion.UseObject(m2.Serial())
             Orion.Wait(1500)
@@ -433,24 +429,22 @@ var maps;
     else {
         maps = inMaps
     }
-    Orion.Print('Found '+maps.length)
+    Orion.Print('Found ' + maps.length)
     return maps
 }
 
-function TestPrintLayers()
-{
-TextWindow.Clear()
+function TestPrintLayers() {
+    TextWindow.Clear()
 
-TextWindow.Open()
-for(i=1;i<30;i++)
-{
-	TextWindow.Print(i)
+    TextWindow.Open()
+    for (i = 1; i < 30; i++) {
+        TextWindow.Print(i)
 
-if(Orion.ObjAtLayer(i)!=null)
+        if (Orion.ObjAtLayer(i) != null)
 
-	TextWindow.Print(Orion.ObjAtLayer(i).Name())
-	
-}
+            TextWindow.Print(Orion.ObjAtLayer(i).Name())
+
+    }
 }
 //#include helpers/Target.js
 //#include helpers/Magic.js

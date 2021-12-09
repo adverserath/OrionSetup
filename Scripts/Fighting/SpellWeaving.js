@@ -82,5 +82,111 @@ function WoDKills() {
         }
         Orion.Wait(500)
     }
+}
 
+function SpellWeavingKills() {
+    var timer = Orion.Now()
+    while (true) {
+        while (Player.WarMode() && !Orion.IsWalking()) {
+            Orion.Wait(300)
+            var focus = Orion.FindTypeEx('0x3155')
+                .filter(function (gem) {
+                    return gem.Properties().indexOf('Strength Bonus') != -1
+                }).shift()
+
+            var gemstr = parseInt((focus.Properties().match(/Strength\sBonus\s(\d)/i) || [])[1] || 0);
+            var hitmarker = parseInt(0.05 * gemstr * 25)
+
+            while (Player.Frozen()) {
+                Orion.Wait(100)
+            }
+
+            var witherTargets = Orion.FindTypeEx(any, any, ground,
+                'live|ignoreself|ignorefriends', 4, 'gray|criminal|orange|red')
+
+            if (witherTargets.length > 3) {
+                if (!Orion.BuffExists('Arcane Empowerment')) {
+                    Cast('Arcane Empowerment')
+                    Orion.Wait(1000)
+                    continue;
+                }
+                else {
+                    Cast('Wither')
+                    continue;
+                }
+            }
+
+
+            var fireTargets = Orion.FindTypeEx(any, any, ground,
+                'live|ignoreself|ignorefriends', (5 + gemstr), 'gray|criminal|orange|red')
+
+
+            if (fireTargets.length > 6 && timer < Orion.Now()) {
+                timer = Orion.Now() + 15000
+                fireTargets.forEach(function (mob) {
+                    Orion.Print(mob.Name());
+                    Orion.AddHighlightCharacter(mob.Serial(), '0x0161');
+                })
+                Orion.Wait(500)
+                Cast('Wildfire', self)
+                continue;
+            }
+
+            var thunderTargets = Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends|inlos', (3 + gemstr), 'gray|criminal|orange|red')
+            if (thunderTargets.length > 3) {
+                thunderTargets.forEach(function (mob) {
+                    Orion.Print('target ' + mob.Name());
+                    Orion.AddHighlightCharacter(mob.Serial(), '0x0161');
+                })
+                Cast('Thunderstorm')
+                continue;
+            }
+
+
+            //WOD
+            var wodTargets = Orion.FindTypeEx(any, any, ground,
+                'live|ignoreself|ignorefriends|inlos', 10, 'red')
+                .filter(function (enemy) {
+                    return enemy.Exists() && enemy.Hits() < (hitmarker) && !Orion.Contains(enemy.Properties(), 'Legacy')
+                })
+
+            if (wodTargets.length > 0 && Player.WarMode()) {
+                if (!Orion.BuffExists('Arcane Empowerment')) {
+                    Cast('Arcane Empowerment')
+                    Orion.Wait(3000)
+                }
+                Cast('Word Of Death', wodTargets.shift().Serial())
+                continue;
+            }
+
+            if (Player.Mana() > 70) {
+                var fsTargets = Orion.FindTypeEx(any, any, ground,
+                    'nothumanmobile|live|ignoreself|ignorefriends|inlos', 10, 'criminal|orange|red')
+                if (fsTargets.length > 0) {
+                    if (!Orion.BuffExists('Arcane Empowerment')) {
+                        Cast('Arcane Empowerment')
+                        Orion.Wait(2000)
+                    }
+                    Cast('Flame strike', fsTargets.shift().Serial())
+
+                    continue;
+                }
+            }
+
+            Orion.Wait(500)
+        }
+    }
+}
+
+function Cast(spellName, targetSerial) {
+    while (Orion.ScriptRunning('Walk') == 1) {
+        Orion.Wait(400)
+    }
+    if (targetSerial == null) {
+        Orion.Case(spellName)
+    }
+    else {
+        Orion.CastTarget(spellName, targetSerial)
+    }
 }

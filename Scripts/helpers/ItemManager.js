@@ -47,10 +47,20 @@ function MoveItemsFromPlayer(toContainer, graphicIDs, color, amount) {
     if (typeof toContainer === "string") {
         toContainer = Orion.FindObject(toContainer)
     }
-    TextWindow.Print('MoveItemsFromPlayer:'+' Graphic:'+graphicIDs + ' Colour:'+color + 'Amount:'+amount)
+    TextWindow.Print('MoveItemsFromPlayer:' + ' Graphic:' + graphicIDs + ' Colour:' + color + 'Amount:' + amount)
     Orion.Print('Moving objects to ' + toContainer.Serial())
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, color, amount);
     Orion.Print('Finished MoveItemsFromPlayer')
+}
+
+function MoveItemsFromBackpackTop(toContainer, graphicIDs, color, amount) {
+    if (typeof toContainer === "string") {
+        toContainer = Orion.FindObject(toContainer)
+    }
+    TextWindow.Print('MoveItemsFromBackpackTop:' + ' Graphic:' + graphicIDs + ' Colour:' + color + 'Amount:' + amount)
+    Orion.Print('Moving objects to ' + toContainer.Serial())
+    MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, color, amount, false);
+    Orion.Print('Finished MoveItemsFromBackpackTop')
 }
 //#include helpers/Target.js
 
@@ -152,7 +162,7 @@ function MoveItemTextFromTo(text, from, to) {
     if (typeof from === "string") {
         from = Orion.FindObject(from)
     }
-    if(to.Distance()>2 || from.Distance()>2){
+    if (to.Distance() > 2 || from.Distance() > 2) {
         WalkTo(from);
         WalkTo(to);
     }

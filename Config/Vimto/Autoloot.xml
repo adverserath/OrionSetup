@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="0" size="3">
-    <autoloot name="Gold" container="0x40123212" find_list="Gold/Arrows/Artis" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="false" autostart_on_login="false"/>
+    <autoloot name="Gold" container="" find_list="Gold/Arrows/Artis" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="true" autostart_on_login="false"/>
     <autoloot name="ImbueLoot" container="0x40123212" find_list="ImbueItems" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="false" autostart_on_login="false"/>
-    <autoloot name="ImbueIngred" container="0x40106DD2" find_list="ImbueIngred" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="true" autostart_on_login="false"/>
+    <autoloot name="ImbueIngred" container="0x40106DD2" find_list="ImbueIngred" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="false" autostart_on_login="false"/>
 </data>

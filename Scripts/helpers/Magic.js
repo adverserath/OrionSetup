@@ -22,16 +22,16 @@ function MarkRune(runeItem) {
 }
 
 function RecallRune(runeItem) {
-	if(typeof runeItem==="string"){
+	if (typeof runeItem === "string") {
 		runeItem = Orion.FindObject(runeItem)
 	}
 	var startCastTime = Orion.Now();
 	var x = Player.X();
 	var y = Player.Y();
-	if(Orion.SkillValue('Magery', 'base')>40){
+	if (Orion.SkillValue('Magery', 'base') > 40) {
 		CastSpellOnTarget("Recall", runeItem.Serial());
 	}
-	if(Orion.SkillValue('Chivalry', 'base')>30){
+	if (Orion.SkillValue('Chivalry', 'base') > 30) {
 		CastSpellOnTarget("Sacred Journey", runeItem.Serial());
 	}
 	if (Orion.InJournal('blocking the location', '', '0', '-1', startCastTime, Orion.Now() + 1500) != null) {
@@ -56,18 +56,17 @@ function TakeOffClothesAndMeditate(_private) {
 	Orion.Wait(4000);
 }
 
-function GoHome()
-{
+function GoHome() {
+	Orion.OpenContainer(backpack)
 	var runebook = Orion.FindTypeEx('0x22C5')
-	.filter(function(book){
-	return Orion.Contains(book.Properties(),'Home')
-	}).shift()
-	if(runebook!=null)
-	{
-		if(Orion.SkillValue('Magery', 'base')>40){
+		.filter(function (book) {
+			return Orion.Contains(book.Properties(), 'Home')
+		}).shift()
+	if (runebook != null) {
+		if (Orion.SkillValue('Magery', 'base') > 40) {
 			CastSpellOnTarget("Recall", runebook.Serial());
 		}
-		if(Orion.SkillValue('Chivalry', 'base')>30){
+		if (Orion.SkillValue('Chivalry', 'base') > 30) {
 			CastSpellOnTarget("Sacred Journey", runebook.Serial());
 		}
 	}

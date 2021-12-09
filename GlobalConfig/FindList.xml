@@ -18,24 +18,6 @@
         <item graphic="any" color="any" comment="Legendary Arti" count="0">
             <property name="Legendary Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="0x1BD1" color="0x0000" comment="Feather" count="0"/>
-        <item graphic="any" color="any" comment="Minor Magic" count="0">
-            <property name="Minor Magic Item" value_min="0" value_max="100"/>
-            <property name="Weight" value_min="1" value_max="2"/>
-        </item>
-        <item graphic="any" color="any" comment="Major Magic" count="0">
-            <property name="Lesser Magic Item" value_min="0" value_max="100"/>
-            <property name="Weight" value_min="1" value_max="2"/>
-        </item>
-        <item graphic="any" color="any" comment="Lesser Magic" count="0">
-            <property name="Lesser Magic Item" value_min="0" value_max="100"/>
-            <property name="Weight" value_min="1" value_max="2"/>
-        </item>
-        <item graphic="any" color="any" comment="Greater Magic" count="0">
-            <property name="Greater Magic Item" value_min="0" value_max="100"/>
-            <property name="Weight" value_min="1" value_max="2"/>
-        </item>
-        <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0"/>
     </findlist>
     <findlist name="Inscription">
         <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>

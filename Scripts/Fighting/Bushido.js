@@ -117,97 +117,122 @@ function BushKnight() {
 function BushyArcher() {
     var honorTarget
     var range = 8;
-    var attackall = true;
+    var attackall = false;
     var bow = Orion.ObjAtLayer('LeftHand');
     if (bow != null) {
         range = (bow.Properties().match(/Range\s(\d*)/i) || [0, 2])[1]
     }
-    Orion.ToggleScript('AutoHonor', true)
-    Orion.Print(!Player.Dead())
+    // Orion.ToggleScript('AutoHonor', true)
+    //  Orion.Print(!Player.Dead())
     while (!Player.Dead()) {
-        while (!Player.WarMode()) {
-            Orion.Wait(1000)
+        while (!Player.WarMode() || Orion.IsWalking()) {
+            Orion.Wait(500)
         }
         while (Player.WarMode()) {
             Orion.Wait(200);
 
 
             var targets = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends|inlos', 12, 'gray|criminal|orange')
+                'nothumanmobile|live|ignoreself|ignorefriends|inlos', 12, 'gray|criminal|orange|red')
+            if (targets.length > 0) {
+                if (attackall) {
+                    targets.forEach(function (closemob) {
+                        Orion.Attack(closemob.Serial())
+                        Orion.Wait(20)
+                    })
+                }
 
-            if (attackall) {
+                var attacker;
+                targets.forEach(function (mobile) {
+                    if (mobile != null &&
+                        !Orion.BuffExists('Honored2') &&
+                        mobile.Hits() == mobile.MaxHits() &&
+                        mobile.Distance() < 13 &&
+                        mobile.InLOS()) {
+                        Orion.AddHighlightCharacter(mobile.Serial(), '0xF550', true);
 
-                targets.forEach(function (closemob) {
-                    Orion.Attack(closemob.Serial())
-                    Orion.Wait(20)
+                        Orion.Print('Honor');
+                        Orion.InvokeVirtue('Honor');
+                        if (Orion.WaitForTarget(1000)) {
+                            Orion.TargetObject(mobile.Serial());
+                            honorTarget = mobile.Serial()
+                        }
+                    }
                 })
 
-            }
-            var attacker
-            if (Orion.ObjectExists(honorTarget)) {
-                Orion.Attack(honorTarget)
-                attacker = Orion.FindObject(honorTarget);
-            }
-            else {
-                attacker = Orion.FindObject(Orion.ClientLastAttack());
-            }
-            var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', (range), 'gray|criminal|orange')
-                .filter(function (at) {
-                    return at.WarMode()
-                })
 
-            var mobsAroundAttacker = entireAreaMobs.filter(function (mob) {
-                return attacker != null && attacker.Exists() && mob.Exists() && InRange(attacker, mob, 5)
-            }).length
+                if (Orion.ObjectExists(honorTarget)) {
+                    Orion.Attack(honorTarget)
+                    attacker = Orion.FindObject(honorTarget);
+                }
+                else {
+                    attacker = Orion.FindObject(Orion.ClientLastAttack());
+                }
+                var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
+                    'nothumanmobile|live|ignoreself|ignorefriends', (range), 'gray|criminal|orange|red')
+                    .filter(function (at) {
+                        return at.WarMode()
+                    })
 
-            //    if (Orion.SpellStatus('Honorable Execution') &&
-            //        (attacker == null || attacker.Hits() > 5)) {
-            //        Orion.Print("Disabled Honorable Execution")
-            //        Orion.Cast('Honorable Execution');
-            //        Orion.Wait(200)
-            //    }
-            //    if (!Orion.SpellStatus('Honorable Execution')
-            //        && attacker != null && attacker.Hits() < 5) {
-            //        Orion.Print("Honorable Execution")
-            //        Orion.Cast('Honorable Execution');
-            //    }
-            if (Player.Mana() > 10 &&
-                !Orion.SpellStatus('Lightning Strike') &&
-                !Orion.SpellStatus('Honorable Execution') &&
-                entireAreaMobs.length == 1
-            ) {
-                if (bow.Graphic() == '0x26C3') {
-                    Orion.Print("----DOUBLE SHOT-----")
+                var mobsAroundAttacker = entireAreaMobs.filter(function (mob) {
+                    return attacker != null && attacker.Exists() && mob.Exists() && InRange(attacker, mob, 5)
+                }).length
+
+                //    if (Orion.SpellStatus('Honorable Execution') &&
+                //        (attacker == null || attacker.Hits() > 5)) {
+                //        Orion.Print("Disabled Honorable Execution")
+                //        Orion.Cast('Honorable Execution');
+                //        Orion.Wait(200)
+                //    }
+                //    if (!Orion.SpellStatus('Honorable Execution')
+                //        && attacker != null && attacker.Hits() < 5) {
+                //        Orion.Print("Honorable Execution")
+                //        Orion.Cast('Honorable Execution');
+                //    }
+
+                //else if (!Orion.AbilityStatus('Primary') && entireAreaMobs.length > 2) {
+                //    TextWindow.Print("Whirly Whirly")
+                //    Orion.UseAbility('Primary', true);
+                //}
+                if (Player.Mana() > 10 &&
+                    !Orion.SpellStatus('Lightning Strike') &&
+                    !Orion.SpellStatus('Honorable Execution') &&
+                    entireAreaMobs.length == 1 &&
+                    !Orion.AbilityStatus('Primary')
+                ) {
+                    if (bow.Graphic() == '0x26C3' && Player.Mana() > 20) {
+                        Orion.Print("----DOUBLE SHOT-----")
+                        Orion.UseAbility('Primary', true);
+                    } else {
+                        Orion.Print("Lightning Strike")
+                        Orion.Cast('Lightning Strike');
+                    }
+                }
+                else if (!Orion.AbilityStatus('Primary') && bow.Graphic() == '0x2D2B' && mobsAroundAttacker > 2) {
+                    Orion.Print("----LIGHTNING ARROW-----")
                     Orion.UseAbility('Primary', true);
-                } else {
-                    Orion.Print("Lightning Strike")
-                    Orion.Cast('Lightning Strike');
                 }
-            }
-            else if (!Orion.AbilityStatus('Primary') && bow.Graphic() == '0x2D2B' && mobsAroundAttacker > 2) {
-                Orion.Print("----LIGHTNING ARROW-----")
-                Orion.UseAbility('Primary', true);
-            }
-            else if (Player.Mana() > 10 &&
-                !Orion.SpellStatus('Honorable Execution') &&
-                !Orion.SpellStatus('Momentum Strike') &&
-                entireAreaMobs.length > 2
-            ) {
-                Orion.Print("Momentum Strike")
-                Orion.Cast('Momentum Strike');
-            }
-            //  Orion.Wait(500)
-
-            if (entireAreaMobs.filter(function (mob) { return mob.Distance() < 12 }).length > 0) {
-                if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
-                    CastSpell('consecrate weapon');
-                    Orion.Wait(1500);
+                else if (Player.Mana() > 10 &&
+                    !Orion.SpellStatus('Honorable Execution') &&
+                    !Orion.SpellStatus('Momentum Strike') &&
+                    !Orion.AbilityStatus('Primary') &&
+                    entireAreaMobs.length > 2
+                ) {
+                    Orion.Print("Momentum Strike")
+                    Orion.Cast('Momentum Strike');
                 }
+                //  Orion.Wait(500)
 
-                if (Player.Mana() > 10 && !Orion.BuffExists('divine fury')) {
-                    CastSpell('divine fury');
-                    Orion.Wait(1500);
+                if (entireAreaMobs.filter(function (mob) { return mob.Distance() < 12 }).length > 0) {
+                    if (Player.Mana() > 10 && !Orion.BuffExists('Consecrate Weapon')) {
+                        CastSpell('consecrate weapon');
+                        Orion.Wait(1500);
+                    }
+
+                    if (Player.Mana() > 10 && !Orion.BuffExists('divine fury')) {
+                        CastSpell('divine fury');
+                        Orion.Wait(1500);
+                    }
                 }
             }
         }

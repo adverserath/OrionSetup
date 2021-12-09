@@ -161,6 +161,7 @@ var tradeItems =
         [1025636, "WoodenBowlOfStew", "0x1604", "the waiter", 1430, 1720],
         [1025638, "WoodenBowlOfTomatoSoup", "0x1606", "the cook", 1430, 1720],
         [1024161, "ApplePie", "0x1041", "the waiter", 1430, 1720],
+        [1041343, "ApplePie", "0x1041", "the waiter", 1430, 1720],
         //[1016450,"Chessboard","0x0FA6","the barkeeper",1430,1720],
         //[1016449,"CheckerBoard","0x0FA6","the barkeeper",1430,1720],
         [1023612, "Backgammon", "0x0E1C", "the barkeeper", 1430, 1720],
