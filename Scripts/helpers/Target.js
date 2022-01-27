@@ -8,7 +8,10 @@ function SelectTarget(itemUsage) {
   return target;
 }
 
-function SelectCoordinate(_private) {
+function SelectCoordinate(text) {
+  if (text != null) {
+    Orion.Print(text)
+  }
   if (Orion.WaitForAddObject('myTarget') == 0) {
     return null;
   }
@@ -67,15 +70,21 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
 }
 
 function WalkTo(object, distance, timeMS, walking) {
+  Orion.Print("Start WalkTo")
   if (typeof object === "string") {
     Orion.Print('finding ' + object)
     object = Orion.FindObject(object)
   }
 
-  if (object.Name() != null && object.Name() != '')
-    Orion.Print("Walking to " + object.Name())
+  if (object.Name() != null && object.Name() != ''){
+    Orion.Print("Walking to object ")
+    Orion.Print(object.Name())
+  }
   else
-    Orion.Print("Walking to " + object.X() + ' ' + object.Y())
+  {
+    Orion.Print("Walking to coord ")
+    Orion.Print(object.X() + ' ' + object.Y())
+  }
   if (distance == null) {
     distance = 1;
   }
@@ -131,10 +140,9 @@ function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, wal
   //Orion.WalkTo(x, y, z, distanceXY, distanceZ, run, openDoor, maxWalkingTime);
 }
 
-function AddBadLocationGrid()
-{
-var start = SelectCoordinate()
-var end = SelectCoordinate();
+function AddBadLocationGrid() {
+  var start = SelectCoordinate()
+  var end = SelectCoordinate();
 
   Orion.GetTilesInRect('land', start.X(), start.Y(), end.X(), end.Y()).forEach(function (tile) {
     Orion.SetBadLocation(tile.X(), tile.Y());

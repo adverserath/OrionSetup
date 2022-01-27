@@ -29,7 +29,7 @@ function Message_Receiver() {
             Orion.LoadScript('UDP/Receiver.js')
             var recvp = Orion.Split(recv, ':')
             var command = Orion.Split(recvp[0], '|')
-            Orion.Print('to:' + command[0] + ' command:' + command[1] + ' message:' + recvp)
+         //   Orion.Print('to:' + command[0] + ' command:' + command[1] + ' message:' + recvp)
 
             if (command[0] != '*' && command[0] !== Player.Serial()) {
                 continue

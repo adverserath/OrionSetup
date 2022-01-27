@@ -88,3 +88,17 @@ function PrintArrow() {
     Orion.Print('Distance: ' + Orion.GetDistance(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y()))
   }
 }
+
+
+function EscapeTest()
+{
+	if (Orion.WaitForGump(1000))
+	{
+		var gump0 = Orion.GetGump('last');
+		if ((gump0 !== null) && (!gump0.Replayed()))
+		{
+			gump0.Select(Orion.CreateGumpHook(1157135));
+			Orion.Wait(100);
+		}
+	}
+}

@@ -253,7 +253,6 @@ function GetItem(crate) {
 					}
 					Orion.Wait(500)
 
-
 					havecount = CountCurrent(actualName)
 					needed = amount - havecount
 					TextWindow.Print('Need To Buy:' + needed)

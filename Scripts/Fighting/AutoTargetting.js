@@ -1,113 +1,146 @@
-//#include helpers/Target.js
-//#include helpers/Debug.js
-//#include helpers/ItemManager.js
+function Provoke() {
+    Orion.PrintFast(Player.Serial(),20,1,'Provoke')
+    var bardRange = ProvokeRange()
+    Orion.Print(bardRange)
+    var mobs = []
 
-//////START OF CONFIG///////
-var range = 16; //How far to load status from
-var delay = 400; //Delay between loop cycle
-var notorietyToShow = 3;// 'green|gray|criminal|orange|red'; //Show targets with notoriety
+    var counter = 1
+    mobs.push('0x00000000')
+    Orion.Print(mobs.length)
+    Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends', bardRange, 'gray|criminal|orange')
+        .forEach(function (closemob) {
+            mobs.push(closemob.Serial())
+            Orion.CharPrint(closemob.Serial(), '0x0055', counter++);
+            Orion.Print(counter)
+        })
 
-//DO NOT CHANGE
-var lastSearchMobsIds = [];
+    var t1 = Orion.InputText();
+    var t2 = Orion.InputText();
 
-//////END OF CONFIG///////
-function ShowEnemiesByDistance() {
-    //var gump = Orion.CreateCustomGump(15);
-    //	gump.Clear();
-    //gump.AddResizepic(0, 0, '13BE', 900, 500);
+    var rand = Orion.Random(1000);
+    Orion.AddHighlightCharacter(mobs[parseInt(t1)], rand);
+    Orion.AddHighlightCharacter(mobs[parseInt(t2)], rand);
 
-    //	gump.Update();
+    Orion.UseSkill('Provocation')
+    if (Orion.WaitForTarget())
+        Orion.TargetObject(mobs[parseInt(t1)])
+    if (Orion.WaitForTarget())
+        Orion.TargetObject(mobs[parseInt(t2)])
+}
 
+function ProvokeClose() {
+    Orion.PrintFast(Player.Serial(),20,1,'Provoke')
+    var bardRange = ProvokeRange()
+    var p1 = Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends|near', bardRange, 'gray|criminal|orange|red').shift()
 
-    while (true) {
-        var mobileByDistance = [];
-        for (var distance = 0; distance <= range; distance++) {
-            if (!mobileByDistance.hasOwnProperty(distance)) {
-                mobileByDistance[distance] = [];
-            }
-        };
+    var t2 = Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends', bardRange, 'gray|criminal|orange|red')
+        .filter(function (p2) {
+            return p2.Serial() !== p1.Serial()
+                && (p1.X() >= (p2.X() - 14))
+                && (p1.X() <= (p2.X() + 14))
+                && (p1.Y() >= (p2.Y() - 14))
+                && (p1.Y() <= (p2.Y() + 14))
+        })
+        .sort(function (mobA, mobB) {
+            return mobA.Distance() - mobB.Distance()
+        }).shift()
 
-        Orion.Wait(delay);
+    var rand = Orion.Random(1000);
 
-        //Get All mobs in area
-        var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
-            'mobile|ignoreself|ignorefriends', range, notorietyToShow)
-            .filter(function (mob) {
-                return mob.Notoriety() >= (notorietyToShow)
-                    && mob.Notoriety() < 7
-                    && mob.InLOS()
+    Orion.AddHighlightCharacter(p1.Serial(), rand);
+    Orion.AddHighlightCharacter(t2.Serial(), rand);
+    Orion.UseSkill('Provocation')
+    if (Orion.WaitForTarget())
+        Orion.TargetObject(p1.Serial())
+    if (Orion.WaitForTarget())
+        Orion.TargetObject(t2.Serial())
+}
+function Peacemaking()
+{
+    Orion.PrintFast(Player.Serial(),20,1,'Peace')
+    var bardRange = PeaceRange()
+Orion.Print(bardRange)
+var mobs = []
+
+var counter = 1
+mobs.push('0x00000000')
+Orion.Print(mobs.length)
+            var mobsList = Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', bardRange, 'gray|criminal|orange|red')
+				Orion.Print(mobsList.length)
+				mobsList.forEach(function (closemob) {
+				
+					mobs.push(closemob.Serial())
+					Orion.SetGlobal(counter,closemob.Serial())
+					Orion.CharPrint(closemob.Serial(), '0x03EA', counter);
+					Orion.Print(counter)
+					counter++
+                })
+                Orion.Print(counter)
+                if(counter>0)
+                {
+		        Orion.SetGlobal('rand',Orion.Random(1000))
+				
+				Orion.UseSkill('Peacemaking')
+
+				Orion.AddDisplayTimer('skill', 10000, 'Top');
+				}
+}
+function Discord()
+{
+
+    var bardRange = DiscordRange()
+    Orion.Print(bardRange)
+    var mobs = []
+
+    var counter = 1
+    mobs.push('0x00000000')
+    Orion.Print(mobs.length)
+    var mobsList = Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|orange|red')
+    Orion.Print(mobsList.length)
+    mobsList.forEach(function (closemob) {
+
+        mobs.push(closemob.Serial())
+        Orion.SetGlobal(counter, closemob.Serial())
+        Orion.CharPrint(closemob.Serial(), '0x03EA', counter);
+        Orion.Print(counter)
+        counter++
+    })
+    Orion.Print(counter)
+    if (counter > 0) {
+        Orion.SetGlobal('rand', Orion.Random(1000))
+
+        Orion.UseSkill('Discordance')
+
+        while (Orion.WaitForTarget(10000)) {
+            var mobsList = Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', bardRange, 'gray|criminal|orange|red')
+            Orion.ClearHighlightCharacters();
+            mobsList.forEach(function (closemob) {
+
+                Orion.AddHighlightCharacter(closemob.Serial(), '0x0154');
+
             })
-            .sort(function (mobA, mobB) {
-                return mobA.Distance() - mobB.Distance()
-            });
-
-        //Filter out mobs removed since the last iteration
-        lastSearchMobsIds.filter(function (mob) {
-            return entireAreaMobs.map(function (mobile) { return mobile.Serial() }).indexOf(mob.Serial()) < 0;
-        }).forEach(function (mobile) {
-            var mobId = mobile.Serial();
-            Orion.CloseStatusbar(mobId);
-        });
-        lastSearchMobsIds = entireAreaMobs;
-
-        //Group mobs into object by distance
-        entireAreaMobs.forEach(function (mob) {
-            if (mob != null) {
-                var mobInRange = mobileByDistance[mob.Distance()];
-                if (mobInRange != null) {
-                    mobInRange.push(mob);
-                }
-            }
-        });
-
-        //Show Gumps and Manage Attacks
-        for (var distanceFromPlayer in mobileByDistance) {
-            var mobInArea = mobileByDistance[distanceFromPlayer]
-                .sort(function (mobA, mobB) {
-                    return mobA.Hits() - mobB.Hits();
-                });
-
-            //Show Status Bars
-            mobInArea.forEach(function (mobile, index) {
-                var mobId = mobile.Serial();
-                var indexX = index;
-                var x = indexX * 130;
-                var y = (distanceFromPlayer * 35) + 200;
-                Orion.ShowStatusbar(mobId, x, y);
-                // gump.AddButton(mobId, x, y, '0x00F3', '0x00F2', '0x00F1', '0');
-                // gump.AddText(x, y, '#FF0000', mobile.Name());
-                //    		gump.AddColoredPolygone(x, y/2, 100, 10, '0x000f', 1, 2, 1, mobId);
-            })
-            //   gump.Update();
+            Orion.Wait(10)
         }
+        Orion.AddDisplayTimer('skill', 10000, 'Top');
     }
 }
 
 
-
-function DrawRange() {
-    var range = 16;
-    var bow = Orion.ObjAtLayer('LeftHand');
-
-    if (bow != null) {
-        range = bow.Properties().match(/Range\s(\d*)/i)[1]
-    }
-
-    Orion.Print(range);
-    while (!Player.Dead()) {
-        var x = Player.X();
-        var y = Player.Y();
-
-        Orion.ClearHighlightCharacters(true);
-        Orion.FindTypeEx(any, any, ground,
-            'nothumanmobile|live|ignoreself|ignorefriends', range, 'grey|criminal|enemy')
-            .forEach(function (mob) {
-                if (mob.Distance() <= range && mob.InLOS() == true)
-                    Orion.AddHighlightCharacter(mob.Serial(), '0x00B0', true)
-                else
-                    Orion.RemoveHighlightCharacter(mob.Serial(), true);
-
-            })
-        Orion.Wait(200);
-    }
+function DiscordRange(_)
+{
+return 8 + parseInt((parseInt(Orion.SkillValue('Discordance')) / 10) / 15);
+}
+function PeaceRange(_)
+{
+return 8 + parseInt((parseInt(Orion.SkillValue('Discordance')) / 10) / 15);
+}
+function ProvokeRange(_)
+{
+return 8 + parseInt((parseInt(Orion.SkillValue('Discordance')) / 10) / 15);
 }

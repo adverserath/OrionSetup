@@ -7,4 +7,5 @@
     <macro name="TrainPet" looped="true" delay="60">
         <action type="8" convert_type="0" waiting_time="1000" value="743"/>
     </macro>
+    <macro name="macro" looped="false" delay="1"/>
 </data>

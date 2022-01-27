@@ -1,7 +1,4 @@
-//#include helpers/Target.js
-//#include helpers/ItemManager.js
-//#include helpers/Notifier.js
-//#include helpers/Debug.js
+
 function RecordFoundChest(chest) {
   if (chest != null) {
     var newFile = Orion.NewFile();
@@ -98,6 +95,9 @@ function ReadPath(_private) {
           },
           Z: function () {
             return this.z;
+          },
+          Name: function (){
+          	return "coordinate";
           }
         }
         locations.push(loc);
@@ -112,13 +112,19 @@ function WanderDungeon(_private) {
   var path = ReadPath()
   var foundStart = false;
   var startingRef = 0;
+  Orion.Print("WanderDungeon - Start Paths:"+ path.length)
+  TextWindow.Print(path)
   while (true) {
+  Orion.Print("WanderDungeon - Loop")
     Orion.Wait(100);
     path.forEach(function (location) {
       if (!foundStart) {
+  Orion.Print("Found Start")
+
         Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', location.X(), location.Y(), location.Z());
         Orion.Wait(100);
         startingRef++;
+  Orion.Print("dist")
         if (Orion.GetDistance(location.X(), location.Y()) < 15) {
           Orion.Print('Starting from point: ' + startingRef)
           foundStart = true;
@@ -126,6 +132,7 @@ function WanderDungeon(_private) {
         }
       }
       else {
+        Orion.Print("Walk To" + location.X() +" "+location.Y())
         WalkTo(location, 1, 40000, 0);
         WalkTo(location, 1, 40000, 0);
       }
@@ -135,7 +142,7 @@ function WanderDungeon(_private) {
 
 var startingLocation;
 var lootbag;
-function GetStartUp() {
+function GetStartUp(_) {
   var file = Orion.NewFile();
 
   file.Open('TreasureStartup.conf');
@@ -288,3 +295,7 @@ function SearchForHiddenChests() {
   }
 
 }
+//#include Scripts/helpers/Target.js
+//#include Scripts/helpers/ItemManager.js
+//#include Scripts/helpers/Notifier.js
+//#include Scripts/helpers/Debug.js

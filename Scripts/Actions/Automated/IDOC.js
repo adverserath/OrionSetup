@@ -70,16 +70,18 @@ function IDOCWalker()
 function IDOCScanner(){
 while(true){
 Orion.Wait(500)
-var houseSigns = Orion.FindTypeEx(any,any,ground,'item',30).filter(function (item){
+var houseSigns = Orion.FindTypeEx(any,any,ground,'item',50).filter(function (item){
 return item.Name()==='A House Sign' 
 && (item.Properties().match(/Condition..This\sstructure\sis\sin\sdanger\sof\scollapsing/gi)
-//|| item.Properties().match(/Condition..This\sstructure\sis\sgreatly\sworn/gi)
+|| item.Properties().match(/Condition..This\sstructure\sis\sgreatly\sworn/gi)
 )
 })
 houseSigns.forEach(function (houseSign){
+WalkTo(houseSign)
 BotPush('X: ' + houseSign.X() + ' Y: '+ houseSign.Y())
 BotPush(houseSign.Properties())
 Orion.Print(houseSign.Properties())
+
 Orion.Wait(5000)
 Orion.Ignore(houseSign.Serial())
 })

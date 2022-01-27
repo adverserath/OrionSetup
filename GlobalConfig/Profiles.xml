@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
     <profile serial="0x00000545" file="Kwazii"/>
+    <profile serial="0x0000089E" file="Aki"/>
     <profile serial="0x00000D0D" file="Atten"/>
     <profile serial="0x00002D7D" file="Yuna"/>
     <profile serial="0x00004F3B" file="Atten"/>
@@ -15,6 +16,7 @@
     <profile serial="0x0000A75F" file="BodCollector"/>
     <profile serial="0x0000A78E" file="BodCollector"/>
     <profile serial="0x0000A866" file="BodCollector"/>
+    <profile serial="0x0000A893" file="Hornpub"/>
     <profile serial="0x0000A89B" file="BodCollector"/>
     <profile serial="0x0000A923" file="Hornpub"/>
     <profile serial="0x0000AFA4" file="Crafter"/>

@@ -184,7 +184,7 @@ function Cast(spellName, targetSerial) {
         Orion.Wait(400)
     }
     if (targetSerial == null) {
-        Orion.Case(spellName)
+        Orion.Cast(spellName)
     }
     else {
         Orion.CastTarget(spellName, targetSerial)
