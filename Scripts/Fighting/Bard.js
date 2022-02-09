@@ -1,9 +1,10 @@
+var bardRange;
 function Provoke() {
     var startedHidden = Player.Hidden()
     ResetGlobals()
     Orion.PrintFast(self, 20, 1, "Provocation")
 
-    var bardRange = BardRange('Provocation')
+    bardRange = BardRange('Provocation')
     Orion.Print(bardRange)
 
     var counter = 1
@@ -215,6 +216,7 @@ function ReleaseAllSummons(_) {
 
 function GetSmartTarget(_)
 {
+var counter = 1
     Orion.FindTypeEx(any, any, ground,
         'live|ignoreself|ignorefriends', bardRange, 3 | 4 | 5 | 6)
         .filter(function (mob) {

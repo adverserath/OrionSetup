@@ -270,7 +270,7 @@ function LootChest() {
         MoveItems(chest, backpack, '0xA32F') //Reg
         MoveItems(chest, backpack, '0xA333') //Gem
         MoveItems(chest, backpack, '0xE75') //Artifact bag
-        MoveItemTextFromTo('Transc|Treasure Map|Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', chest, backpack)
+        MoveItemTextFromTo('Woven|Transc|Treasure Map|Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', chest, backpack)
 
         MoveItemTextFromTo('Board|Ingot|Cut Leather|Cloth', chest, backpack)
 

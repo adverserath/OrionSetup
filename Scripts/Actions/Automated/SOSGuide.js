@@ -24,6 +24,8 @@ function GetSoSFromGroup() {
 
     Orion.Print('Select Box of SOS')
     var box = SelectTarget()
+    WalkTo(box)
+    Orion.OpenContainer(box.Serial())
     var soses = sosList
     //var file = Orion.NewFile();
 
@@ -129,6 +131,9 @@ function GoToClosestSOS(distance) {
 
 ///#include soslocations.jpg
 function DoSOSInOrder() {
+        RecallRune(seakey);
+        Orion.Wait(1000)
+
     Orion.Print("ALL SOS must be parsed into \OA\Scripts\helpers\SOSList.js, using ReadAllSOSToFile")
     while (Orion.FindTypeEx('0x14EE', any, backpack).length != 0) {
         var sosId = GoToClosestSOS(45)
@@ -177,6 +182,8 @@ return (result.length!=0)
 
 function ChestLootManager() {
     //Walk to goldchest
+    Orion.WalkTo(Player.X()+3,Player.Y()-3)
+    Orion.Wait(1000)
     Orion.Print("Move Gold")
     WalkTo(goldChestId)
     MoveItemsFromPlayer(goldChestId, '0x0EED')

@@ -53,6 +53,7 @@ function SeaFish() {
                     Orion.UseObject(corpse.Serial())
                     Orion.Ignore(corpse.Serial())
                     Orion.Wait(2000)
+                    OpenAnyMiBs()
                     if (startX < Player.X()) {
                         Orion.Say('left')
                         while (startX < Player.X()) {
@@ -76,22 +77,10 @@ function SeaFish() {
             if (Player.Weight() > (Player.MaxWeight() - 100) || Player.WarMode()) {
                 RecallRune(seabook);
                 Orion.Wait(1000);
-                WalkTo(seaBox)
-                Orion.Wait(1000);
-			    MoveItemText("Message In|Treasure Map", mapMibBox)
-  				MoveItemText("Fishing Net", netLoot)
+                SortFishLoot()
 
-                Orion.FindListEx('Fishies').forEach(function (fish) {
-                    MoveItemsFromPlayer(seaBox, fish.Graphic(), any);
-                })
-                Orion.Wait(1000);
-                WalkTo(seaBin)
-                Orion.FindListEx('UnwantedStuff').forEach(function (notFish) {
-                    //Orion.DropHere(notFish.Serial());
-                    MoveItemsFromPlayer(seaBin, notFish.Graphic(), any);
-                })
-                if(Player.WarMode())
-                	Orion.PauseScript();
+                if (Player.WarMode())
+                    Orion.PauseScript();
                 RecallRune(seakey);
                 Orion.Wait(2000);
             }
@@ -112,6 +101,22 @@ function SeaFish() {
     BotPush('Fisher is dead')
 }
 
+function SortFishLoot() {
+    WalkTo(seaBox)
+    Orion.Wait(1000);
+    MoveItemText("Waterstained SOS|Ancient SOS|Message In|Treasure Map", mapMibBox)
+    MoveItemText("Fishing Net", netLoot)
+
+    Orion.FindListEx('Fishies').forEach(function (fish) {
+        MoveItemsFromPlayer(seaBox, fish.Graphic(), any);
+    })
+    Orion.Wait(1000);
+    WalkTo(seaBin)
+    Orion.FindListEx('UnwantedStuff').forEach(function (notFish) {
+        //Orion.DropHere(notFish.Serial());
+        MoveItemsFromPlayer(seaBin, notFish.Graphic(), any);
+    })
+}
 
 function StartFishing() {
 
@@ -119,6 +124,13 @@ function StartFishing() {
     // How far to look for trees from the player
     var range = 16;
     AutoFisherman(range);
+}
+
+function OpenAnyMiBs() {
+    Orion.FindTypeEx('0xA30C').forEach(function (_) {
+        Orion.UseObject(_.Serial())
+        Orion.Wait(1800)
+    })
 }
 
 function Messages() {

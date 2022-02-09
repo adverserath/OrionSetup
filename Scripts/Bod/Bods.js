@@ -118,7 +118,6 @@ function SortBods() {
 }
 
 function GetBods() {
-    Orion.Wait(3000)
     if (!((Player.Name().match(/(\w*)ian/gi) || []).length >= 1)) {
         Orion.Print('Not me')
     }
@@ -137,17 +136,20 @@ function GetBods() {
         Orion.UseObject(runebook.Serial())
         Orion.WaitForGump(1000);
         //Count Locations = X
-        Orion.Wait(400);
+        Orion.Wait(800);
         var gumpinfo = Orion.GetLastGump().TextList();
         var locations = 0;
         for (var textId = 2; textId < 18; textId++) {
             if (gumpinfo[textId] != 'Empty') {
                 locations++;
+                Orion.Print(gumpinfo[textId])
             }
         }
         Orion.Print('Runes:' + locations);
+		Orion.Wait(1000)
+        //      var npcs = ['0x0000511D', '0x0000C052', '0x0000ED92', '0x000000AE', '0x0000A6E2', '0x000002F4']
+        var npcs = ['Scribe', 'Tailor', 'tinker', 'carpenter', 'blacksmith', 'bowyer']
 
-        var npcs = ['0x0000511D', '0x0000C052', '0x0000ED92', '0x000000AE', '0x0000A6E2', '0x000002F4']
         //0x0000511D -ins
         //0x0000EC37 -weav
         //0x0000ED92 -tink
@@ -207,7 +209,7 @@ function GetBods() {
                 Orion.Print('Going Home')
                 Orion.Wait(1000)
                 Orion.Print('Walk In')
-                Orion.WalkTo(Player.X() + 3, Player.Y() - 3, Player.Z(), 1, 255, 1, 1);
+                Orion.WalkTo(Player.X() + 3, Player.Y() - 4, Player.Z(), 1, 255, 1, 1);
                 Orion.Wait(1000)
 
                 Orion.Print('Move Stuff to Book')
@@ -216,7 +218,16 @@ function GetBods() {
             }
 
             if (!skip) {
-                var npcSerial = npcs[(recallId - 1)];
+                Orion.Print('finding:' + npcs[(recallId - 1)])
+                var mobs = Orion.FindTypeEx(any, any, ground, 'human', 15)
+                    .filter(function (mob) {
+                        Orion.Print(mob.Properties())
+                        return Orion.Contains(mob.Properties(), npcs[(recallId - 1)])
+                    })
+                Orion.Print(mobs.length)
+                var npcSerial = mobs.shift().Serial()
+
+                //   var npcSerial = npcs[(recallId - 1)];
                 WalkTo(Orion.FindObject(npcSerial))
                 Orion.Print('GetBod')
                 for (var index = 0; index < 3; index++) {
