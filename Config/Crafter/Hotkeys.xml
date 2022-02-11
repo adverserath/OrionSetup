@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="33" action="0" key="144" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="62" action="1" key="103" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;text&quot;: &quot;Brieg buy&quot;&#10;}&#10;"/>
-    <hotkey type="0" action="1" key="119" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;can_be_looped&quot;: 0,&#10;    &quot;do_not_interrupt&quot;: 0,&#10;    &quot;name&quot;: &quot;Secure&quot;&#10;}&#10;"/>
     <hotkey type="0" action="1" key="118" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;can_be_looped&quot;: 0,&#10;    &quot;do_not_interrupt&quot;: 0,&#10;    &quot;name&quot;: &quot;Release&quot;&#10;}&#10;"/>
-    <hotkey type="31" action="1" key="121" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="0" key="123" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="0" action="1" key="119" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;can_be_looped&quot;: 0,&#10;    &quot;do_not_interrupt&quot;: 0,&#10;    &quot;name&quot;: &quot;Secure&quot;&#10;}&#10;"/>
+    <hotkey type="33" action="0" key="144" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="31" action="2" key="122" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="0" key="123" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="1" key="121" modifiers="0" override_pass_key_to_client="0"/>
 </data>

@@ -41,6 +41,7 @@ function RecallRune(runeItem) {
 	if (x == Player.X() && y == Player.Y()) {
 		RecallRune(runeItem);
 	}
+	return true;
 }
 
 function TakeOffClothesAndMeditate(_private) {

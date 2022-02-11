@@ -64,7 +64,7 @@ function CreateLargeBod(_bookId) {
         return found;
       })
       if (completable) {
-        TextWindow.Print(counter++ + ' Fillable Large Bod: - ' + this.bookId + ' ' + this.getID())
+        TextWindow.Print(counter++ + ' Fillable Large Bod: - ' + this.bookId + ' ' + this.getId())
         this.smallBods.forEach(function (sb) {
           var found = false;
           smallBodsLibrary.forEach(function (sbl) {
@@ -96,7 +96,7 @@ function CreateLargeBod(_bookId) {
       })
 
       if (!completable && hasOne) {
-        TextWindow.Print(counter++ + ' Partial Large Bod: - ' + this.bookId + ' ' + this.getID())
+        TextWindow.Print(counter++ + ' Partial Large Bod: - ' + this.bookId + ' ' + this.getId())
 
         this.smallBods.forEach(function (sb) {
           var found = false;
@@ -116,7 +116,7 @@ function CreateLargeBod(_bookId) {
       return;
     },
     canBribe: function () {
-      TextWindow.Print(counter++ + ' Bribary Large Bod: - ' + this.bookId + ' ' + this.getID())
+      TextWindow.Print(counter++ + ' Bribary Large Bod: - ' + this.bookId + ' ' + this.getId())
       return this.smallBods.forEach(function (sb) {
         var found = false;
         smallBodsLibrary.forEach(function (sbl) {
@@ -241,6 +241,7 @@ function ReadPage(bookId) {
 }
 
 function GetString(id) {
+Orion.Print(id)
   var currentId = cliloc.filter(
     function (cliLocEntry) {
       return cliLocEntry.Id() === id
@@ -252,7 +253,7 @@ function ReadCliLoc(_private) {
   var clilocs = []
   var file = Orion.NewFile();
 
-  file.Open('OA/cliloc.txt');
+  file.Open('A:/Orion Launcher/OA/Scripts/cliloc.txt');
   if (file != null) {
     var i = 0;
     var location = '1'
