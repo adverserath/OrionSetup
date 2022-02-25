@@ -2,6 +2,46 @@
 //#include helpers/Target.js
 //#include helpers/Notifier.js
 
+function LeverPuller()
+{
+var start = coordinate(Player.X(),Player.Y(),Player.Z(),'start')
+while(true)
+{
+WalkTo(start)
+Orion.Wait(2000)
+var npc = Orion.FindTypeEx(any, any, ground,
+      'any', 30, any).filter(function (mob) {
+        return mob.Properties()=="A Lever"
+      }).forEach(function (mob){
+WalkTo(mob)
+Orion.UseObject(mob.Serial())
+      })
+}
+}
+
+function ShowWarCreature()
+{
+while(true){
+    Orion.Wait(100)
+    var npc = Orion.FindTypeEx(any, any, ground,
+      'mobile', 20, any).filter(function (mob) {
+        return mob.WarMode()
+      }).forEach(function (mob){
+
+Orion.AddHighlightCharacter(mob.Serial(), '0x4444');
+Orion.PrintFast(mob.Serial(),1,1,"War")
+      })
+          var npc = Orion.FindTypeEx(any, any, ground,
+      'mobile|ignoreself', 20, any).filter(function (mob) {
+        return !mob.WarMode()
+      }).forEach(function (mob){
+Orion.PrintFast(mob.Serial(),2,1,"No War")
+
+Orion.RemoveHighlightCharacter(mob.Serial());
+      })
+}
+}
+
 function DanDar() {
   while (true) {
     Orion.Wait(1000)

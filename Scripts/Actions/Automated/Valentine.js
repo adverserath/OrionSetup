@@ -5,8 +5,8 @@
 //#include helpers/Pet.js
 
 function DoQuests() {
-Orion.Print('DoQuests')
-Orion.SetGlobal('stage',0)
+	Orion.Print('DoQuests')
+	Orion.SetGlobal('stage', 0)
 	while (true) {
 		var stage = CheckStage()
 
@@ -38,7 +38,12 @@ Orion.SetGlobal('stage',0)
 				Orion.Wait(1000)
 
 				//SpecialHug([coordinate(1717, 1156, 1, 'Skeletons'), '0x40055599'])
-				SpecialHug([coordinate(1717, 1156, 1, 'Skeletons')])
+				SpecialHug(
+				[
+				coordinate(1717, 1156, 1, 'Skeletons'),
+				'0x40055599',
+				]
+				)
 				stage = 5;
 			}
 			if (stage == 2) {
@@ -59,8 +64,18 @@ Orion.SetGlobal('stage',0)
 						}
 					}
 				}
-Orion.Wait(2000)
-				SpecialHug([coordinate(910, 1336, -71, 'EttinCentral'), coordinate(814, 1319, -82, 'EttinBridge')])
+				Orion.Wait(2000)
+				SpecialHug([coordinate(903, 1362, 1, 'InDungeon'),
+				coordinate(956, 1503, -28, 'EttinsDungeon'), 
+				coordinate(1015,1507,0, 'OutDungeon'), 
+				
+				coordinate(910, 1336, -71, 'EttinCentral'), 
+				coordinate(814, 1319, -82, 'EttinBridge'),
+				'0x4005558F',
+				coordinate(3434, 2719, 54, 'North a bit')
+				]
+				)
+				
 				stage = 5;
 			}
 			if (stage == 3) {
@@ -69,13 +84,13 @@ Orion.Wait(2000)
 				RecallRune('0x40106A4B')
 
 				SpecialHug(
-				[coordinate(5317, 709, 0, 'lich1'), 
-				coordinate(5306, 654, 0, 'lich2'), 
-				coordinate(5305, 648, 7, 'lichstairs'), 
-				coordinate(5219, 744, -20, 'lich3'), 
-				coordinate(5210, 676, -20, 'lich4'), 
-				coordinate(5183, 657, 0, 'lich5'),
-				coordinate(5149, 723, 0, 'lichRoom')])
+					[coordinate(5317, 709, 0, 'lich1'),
+					coordinate(5306, 654, 0, 'lich2'),
+					coordinate(5305, 648, 7, 'lichstairs'),
+					coordinate(5219, 744, -20, 'lich3'),
+					coordinate(5210, 676, -20, 'lich4'),
+					coordinate(5183, 657, 0, 'lich5'),
+					coordinate(5149, 723, 0, 'lichRoom')])
 				stage = 5;
 			}
 			if (stage == 4) {
@@ -87,56 +102,46 @@ Orion.Wait(2000)
 		}
 		Orion.Print('Complete')
 
-if(!Orion.ObjectExists('0x0000006D'))
-{
-RecallRune('0x4012AFCE')
-Orion.Wait(1000)
-}
-if(stage==5)
-{
-	Orion.UseObject('0x0000006D');
-	if (Orion.WaitForGump(1000))
-	{
-		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x4C4C6DB0'))
-		{
-			gump0.Select(Orion.CreateGumpHook(6));
-			Orion.Wait(100);
+		if (!Orion.ObjectExists('0x0000006D')) {
+			RecallRune('0x4012AFCE')
+			Orion.Wait(1000)
 		}
-	}
-	if (Orion.WaitForGump(1000))
-	{
-		var gump1 = Orion.GetGump('last');
-		if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x4C4C6DB0'))
-		{
-			gump1.Select(Orion.CreateGumpHook(4));
-			Orion.Wait(100);
+		if (stage == 5) {
+			Orion.UseObject('0x0000006D');
+			if (Orion.WaitForGump(1000)) {
+				var gump0 = Orion.GetGump('last');
+				if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x4C4C6DB0')) {
+					gump0.Select(Orion.CreateGumpHook(6));
+					Orion.Wait(100);
+				}
+			}
+			if (Orion.WaitForGump(1000)) {
+				var gump1 = Orion.GetGump('last');
+				if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x4C4C6DB0')) {
+					gump1.Select(Orion.CreateGumpHook(4));
+					Orion.Wait(100);
+				}
+			}
 		}
-	}
-}
-if(stage==6){
-	Orion.UseObject('0x0000006D');
-	if (Orion.WaitForGump(1000))
-	{
-		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x4C4C6DB0'))
-		{
-			gump0.Select(Orion.CreateGumpHook(6));
-			Orion.Wait(100);
+		if (stage == 6) {
+			Orion.UseObject('0x0000006D');
+			if (Orion.WaitForGump(1000)) {
+				var gump0 = Orion.GetGump('last');
+				if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x4C4C6DB0')) {
+					gump0.Select(Orion.CreateGumpHook(6));
+					Orion.Wait(100);
+				}
+			}
+			if (Orion.WaitForGump(1000)) {
+				var gump1 = Orion.GetGump('last');
+				if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x4C4C6DB0')) {
+					gump1.Select(Orion.CreateGumpHook(5));
+					Orion.Wait(100);
+				}
+			}
 		}
-	}
-	if (Orion.WaitForGump(1000))
-	{
-		var gump1 = Orion.GetGump('last');
-		if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x4C4C6DB0'))
-		{
-			gump1.Select(Orion.CreateGumpHook(5));
-			Orion.Wait(100);
-		}
-	}
-	}
 
-		Orion.SetGlobal('stage',0)
+		Orion.SetGlobal('stage', 0)
 	}
 }
 
@@ -145,7 +150,9 @@ function SpecialHug(location) {
 
 	var stage = CheckStage()
 	var locationsCount = 0
-	var counter = 0
+	var counter = 0	
+	Orion.ToggleScript('Hugger', true, [stage])
+
 	if (location != null && location.length > 0) {
 		locationsCount = location.length
 		if (GoTo(location[0])) {
@@ -157,34 +164,32 @@ function SpecialHug(location) {
 
 	var mobs = []
 
-	var startTime = Orion.Now()-1000
+	var startTime = Orion.Now() - 1000
 	Orion.Print(Orion.InJournal('completed a quest', '', '0', '-1', startTime, Orion.Now()))
-	
 	while (Orion.InJournal('completed a quest', '', '0', '-1', startTime, Orion.Now()) == null) {
-		
-		if(Player.Hits()<Player.MaxHits() && Player.WarMode())
-		{
+
+		if (Player.Hits() < Player.MaxHits() && Player.WarMode()) {
 			MountPet(false)
 		}
-		
+
 		Orion.Print('Stage||' + stage)
 		if (stage == 1)
-			mobs = Orion.FindTypeEx(any, any, ground, 'mobile', 40, 3 | 4)
+			mobs = Orion.FindTypeEx(any, any, ground, 'mobile', 25, 3 | 4)
 				.filter(function (mob) {
 					return mob.Name() == "a skeleton"
 				})
 		if (stage == 2)
-			mobs = Orion.FindTypeEx(any, any, ground, 'mobile', 40)
+			mobs = Orion.FindTypeEx(any, any, ground, 'mobile', 25)
 				.filter(function (mob) {
 					return mob.Name() == "an ettin"
 				})
 		if (stage == 3)
-			mobs = Orion.FindTypeEx(any, any, ground, 'mobile', 40)
+			mobs = Orion.FindTypeEx(any, any, ground, 'mobile', 25)
 				.filter(function (mob) {
 					return mob.Name() == "a lich"
 				})
 		if (stage == 4)
-			mobs = Orion.FindTypeEx(any, '0x0501', ground, 'mobile', 40)
+			mobs = Orion.FindTypeEx(any, '0x0501', ground, 'mobile', 25)
 
 		mobs = mobs.filter(function (mob) {
 			return !mob.YellowHits()
@@ -196,24 +201,19 @@ function SpecialHug(location) {
 				return A - B;
 			});
 
+		var wait = 500
 		if (mobs.length > 0) {
 			var mob = mobs.shift()
 			Orion.AddHighlightCharacter(mob.Serial(), 50);
-			WalkTo(mob, 4)
+			WalkTo(mob, 2)
 			if (!mob.InLOS()) {
 				WalkTo(mob, 1)
+				wait = 50
 			}
-			if(!Orion.Contains(mob.Properties(),"summoned"))
-			{
-			Orion.Say('[hug')
-			if (Orion.WaitForTarget(500)) {
-				Orion.TargetObject(mob.Serial())
-				Orion.Wait(100)
-			}
-			}
+
 		}
 		else {
-		Orion.Wait(500)
+			Orion.Wait(500)
 
 			if (location != null && location.length > 0 && counter < (locationsCount)) {
 				Orion.Print(counter)
@@ -222,33 +222,80 @@ function SpecialHug(location) {
 					if (counter < (locationsCount)) {
 						counter++
 					}
-			//		MountPet(false)
+					//		MountPet(false)
 				}
 			}
 		}
-		Orion.Wait(100)
+		Orion.Wait(wait)
 	}
-	
+
 	MountPet(true)
 	RecallRune('0x4012AFCE')
 	Orion.SetGlobal('stage', -1)
 
 }
 
+function Hugger(stage) {
+	var mobs = []
+
+	var startTime = Orion.Now() - 1000
+
+	while (Orion.InJournal('completed a quest', '', '0', '-1', startTime, Orion.Now()) == null) {
+		if (stage == 1)
+			mobs = Orion.FindTypeEx(any, any, ground, 'mobile', 4, 3 | 4)
+				.filter(function (mob) {
+					return mob.Name() == "a skeleton"
+				})
+		if (stage == 2)
+			mobs = Orion.FindTypeEx(any, any, ground, 'mobile', 4)
+				.filter(function (mob) {
+					return mob.Name() == "an ettin"
+				})
+		if (stage == 3)
+			mobs = Orion.FindTypeEx(any, any, ground, 'mobile', 4)
+				.filter(function (mob) {
+					return mob.Name() == "a lich"
+				})
+		if (stage == 4)
+			mobs = Orion.FindTypeEx(any, '0x0501', ground, 'mobile', 40)
+
+		mobs = mobs.filter(function (mob) {
+			return !(mob.YellowHits() || Orion.Contains(mob.Properties(), "summoned"))
+		})
+
+		Orion.Print(mobs.length)
+		mobs.forEach(function (mob) {
+			Orion.AddHighlightCharacter(mob.Serial(), 50);
+						if (mob.Distance() >= 4) {
+						Orion.StopWalking()
+						WalkTo(mob)
+			}
+			if (mob.Distance() <= 4) {
+				Orion.Say('[hug')
+				if (Orion.WaitForTarget(500)) {
+					Orion.TargetObject(mob.Serial())
+					Orion.Ignore(mob.Serial())
+				}
+			}
+		});
+
+		Orion.Wait(250)
+	}
+}
 function GoTo(location) {
-Orion.Print('GoTo')
+	Orion.Print('GoTo')
 	if (typeof location === "string") {
 		Orion.Print('GOTO Recall')
 		return RecallRune(location)
 	}
 	else {
-	Orion.Print('GOTO Walk')
+		Orion.Print('GOTO Walk')
 		return WalkTo(location)
 	}
 }
 
 function CheckStage() {
-Orion.Print('CheckStage')
+	Orion.Print('CheckStage')
 	var stage = 0
 
 	Orion.QuestsGump()
@@ -256,7 +303,7 @@ Orion.Print('CheckStage')
 	Orion.WaitForGump(1000)
 	var gump0 = Orion.GetGump('last');
 	Orion.Wait(1000)
-	if (Orion.GetGlobal('stage')!=-1 && Orion.Contains(gump0.TextList()[0], 'Monsters Need Love')) {
+	if (Orion.GetGlobal('stage') != -1 && Orion.Contains(gump0.TextList()[0], 'Monsters Need Love')) {
 		if (Orion.Contains(gump0.TextList()[0], '1 of 4')) {
 			stage = 1;
 		}

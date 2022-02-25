@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="Provoke" looped="true" delay="5">
-        <action type="5" convert_type="0" waiting_time="1000" value="32"/>
+        <action type="17" convert_type="14" waiting_time="1000" serial="0x00005F10" graphic="0x0005" color="0x0000"/>
     </macro>
     <macro name="Wraith" looped="true" delay="1">
         <action type="8" convert_type="0" waiting_time="1000" value="3"/>

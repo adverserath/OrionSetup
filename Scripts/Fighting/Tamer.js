@@ -48,7 +48,7 @@ function VetMultiPets() {
             .forEach(function (pet) {
 
                 if (pet != null && !Player.Paralyzed()) {
-                    if (pet.Distance() <= 2 && Orion.SkillValue('veterinary') > 300 && pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits() - 2) || pet.Dead())
+                    if (pet.Distance() <= 2 && Orion.SkillValue('veterinary') > 300 && pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits() - 15) || pet.Dead())
                         && !Orion.BuffExists('veterinary')) {
                         Orion.WaitWhileTargeting(1000);
                         Orion.BandageTarget(pet.Serial());

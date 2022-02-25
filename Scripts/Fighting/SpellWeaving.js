@@ -87,6 +87,7 @@ function WoDKills() {
 function SpellWeavingKills() {
     var timer = Orion.Now()
     while (true) {
+    Orion.Wait(2000)
         while (Player.WarMode() && !Orion.IsWalking()) {
             Orion.Wait(300)
             var focus = Orion.FindTypeEx('0x3155')

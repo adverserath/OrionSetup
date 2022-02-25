@@ -155,9 +155,29 @@
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
         <item graphic="0x0F3F" color="0x0000" comment="Arrow" count="0"/>
         <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0"/>
-        <item graphic="any" color="any" comment="item" count="0">
-            <property name="PropertiesCount" value_min="2" value_max="100"/>
-            <property name="Weight" value_min="1" value_max="2"/>
+        <item graphic="any" color="any" comment="minor" count="0">
+            <property name="Minor Magic Item" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="lesser" count="0">
+            <property name="Lesser Magic Item" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="greater" count="0">
+            <property name="Greater Magic Item" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="major" count="0">
+            <property name="Major Magic Item" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="lesser artifact" count="0">
+            <property name="Lesser Artifact" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="greater artifact" count="0">
+            <property name="Greater Artifact" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="major artifact" count="0">
+            <property name="Major Artifact" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="legendary artifact" count="0">
+            <property name="Legendary Artifact" value_min="0" value_max="100"/>
         </item>
     </findlist>
     <findlist name="ImbueIngred">

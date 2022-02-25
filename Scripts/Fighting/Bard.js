@@ -1,30 +1,23 @@
 var bardRange;
 function Provoke() {
     var startedHidden = Player.Hidden()
-    ResetGlobals()
     Orion.PrintFast(self, 20, 1, "Provocation")
-
     bardRange = BardRange('Provocation')
-    Orion.Print(bardRange)
-
-    var counter = 1
-
+    Orion.Print("Range : " + bardRange)
 
     var t1 = GetSmartTarget()
     Orion.Print(t1)
-    Orion.SetGlobal('smartTarget', "")
-
-    while (Orion.GetGlobal('smartTarget').length == 0) {
-        Orion.Wait(100)
-    }
-    var t2 = Orion.GetGlobal('smartTarget')
+    var t2 = GetSmartTarget()
     Orion.Print(t2)
-
-    Orion.SetGlobal('smartTarget', "")
 
     var rand = Orion.Random(1000);
     Orion.AddHighlightCharacter(t1, rand);
     Orion.AddHighlightCharacter(t2, rand);
+
+    if (startedHidden) {
+        AgroReset()
+        Orion.Wait(1000)
+    }
 
     Orion.UseSkill('Provocation')
     if (Orion.WaitForTarget())
@@ -38,6 +31,8 @@ function Provoke() {
 }
 
 function ProvokeClose() {
+    var startedHidden = Player.Hidden()
+
     Orion.PrintFast(self, 20, 1, "Provocation Close")
 
     var bardRange = BardRange('Provocation')
@@ -65,96 +60,79 @@ function ProvokeClose() {
         }).shift()
 
     var rand = Orion.Random(1000);
-
     Orion.AddHighlightCharacter(p1.Serial(), rand);
     Orion.AddHighlightCharacter(t2.Serial(), rand);
+
+    if (startedHidden) {
+        AgroReset()
+        Orion.Wait(1000)
+    }
+
     Orion.UseSkill('Provocation')
     if (Orion.WaitForTarget())
         Orion.TargetObject(p1.Serial())
     if (Orion.WaitForTarget())
         Orion.TargetObject(t2.Serial())
+
+    if (startedHidden) {
+        Orion.Wait(200)
+        Orion.CastTarget('Invisibility', self)
+    }
 }
 
 function Discord() {
-    Orion.PrintFast(self, 20, 1, "Discordance")
+    var skillName = 'Discordance'
+    var startedHidden = Player.Hidden()
+    Orion.PrintFast(self, 20, 1, skillName)
+    bardRange = BardRange(skillName)
+    Orion.Print("Range : " + bardRange)
 
-    var bardRange = BardRange('Discordance')
-    Orion.Print(bardRange)
-    var mobs = []
+    var t1 = GetSmartTarget()
+    Orion.Print(t1)
 
-    var counter = 1
-    mobs.push('0x00000000')
-    Orion.Print(mobs.length)
-    var mobsList = Orion.FindTypeEx(any, any, ground,
-        'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|orange|red')
-    Orion.Print(mobsList.length)
-    mobsList.forEach(function (closemob) {
+    var rand = Orion.Random(1000);
+    Orion.AddHighlightCharacter(t1, rand);
 
-        mobs.push(closemob.Serial())
-        Orion.SetGlobal(counter, closemob.Serial())
-        Orion.CharPrint(closemob.Serial(), '0x03EA', counter);
-        Orion.Print(counter)
-        counter++
-    })
-    Orion.Print(counter)
-    if (counter > 0) {
-        Orion.SetGlobal('rand', Orion.Random(1000))
+    if (startedHidden) {
+        AgroReset()
+        Orion.Wait(1000)
+    }
 
-        Orion.UseSkill('Discordance')
+    Orion.UseSkill(skillName)
+    if (Orion.WaitForTarget())
+        Orion.TargetObject(t1)
 
-        while (Orion.WaitForTarget(10000)) {
-            var mobsList = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', bardRange, 'gray|criminal|orange|red')
-            Orion.ClearHighlightCharacters();
-            mobsList.forEach(function (closemob) {
-
-                Orion.AddHighlightCharacter(closemob.Serial(), '0x0154');
-
-            })
-            Orion.Wait(10)
-        }
-        Orion.AddDisplayTimer('skill', 10000, 'Top');
+    if (startedHidden) {
+        Orion.Wait(200)
+        Orion.CastTarget('Invisibility', self)
     }
 }
+
 function Peacemaking() {
-    Orion.PrintFast(self, 20, 1, "Peacemaking")
+    var skillName = 'Peacemaking'
+    var startedHidden = Player.Hidden()
+    Orion.PrintFast(self, 20, 1, skillName)
+    bardRange = BardRange(skillName)
+    Orion.Print("Range : " + bardRange)
 
-    var bardRange = BardRange('Peacemaking')
-    Orion.Print(bardRange)
-    var mobs = []
+    var t1 = GetSmartTarget()
+    Orion.Print(t1)
 
-    var counter = 1
-    mobs.push('0x00000000')
-    Orion.Print(mobs.length)
-    var mobsList = Orion.FindTypeEx(any, any, ground,
-        'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|orange|red')
-    Orion.Print(mobsList.length)
-    mobsList.forEach(function (closemob) {
+    var rand = Orion.Random(1000);
+    Orion.AddHighlightCharacter(t1, rand);
 
-        mobs.push(closemob.Serial())
-        Orion.SetGlobal(counter, closemob.Serial())
-        Orion.CharPrint(closemob.Serial(), '0x03EA', counter);
-        Orion.Print(counter)
-        counter++
-    })
-    Orion.Print(counter)
-    if (counter > 0) {
-        Orion.SetGlobal('rand', Orion.Random(1000))
+    if (startedHidden) {
+        AgroReset()
+        Orion.Wait(1000)
+    }
 
-        Orion.UseSkill('Peacemaking')
+    Orion.UseSkill(skillName)
+    if (Orion.WaitForTarget())
+        Orion.TargetObject(t1)
 
-        while (Orion.WaitForTarget(10000)) {
-            var mobsList = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', bardRange, 'gray|criminal|orange|red')
-            Orion.ClearHighlightCharacters();
-            mobsList.forEach(function (closemob) {
-
-                Orion.AddHighlightCharacter(closemob.Serial(), '0x0154');
-
-            })
-            Orion.Wait(10)
-        }
-        Orion.AddDisplayTimer('skill', 10000, 'Top');
+    if (startedHidden) {
+        Orion.Wait(200)
+        Orion.CastTarget('Invisibility', self)
     }
 }
 
@@ -186,16 +164,8 @@ function AgroReset() {
             Orion.Attack(mobile.Serial())
         }
     })
-    var end = 0
-    while (end < 9) {
-        end++
-        Orion.Wait(1000)
-        mobs.forEach(function (mobile) {
-            Orion.PrintFast(mobile.Serial(), 20, 1, end)
-
-        })
-    }
 }
+
 function ResetGlobals(_) {
     for (var index = 1; index < 10; index++) {
         Orion.SetGlobal(index, '')
@@ -209,27 +179,36 @@ function ReleaseAllSummons(_) {
         .filter(function (mob) {
             return mob.Properties().indexOf('summoned') != -1
         }).forEach(function (mobile) {
-            Orion.Say(mobile.Name() + ' release')
+ 			Orion.Say(mobile.Name() + ' release')
         })
 
 }
 
-function GetSmartTarget(_)
-{
-var counter = 1
+function GetSmartTarget(_) {
+    ResetGlobals()
+    var counter = 1
     Orion.FindTypeEx(any, any, ground,
         'live|ignoreself|ignorefriends', bardRange, 3 | 4 | 5 | 6)
+        //NO PLAYERS
         .filter(function (mob) {
             return mob.Properties().indexOf('Legacy') == -1
-        }).slice(0, 9)
+        })
+        //Order of closeness
+        .sort(function (mobA, mobB) {
+            return mobA.Distance() - mobB.Distance()
+        })
+        //Limit to 9
+        .slice(0, 9)
+        //Add Numbers to mobs
         .forEach(function (closemob) {
             Orion.CharPrint(closemob.Serial(), '0x0055', counter);
             Orion.SetGlobal(counter, closemob.Serial())
             Orion.Print(counter++)
         })
-
+    //Wait for selection
     while (Orion.GetGlobal('smartTarget').length == 0) {
         Orion.Wait(100)
     }
+    //Return Chosen Mob
     return Orion.GetGlobal('smartTarget')
 }

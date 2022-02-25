@@ -7,5 +7,8 @@
     <macro name="TrainPet" looped="true" delay="60">
         <action type="8" convert_type="0" waiting_time="1000" value="743"/>
     </macro>
-    <macro name="macro" looped="false" delay="1"/>
+    <macro name="macro" looped="true" delay="30">
+        <action type="8" convert_type="0" waiting_time="1000" value="202"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x0000D36C" graphic="0x0115" color="0x05A7"/>
+    </macro>
 </data>
