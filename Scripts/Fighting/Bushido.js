@@ -150,13 +150,11 @@ function BushyArcher() {
                         mobile.Distance() < 13 &&
                         mobile.InLOS()) {
                         Orion.AddHighlightCharacter(mobile.Serial(), '0xF550', true);
-
+                        Orion.AddWaitTargetObject(mobile.Serial());
                         Orion.Print('Honor');
                         Orion.InvokeVirtue('Honor');
-                        if (Orion.WaitForTarget(1000)) {
-                            Orion.TargetObject(mobile.Serial());
-                            honorTarget = mobile.Serial()
-                        }
+                        honorTarget = mobile.Serial()
+                        Orion.Wait(300)
                     }
                 })
 

@@ -168,6 +168,7 @@ function MoveItemTextFromTo(text, from, to) {
     }
     Orion.FindTypeEx(any, any, from.Serial(), '', '', 10, true)
         .filter(function (item) { return Orion.Contains(item.Properties(), text) })
+        .sort(function (item) { return Orion.Random(0, 2) > 0 ? -1 : 1 })
         .forEach(function (loot) {
             Orion.Wait(400)
             Orion.MoveItem(loot.Serial(), 0, to.Serial())

@@ -53,6 +53,7 @@ function Sender_WalkToMe(serial, offset) {
     }
     var xOffset = 0
     var yOffset = 0
+
     if (Player.Direction() == 0) {
         xOffset = 1 * offset
     }
@@ -181,6 +182,16 @@ function Sender_AcceptGump(serial) {
         AcceptGump()
 }
 
+function WalkToOffset() {
+    var players = LoadPlayerJson()
+    var offset = -1 * Shared.GetVar('Distance', 1)
+    players.forEach(function (player) {
+        Orion.Print(player.name + " to " + offset)
+        Sender_WalkToMe(player.serial, offset)
+        offset *= -1
+    })
+}
+
 function AutoFollowAndKill(serial) {
     var lastX = Player.X()
     var lastY = Player.Y()
@@ -192,12 +203,10 @@ function AutoFollowAndKill(serial) {
         while (Player.WarMode()) {
             Orion.Wait(100)
             if (!Orion.IsWalking() && lastX != Player.X() || lastY != Player.Y() || (lastDirection != Player.Direction())) {
-                //                Sender_WalkToMe(serial)
-                var offset = -1
+                var offset = -1 * 1
                 Orion.Wait(100)
                 if (!Orion.IsWalking()) {
                     players.forEach(function (player) {
-                        Orion.Print(player.name + ' ' + offset)
                         Sender_WalkToMe(player.serial, offset)
                         offset *= -1
                     })
@@ -221,8 +230,7 @@ function HostCallback(_) {
         gump.Close();
 
         Orion.ClearGlobals()
-        if (Orion.ScriptRunning('Host') != 0)
-            HostGump();
+        HostGump();
         players = []
         for (var ports = 1; ports < 5; ports++) {
             Orion.UdpSend(hostPort + ports, '*|WHO')
@@ -249,6 +257,7 @@ function HostCallback(_) {
     });
 }
 
+var warState = false;
 function Sender(serial, message, playerName) {
     var players = LoadPlayerJson()
 
@@ -288,7 +297,7 @@ function HostGump(_) {
 
     gump.AddResizepic(partition / 2 - 45, 10, '0x0BB7', 90, 30);
     gump.AddText(partition / 2 - 20, 10, '0x0035', '<h1>All</h1>');
-
+    gump.AddMinMaxButtons(123456, 100, 10, '0x0037', 0, 0, 100000, 3500);
     var row = 0;
     var column = 0;
     //x y CallBackID Text FunctionName
@@ -333,45 +342,45 @@ var hostPort = 2597;
 
 var players = []
 function Host() {
-
     Orion.ClearGlobals();
     UDPHostServer()
+    HostGump()
+
+    Orion.SetUdpServerCallback(Player.Name(), 'NewSubscriber');
 
     for (var ports = 1; ports < 5; ports++) {
         Orion.UdpSend('192.168.0.3', hostPort + ports, '*|WHO')
     }
+}
 
-    while (true) {
-        var recv = Orion.UdpRecv(Player.Name());
-        if (recv.length > 0) {
-            players = LoadPlayerJson()
+function NewSubscriber(recv) {
+    Orion.Print('NewSubscriber')
+    if (recv.length > 0) {
+        players = LoadPlayerJson()
 
-            var recvp = Orion.Split(recv, ':::')
-            if (recvp[0] == 'Fail') {
-                Orion.Print(recvp[1])
-            }
+        var recvp = Orion.Split(recv, ':::')
+        if (recvp[0] == 'Fail') {
+            Orion.Print(recvp[1])
+        }
 
-            if (recvp[0] == 'Player') {
-                var jsPlayer = JSON.parse(recvp[1])
-                var shouldAdd = true;
-                players.forEach(function (pl) {
-                    if (pl.name === jsPlayer.name) {
-                        shouldAdd = false;
-                        Orion.Print('Dont Add ' + jsPlayer.name)
-                        if (pl.port != jsPlayer.port) {
-                            pl.port = jsPlayer.port
-                        }
+        if (recvp[0] == 'Player') {
+            var jsPlayer = JSON.parse(recvp[1])
+            var shouldAdd = true;
+            players.forEach(function (pl) {
+                if (pl.name === jsPlayer.name) {
+                    shouldAdd = false;
+                    Orion.Print('Dont Add ' + jsPlayer.name)
+                    if (pl.port != jsPlayer.port) {
+                        pl.port = jsPlayer.port
                     }
-                })
-                if (shouldAdd) {
-                    players.push(jsPlayer);
-                    Orion.SetGlobal('updPlayers', JSON.stringify(players));
-                    HostGump()
                 }
+            })
+            if (shouldAdd) {
+                players.push(jsPlayer);
+                Orion.SetGlobal('updPlayers', JSON.stringify(players));
+                HostGump()
             }
         }
-        else
-            Orion.Wait(50);
     }
 }
 

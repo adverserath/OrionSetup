@@ -71,6 +71,8 @@ function GoHome() {
 			CastSpellOnTarget("Sacred Journey", runebook.Serial());
 		}
 	}
+	WaitFrozen("Going Home");
+	Orion.WalkTo(Player.X() + 5, Player.Y() - 5, 0, 2)
 }
 
 function KeepGateOpen() {
@@ -96,4 +98,35 @@ function StayHiddenMagically() {
 		}
 		Orion.Wait(500)
 	}
+}
+
+function ReleaseAllSummons(_) {
+	Orion.FindTypeEx(any, any, ground, 'live|ignoreself', 15, 1 | 2)
+		.filter(function (mob) {
+			return mob.Properties().indexOf('summoned') != -1
+		}).forEach(function (mobile) {
+			Orion.Say(mobile.Name() + ' release')
+		})
+}
+
+function WaitFrozen(spellname) {
+	while (Player.Frozen()) {
+		Orion.Print("casting " + spellname)
+		Orion.Wait(100)
+	}
+	Orion.Wait(100)
+}
+
+function Cast(spellName, targetSerial) {
+	Orion.Print(spellName)
+	while (Orion.ScriptRunning('Walk') == 1 || Orion.IsWalking()) {
+		Orion.Wait(400)
+	}
+	if (targetSerial == null) {
+		Orion.Cast(spellName)
+	}
+	else {
+		Orion.CastTarget(spellName, targetSerial)
+	}
+	WaitFrozen(spellName)
 }

@@ -174,7 +174,6 @@ function Release(target) {
             Orion.Wait(100);
         }
     }
-
 }
 
 function PrintNumberOfMobs() {

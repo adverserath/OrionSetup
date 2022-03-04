@@ -30,33 +30,6 @@ function HonorTarget(target) {
     }
 }
 
-function HonorSwoop() {
-    while (!Player.Dead()) {
-        Orion.InvokeVirtue('Honor');
-        if (Orion.WaitForTarget(1000)) {
-            var swoops = Orion.FindTypeEx('0x0005', any, ground, any, '12');
-            while (swoops.length == 0) {
-                Orion.Wait(50)
-                swoops = Orion.FindTypeEx('0x0005', any, ground, any, '12');
-            }
-            var swoop = swoops.shift();
-            Orion.TargetObject(swoop.Serial());
-            Orion.Wait(5000)
-            while (swoop.Hits() > 15) {
-                Orion.Wait(200)
-            }
-            //Orion.Attack(swoop.Serial());
-            Orion.Say('all kill')
-            if (Orion.WaitForTarget(1000)) {
-                Orion.TargetObject(swoop.Serial());
-            }
-            while (swoop.Exists()) {
-                Orion.Wait(500)
-                Orion.Print('Its alive')
-            }
-        }
-    }
-}
 
 function Honor() {
     Orion.InvokeVirtue('Honor');

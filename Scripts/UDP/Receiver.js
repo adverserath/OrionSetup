@@ -4,6 +4,7 @@
 //#include helpers/Debug.js
 //#include helpers/Pet.js
 //#include helpers/Magic.js
+//#include helpers/Beetle.js
 //#include helpers/Gumps.js
 //#include Fighting/Tamer.js
 //#include Fighting/SpellWeaving.js
@@ -12,8 +13,8 @@
 //#include Actions/Event/PumpkinPicker.js
 var udpPort = 2598;
 
-
 function Message_Receiver() {
+    Orion.Print('Begin Receiver')
     if (!UDPClientServer()) {
         Orion.UdpSend(2597, "Fail:::" + Player.Name())
         return
@@ -21,30 +22,20 @@ function Message_Receiver() {
     else {
         SendWho()
     }
+    Orion.SetUdpServerCallback(Player.Name(), 'Callback_Received');
+}
 
-    while (true) {
-        var recv = Orion.UdpRecv(Player.Name());
-        // Result buffer (string) is not empty - package received
-        if (recv.length > 0) {
-            Orion.LoadScript('UDP/Receiver.js')
-            var recvp = Orion.Split(recv, ':')
-            var command = Orion.Split(recvp[0], '|')
-         //   Orion.Print('to:' + command[0] + ' command:' + command[1] + ' message:' + recvp)
+function Callback_Received(data) {
+    var recv = data;
+    if (recv.length > 0) {
+        Orion.LoadScript('UDP/Receiver.js')
+        var recvp = Orion.Split(recv, ':')
+        var command = Orion.Split(recvp[0], '|')
 
-            if (command[0] != '*' && command[0] !== Player.Serial()) {
-                continue
-            }
-            ResponseHandler(recv)
-            // if (Orion.ScriptRunning('ResponseHandler') != 0) {
-            //     Orion.ToggleScript('ResponseHandler');
-            //     Orion.Wait(50)
-            //     Orion.Print('stop')
-            // }
-
-            // Orion.ToggleScript('ResponseHandler', true, [recv])
+        if (command[0] != '*' && command[0] !== Player.Serial()) {
+            return
         }
-        else
-            Orion.Wait(100);
+        ResponseHandler(recv)
     }
 }
 

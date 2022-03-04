@@ -2,7 +2,7 @@
 //#include helpers/ItemManager.js
 //#include helpers/Debug.js
 //#include helpers/Notifier.js
-
+//#include helpers/Beetle.js
 
 function WarCleaveCorpses() {
     var warcleaver = Orion.FindTypeEx('0x2D2F', any, backpack).shift();
@@ -68,37 +68,33 @@ function AutoLootAssist() {
     }
 }
 
-var lootProperties = ['Magic Item|Artifact']
+var lootProperties = ['Magic Item|Artifact|Bolt|Arrow']
+var lootOnWar = true
+
+function looted(serial) {
+    Orion.Wait(Orion.Random(500));
+
+    var array = Shared.GetArray('looted', [])
+
+    var lootedMobs = Shared.GetArray('looted', [])
+    if (lootedMobs.indexOf(serial) == -1) {
+        lootedMobs.push(serial)
+        Shared.AddArray('looted', lootedMobs)
+        Orion.Print(68, "not looted:" + serial)
+        return false
+    }
+    Orion.Print(38, 'Looted:' + serial)
+    return true;
+}
 
 function AutoLootBeetleAssist() {
-
-    var bettles = Orion.FindTypeEx('0x0317', any, ground, 'nothumanmobile', 15)
-    Orion.Print("beetles" + bettles.length)
-    var bettlesPacks = bettles.filter(function (mob) {
-        var object = Orion.ObjAtLayer(21, mob.Serial());
-        return object.Properties() != "";
-    })
-
-    if (bettlesPacks.length < 0)
-        return;
-    var beetle = bettlesPacks[0];
+    var beetle = getMyBeetle()
+    if (beetle == null)
+        return
     var beetlebackpack = Orion.ObjAtLayer(21, beetle.Serial());
-    Orion.Print("Beetle:" + beetle.Serial())
-
-    Orion.Print("Pack:" + beetlebackpack.Serial())
-    Orion.Print("Props:" + beetlebackpack.Properties())
 
     Orion.OpenContainer(beetlebackpack.Serial())
     var lootbox = beetlebackpack
-    // Orion.FindTypeEx(any, any, beetlebackpack.Serial(), 'items').forEach(function (item) {
-    //     if (Orion.Contains(item.Properties(), "Contents")) {
-    //         lootbox = item;
-    //         Orion.Print(lootbox.Properties())
-    //         Orion.Print('Lootbox is : ' + item.Name())
-    //         return;
-    //     }
-    // })
-
     Orion.Boxhack(beetlebackpack.Serial());
 
     var items = 0
@@ -114,10 +110,11 @@ function AutoLootBeetleAssist() {
             .filter(function (mob) {
                 return mob.Notoriety() >= 3
                     && mob.Notoriety() < 7
-                    && mob.InLOS();
+                    && mob.InLOS()
+                    && mob.WarMode()
             }).length;
 
-        if (Player.WarMode() && entireAreaMobs == 0) {
+        if ((!Player.WarMode() || lootOnWar) && entireAreaMobs == 0) {
 
             var outcome = beetlebackpack.Properties().match(/Contents:\s(\d*)\/125 Items,\s(\d*)\/1600 Stones/im)
             if (outcome != null) {
@@ -126,33 +123,72 @@ function AutoLootBeetleAssist() {
             }
 
             if (Player.Weight() < Player.MaxWeight()) {
-                if (items >= 125 || itemWeight > 1570) {
+                if (items >= 120 || itemWeight > 1570) {
                     BotPush("Full Backpack")
                     Orion.PauseScript();
                 }
-                var corpses = Orion.FindTypeEx('0x2006', any, 'ground', any, 15);
-                corpses.forEach(function (corpse) {
-                    Orion.Print("Walking to " + corpse.Serial())
-                    WalkTo(corpse, 1);
-                    Orion.UseObject(corpse.Serial())
-                    Orion.Wait(500);
-                    while (beetle.Distance() > 2) {
-                        Orion.Wait(400)
-                    }
-                    Orion.FindTypeEx(any, any, ground).filter(function (item) {
-                        MoveItemTextFromTo("Gold Coin", corpse.Serial(), beetlebackpack)
-                    })
-                    Orion.FindTypeEx(any, any, ground).filter(function (item) {
-                        MoveItemTextFromTo(lootProperties, corpse.Serial(), lootbox)
-                    })
-                    Orion.Wait(800);
-                    //Orion.Hide(corpse.Serial())
-                    Orion.Ignore(corpse.Serial());
-                });
+                Orion.FindTypeEx('0x2006', any, 'ground', any, 10)
+                    .sort(function (item) { return Orion.Random(0, 2) > 0 ? -1 : 1 })
+                    .forEach(function (corpse) {
+                        if (looted(corpse.Serial()))
+                            Orion.Ignore(corpse.Serial());
+                        else
+                            if ((!Player.WarMode() || lootOnWar)) {
+                                Orion.Print("Walking to " + corpse.Serial())
+                                WalkTo(corpse, 0);
+                                WalkTo(corpse, 2);
+                                Orion.UseObject(corpse.Serial())
+                                Orion.Wait(600);
+                                while (beetle.Distance() > 2) {
+                                    Orion.Wait(400)
+                                }
+                                Orion.FindTypeEx(any, any, ground).filter(function (item) {
+                                    MoveItemTextFromTo("Gold Coin", corpse.Serial(), beetlebackpack)
+                                })
+                                Orion.FindTypeEx(any, any, ground).filter(function (item) {
+                                    MoveItemTextFromTo(lootProperties, corpse.Serial(), lootbox)
+                                })
+                                Orion.Wait(800);
+                                //Orion.Hide(corpse.Serial())
+                                if (corpse.Distance() < 2) {
+                                    Orion.Ignore(corpse.Serial());
+                                }
+                            }
+                    });
                 Orion.Wait(1000);
             }
         }
     }
+}
+
+function SwoopKiller() {
+    var startCoordinate = SelectCoordinate()
+    while (!Player.Dead()) {
+        var swoops = Orion.FindTypeEx('0x0005', any, ground, any, 20);
+        while (swoops.length == 0) {
+            Orion.Wait(50)
+            swoops = Orion.FindTypeEx('0x0005', any, ground, any, 20);
+        }
+        var swoop = swoops.shift();
+
+        Orion.AddWaitTargetObject(swoop.Serial());
+        Orion.Print('Honor');
+        Orion.InvokeVirtue('Honor');
+        if (swoop.Distance() > 6) {
+            WalkTo(swoop, 4)
+        }
+        while (swoop.Distance() < 2) {
+            Orion.Wait(1000)
+        }
+        Orion.Attack(swoop.Serial());
+
+        while (swoop.Exists()) {
+            Orion.Wait(3000)
+            Orion.Print('Its alive')
+        }
+        WalkTo(startCoordinate)
+    }
+
 }
 
 function OpenParagonCorpses() {

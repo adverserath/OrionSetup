@@ -174,16 +174,6 @@ function ResetGlobals(_) {
 
 }
 
-function ReleaseAllSummons(_) {
-    var mobs = Orion.FindTypeEx(any, any, ground, 'live|ignoreself', 15, 1 | 2)
-        .filter(function (mob) {
-            return mob.Properties().indexOf('summoned') != -1
-        }).forEach(function (mobile) {
- 			Orion.Say(mobile.Name() + ' release')
-        })
-
-}
-
 function GetSmartTarget(_) {
     ResetGlobals()
     var counter = 1
@@ -212,3 +202,4 @@ function GetSmartTarget(_) {
     //Return Chosen Mob
     return Orion.GetGlobal('smartTarget')
 }
+//#include helpers/Magic.js

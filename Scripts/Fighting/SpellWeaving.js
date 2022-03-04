@@ -84,93 +84,88 @@ function WoDKills() {
     }
 }
 
+
 function SpellWeavingKills() {
+    ReleaseAllSummons()
+    Orion.Wait(1000)
+
+    var summoned = false
     var timer = Orion.Now()
+    var castSummons = Player.Followers() != 5
+    var focus = Orion.FindTypeEx('0x3155')
+        .filter(function (gem) {
+            return gem.Properties().indexOf('Strength Bonus') != -1
+        }).shift()
+
+    var gemstr = parseInt((focus.Properties().match(/Strength\sBonus\s(\d)/i) || [])[1] || 0);
+    var hitmarker = parseInt(0.05 * gemstr * 25)
+
     while (true) {
-    Orion.Wait(2000)
-        while (Player.WarMode() && !Orion.IsWalking()) {
-            Orion.Wait(300)
-            var focus = Orion.FindTypeEx('0x3155')
-                .filter(function (gem) {
-                    return gem.Properties().indexOf('Strength Bonus') != -1
-                }).shift()
+        if (summoned == true) {
+            ReleaseAllSummons()
+            summoned = false;
+            Orion.Wait(1000)
+        }
+        Orion.Wait(300)
 
-            var gemstr = parseInt((focus.Properties().match(/Strength\sBonus\s(\d)/i) || [])[1] || 0);
-            var hitmarker = parseInt(0.05 * gemstr * 25)
-
-            while (Player.Frozen()) {
-                Orion.Wait(100)
+        while (Player.WarMode()) {
+            if (castSummons && Player.Followers() < 4) {//&& Orion.ClientLastAttack() != '0x00000000'
+                Cast('Summon Fey')
+                Orion.Say('All guard')
+                summoned = true
             }
 
-            var witherTargets = Orion.FindTypeEx(any, any, ground,
-                'live|ignoreself|ignorefriends', 4, 'gray|criminal|orange|red')
-
-            if (witherTargets.length > 3) {
-                if (!Orion.BuffExists('Arcane Empowerment')) {
-                    Cast('Arcane Empowerment')
-                    Orion.Wait(1000)
-                    continue;
-                }
-                else {
-                    Cast('Wither')
-                    continue;
-                }
+            if (!Orion.BuffExists('Arcane Empowerment') && Orion.ClientLastAttack() != '0x00000000') {
+                Cast('Arcane Empowerment')
+                continue;
             }
 
+            var allTargets = Orion.FindTypeEx(any, any, ground,
+                'live|ignoreself|ignorefriends|inlos', 18, 'gray|criminal|orange|red')
 
-            var fireTargets = Orion.FindTypeEx(any, any, ground,
-                'live|ignoreself|ignorefriends', (5 + gemstr), 'gray|criminal|orange|red')
+            if (allTargets.filter(function (mob) { return mob.Distance() <= 4 }).length > 3) {
+                Cast('Wither')
+                continue;
+            }
 
+            var fireTargets = allTargets.filter(function (mob) { return mob.Distance() <= (5 + gemstr) })
 
             if (fireTargets.length > 6 && timer < Orion.Now()) {
-                timer = Orion.Now() + 15000
+                timer = Orion.Now() + 1000
                 fireTargets.forEach(function (mob) {
                     Orion.Print(mob.Name());
                     Orion.AddHighlightCharacter(mob.Serial(), '0x0161');
                 })
-                Orion.Wait(500)
-                Cast('Wildfire', self)
+                fireTargets.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance()
+                });
+                Cast('Wildfire', fireTargets[parseInt(fireTargets.length / 2)].Serial())
                 continue;
             }
 
-            var thunderTargets = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends|inlos', (3 + gemstr), 'gray|criminal|orange|red')
+            var thunderTargets = allTargets.filter(function (mob) { return mob.Distance() <= (3 + gemstr) })
             if (thunderTargets.length > 3) {
-                thunderTargets.forEach(function (mob) {
-                    Orion.Print('target ' + mob.Name());
-                    Orion.AddHighlightCharacter(mob.Serial(), '0x0161');
-                })
                 Cast('Thunderstorm')
                 continue;
             }
 
-
             //WOD
-            var wodTargets = Orion.FindTypeEx(any, any, ground,
-                'live|ignoreself|ignorefriends|inlos', 10, 'red')
+            var wodTargets = allTargets.filter(function (mob) { return mob.Distance() <= (10) })
                 .filter(function (enemy) {
-                    return enemy.Exists() && enemy.Hits() < (hitmarker) && !Orion.Contains(enemy.Properties(), 'Legacy')
+                    return enemy.Exists() &&
+                        enemy.Hits() < (hitmarker) &&
+                        !Orion.Contains(enemy.Properties(), 'Legacy')
                 })
 
-            if (wodTargets.length > 0 && Player.WarMode()) {
-                if (!Orion.BuffExists('Arcane Empowerment')) {
-                    Cast('Arcane Empowerment')
-                    Orion.Wait(3000)
-                }
+            if (wodTargets.length > 0) {
                 Cast('Word Of Death', wodTargets.shift().Serial())
                 continue;
             }
 
             if (Player.Mana() > 70) {
-                var fsTargets = Orion.FindTypeEx(any, any, ground,
-                    'nothumanmobile|live|ignoreself|ignorefriends|inlos', 10, 'criminal|orange|red')
+                var fsTargets = allTargets.filter(function (mob) { return mob.Distance() <= (10) })
                 if (fsTargets.length > 0) {
-                    if (!Orion.BuffExists('Arcane Empowerment')) {
-                        Cast('Arcane Empowerment')
-                        Orion.Wait(2000)
-                    }
                     Cast('Flame strike', fsTargets.shift().Serial())
-
                     continue;
                 }
             }
@@ -180,14 +175,6 @@ function SpellWeavingKills() {
     }
 }
 
-function Cast(spellName, targetSerial) {
-    while (Orion.ScriptRunning('Walk') == 1) {
-        Orion.Wait(400)
-    }
-    if (targetSerial == null) {
-        Orion.Cast(spellName)
-    }
-    else {
-        Orion.CastTarget(spellName, targetSerial)
-    }
-}
+
+
+//#include helpers/Magic.js
