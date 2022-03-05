@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="RecallSafe" looped="true" delay="1">
-        <action type="5" convert_type="0" waiting_time="1000" value="1"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x00006F34" graphic="0x0030" color="0x0000"/>
+        <action type="26" convert_type="28" waiting_time="1000"/>
     </macro>
     <macro name="TrainPet" looped="true" delay="60">
         <action type="2" convert_type="0" waiting_time="1000" serial="0x0000F22F" graphic="0x010F" color="0x0000"/>
