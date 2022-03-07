@@ -1,36 +1,38 @@
-function CheckLoot() {
+function SuperLooter(_) {
     Orion.IgnoreReset()
     while (true) {
         Orion.FindTypeEx('0x2006', any, ground, 'item', 2)
             .forEach(function (corpse) {
-                if (!Orion.GumpExists('container', corpse.Serial())) {
-                    Orion.Print('Open')
-                    if (!Orion.OpenContainer(corpse.Serial())) {
-                        Orion.Ignore(corpse.Properties())
+                if (Orion.GumpExists('container', corpse.Serial())) {
+                    if(!Orion.MoveItemList(lootLists, corpse.Serial()))
+                    {
                         Orion.Ignore(corpse.Serial())
                     }
                 }
-                //Orion.Print('found corpse')
-
-                Orion.FindListEx('ImbueIngred|Gold/Arrows/Artis', corpse.Serial()).forEach(function (item) {
-                    Orion.Print('found ' + item.Name())
-                    Orion.PauseScript('TargetClosest')
-                    Orion.MoveItem(item.Serial());
-                    Orion.Wait(800)
-                    Orion.ResumeScript('TargetClosest')
-                })
-                //Orion.Ignore(corpse.Serial())
-
             })
         Orion.Wait(50)
-
     }
 }
-
+var lootLists = 'ImbueIngred|Gold/Arrows/Artis'
+function OpenCorpsesWhenIdle() {
+    Orion.FindTypeEx('0x2006', any, ground, 'item', 6)
+        .sort(function (t1, t2) {
+            return t1.Distance() - t2.Distance()
+        })
+        .forEach(function (corpse) {
+            Orion.Print(corpse.Properties())
+            if (!Orion.GumpExists('container', corpse.Serial())) {
+                WalkTo(corpse.Serial(), 1)
+                Orion.OpenContainer(corpse.Serial())
+                Orion.Wait(400)
+            }
+        })
+}
 
 function SampireLoops() {
     //Start Target Script
     Orion.Exec('TargetClosest', true);
+    Orion.Exec('SuperLooter', true);
 
     //Start Counter Script
     Orion.Exec('ActiveCounter', true);
@@ -123,6 +125,11 @@ function TargetClosest() {
 
                         WalkTo(closest[0])
                         Orion.PrintFast(self, '0x0111', 1, closest[0].Name());
+                    }
+                    if(closest.length == 0)
+                    {
+                        OpenCorpsesWhenIdle()
+
                     }
                 }
             }
