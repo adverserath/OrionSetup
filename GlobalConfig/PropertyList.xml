@@ -95,6 +95,8 @@
     <property name="Major Artifact"/>
     <property name="Legendary Artifact"/>
     <property name="Weight"/>
+    <property name="Crafting Resource"/>
+    <property name="Essence Of"/>
     <ignored_property name="Physical Damage"/>
     <ignored_property name="Fire Damage"/>
     <ignored_property name="Poison Damage"/>

@@ -59,14 +59,7 @@ var page = id[0][2]
         }
     }
 }
-function print()
-{
-var gump0 = Orion.GetGump('last')
 
-var gumpHook0 = Orion.CreateGumpHook(4);
-                    gump0.Select(gumpHook0);
-
-}
 function GoTo() {
     GateTo('Britain')
 }

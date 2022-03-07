@@ -185,5 +185,14 @@
         <item graphic="0x3196" color="0x0000" comment="White Pearl" count="0"/>
         <item graphic="0x0E24" color="0x0483" comment="Silver Serpent Venom" count="0"/>
         <item graphic="0x5731" color="0x0000" comment="Undying Flesh" count="0"/>
+        <item graphic="0x1767" color="0x081B" comment="Abyssal Cloth" count="0"/>
+        <item graphic="0x5742" color="0x0000" comment="Boura Pelt" count="0"/>
+        <item graphic="0x3187" color="0x02DB" comment="Taint" count="0"/>
+        <item graphic="0x4007" color="0x0000" comment="Void Essence" count="0"/>
+        <item graphic="0x3184" color="0x0000" comment="Corruption" count="0"/>
+        <item graphic="0x3183" color="0x0000" comment="Blight" count="0"/>
+        <item graphic="0x3190" color="0x0000" comment="Parasitic Plant" count="0"/>
+        <item graphic="0x5747" color="0x0000" comment="Raptor Teeth" count="0"/>
+        <item graphic="0x571C" color="any" comment="Essence Of Anything" count="0"/>
     </findlist>
 </data>
