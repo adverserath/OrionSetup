@@ -1,3 +1,39 @@
+function SelectMultipleLocations(_) {
+  var locations = [];
+  var selected;
+  var selecting = true;
+  while (selecting) {
+    var selectedObj = SelectCoordinate();
+    if (selectedObj == null) {
+      selecting = false
+    }
+    else {
+      locations.push(selectedObj)
+      Orion.Print('added X:' + selectedObj.X() + " Y:" + selectedObj.Y())
+    }
+  }
+  return locations;
+}
+
+function SelectMultipleTargets(_) {
+  var objects = [];
+  var selected;
+  var selecting = true;
+  while (selecting) {
+    var selectedObj = SelectTarget();
+    if (selectedObj == null) {
+      selecting = false
+    }
+    else {
+      selected = selectedObj.Serial()
+
+      objects.push(selected)
+      Orion.Print('added ' + selected.FullName())
+    }
+  }
+  return objects;
+}
+
 function SelectTarget(itemUsage) {
   if (itemUsage != null) {
     Orion.Print("Select your" + itemUsage);
@@ -76,12 +112,11 @@ function WalkTo(object, distance, timeMS, walking) {
     object = Orion.FindObject(object)
   }
 
-  if (object.Name() != null && object.Name() != ''){
+  if (object.Name() != null && object.Name() != '') {
     Orion.Print("Walking to object ")
     Orion.Print(object.Name())
   }
-  else
-  {
+  else {
     Orion.Print("Walking to coord ")
     Orion.Print(object.X() + ' ' + object.Y())
   }
