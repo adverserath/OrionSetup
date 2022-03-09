@@ -1,7 +1,8 @@
+
 function SampireLoops() {
     //Start Target Script
     Orion.Exec('TargetClosest', true);
-    Orion.Exec('SuperLooter', true);
+    // Orion.Exec('SuperLooter', true);
     Orion.Exec('BagOfSendingGold', true);
 
     //Start Counter Script
@@ -25,32 +26,34 @@ function SampireLoops() {
 
 }
 
-function SuperLooter(_) {
-    Orion.IgnoreReset()
-    while (true) {
-        Orion.FindTypeEx('0x2006', any, ground, 'item', 2)
-            .forEach(function (corpse) {
-                if (Orion.GumpExists('container', corpse.Serial())) {
-                    if (!Orion.MoveItemList(lootLists, corpse.Serial())) {
-                        Orion.Ignore(corpse.Serial())
-                    }
-                }
-            })
-        Orion.Wait(50)
+function SuperLooter(corpse) {
+
+    if (!Orion.GumpExists('container', corpse.Serial())) {
+        Orion.OpenContainer(corpse.Serial(), 1000)
+
     }
+    while (Orion.MoveItemList(lootLists, corpse.Serial())) {
+        Orion.AddHighlightCharacter(corpse.Serial(), '0x0846');
+    }
+    Orion.PrintFast(corpse.Serial(), '78', 1, 'Looted');
+
+    Orion.Ignore(corpse.Serial())
+
 }
-var lootLists = 'ImbueIngred|Gold/Arrows/Artis'
+var lootLists = 'ImbueIngred|Gold/Arrows/Artis|Weapons'
 function OpenCorpsesWhenIdle(_) {
     Orion.FindTypeEx('0x2006', any, ground, 'item', 6)
         .sort(function (t1, t2) {
             return t1.Distance() - t2.Distance()
         })
         .forEach(function (corpse) {
-            Orion.Print(corpse.Properties())
-            if (!Orion.GumpExists('container', corpse.Serial())) {
-                WalkTo(corpse.Serial(), 1)
-                Orion.OpenContainer(corpse.Serial())
-                Orion.Wait(400)
+            if (!Player.Dead()) {
+                Orion.AddHighlightCharacter(corpse.Serial(), '0x084C');
+
+                Orion.PrintFast(corpse.Serial(), '0x0111', 1, 'Looting');
+                WalkTo(corpse.Serial(), 0)
+                Orion.OpenContainer(corpse.Serial(), 1000)
+                SuperLooter(corpse)
             }
         })
 }
@@ -62,30 +65,30 @@ function SetLocations(_) {
 }
 
 function LocationLoop(_) {
-if(Player.Poisoned() || Player.Hits()<Player.Hits()/2)
-{
-return;
-}
-{
-    var mobCount = Orion.FindTypeEx(any, any, ground,
-        'live|ignoreself|ignorefriends|near', 6, 'gray|criminal|red|enemy').length
-    Orion.Print('Checking next location')
-    
+    if (Player.Poisoned() || Player.Hits() < Player.Hits() / 2) {
+        return;
+    }
+    {
+        var mobCount = Orion.FindTypeEx(any, any, ground,
+            'live|ignoreself|ignorefriends|near', 6, 'gray|criminal|red|enemy').length
+        Orion.Print('Checking next location')
+
         if (currentlocation >= locations.length)
             currentlocation = 0;
-            
-    if (mobCount == 0 && locations.length > currentlocation) {
-        Orion.Print('Going to next location')
-        WalkTo(locations[currentlocation++])
 
-        //Find Next Target Far away
-        var farMobs = Orion.FindTypeEx(any, any, ground,
-            'live|ignoreself|ignorefriends|near', 30, 'gray|criminal|red|enemy')
-        if (farMobs.length > 0) {
-            WalkTo(farMobs[0])
+        if (mobCount == 0 && locations.length > currentlocation) {
+            Orion.Print('Going to next location')
+            WalkTo(locations[currentlocation++])
+
+            //Find Next Target Far away
+            var farMobs = Orion.FindTypeEx(any, any, ground,
+                'live|ignoreself|ignorefriends|near', 30, 'gray|criminal|red|enemy')
+            if (farMobs.length > 0) {
+                WalkTo(farMobs[0])
+            }
         }
+
     }
-    
 }
 
 
@@ -93,7 +96,7 @@ return;
 function Confidence(_) {
     while (true) {
         Orion.Wait(500)
-        while (Player.WarMode()) {
+        while (!Player.Dead() && Player.WarMode()) {
             Orion.Wait(200)
 
             if (Orion.ClientLastAttack() != '0x00000000' && Player.Hits() < 20) {
@@ -107,7 +110,7 @@ function Confidence(_) {
 function PrimaryAbility(_) {
     while (true) {
         Orion.Wait(500)
-        while (Player.WarMode()) {
+        while (!Player.Dead() && Player.WarMode()) {
             Orion.Wait(200)
             if (Orion.ClientLastAttack() != '0x00000000') {
                 var mobsCount = Orion.FindTypeEx(any, any, ground,
@@ -137,7 +140,7 @@ function TargetClosest(_) {
     SetLocations()
     while (true) {
         Orion.Wait(500)
-        while (Player.WarMode()) {
+        while (!Player.Dead() && Player.WarMode()) {
             Orion.Wait(150)
             var lastAttacker = Orion.FindObject(Orion.ClientLastAttack())
 
@@ -154,7 +157,7 @@ function TargetClosest(_) {
                 }
                 else {
                     closest = Orion.FindTypeEx(any, any, ground,
-                        'live|ignoreself|ignorefriends|near', 6, 'gray|criminal|red|enemy')
+                        'live|ignoreself|ignorefriends|near|inlos', 10, 'gray|criminal|red|enemy')
                     closest.concat(Orion.FindTypeEx(any, any, ground,
                         'live|ignoreself|ignorefriends|near', 12, 'gray|criminal|red|enemy').filter(function (mob) { return mob.WarMode() }))
                     if (closest.length > 0) {
@@ -166,6 +169,8 @@ function TargetClosest(_) {
                         Orion.PrintFast(self, '0x0111', 1, closest[0].Name());
                     }
                     if (closest.length == 0) {
+                        Orion.PrintFast(self, '0x0111', 1, 'Loot');
+
                         OpenCorpsesWhenIdle()
                         if (locations.length > 0)
                             LocationLoop()
@@ -204,7 +209,7 @@ function HonorSampire(mobileSerial) {
 function ActiveCounter(_) {
     while (true) {
         Orion.Wait(100)
-        while (Player.WarMode()) {
+        while (!Player.Dead() && Player.WarMode()) {
             Orion.Wait(50)
             if (Player.Mana() > 10 && !Orion.SpellStatus('Counter Attack')) {
                 Orion.PrintFast(self, '0x0111', 1, 'Counter');
@@ -218,7 +223,7 @@ function ActiveCounter(_) {
 function KeepSpellActive(spellName, mana) {
     while (true) {
         Orion.Wait(500)
-        while (Player.WarMode()) {
+        while (!Player.Dead() && Player.WarMode()) {
             Orion.Wait(50)
             if (Orion.ClientLastAttack() != '0x00000000') {
                 if (!Orion.BuffExists(spellName) && Player.Mana() > mana) {
@@ -234,9 +239,9 @@ function KeepSpellActive(spellName, mana) {
 function CastSpell(spell, target) {
     TextWindow.Print(spell);
     if (target == null)
-        Orion.Cast(spell);
+        CastSpellOnTarget(spell, self)
     else
-        Orion.CastTarget(spell, target)
+        CastSpellOnTarget(spell, target)
 }
 
 
@@ -244,24 +249,25 @@ function CastSpell(spell, target) {
 function Heal(_) {
     while (true) {
         Orion.Wait(500)
-
-        if (!Orion.BuffExists('Curse Weapon') && Orion.ClientLastAttack() != '0x00000000') {
-            CastSpell('Curse Weapon')
-            Orion.Wait(1500)
-        }
-        if (Orion.ClientLastAttack() == '0x00000000' && Player.Poisoned()) {
-            CastSpell('Cleanse by fire', self)
-            Orion.Wait(2000)
-        }
-        if (Orion.ClientLastAttack() == '0x00000000' && Player.Hits() < Player.MaxHits() && !Player.Poisoned()) {
-            CastSpell('Close Wounds', self)
-            Orion.Wait(2000)
+        while (!Player.Dead() && Player.WarMode()) {
+            Orion.Wait(500)
+            if (!Orion.BuffExists('Curse Weapon') && Orion.ClientLastAttack() != '0x00000000' && Player.Hits() < Player.MaxHits() / 1.5) {
+                CastSpell('Curse Weapon')
+                Orion.Wait(1500)
+            }
+            if (Orion.ClientLastAttack() == '0x00000000' && Player.Poisoned()) {
+                CastSpell('Cleanse by fire', self)
+                Orion.Wait(2000)
+            }
+            if (Orion.ClientLastAttack() == '0x00000000' && Player.Hits() < Player.MaxHits() && !Player.Poisoned()) {
+                CastSpell('Close Wounds', self)
+                Orion.Wait(2000)
+            }
         }
     }
 }
 
-
-
-
 //#include helpers/Target.js
-//#include Actions/Automated/BagOfSendingjs
+//#include helpers/Magic.js
+//#include helpers/DpsGump.js
+//#include Actions/Automated/BagOfSending.js

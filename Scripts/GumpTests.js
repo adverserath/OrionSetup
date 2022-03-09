@@ -3,7 +3,7 @@ function TestResponseAllControls(unused)
 {
 	var code = CustomGumpResponse.ReturnCode();
 	Orion.Print('Custom gump response code = ' + code);
-
+Orion.Print(code)
 	if (code == 0)
 	{
 		var gump = Orion.CreateCustomGump(15);
@@ -47,7 +47,8 @@ function TestResponseAllControls(unused)
 }
 
 function TestCustomGumpAllControls()
-{
+{Orion.Print("gump")
+
 	// Create new custom gump with serial 15
 	var gump = Orion.CreateCustomGump(15);
 	

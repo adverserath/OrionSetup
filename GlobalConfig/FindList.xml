@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="23">
+<data version="0" size="24">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -134,6 +134,7 @@
     </findlist>
     <findlist name="mushrooms">
         <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0"/>
+        <item graphic="0x26B7" color="0x0000" comment="Zoogi Fungus" count="0"/>
     </findlist>
     <findlist name="Eggs">
         <item graphic="0x9F180" color="0x0000" comment="EasterEgg" count="0"/>
@@ -194,5 +195,10 @@
         <item graphic="0x3190" color="0x0000" comment="Parasitic Plant" count="0"/>
         <item graphic="0x5747" color="0x0000" comment="Raptor Teeth" count="0"/>
         <item graphic="0x571C" color="any" comment="Essence Of Anything" count="0"/>
+    </findlist>
+    <findlist name="Weapons">
+        <item graphic="0x0DF0" color="any" comment="Black Staff" count="0"/>
+        <item graphic="0x1439" color="any" comment="War Hammer" count="0"/>
+        <item graphic="0x0E89" color="any" comment="Quarter Staff" count="0"/>
     </findlist>
 </data>

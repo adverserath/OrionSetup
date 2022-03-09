@@ -14,7 +14,16 @@ var npc = Orion.FindTypeEx(any, any, ground,
         return mob.Properties()=="A Lever"
       }).forEach(function (mob){
 WalkTo(mob)
+Orion.Wait(300)
 Orion.UseObject(mob.Serial())
+      })
+
+//ord/anord
+Orion.FindTypeEx('0x19AB', any, ground,
+      'any', 30, any).forEach(function (flame){
+WalkTo(flame)
+Orion.Say("ord")
+Orion.Say("anord")
       })
 }
 }
@@ -73,17 +82,17 @@ function DrawLOS() {
       Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance).concat()
 
         .forEach(function (tile) {
-          if (Orion.InLOS(Player.X(), Player.Y(), Player.Z(), tile.X(), tile.Y(), tile.Z())) {
-            Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x0197', tile.X(), tile.Y(), tile.Z());
+          if (Orion.InLOS(Player.X(), Player.Y(), Player.Z(), tile.X(), tile.Y(), tile.Z()) && tile.Z()>Player.Z()) {
+            Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A',  tile.Z(), tile.X(), tile.Y(), tile.Z());
 
           }
           else {
-            Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+        //    Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
           }
         }
         )
     })
-    Orion.Wait(1000)
+    Orion.Wait(200)
   }
 }
 
