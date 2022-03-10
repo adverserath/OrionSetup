@@ -68,7 +68,7 @@ function AutoLootAssist() {
     }
 }
 
-var lootProperties = ['Magic Item|Artifact|Bolt|Arrow']
+var lootProperties = ['Magic Item|Artifact|Bolt|Arrow|Armor']
 var lootOnWar = true
 
 function looted(serial) {
@@ -136,12 +136,10 @@ function AutoLootBeetleAssist() {
                             if ((!Player.WarMode() || lootOnWar)) {
                                 Orion.Print("Walking to " + corpse.Serial())
                                 WalkTo(corpse, 0);
-                                WalkTo(corpse, 2);
+                                WalkTo(corpse, 1);
                                 Orion.UseObject(corpse.Serial())
                                 Orion.Wait(600);
-                                while (beetle.Distance() > 2) {
-                                    Orion.Wait(400)
-                                }
+
                                 Orion.FindTypeEx(any, any, ground).filter(function (item) {
                                     MoveItemTextFromTo("Gold Coin", corpse.Serial(), beetlebackpack)
                                 })

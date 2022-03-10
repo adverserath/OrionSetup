@@ -3,18 +3,14 @@
 function CastSpellOnTarget(spellName, targetID) {
 	var startCastTime = Orion.Now();
 
-	Orion.Cast(spellName + '');
+	Orion.Cast(spellName);
 	Orion.Wait(400)
 	while (Orion.InJournal('You have not yet recovered', '', '0', '-1', startCastTime, Orion.Now()) != null) {
 		startCastTime = Orion.Now()
-		Orion.Cast(spellName + '');
+		Orion.CastTarget(spellName, targetID);
 		Orion.Wait(400)
 	}
-
-	if (Orion.WaitForTarget(3000))
-		Orion.TargetObject(targetID);
-	Orion.Wait(1000);
-
+	Orion.Wait(100);
 }
 
 function MarkRune(runeItem) {
@@ -129,4 +125,8 @@ function Cast(spellName, targetSerial) {
 		Orion.CastTarget(spellName, targetSerial)
 	}
 	WaitFrozen(spellName)
+}
+
+function ManaCheck(required,lmc){
+	return Player.Mana()>required*lmc
 }

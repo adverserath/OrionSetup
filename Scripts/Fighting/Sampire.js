@@ -1,29 +1,22 @@
+var LMC = 0.12
+function OpenMyCorpse()
+{
+Orion.FindTypeEx('0x2006', any, ground, 'item', 40).filter(function (corpse){
+return Orion.Contains(corpse.Properties(), Player.Name())
+}).forEach(function (corpse){
+WalkTo(corpse)
+Orion.Wait(100)
+Orion.UseObject(corpse.Serial())
+})
 
+}
 function SampireLoops() {
     //Start Target Script
     Orion.Exec('TargetClosest', true);
     // Orion.Exec('SuperLooter', true);
     Orion.Exec('BagOfSendingGold', true);
-
-    //Start Counter Script
-    Orion.Exec('ActiveCounter', true);
-
-    if (Orion.ScriptRunning('KeepSpellActive') != 0) {
-        Orion.ToggleScript('KeepSpellActive');
-    }
-    //Start DF script
-    Orion.Exec('KeepSpellActive', false, ['Divine Fury', 13]);
-    //Start DF script
-    Orion.Exec('KeepSpellActive', false, ['Consecrate Weapon', 10]);
-    //Start Primary script
-    Orion.Exec('PrimaryAbility', true);
-
-    //Start Primary script
-    Orion.Exec('Confidence', true);
-
-    //Chiv Healer
-    Orion.Exec('Heal', true);
-
+    //Start SampireSpells script
+    Orion.Exec('SampireSpells', true);
 }
 
 function SuperLooter(corpse) {
@@ -91,51 +84,80 @@ function LocationLoop(_) {
     }
 }
 
-
-
-function Confidence(_) {
+function SampireSpells() {
+    var spellName = ""
     while (true) {
         Orion.Wait(500)
         while (!Player.Dead() && Player.WarMode()) {
-            Orion.Wait(200)
+            var lastAttacker = Orion.FindObject(Orion.ClientLastAttack())
+            if (lastAttacker != null) {
+                Orion.Wait(200)
+                //Counter Attack
+                spellName = "Counter Attack"
+                if (ManaCheck(5, LMC) && !Orion.SpellStatus(spellName)) {
+                    Orion.PrintFast(self, '0x0111', 1, spellName);
+                    CastSpell(spellName);
+                }
 
-            if (Orion.ClientLastAttack() != '0x00000000' && Player.Hits() < 20) {
-                CastSpell('Confidence')
-                Orion.Wait(20000)
-            }
-        }
-    }
-}
-
-function PrimaryAbility(_) {
-    while (true) {
-        Orion.Wait(500)
-        while (!Player.Dead() && Player.WarMode()) {
-            Orion.Wait(200)
-            if (Orion.ClientLastAttack() != '0x00000000') {
+                //Ability
                 var mobsCount = Orion.FindTypeEx(any, any, ground,
                     'live|ignoreself|ignorefriends', 1, 'gray|criminal|red|enemy').length
                 if (mobsCount == 1) {
-                    if (!Orion.SpellStatus('Lightning Strike')) {
-                        CastSpell('Lightning Strike')
+                    spellName = "Lightning Strike"
+                    if (ManaCheck(10, LMC) && !Orion.SpellStatus(spellName)) {
+                        Orion.PrintFast(self, '0x0111', 1, spellName);
+                        CastSpell(spellName)
                     }
                 }
-                else if (mobsCount == 2) {
-                    if (!Orion.SpellStatus('Momentum Strike')) {
-                        CastSpell('Momentum Strike')
+                else if (false) {
+                    spellName = "Momentum Strike"
+                    if (ManaCheck(10, LMC) && !Orion.SpellStatus(spellName)) {
+                        Orion.PrintFast(self, '0x0111', 1, spellName);
+                        CastSpell(spellName)
                     }
                 }
-                else if (mobsCount > 2) {
-                    if (!Orion.AbilityStatus('Primary')) {
-                        TextWindow.Print("Whirly Whirly")
+                else if (mobsCount > 1) {
+                    spellName = "Whirlwind"
+                    if (ManaCheck(5, LMC) && !Orion.AbilityStatus('Primary')) {
+                        Orion.PrintFast(self, '0x0111', 1, spellName);
                         Orion.UseAbility('Primary', true);
                     }
                 }
 
+                //Divine Fury
+                spellName = "Divine Fury"
+                if (ManaCheck(15, LMC) && !Orion.BuffExists(spellName)) {
+                    Orion.PrintFast(self, '0x0111', 1, spellName);
+                    CastSpell(spellName);
+                }
+                //Consecrate Weapon
+                spellName = "Consecrate Weapon"
+                if (ManaCheck(10, LMC) && !Orion.BuffExists(spellName)) {
+                    Orion.PrintFast(self, '0x0111', 1, spellName);
+                    CastSpell(spellName);
+                }
+
+                //Curse Weapon
+                spellName = "Curse Weapon"
+                if (!Orion.BuffExists('Curse Weapon')
+                    && Player.Hits() < Player.MaxHits() * 0.8) {
+                    Orion.PrintFast(self, '0x0111', 1, spellName);
+                    CastSpell(spellName);
+                }
+
+            } //Has Target
+            else {
+                if (Player.Poisoned()) {
+                    CastSpell('Cleanse by fire', self)
+                } else if (Player.Hits() < Player.MaxHits() * 0.9) {
+                    CastSpell('Close Wounds', self)
+                }
+                Orion.Wait(400)
             }
-        }
-    }
+        }  //while war
+    } //while true
 }
+
 function TargetClosest(_) {
     SetLocations()
     while (true) {
@@ -147,7 +169,6 @@ function TargetClosest(_) {
             if (lastAttacker == null) {
                 var closest = Orion.FindTypeEx(any, any, ground,
                     'live|ignoreself|ignorefriends|near', 1, 'gray|criminal|red|enemy')
-                Orion.Wait(150)
 
                 if (closest.length > 0) {
                     Orion.Exec('HonorSampire', true, [closest[0].Serial()]);
@@ -157,12 +178,24 @@ function TargetClosest(_) {
                 }
                 else {
                     closest = Orion.FindTypeEx(any, any, ground,
-                        'live|ignoreself|ignorefriends|near|inlos', 10, 'gray|criminal|red|enemy')
+                        'live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|red|enemy')
                     closest.concat(Orion.FindTypeEx(any, any, ground,
-                        'live|ignoreself|ignorefriends|near', 12, 'gray|criminal|red|enemy').filter(function (mob) { return mob.WarMode() }))
+                        'live|ignoreself|ignorefriends', 12, 'gray|criminal|red|enemy')
+                        .filter(function (mob) { return mob.WarMode() }))
+                        
+                    closest = closest.sort(function (mobA, mobB) {
+                            return mobA.Distance() - mobB.Distance()
+                        });
                     if (closest.length > 0) {
                         Orion.Exec('HonorSampire', true, [closest[0].Serial()]);
                         Orion.Wait(100)
+
+                        Orion.Print('0x0111', "Attack All")
+                        closest.forEach(function (mobile) {
+                            Orion.Attack(mobile.Serial())
+                            Orion.Wait(50)
+                        })
+
                         Orion.Attack(closest[0].Serial())
 
                         WalkTo(closest[0])
@@ -173,7 +206,13 @@ function TargetClosest(_) {
 
                         OpenCorpsesWhenIdle()
                         if (locations.length > 0)
+                        {
+                        while(Player.Weight()>Player.MaxWeight())
+                        {
+                        Orion.Wait(1000)
+                        }
                             LocationLoop()
+                    }
                     }
                 }
             }
@@ -189,10 +228,18 @@ function TargetClosest(_) {
 
 function HonorSampire(mobileSerial) {
     var mobile = Orion.FindObject(mobileSerial);
-    Orion.PrintFast(self, '0x0111', 1, 'Honor');
-    Orion.WaitTargetObject(mobileSerial);
-    Orion.AddHighlightCharacter(mobileSerial, '0xF550', true);
-    Orion.Print(' Honor ' + mobile.Properties())
+    //if target isnt honorable, get one that is
+    if (mobile.Hits() != mobile.MaxHits()) {
+        var closest = Orion.FindTypeEx(any, any, ground,
+            'live|ignoreself|ignorefriends|inlos|near', 10, 'gray|criminal|red|enemy')
+            .filter(function (mob) {
+                return mob.Hits() == mob.MaxHits()
+            })
+        if (closest.length == 0)
+            return
+        else
+            mobile = closest[0]
+    }
 
     if (mobile != null &&
         !Orion.BuffExists('Honored2') &&
@@ -202,69 +249,20 @@ function HonorSampire(mobileSerial) {
             !mobile.InLOS()) {
             Orion.Wait(100)
         }
+        Orion.PrintFast(self, '0x0111', 1, 'Honor');
+        Orion.WaitTargetObject(mobile.Serial());
+        Orion.AddHighlightCharacter(mobile.Serial(), '0xF550', true);
+
         Orion.InvokeVirtue('Honor');
     }
 }
 
-function ActiveCounter(_) {
-    while (true) {
-        Orion.Wait(100)
-        while (!Player.Dead() && Player.WarMode()) {
-            Orion.Wait(50)
-            if (Player.Mana() > 10 && !Orion.SpellStatus('Counter Attack')) {
-                Orion.PrintFast(self, '0x0111', 1, 'Counter');
-                Orion.Cast('Counter Attack');
-                Orion.Wait(300);
-            }
-        }
-    }
-}
-
-function KeepSpellActive(spellName, mana) {
-    while (true) {
-        Orion.Wait(500)
-        while (!Player.Dead() && Player.WarMode()) {
-            Orion.Wait(50)
-            if (Orion.ClientLastAttack() != '0x00000000') {
-                if (!Orion.BuffExists(spellName) && Player.Mana() > mana) {
-                    Orion.Print(Orion.ClientLastAttack())
-
-                    CastSpell(spellName)
-                }
-            }
-        }
-    }
-}
 
 function CastSpell(spell, target) {
-    TextWindow.Print(spell);
     if (target == null)
         CastSpellOnTarget(spell, self)
     else
         CastSpellOnTarget(spell, target)
-}
-
-
-
-function Heal(_) {
-    while (true) {
-        Orion.Wait(500)
-        while (!Player.Dead() && Player.WarMode()) {
-            Orion.Wait(500)
-            if (!Orion.BuffExists('Curse Weapon') && Orion.ClientLastAttack() != '0x00000000' && Player.Hits() < Player.MaxHits() / 1.5) {
-                CastSpell('Curse Weapon')
-                Orion.Wait(1500)
-            }
-            if (Orion.ClientLastAttack() == '0x00000000' && Player.Poisoned()) {
-                CastSpell('Cleanse by fire', self)
-                Orion.Wait(2000)
-            }
-            if (Orion.ClientLastAttack() == '0x00000000' && Player.Hits() < Player.MaxHits() && !Player.Poisoned()) {
-                CastSpell('Close Wounds', self)
-                Orion.Wait(2000)
-            }
-        }
-    }
 }
 
 //#include helpers/Target.js
