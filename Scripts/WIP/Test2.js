@@ -74,20 +74,18 @@ function Tracking() {
     Orion.UseSkill("Tracking");
     Orion.Wait(500);
     Gump = Orion.GetLastGump();
-    Gump.Select(Orion.CreateGumpHook(4));
+    Gump.Select(Orion.CreateGumpHook(2));
     Orion.Wait(1000);
     Gump = Orion.GetLastGump();
     count++
-    Orion.Print(Gump.Text(0))
-    if (Gump.Text(0) === 'ningar') {
-      found++
-      TextWindow.Print('found :' + found + '/' + count)
+    if (Gump.TextList().indexOf('grubber')!=-1) {
+      Orion.Print(39,'found grubber')
 
     }
-    TextWindow.Print(found / count)
+    Orion.Wait(3000);
 
     Gump.Close()
-    Orion.Wait(9000);
+    Orion.Wait(6000);
   }
   Orion.Wait(1000);
 }

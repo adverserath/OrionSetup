@@ -6,6 +6,8 @@
 //#include helpers/Pet.js
 //#include helpers/Magic.js
 //#include helpers/Gumps.js
+//#include helpers/Beetle.js
+//#include helpers/DPSGump.js
 //#include Fighting/Tamer.js
 //#include Fighting/Corpses.js
 //#include Fighting/Bushido.js
