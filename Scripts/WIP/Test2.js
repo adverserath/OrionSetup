@@ -1,8 +1,24 @@
+//#include Scripts/helpers/Target.js
+
 function testColours() {
   for (i = 0; i < 90; i++) {
     Orion.Print(i, "value;" + i)
     Orion.Wait(150)
   }
+}
+
+function FindItemByName()
+{
+Orion.Print('What are you looking for')
+var text = Orion.InputText();
+Orion.FindTypeEx(any, any, ground,'item',25)
+.filter(function (item){return Orion.Contains(item.Properties(),text)})
+.forEach(function (item){
+Orion.AddFakeMapObject(Orion.Random(10000), item.Graphic(), '0xff00', item.X(), item.Y(), item.Z()+2);
+Orion.Print('found '+item.Name())
+WalkTo(item)
+Orion.UseObject(item.Serial())
+});
 }
 
 var herding = []

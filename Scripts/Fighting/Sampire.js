@@ -1,4 +1,6 @@
-var LMC = 0.12
+var LMC = 0.40
+var looting = false
+
 function OpenMyCorpse()
 {
 Orion.FindTypeEx('0x2006', any, ground, 'item', 40).filter(function (corpse){
@@ -11,6 +13,12 @@ Orion.UseObject(corpse.Serial())
 
 }
 function SampireLoops() {
+Orion.Print('Do you want to target a specific mob?')
+var targetSpecificMob = SelectTarget()
+if(targetSpecificMob != null)
+	Orion.SetGlobal("mobType",targetSpecificMob.Graphic())
+else
+	Orion.SetGlobal("mobType",any)
     //Start Target Script
     Orion.Exec('TargetClosest', true);
     // Orion.Exec('SuperLooter', true);
@@ -35,7 +43,7 @@ function SuperLooter(corpse) {
 }
 var lootLists = 'ImbueIngred|Gold/Arrows/Artis|Weapons'
 function OpenCorpsesWhenIdle(_) {
-    Orion.FindTypeEx('0x2006', any, ground, 'item', 6)
+    Orion.FindTypeEx('0x2006', any, ground, 'item', 10)
         .sort(function (t1, t2) {
             return t1.Distance() - t2.Distance()
         })
@@ -57,12 +65,23 @@ function SetLocations(_) {
     locations = SelectMultipleLocations();
 }
 
+var mobType
+function GetMobType()
+{
+if(mobType==null)
+	mobType = Orion.GetGlobal("mobType")
+if(mobType==null)
+	return any
+else
+return mobType
+}
+
 function LocationLoop(_) {
     if (Player.Poisoned() || Player.Hits() < Player.Hits() / 2) {
         return;
     }
     {
-        var mobCount = Orion.FindTypeEx(any, any, ground,
+        var mobCount = Orion.FindTypeEx(GetMobType(), any, ground,
             'live|ignoreself|ignorefriends|near', 6, 'gray|criminal|red|enemy').length
         Orion.Print('Checking next location')
 
@@ -74,7 +93,7 @@ function LocationLoop(_) {
             WalkTo(locations[currentlocation++])
 
             //Find Next Target Far away
-            var farMobs = Orion.FindTypeEx(any, any, ground,
+            var farMobs = Orion.FindTypeEx(GetMobType(), any, ground,
                 'live|ignoreself|ignorefriends|near', 30, 'gray|criminal|red|enemy')
             if (farMobs.length > 0) {
                 WalkTo(farMobs[0])
@@ -100,7 +119,7 @@ function SampireSpells() {
                 }
 
                 //Ability
-                var mobsCount = Orion.FindTypeEx(any, any, ground,
+                var mobsCount = Orion.FindTypeEx(GetMobType(), any, ground,
                     'live|ignoreself|ignorefriends', 1, 'gray|criminal|red|enemy').length
                 if (mobsCount == 1) {
                     spellName = "Lightning Strike"
@@ -131,16 +150,16 @@ function SampireSpells() {
                     CastSpell(spellName);
                 }
                 //Consecrate Weapon
-                spellName = "Consecrate Weapon"
-                if (ManaCheck(10, LMC) && !Orion.BuffExists(spellName)) {
-                    Orion.PrintFast(self, '0x0111', 1, spellName);
-                    CastSpell(spellName);
-                }
+          //      spellName = "Consecrate Weapon"
+         //       if (ManaCheck(10, LMC) && !Orion.BuffExists(spellName)) {
+         //           Orion.PrintFast(self, '0x0111', 1, spellName);
+         //           CastSpell(spellName);
+        //        }
 
                 //Curse Weapon
                 spellName = "Curse Weapon"
                 if (!Orion.BuffExists('Curse Weapon')
-                    && Player.Hits() < Player.MaxHits() * 0.8) {
+                    && Player.Hits() < Player.MaxHits() * 0.4) {
                     Orion.PrintFast(self, '0x0111', 1, spellName);
                     CastSpell(spellName);
                 }
@@ -167,7 +186,7 @@ function TargetClosest(_) {
             var lastAttacker = Orion.FindObject(Orion.ClientLastAttack())
 
             if (lastAttacker == null) {
-                var closest = Orion.FindTypeEx(any, any, ground,
+                var closest = Orion.FindTypeEx(GetMobType(), any, ground,
                     'live|ignoreself|ignorefriends|near', 1, 'gray|criminal|red|enemy')
 
                 if (closest.length > 0) {
@@ -177,7 +196,7 @@ function TargetClosest(_) {
                     Orion.PrintFast(self, '0x0111', 1, closest[0].Name());
                 }
                 else {
-                    closest = Orion.FindTypeEx(any, any, ground,
+                    closest = Orion.FindTypeEx(GetMobType(), any, ground,
                         'live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|red|enemy')
                     closest.concat(Orion.FindTypeEx(any, any, ground,
                         'live|ignoreself|ignorefriends', 12, 'gray|criminal|red|enemy')
@@ -186,6 +205,20 @@ function TargetClosest(_) {
                     closest = closest.sort(function (mobA, mobB) {
                             return mobA.Distance() - mobB.Distance()
                         });
+                        
+                        if (closest.filter(function(mob){return !mob.WarMode()}).length == 0) {
+                        Orion.PrintFast(self, '0x0111', 1, 'Loot');
+						if(looting)
+                        	OpenCorpsesWhenIdle()
+                        if (locations.length > 0)
+                        {
+                        while(Player.Weight()>Player.MaxWeight())
+                        {
+                        Orion.Wait(1000)
+                        }
+                            LocationLoop()
+                    }
+                    }
                     if (closest.length > 0) {
                         Orion.Exec('HonorSampire', true, [closest[0].Serial()]);
                         Orion.Wait(100)
@@ -200,19 +233,8 @@ function TargetClosest(_) {
 
                         WalkTo(closest[0])
                         Orion.PrintFast(self, '0x0111', 1, closest[0].Name());
-                    }
-                    if (closest.length == 0) {
-                        Orion.PrintFast(self, '0x0111', 1, 'Loot');
+                    
 
-                        OpenCorpsesWhenIdle()
-                        if (locations.length > 0)
-                        {
-                        while(Player.Weight()>Player.MaxWeight())
-                        {
-                        Orion.Wait(1000)
-                        }
-                            LocationLoop()
-                    }
                     }
                 }
             }
@@ -230,7 +252,7 @@ function HonorSampire(mobileSerial) {
     var mobile = Orion.FindObject(mobileSerial);
     //if target isnt honorable, get one that is
     if (mobile.Hits() != mobile.MaxHits()) {
-        var closest = Orion.FindTypeEx(any, any, ground,
+        var closest = Orion.FindTypeEx(GetMobType(), any, ground,
             'live|ignoreself|ignorefriends|inlos|near', 10, 'gray|criminal|red|enemy')
             .filter(function (mob) {
                 return mob.Hits() == mob.MaxHits()
@@ -264,8 +286,8 @@ function CastSpell(spell, target) {
     else
         CastSpellOnTarget(spell, target)
 }
-
+//#include helpers/DpsGump.js
 //#include helpers/Target.js
 //#include helpers/Magic.js
-//#include helpers/DpsGump.js
+
 //#include Actions/Automated/BagOfSending.js

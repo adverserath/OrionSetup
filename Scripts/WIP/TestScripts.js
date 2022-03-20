@@ -118,17 +118,7 @@ function getFlags() {
   TextWindow.Print(a.trim());
 }
 
-function DropAndLock() {
-  var t = SelectTarget()
-  Orion.DragItem(t.Serial());
-  Orion.Wait(200)
-  Orion.DropDraggedItemRelative(1, 0)
-  Orion.Wait(200)
-  Orion.Say("I wish to secure this")
-  if (Orion.WaitForTarget()) {
-    Orion.TargetObject(t.Serial())
-  }
-}
+
 
 function PrintArrow() {
   while (true) {
