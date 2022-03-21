@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="9" action="39" key="35" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="6" key="117" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="5" key="118" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="3" action="1" key="82" modifiers="4" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;Orion.LoadScript('A:/Orion Launcher/OA/Scripts/UDP/Receiver.js')\nOrion.ToggleScript('Message_Receiver')\nOrion.Print('Started Receiver')&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
     <hotkey type="28" action="0" key="19" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="47" action="0" key="16" modifiers="64" override_pass_key_to_client="0"/>
     <hotkey type="29" action="263" key="145" modifiers="0" override_pass_key_to_client="0"/>
@@ -39,4 +34,9 @@
     <hotkey type="31" action="3" key="121" modifiers="8" override_pass_key_to_client="0"/>
     <hotkey type="31" action="2" key="122" modifiers="8" override_pass_key_to_client="0"/>
     <hotkey type="31" action="0" key="123" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="39" key="35" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="6" key="117" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="5" key="118" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="82" modifiers="4" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;Orion.LoadScript('A:/Orion Launcher/OA/Scripts/UDP/Receiver.js')\nOrion.ToggleScript('Message_Receiver')\nOrion.Print('Started Receiver')&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
 </data>

@@ -16,6 +16,18 @@ function getMyBeetle() {
     return bettlesPacks[0];
 }
 
+function SnoopBeetle() {
+
+    var bettles = Orion.FindTypeEx('0x0317', any, ground, 'nothumanmobile|near', 2)
+    var bettlesPacks = Orion.ObjAtLayer(21, bettles[0].Serial());
+Orion.OpenContainer(bettlesPacks.Serial())
+}
+
+function OpenTarget()
+{
+var t = SelectTarget()
+Orion.OpenContainer(t.Serial())
+}
 function EmptyBeetle() {
     var beetle = getMyBeetle()
     if (beetle == null)
@@ -25,3 +37,5 @@ function EmptyBeetle() {
     Orion.OpenContainer(beetlebackpack.Serial())
     EmptyContainerToAnother(beetlebackpack, dest)
 }
+
+//#include helpers/Target.js
