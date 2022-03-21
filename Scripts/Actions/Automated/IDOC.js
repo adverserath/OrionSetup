@@ -3,61 +3,53 @@
 //#include helpers/Beetle.js
 //#include helpers/ItemManager.js
 
-function MoveDropItemToBox()
-{
-Orion.ClearFakeMapObjects();
-var item = SelectTarget()
-var box = SelectTarget()
-WalkTo(item,1)
-var point = 0
+function MoveDropItemToBox() {
+    Orion.ClearFakeMapObjects();
+    var item = SelectTarget()
+    var box = SelectTarget()
+    WalkTo(item, 1)
+    var point = 0
 
-var path = Orion.GetPathArray(box.X(), box.Y(), box.Z(), 1)
-.forEach(function (position){
-if(Orion.GetDistance(box.Serial())<3)
-{
-Orion.Wait(1000)
-Orion.Print("box")
-Orion.MoveItem(item.Serial(),0,box.Serial())
-}
-Orion.Wait(1000)
-//Orion.AddFakeMapObject(Orion.Random(10000), item.Graphic(), item.Color(), position.X(),position.Y(),position.Z());
-//walk to lift
-if(box.Distance()<2)
-{
-Orion.MoveItem(item.Serial(),box.Serial())
-}
-if(point%4==1)
-{
-Orion.WalkTo(position.X(),position.Y(),position.Z())
-Orion.DragItem(item.Serial())
-point++
-}
-//skip
-if(point%4==2)
-{
-point++
-}
-//drop
-if(point%4==3)
-{
-Orion.DropDraggedItem(ground, position.X(), position.Y(), position.Z());
-Orion.Wait(100)
-Orion.WalkTo(position.X(),position.Y(),position.Z(),0)
-point++
-}
-//skip
-if(point%4==0)
-{
-point++
-Orion.WalkTo(position.X(),position.Y(),position.Z())
-}
-})
-if(Orion.GetDistance(box.Serial())<3)
-{
-Orion.Wait(1000)
-Orion.Print("box")
-Orion.MoveItem(item.Serial(),0,box.Serial())
-}
+    var path = Orion.GetPathArray(box.X(), box.Y(), box.Z(), 1)
+        .forEach(function (position) {
+            if (Orion.GetDistance(box.Serial()) < 3) {
+                Orion.Wait(1000)
+                Orion.Print("box")
+                Orion.MoveItem(item.Serial(), 0, box.Serial())
+            }
+            Orion.Wait(1000)
+            //Orion.AddFakeMapObject(Orion.Random(10000), item.Graphic(), item.Color(), position.X(),position.Y(),position.Z());
+            //walk to lift
+            if (box.Distance() < 2) {
+                Orion.MoveItem(item.Serial(), box.Serial())
+            }
+            if (point % 4 == 1) {
+                Orion.WalkTo(position.X(), position.Y(), position.Z())
+                Orion.DragItem(item.Serial())
+                point++
+            }
+            //skip
+            if (point % 4 == 2) {
+                point++
+            }
+            //drop
+            if (point % 4 == 3) {
+                Orion.DropDraggedItem(ground, position.X(), position.Y(), position.Z());
+                Orion.Wait(100)
+                Orion.WalkTo(position.X(), position.Y(), position.Z(), 0)
+                point++
+            }
+            //skip
+            if (point % 4 == 0) {
+                point++
+                Orion.WalkTo(position.X(), position.Y(), position.Z())
+            }
+        })
+    if (Orion.GetDistance(box.Serial()) < 3) {
+        Orion.Wait(1000)
+        Orion.Print("box")
+        Orion.MoveItem(item.Serial(), 0, box.Serial())
+    }
 }
 
 var maps = ['Felucca', 'Trammel', 'Ilshenar', 'Malas', 'Tokuno']
@@ -168,7 +160,7 @@ function HouseScanner() {
             .forEach(function (sign) {
                 var condition = sign.Properties().match(/Condition.*/gi)
                 Orion.PrintFast(sign.Serial(), 68, 1, condition);
-				Orion.Print(sign.Serial() + condition)
+                Orion.Print(sign.Serial() + condition)
             })
         var houseSigns = Orion.FindTypeEx(any, any, ground, 'item', 40).filter(function (item) {
             return item.Name() === 'A House Sign'
@@ -253,5 +245,22 @@ function ReadHouseAccessor() {
             }
             Orion.Wait(10000)
         }
+    }
+}
+
+function HouseTracker() {
+    while (true) {
+        Orion.Wait(500)
+        Orion.FindTypeEx(any, any, ground, 'item', 40).filter(function (item) {
+            return item.Name() === 'A House Sign'
+        })
+            .forEach(function (sign) {
+                var condition = sign.Properties().match(/Condition.*/gi)
+                Orion.PrintFast(sign.Serial(), 68, 1, condition);
+                if (condition != null) {
+                    RecordHouse(sign)
+                    Orion.Ignore(sign.Serial())
+                }
+            })
     }
 }
