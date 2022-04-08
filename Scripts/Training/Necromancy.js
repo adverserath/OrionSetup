@@ -20,7 +20,7 @@ function TrainNecro() {
     var skillLevel = Orion.SkillValue('Necromancy');
     var trainingTarget = SelectTarget().Serial();
 
-    while (Orion.SkillValue('Necromancy') < 1000) {
+    while (Orion.SkillValue('Necromancy') < 401) {
         Orion.Wait(500);
         if ((Orion.SkillValue('Necromancy') % 1 == 100) && notified == false) {
             BotPush("Necromancy" + Orion.SkillValue('Necromancy', 'base'));

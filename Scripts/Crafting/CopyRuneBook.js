@@ -117,7 +117,7 @@ function CopyRuneBook() {
     runeitem.SetCount(runesNeeded);
     Orion.UpdateFindList(findList);
     Restock('Runes')
-    var runesInBackpack = Orion.Count(runeitem.Graphic(), runeitem.Color(), backpack, '', '', true)
+    var runesInBackpack = Orion.Count(runeitem.Graphic(), any, backpack, '', '', true)
     if (!runesInBackpack >= runesNeeded) {
         Orion.Print('Not Enough Runes, collect ' + (runesNeeded - Orion.Count(runeitem.Graphic(), runeitem.Color(), backpack, '', '', true)) + ' runes and continue')
         Orion.PauseScript();
@@ -179,18 +179,11 @@ function CopyRuneBook() {
         newBooks.forEach(function (newBook) {
             //Mark Rune
             var rune = runes.shift();
-            MarkRune(rune);
-
-            Orion.UseObject(rune.Serial());
-            if (Orion.WaitForPrompt(1000)) {
-                Orion.Wait(200);
-                Orion.SendPrompt(locationName)
-            }
-            //Add Rune to new book
-            Orion.Wait(1000);
-            Orion.MoveItem(rune.Serial(), 0, newBook.Serial());
-            Orion.Wait(1000);
+            Orion.Wait(100)
+			MarkRuneAndMoveToBook(rune.Serial(),locationName,newBook.Serial())
+ 			Orion.Wait(500)
         });
+        Orion.Wait(1000)
     }
 }
 
@@ -200,4 +193,38 @@ function MeditateSafely(safeSpot) {
         TakeOffClothesAndMeditate();
         Orion.Wait(2000);
     }
+}
+
+function MarkRuneAndMoveToBook11()
+{
+Orion.Print(Orion.HaveTarget())
+var runeSerial = SelectTarget().Serial()
+var bookSerial = SelectTarget().Serial()
+            MarkRuneAndMoveToBook(runeSerial,"test1",bookSerial);
+}
+
+function MarkRuneAndMoveToBook(runeSerial,name,bookSerial)
+{
+            CreateMarkRune(runeSerial,name);
+            //Add Rune to new book
+            Orion.Wait(500)
+            Orion.MoveItem(runeSerial, 0, bookSerial);
+            Orion.Wait(100)
+}
+
+function CreateMarkRune(runeSerial,name)
+{
+	MarkRune(runeSerial);
+	RenameRune(runeSerial,name)
+}
+function RenameRune(runeSerial,name)
+{
+            Orion.UseObject(runeSerial);
+            if (Orion.WaitForPrompt(1000)) {
+                Orion.Wait(200);
+                Orion.SendPrompt(name)
+            }
+            else{
+            	RenameRune(runeSerial,name)
+            }
 }

@@ -92,4 +92,5 @@
     <replace originaltext="Aslavdra" originalcolor="0xFFFF" replacedtext="Arcane Empowerment" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
     <replace originaltext="It seems to accept you as master" originalcolor="0xFFFF" replacedtext="It seems to accept you as master" replacedcolor="0x00D6" type="0" mode="0" fullmatch="false" systemtooverhead="false"/>
     <replace originaltext="You fail to tame the creature." originalcolor="0xFFFF" replacedtext="You fail to tame the creature." replacedcolor="0x0021" type="0" mode="0" fullmatch="false" systemtooverhead="false"/>
+    <replace originaltext="In Rel Ylem" originalcolor="0xFFFF" replacedtext="Stone Form" replacedcolor="0xFFFF" type="0" mode="0" fullmatch="true" systemtooverhead="false"/>
 </data>

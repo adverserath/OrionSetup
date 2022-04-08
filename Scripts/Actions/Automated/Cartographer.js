@@ -87,7 +87,7 @@ function DoAllMapsInBag(inMaps) {
     //Complete Map
     maps.forEach(function (map) {
 
-        //Open Map
+        //Open Maps
         Orion.Print('Open Map')
         while (!Orion.GumpExists('map')) {
             Orion.UseObject(map.Serial())
@@ -139,6 +139,9 @@ function DoAllMapsInBag(inMaps) {
             if (Orion.WaitForTarget(1000)) {
                 Orion.TargetTile('any', Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y(), 0);
                 Orion.Wait(26000)
+                var monsters =                 Orion.FindTypeEx(any, any, ground,
+                    'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal|red')
+                WalkTo(safeSpot)
                 Orion.Print('Hide')
                 //                Orion.UseSkill('Hiding')
 
@@ -150,10 +153,8 @@ function DoAllMapsInBag(inMaps) {
                 Orion.Wait(1000)
 
                 Orion.Print('Fight Monsters')
-                Orion.FindTypeEx(any, any, ground,
-                    'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal')
-                    .forEach(function (closemob) {
-                        Orion.ClientLastAttack(closemob.Serial())
+                monsters.forEach(function (closemob) {
+                        Orion.Attack(closemob.Serial())
                         Orion.Wait(50)
                     })
                 Orion.WarMode(0);
@@ -165,17 +166,17 @@ function DoAllMapsInBag(inMaps) {
 
             Orion.Print('Fight More Monsters')
             while (Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|orange|red')
                 .filter(function (mob) {
                     return mob.WarMode();
                 }).length > 0) {
                 Orion.FindTypeEx(any, any, ground,
-                    'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                    'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|orange|red')
                     .filter(function (mob) {
                         return mob.WarMode();
                     }).forEach(function (mob) {
                         if (Orion.ObjectExists(mob.Serial())) {
-                            Orion.ClientLastAttack(mob.Serial())
+                            Orion.Attack(mob.Serial())
                             Orion.Wait(1000)
                         }
                     })
@@ -188,17 +189,17 @@ function DoAllMapsInBag(inMaps) {
             }
 
             while (Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|orange|red')
                 .filter(function (mob) {
                     return mob.WarMode();
                 }).length > 0) {
                 Orion.FindTypeEx(any, any, ground,
-                    'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|green|red')
+                    'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|orange|red')
                     .filter(function (mob) {
                         return mob.WarMode();
                     }).forEach(function (mob) {
                         if (Orion.ObjectExists(mob.Serial())) {
-                            Orion.ClientLastAttack(mob.Serial())
+                            Orion.Attack(mob.Serial())
                             Orion.Wait(1000)
                         }
                     })
@@ -241,7 +242,11 @@ function SortLoot() {
     }
     ReturnHomeSortLoot()
 }
-
+function UnlockTest()
+{
+var t = SelectTarget()
+ CastSpellOnTarget('Unlock', t.Serial())
+}
 function WalkToQuestArrow() {
     WalkTo(coordinate(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y()))
 }
@@ -261,7 +266,7 @@ function LootChest() {
             //if (Orion.WaitForTarget(1000)) {
             //    Orion.TargetObject(chest.Serial());
             //}
-            Orion.Wait(2000);
+            Orion.Wait(3000);
             Orion.UseSkillTarget('Remove Trap', chest.Serial())
             Orion.Wait(11000);
         }
@@ -341,6 +346,7 @@ function GoToClosestPortal() {
     return true
 }
 
+var safeSpot = null
 function TryLocation(portal) {
     Orion.Print(portal.Name())
     var x = Orion.QuestArrowPosition().X()
@@ -364,22 +370,32 @@ function TryLocation(portal) {
 
     //Cross water at skara
     if (Orion.Contains(portal.Name(), 'skara')) {
-        if (!Orion.WalkTo(x, y, 1, 1, 255, 1)) {
-            Orion.WalkTo(683, 2234, 0, 1, 255, 1)
-            Orion.Say('cross')
-            Orion.Wait(1000)
-        }
+    Orion.Wait(2000)
+            if (!Orion.WalkTo(x, y, 1, 1, 255, 1)) {
+	CrossAtSkara()
+	}
     }
 
-    if (!Orion.WalkTo(x, y, 1, 2, 255, 1)) {
+    if (!Orion.WalkTo(x, y, 1, 10, 255, 1)) {
         var nx = parseInt(x + (Player.X() - x) / 2)
         var ny = parseInt(y + (Player.Y() - y) / 2)
         Orion.Print(Player.X() + '  ' + x + ' ' + nx)
         Orion.Print(Player.Y() + '  ' + y + ' ' + ny)
         Orion.WalkTo(nx, ny, 1, 10, 255, 1)
-        Orion.WalkTo(x, y, 1, 2, 255, 1)
+        Orion.WalkTo(x, y, 1, 10, 255, 1)
     }
+    safeSpot = Here()
     return Orion.WalkTo(x, y, 0, 2, 255, 1)
+}
+
+function CrossAtSkara()
+{
+
+        	Orion.WalkTo(679, 2233, 0, 1, 255, 1)
+            Orion.WalkTo(683, 2234, 0, 1, 255, 1)
+            Orion.Say('cross')
+            Orion.Wait(1000)
+        
 }
 
 function Mount(getOn) {

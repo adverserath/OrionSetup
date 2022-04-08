@@ -98,7 +98,7 @@
         <item graphic="0x3199" color="0x0000" comment="Brilliant Amber" count="0"/>
     </findlist>
     <findlist name="Runes">
-        <item graphic="0x1F14" color="any" comment="Recall Rune" count="60"/>
+        <item graphic="0x1F14" color="any" comment="Recall Rune" count="10"/>
     </findlist>
     <findlist name="Fishies">
         <item graphic="0x09CC" color="0x0000" comment="Fish" count="0"/>

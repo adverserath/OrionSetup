@@ -84,7 +84,7 @@ function WoDKills() {
     }
 }
 
-
+var WoDReds = true
 function SpellWeavingKills() {
     ReleaseAllSummons()
     Orion.Wait(1000)
@@ -150,7 +150,10 @@ function SpellWeavingKills() {
             }
 
             //WOD
-            var wodTargets = allTargets.filter(function (mob) { return mob.Distance() <= (10) })
+            var wodTargets = allTargets.filter(function (mob) { 
+            if(WoDReds)
+            	return mob.Distance() <= (10) && mob.Notoriety()==6
+            return mob.Distance() <= (10)})
                 .filter(function (enemy) {
                     return enemy.Exists() &&
                         enemy.Hits() < (hitmarker) &&
@@ -164,10 +167,10 @@ function SpellWeavingKills() {
 
             if (Player.Mana() > 70) {
                 var fsTargets = allTargets.filter(function (mob) { return mob.Distance() <= (10) })
-                if (fsTargets.length > 0) {
-                    Cast('Flame strike', fsTargets.shift().Serial())
+               if (fsTargets.length > 0) {
+                   Cast('Energy Bolt', fsTargets.shift().Serial())
                     continue;
-                }
+               }
             }
 
             Orion.Wait(500)
@@ -178,3 +181,4 @@ function SpellWeavingKills() {
 
 
 //#include helpers/Magic.js
+//#include helpers/Movement.js

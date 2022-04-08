@@ -2,19 +2,42 @@
 
 function CastSpellOnTarget(spellName, targetID) {
 	var startCastTime = Orion.Now();
-
-	Orion.Cast(spellName);
+	Orion.CancelWaitTarget();
+	Orion.Print('Cast on ' + targetID)
+	Orion.WaitTargetObject(targetID);
+	Orion.CastTarget(spellName, targetID);
+	while (Player.Frozen()) {
+		Orion.Wait(400)
+		Orion.Print('Frozen')
+	}
 	Orion.Wait(400)
+	Orion.Print('Done')
+
 	while (Orion.InJournal('You have not yet recovered', '', '0', '-1', startCastTime, Orion.Now()) != null) {
 		startCastTime = Orion.Now()
 		Orion.CastTarget(spellName, targetID);
-		Orion.Wait(400)
+		Orion.Wait(600)
 	}
 	Orion.Wait(100);
 }
 
+function CastSpellOnTargetV2(spellName, targetID) {
+	var startCastTime = Orion.Now();
+	while (!Orion.HaveTarget()) {
+		Orion.Cast(spellName);
+		Orion.WaitForTarget(3000)
+	}
+	Orion.TargetObject(targetID)
+	Orion.Wait(200)
+}
+
 function MarkRune(runeItem) {
-	CastSpellOnTarget("Mark", runeItem.Serial());
+	Orion.Print("MarkRune")
+	if (typeof runeItem === "string") {
+		runeItem = Orion.FindObject(runeItem)
+	}
+
+	CastSpellOnTargetV2("Mark", runeItem.Serial());
 }
 
 function RecallRune(runeItem) {
@@ -127,6 +150,6 @@ function Cast(spellName, targetSerial) {
 	WaitFrozen(spellName)
 }
 
-function ManaCheck(required,lmc){
-	return Player.Mana()>required*lmc
+function ManaCheck(required, lmc) {
+	return Player.Mana() > required * lmc
 }

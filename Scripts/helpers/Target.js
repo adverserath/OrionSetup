@@ -112,9 +112,9 @@ function WalkTo(object, distance, timeMS, walking) {
     object = Orion.FindObject(object)
   }
 
-  if (object.Name() != null && object.Name() != '') {
+  if (object.hasOwnProperty('name') && object.Name() != null && object.Name() != '') {
     Orion.Print("Walking to object ")
-    Orion.Print(object.Name())
+    Orion.Print(object.X() + '  ' + object.Y())
   }
   else {
     Orion.Print("Walking to coord ")
@@ -129,7 +129,10 @@ function WalkTo(object, distance, timeMS, walking) {
   if (walking == null) {
     walking = 1;
   }
-  var result = Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
+  var Z = 0
+  if(object.hasOwnProperty('z'))
+    Z = object.Z()
+  var result = Orion.WalkTo(object.X(), object.Y(), Z, distance, 255, walking, 1, timeMS);
   return result
 }
 
@@ -273,6 +276,11 @@ function StayAway(targetId, distance) {
     var closest = tiles.shift()
     WalkTo(coordinate(closest.X(), closest.Y()), 1)
   }
+}
+
+function Here()
+{
+  return coordinate(Player.X(),Player.Y(),Player.Z(),"Saved Location")
 }
 
 function coordinate(xLoc, yLoc, zLoc, _name) {

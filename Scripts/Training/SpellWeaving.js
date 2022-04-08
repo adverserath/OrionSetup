@@ -10,7 +10,7 @@ function TrainSpellWeaving() {
     while (Orion.SkillValue('SpellWeaving') < 1000) {
         Orion.Wait(500);
         if (Player.Hits() < (Player.MaxHits() - 30)) {
-            Orion.CastTarget('Heal', self);
+            Orion.CastTarget('Gift Of Renewal', self);
         }
         if ((Orion.SkillValue('SpellWeaving') % 1 == 100) && notified == false) {
             BotPush("SpellWeaving" + Orion.SkillValue('SpellWeaving', 'base'));
@@ -20,10 +20,18 @@ function TrainSpellWeaving() {
         }
 
         skillLevel = Orion.SkillValue('SpellWeaving', 'base');
-        if (skillLevel < 755) {
-            if (Player.Followers() > 4) {
+                if (skillLevel < 380) {
+            if (Player.Mana() < 10) {
+                TakeOffClothesAndMeditate();
+            }
+            Orion.Cast('Thunderstorm');
+
+            Orion.Wait(500);
+        }
+        else if (skillLevel < 755) {
+            if (Player.Followers() > 0) {
                 Orion.Wait(200);
-                var fey = Orion.FindTypeEx('0x0080', any, ground, 'mobile', 10, 'blue|green').shift()
+                var fey = Orion.FindTypeEx('0x0080', any, ground, 'mobile|near', 10, 'blue|green').shift()
 
                 Orion.Say(fey.Name() + ' Release')
 
