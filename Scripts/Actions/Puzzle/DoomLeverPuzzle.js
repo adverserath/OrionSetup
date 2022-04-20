@@ -39,7 +39,12 @@ function ResControlAtLeverPuzzle() {
         UseGate()
         ResAtAhnk()
         UseGate()
+        if(!WalkTo(location,0))
+        {
+        Orion.Step(1)
+        UseGate()
         WalkTo(location,0)
+        }
         while(!Player.Dead()&&!Player.Hidden())
         {
         	Orion.UseSkill("Hiding")
@@ -61,7 +66,12 @@ function UseGate() {
         Orion.Wait(1000)
         gate = Orion.FindTypeEx('0x0F6C', any, ground, 'item|near', 25).shift()
     }
+
+    
+
     WalkTo(gate, 0)
+    Orion.UseObject(gate.Serial())
+    
     Orion.Wait(2000)
 }
 

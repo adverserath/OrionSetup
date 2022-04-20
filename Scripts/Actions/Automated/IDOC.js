@@ -97,24 +97,46 @@ function MoveItemToBeetle() {
 }
 
 function PlaceHouse() {
-    Orion.UseObject('0x40173554');
-    if (Orion.WaitForGump(1000)) {
-        var gump0 = Orion.GetGump('last');
-        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x877C84F9')) {
-            gump0.Select(Orion.CreateGumpHook(1));
-            Orion.Wait(100);
-        }
-    }
-    if (Orion.WaitForGump(1000)) {
-        var gump1 = Orion.GetGump('last');
-        if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x5D40A15B')) {
-            gump1.Select(Orion.CreateGumpHook(1));
-            Orion.Wait(100);
-        }
-    }
-    if (Orion.WaitForTarget(1000))
-        Orion.TargetTile('any', 1011, 987, 65466);
+var tile = SelectCoordinate()
+
+var date = new Date(2022,3,9,0,52,30)
+Orion.Print(date)
+
+while(new Date()< date)
+{
+Orion.Wait(1000)
+Orion.Print((date-new Date())/1000)
 }
+
+Orion.UseType('0x14F6', '0xFFFF');
+while(true)
+{
+	if (Orion.WaitForGump(1000))
+	{
+		var gump0 = Orion.GetGump('last');
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x877C84F9'))
+		{
+			gump0.Select(Orion.CreateGumpHook(3));
+			//Orion.Wait(100);
+		}
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x11775C2E'))
+		{
+			gump0.Select(Orion.CreateGumpHook(1));
+			//Orion.Wait(100);
+			Orion.PauseScript()
+		}
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x5D40A15B'))
+		{
+			gump0.Select(Orion.CreateGumpHook(7));
+			//Orion.Wait(100);
+		}
+	}
+	if (Orion.WaitForTarget(300))
+		Orion.TargetTile('any', tile.X(), tile.Y(), tile.Z());
+
+}
+}
+
 
 function IDOCWalker() {
 
@@ -139,7 +161,7 @@ function IDOCScanner() {
                 )
         })
         houseSigns.forEach(function (houseSign) {
-            WalkTo(houseSign)
+        //    WalkTo(houseSign)
             BotPush('Map: ' + maps[Player.Map()] + '  X: ' + houseSign.X() + ' Y: ' + houseSign.Y())
             BotPush(houseSign.Properties())
             Orion.Print(houseSign.Properties())
