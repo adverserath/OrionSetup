@@ -264,7 +264,7 @@ function Sender(serial, message, playerName) {
     var players = LoadPlayerJson()
 
     players.forEach(function (player) {
-        //Orion.Print('Send To:' + player.name + ' on ' + player.port)
+       Orion.Print('Send To:' + player.name + ' on ' + player.port)
         if (playerName == null || player.name === playerName)
             Orion.UdpSend(player.port, serial + '|' + message)
     })
@@ -345,18 +345,21 @@ var hostPort = 2597;
 var players = []
 function Host() {
     Orion.ClearGlobals();
+    Orion.Wait(200)
     UDPHostServer()
+    Orion.Wait(200)
     HostGump()
 
     Orion.SetUdpServerCallback(Player.Name(), 'NewSubscriber');
 
     for (var ports = 1; ports < 5; ports++) {
         Orion.UdpSend('192.168.0.3', hostPort + ports, '*|WHO')
+        Orion.Wait(200)
     }
 }
 
 function NewSubscriber(recv) {
-    Orion.Print('NewSubscriber')
+    Orion.Print('NewSubscriber ' + recv)
     if (recv.length > 0) {
         players = LoadPlayerJson()
 
@@ -374,6 +377,8 @@ function NewSubscriber(recv) {
                     Orion.Print('Dont Add ' + jsPlayer.name)
                     if (pl.port != jsPlayer.port) {
                         pl.port = jsPlayer.port
+                        Orion.Print("Updated Port")
+                        Orion.SetGlobal('updPlayers', JSON.stringify(players));
                     }
                 }
             })

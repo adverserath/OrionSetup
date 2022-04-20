@@ -26,6 +26,7 @@ function Message_Receiver() {
 }
 
 function Callback_Received(data) {
+    Orion.Print(data)
     var recv = data;
     if (recv.length > 0) {
         Orion.LoadScript('UDP/Receiver.js')
