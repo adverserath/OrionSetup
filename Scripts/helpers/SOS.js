@@ -19,6 +19,7 @@ var sosZones = [
 ]
 
 function GetZone(x, y) {
+	Orion.Print('Method Entry - GetZone')
     for (var index = 0; index < sosZones.length; index++) {
         var zone = sosZones[index]
         if (x >= zone[0] && x <= zone[2] && y >= zone[1] && y <= zone[3]) {
@@ -29,6 +30,7 @@ function GetZone(x, y) {
 }
 
 function SoSInSoSList(sosSerial){
+	Orion.Print('Method Entry - SoSInSoSList')
     var loc = null;
     for (var index = 0; index < sosList.length; index++) {
         var sos = sosList[index];

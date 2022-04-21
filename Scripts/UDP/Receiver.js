@@ -168,7 +168,14 @@ function UDPClientServer() {
 }
 
 function SendWho() {
-    Orion.UdpSend(2597, "Player:::" + '{"name":"' + Player.Name() + '", "port":' + udpPort + ', "serial":"' + Player.Serial() + '"}');
+    var skills = []
+    var skillNames =  ['SpellWeaving','Magery','Animal Taming','Necromancy','Mysticism','Spirit Speak','Discordance','Provocation','Peacemaking']
+        skillNames.forEach( function (sn){
+            skills.push([sn,Orion.SkillValue(sn)])
+        }
+        )
+
+    Orion.UdpSend(2597, "Player:::" + '{"name":"' + Player.Name() + '", "port":' + udpPort + ', "serial":"' + Player.Serial() + '", "skills":"' + skills + '"}');
 }
 
 function Walk(x, y, z, dir) {

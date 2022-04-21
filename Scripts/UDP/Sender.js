@@ -13,6 +13,8 @@
 //#include Fighting/Bushido.js
 //#include Actions/Event/PumpkinPicker.js
 
+
+
 function gridX(x, size) {
     return x * size
 }
@@ -378,8 +380,10 @@ function NewSubscriber(recv) {
                     if (pl.port != jsPlayer.port) {
                         pl.port = jsPlayer.port
                         Orion.Print("Updated Port")
-                        Orion.SetGlobal('updPlayers', JSON.stringify(players));
                     }
+                    pl.skills = jsPlayer.skills
+                    Orion.Print("Updated Skills")
+                    Orion.SetGlobal('updPlayers', JSON.stringify(players));                    
                 }
             })
             if (shouldAdd) {
@@ -407,11 +411,15 @@ function UdpPlayer(name, port) {
     return {
         _name: name,
         _port: port,
+        _skills: skills,
         Name: function () {
             return this._name;
         },
         Port: function () {
             return this._port;
+        },
+        Skills: function () {
+            return this._skills;
         }
     }
 }

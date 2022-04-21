@@ -7,6 +7,7 @@ var gridscale = 0;
 var vessel = '0x40030BED'
 
 function DriveBoatTo() {
+	Orion.Print('Method Entry - DriveBoatTo')
   Orion.Print('Enter X')
   var x = Orion.InputText();
   Orion.Print('Enter Y')
@@ -15,11 +16,13 @@ function DriveBoatTo() {
 }
 
 function SteerTo(x, y, distance) {
+	Orion.Print('Method Entry - SteerTo')
   var path = GetAStar(x, y)
   SteerPath(path, distance)
 }
 
 function GetAStar(xLocation, yLocation) {
+	Orion.Print('Method Entry - GetAStar')
   TextWindow.Open()
   Orion.ClearFakeMapObjects();
   var coordinates = []
@@ -30,6 +33,7 @@ function GetAStar(xLocation, yLocation) {
   TextWindow.Print('Player X:' + Player.X() + ' Player Y:' + Player.Y())
 
   result.forEach(function (tile) {
+	
     TextWindow.Print('X:' + tile.y * scale + ' Y:' + tile.x * scale)
     var X = tile.y * scale
     var Y = tile.x * scale
@@ -41,6 +45,7 @@ function GetAStar(xLocation, yLocation) {
 
 var steerSize = 20;
 function SteerPath(route, distance) {
+	Orion.Print('Method Entry - SteerPath')
   if (distance == null) {
     distance = 16
   }
@@ -87,6 +92,7 @@ function SteerPath(route, distance) {
 
 
 function SteerToObject(target, distance) {
+	Orion.Print('Method Entry - SteerToObject')
   if (distance == null || distance < 2) {
     distance = 2
   }
@@ -117,6 +123,7 @@ function SteerToObject(target, distance) {
 }
 
 function GetDirection(item) {
+	Orion.Print('Method Entry - GetDirection')
   var x = item.X()
   var y = item.Y()
   var dx = Player.X() - x;
@@ -153,9 +160,11 @@ function GetDirection(item) {
 }
 
 function GetWaterMapDump() {
+	Orion.Print('Method Entry - GetWaterMapDump')
   DumpMapToText(5105, 4096)
 }
 function DumpMapToText(x, y) {
+	Orion.Print('Method Entry - DumpMapToText')
   gridscale = scale * scale;
   Orion.ClearFakeMapObjects();
 
@@ -193,10 +202,12 @@ function DumpMapToText(x, y) {
 }
 
 function IsAllWater(fromX, fromY) {
+	Orion.Print('Method Entry - IsAllWater')
   fromX = fromX * scale
   fromY = fromY * scale
   var waterTiles = Orion.GetTilesInRect('land', fromX, fromY, fromX + scale, fromY + scale)
     .filter(function (t1) {
+	
       return t1.Flags() == 192 && Orion.GetTiles('any', t1.X(), t1.Y()).length == 0
     })
 
@@ -207,6 +218,7 @@ function IsAllWater(fromX, fromY) {
 }
 
 function SailToCorpse(checkOnly) {
+	Orion.Print('Method Entry - SailToCorpse')
   //Wait for corpse
   var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 8);
   while (corpses.length == 0 && !checkOnly) {
@@ -216,9 +228,9 @@ function SailToCorpse(checkOnly) {
   var startX = Player.X()
   var startY = Player.Y()
   corpses.forEach(function (corpse) {
+	
     SteerToObject(corpse, 2)
-    WalkTo(corpse)
-    Orion.Wait(2000)
+    WalkTo(corpse,2,4000)
     Orion.UseObject(corpse.Serial())
     Orion.Ignore(corpse.Serial())
     Orion.Wait(2000)
