@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="24">
+<data version="0" size="25">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -124,6 +124,9 @@
         <item graphic="0x0DCA" color="any" comment="A Special Fishing Net" count="0"/>
         <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0"/>
         <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0"/>
+        <item graphic="0x097A" color="0x0000" comment="Raw Fish Steak" count="0"/>
+        <item graphic="0x09CC" color="any" comment="A Big Fish" count="0"/>
+        <item graphic="0x14F8" color="0x0000" comment="Rope" count="0"/>
     </findlist>
     <findlist name="UnwantedStuff">
         <item graphic="0x170F" color="0x06AB" comment="Shoes" count="0"/>
@@ -200,5 +203,25 @@
         <item graphic="0x0DF0" color="any" comment="Black Staff" count="0"/>
         <item graphic="0x1439" color="any" comment="War Hammer" count="0"/>
         <item graphic="0x0E89" color="any" comment="Quarter Staff" count="0"/>
+    </findlist>
+    <findlist name="JustFish">
+        <item graphic="0x09CC" color="0x0000" comment="Fish" count="0"/>
+        <item graphic="0x09CD" color="0x0000" comment="Fish" count="0"/>
+        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0"/>
+        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0"/>
+        <item graphic="0x4307" color="0x0000" comment="Redbelly Bream" count="0"/>
+        <item graphic="0x0DD6" color="any" comment="Wondrous Fish" count="0"/>
+        <item graphic="0x4306" color="0x0000" comment="Bluegill Sunfish" count="0"/>
+        <item graphic="0x4303" color="0x0000" comment="Yellow Perch" count="0"/>
+        <item graphic="0x44C4" color="0x0000" comment="Pike" count="0"/>
+        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0"/>
+        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0"/>
+        <item graphic="0x09CD" color="0x0000" comment="Smallmouth Bass" count="0"/>
+        <item graphic="0x44C6" color="0x0000" comment="Green Catfish" count="0"/>
+        <item graphic="0x4304" color="0x0000" comment="Blue Marlin" count="0"/>
+        <item graphic="0x44C3" color="any" comment="Yellowtail Barracuda" count="0"/>
+        <item graphic="0x44C5" color="0x0000" comment="Captain Snook" count="0"/>
+        <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0"/>
+        <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0"/>
     </findlist>
 </data>

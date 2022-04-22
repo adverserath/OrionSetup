@@ -4,10 +4,6 @@
 //#include helpers/ItemManager.js
 //#include Actions/Automated/IDOC.js
 
-function CastID()
-{
-Orion.Cast(65)
-}
 function GetMap() {
     return Orion.ObjAtLayer(21, Player.Serial()).Map()
 }

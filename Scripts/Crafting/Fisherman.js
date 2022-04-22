@@ -70,11 +70,17 @@ function SeaFish() {
                     }
                 });
             }
+            Orion.FindListEx('JustFish').forEach(function (fish){
+            Orion.Wait(800)
+            Orion.UseType('0x13F6', '0xFFFF');
+				if (Orion.WaitForTarget(1000))
+					Orion.TargetObject(fish.Serial());
+            })
             if (Player.Weight() > Player.MaxWeight()) {
                 Orion.ActivateClient();
                 Orion.PauseScript();
             }
-            if (Player.Weight() > (Player.MaxWeight() - 100) || Player.WarMode()) {
+            if (Player.Weight() > (Player.MaxWeight() - 100)) {
                 RecallRune(seabook);
                 Orion.Wait(1000);
                 SortFishLoot()
@@ -94,8 +100,26 @@ function SeaFish() {
             Orion.Wait(8000);
         }
         else {
-            Orion.Say('Stop')
-            Orion.Wait(5000);
+        var stopTime = Orion.Now()+60000
+        Orion.FindTypeEx(any, any, ground,
+            'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').forEach(function (mob){
+            Orion.Print('kill '+ mob.Name())
+            Orion.Attack(mob.Serial())
+            Orion.Wait(300)
+            })
+        Orion.AddDisplayTimer('monster', 60000,'AboveChar');
+            Orion.Say('stop')
+            while(Orion.FindTypeEx(any, any, ground,
+            'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').length != 0 && stopTime > Orion.Now())
+            {
+            	Orion.Wait(1000);
+            	if(Player.Hits()<Player.MaxHits())
+            	{
+            	Orion.CastTarget('Close Wounds', self)
+            	Orion.Wait(3000)
+            	}
+            }
+            Orion.RemoveDisplayTimer('monster')
         }
     }
     BotPush('Fisher is dead')

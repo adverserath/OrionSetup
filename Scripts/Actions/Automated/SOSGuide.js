@@ -148,6 +148,8 @@ function DoSOSInOrder() {
     RecallRune(seakey);
     Orion.Wait(1000)
 
+    //IF chest is on boat floor, pick it up and go again
+    
     Orion.Print("ALL SOS must be parsed into \OA\Scripts\helpers\SOSList.js, using ReadAllSOSToFile")
     while (Orion.FindTypeEx('0x14EE', any, backpack).length != 0) {
         var sosId = GoToClosestSOS(45)
@@ -162,9 +164,9 @@ function DoSOSInOrder() {
             SailToCorpse(true)
 
             //Should I heal here?
-
+            //HealSelf()
             //Open MIBs and add them to the list here?
-
+            //ProcessMib()
             //Fish
             Orion.UseObject('0x40026413');
             if (Orion.WaitForTarget(1000)) {
@@ -173,6 +175,7 @@ function DoSOSInOrder() {
             Orion.Wait(10000)
         }
         BankAndHome()
+
     }
 }
 

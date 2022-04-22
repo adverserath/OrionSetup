@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="true" delay="0.1">
-        <action type="20" convert_type="0" waiting_time="1000" value="-132"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="132"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="132"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="132"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="-133"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="133"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="133"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="-132"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="132"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="132"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="132"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="-133"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="133"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="133"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x000000BE" id="0xB04C9A31" button="1"/>
+        <action type="1" convert_type="1" waiting_time="1000" serial="0x4011C8D5" graphic="0x13F6" color="0x04F4"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x4005A3D9" graphic="0x097A" color="0x0000"/>
     </macro>
     <macro name="PeaceArea" looped="false" delay="1">
         <action type="1" convert_type="0" waiting_time="1000" serial="0x40173554" graphic="0x14F6" color="0x0000"/>
