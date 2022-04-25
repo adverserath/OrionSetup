@@ -3,22 +3,27 @@
 //#include helpers/Beetle.js
 //#include helpers/ItemManager.js
 //#include Actions/Automated/IDOC.js
+//#include Actions/RuneBookController.js
 
 function GetMap() {
     return Orion.ObjAtLayer(21, Player.Serial()).Map()
 }
 var greatly = false
 function GreatlyWalker() {
+    Orion.Print('Method Entry - GreatlyWalker')
+
     greatly = true
     HouseWalker()
 }
 function HouseWalker() {
-if(Orion.ScriptRunning<=0)
-	Orion.ToggleScript('IDOCScanner')
-	
+    Orion.Print('Method Entry - HouseWalker')
+
+    if (Orion.ScriptRunning('RecordHouses') <= 0)
+        Orion.ToggleScript('RecordHouses')
+
     Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', true)
     Orion.WarMode(true)
-    ReadHouseFile()
+     ReadHouseFile()
     var walkroute = houseList
         .filter(function (house) {
             if (greatly) {
@@ -31,21 +36,27 @@ if(Orion.ScriptRunning<=0)
             return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
         })
     while (walkroute.length > 0) {
-    walkroute = walkroute.filter(function (house){
-    var diff = Math.abs(house.HouseStatus()[house.HouseStatus().length - 1].Date() - new Date());
-    var minutes = Math.floor((diff/1000)/60);
-    if(minutes<10)
-    {
-    Orion.Print("Already Checked "+house.Serial())
-    }
-    return minutes>10
-    })
+        walkroute = walkroute.filter(function (house) {
+            var diff = Math.abs(house.HouseStatus()[house.HouseStatus().length - 1].Date() - new Date());
+            var minutes = Math.floor((diff / 1000) / 60);
+            if (minutes < 10) {
+                Orion.Print("Already Checked " + house.Serial())
+            }
+            return minutes > 10
+        })
         var house = walkroute[0]
-        if (Orion.GetPathArrayEx(Player.X(), Player.Y(), Player.Z(), house.X(), house.Y(), Player.Z(), 8, 255, 0, 0).length == 0) {
-            TextWindow.Print('Cant reach - ' + house.Serial() +' map:'+ house.Map() + ' X:' +house.X() +' Y:' + house.Y())
+        var pathToDest = Orion.GetPathArrayEx(Player.X(), Player.Y(), Player.Z(), house.X(), house.Y(), Player.Z(), 8, 255, 0, 0).length
+        var houseDist = house.DistanceTo()
+        Orion.Print('Path:'+pathToDest + '\t Distance'+houseDist)
+        if (pathToDest == 0 || houseDist > 50) {
+            //            TextWindow.Print('Cant reach - ' + house.Serial() +' map:'+ house.Map() + ' X:' +house.X() +' Y:' + house.Y())
+            Orion.Print("Call RuneWalk")
+            UseClosestRuneOrWalk(house.X(), house.Y(), house.Map())
+            Orion.PauseScript()
             walkroute = walkroute.slice(1)
         }
         else if (WalkTo(house, 12)) {
+        Orion.Print('Ill walk')
             Orion.Wait(200)
             walkroute = walkroute.slice(1).sort(function (t1, t2) {
                 return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
@@ -66,20 +77,21 @@ function GreatlyGump() {
         })
 
 
-    var gumpId = 67
-    var gump = Orion.CreateCustomGump(gumpId);
-    gump.Clear()
-    gump.SetCallback('HostCallback');
-    gump.AddHtmlGump(1, 0, 0, 300, 500, '0x0BB8');
-    gump.Select('htmlgump', 1);
-    var yPos = 10
-    greatlyList.forEach(function (greatly) {
-        gump.AddText(10, yPos += 20, '0', greatly.Name() + '  ' + Orion.GetDistance(greatly.X(), greatly.Y()));
 
-    })
-
-    gump.Select('gump');
     while (true) {
+        var gumpId = 67
+        var gump = Orion.CreateCustomGump(gumpId);
+        //  gump.Clear()
+        gump.SetCallback('HostCallback');
+        gump.AddHtmlGump(1, 0, 0, 300, 500, '0x0BB8');
+        gump.Select('htmlgump', 1);
+        var yPos = 10
+        greatlyList.forEach(function (greatly) {
+            gump.AddText(10, yPos += 20, '0', greatly.Name() + '  ' + Orion.GetDistance(greatly.X(), greatly.Y()));
+
+        })
+
+        gump.Select('gump');
         Orion.Wait(1000)
         gump.Update();
     }
@@ -169,7 +181,8 @@ function CheckHouse(sign) {
 }
 
 function HouseVisit(sign, jsonObject) {
-    if (sign != null)
+    if (sign != null) {
+        Orion.Print(sign.Serial())
         return {
             serial: sign.Serial(),
             map: sign.Map(),
@@ -199,6 +212,11 @@ function HouseVisit(sign, jsonObject) {
                 this.houseStatus.push(newStatus);
             },
             DistanceTo: function (tx, ty) {
+	            if(tx==null)
+	            	tx = Player.X()
+	            if(ty==null)
+	            	ty = Player.Y()
+            	
                 var dx = Math.abs(tx - this.X());
                 var dy = Math.abs(ty - this.Y());
                 var min = Math.min(dx, dy);
@@ -208,10 +226,14 @@ function HouseVisit(sign, jsonObject) {
                 var straightSteps = max - min;
                 var ret = Math.sqrt(2) * diagonalSteps + straightSteps
                 return ret;
-            },
+            }
         }
-    else
+    }
+    else {
+        Orion.Print(jsonObject.serial)
+
         return {
+
             serial: jsonObject.serial,
             map: jsonObject.map,
             x: jsonObject.x,
@@ -243,6 +265,10 @@ function HouseVisit(sign, jsonObject) {
                 this.houseStatus.push(newStatus);
             },
             DistanceTo: function (tx, ty) {
+            	            if(tx==null)
+	            	tx = Player.X()
+	            if(ty==null)
+	            	ty = Player.Y()
                 var dx = Math.abs(tx - this.X());
                 var dy = Math.abs(ty - this.Y());
                 var min = Math.min(dx, dy);
@@ -252,8 +278,9 @@ function HouseVisit(sign, jsonObject) {
                 var straightSteps = max - min;
                 var ret = Math.sqrt(2) * diagonalSteps + straightSteps
                 return ret;
-            },
+            }
         }
+    }
 }
 
 function HouseStatus(sign, jsonObject) {
@@ -291,6 +318,8 @@ function HouseStatus(sign, jsonObject) {
 }
 
 function ReadHouseFile(_private) {
+    Orion.Print('Method Entry - ReadHouseFile')
+
     var file = Orion.NewFile();
 
     if (file.Open('IDOC.json', true)) {
@@ -348,7 +377,7 @@ function ExportMapFile() {
         houseList.filter(function (hv) { return hv.HouseStatus()[hv.HouseStatus().length - 1].Condition() === 'This Structure Is Greatly Worn' })
             .forEach(function (houseValue) {
                 //-	Warrior's Battle Gear	2533	576	7	true
-                var hv = '+\t' + houseValue.Name()+houseValue.HouseStatus()[houseValue.HouseStatus().length - 1].Date().toISOString() + '\t' + houseValue.X() + '\t' + houseValue.Y() + '\t' + houseValue.Map() + '\t' + 'true'
+                var hv = '+\t' + houseValue.Name() + houseValue.HouseStatus()[houseValue.HouseStatus().length - 1].Date().toISOString() + '\t' + houseValue.X() + '\t' + houseValue.Y() + '\t' + houseValue.Map() + '\t' + 'true'
                 file.Write(hv + '\n')
             })
     }
@@ -392,7 +421,7 @@ function dhm(t) {
 
 function CompareToBackup() {
     var file = Orion.NewFile();
-houseJson = []
+    houseJson = []
     if (file.Open('IDOC.json', true)) {
         var house = []
         while (house != null && house) {
@@ -421,7 +450,7 @@ houseJson = []
     file.Close();
 
     var serials1 = houseList.map(function (house) { return house.Serial() })
-    var serials2 = houseList2.map(function (house) {return  house.Serial() })
+    var serials2 = houseList2.map(function (house) { return house.Serial() })
 
     TextWindow.Open()
     serials2.forEach(function (house) {

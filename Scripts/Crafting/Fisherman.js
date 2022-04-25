@@ -6,7 +6,10 @@ var mapMibBox = '0x4006BE64'
 var netLoot = '0x400DEE70'
 
 function SeaFish() {
+Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', false)
     var startTime = Orion.Now()
+    var returnTime = Orion.Now()+600000
+
     while (!Player.Dead()) {
         if (Orion.FindTypeEx(any, any, ground,
             'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').length == 0) {
@@ -80,13 +83,14 @@ function SeaFish() {
                 Orion.ActivateClient();
                 Orion.PauseScript();
             }
-            if (Player.Weight() > (Player.MaxWeight() - 100)) {
+            if (Player.Weight() > (Player.MaxWeight() - 100)||returnTime<Orion.Now()) {
+				returnTime = Orion.Now()+600000
                 RecallRune(seabook);
                 Orion.Wait(1000);
                 SortFishLoot()
 
-                if (Player.WarMode())
-                    Orion.PauseScript();
+      //          if (Player.WarMode())
+            //        Orion.PauseScript();
                 RecallRune(seakey);
                 Orion.Wait(2000);
             }
