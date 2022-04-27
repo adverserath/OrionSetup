@@ -96,7 +96,7 @@ function GetSOSLocation(sos) {
         var com = gump0.CommandList()[2]
         //Orion.Print(com)
         Orion.Print(com.match(/.*@(.*)@.*/i)[1])
-        pos = Orion.SextantToXY(com.match(/.*@(.*)@.*/i)[1]);
+        pos = Orion.SextantToXY(com.match(/.*@(.*)@.*/i)[1],1);
         Orion.Print('X:' + pos.X() + ' Y: ' + pos.Y())
         gump0.Select(Orion.CreateGumpHook(0));
         Orion.Wait(400);

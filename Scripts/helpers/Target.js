@@ -314,7 +314,6 @@ function Here()
 }
 
 function coordinate(xLoc, yLoc, zLoc, _name) {
-	Orion.Print('Method Entry - coordinate')
   return {
     x: xLoc,
     y: yLoc,

@@ -1,7 +1,7 @@
 function UseBook(serial, button) {
-    Orion.Print('Method Entry - UseBook')
+    TextWindow.Print('Method Entry - UseBook')
     if (typeof button === "string") {
-        Orion.Print('button string ' + object)
+        TextWindow.Print('button string ' + object)
     }
     Orion.UseObject(serial);
     Orion.Wait(200)
@@ -16,7 +16,7 @@ function UseBook(serial, button) {
 }
 
 var runeList = []
-function BookControl() {
+function A____ReadAllBooksToFile() {
     //Loop through books
     var books = Orion.FindTypeEx('0x22C5').forEach(function (book) {
         Orion.UseObject(book.Serial())
@@ -52,7 +52,7 @@ function BookControl() {
                 TextWindow.Print(result[2] + gump.TextList()[parseInt(result[2])])
                 TextWindow.Print(result[3] + gump.TextList()[parseInt(result[3])])
                 if (gump.TextList()[parseInt(result[3])] !== 'Nowhere') {
-                    var pos = Orion.SextantToXY(gump.TextList()[parseInt(result[3])], map)
+                    var pos = Orion.SextantToXY(gump.TextList()[parseInt(result[3])], 1)
                     TextWindow.Print(pos.X() + '  ' + pos.Y())
 
                     runeList.push(runeEntry(book.Serial(), map, gump.TextList()[result[2]], pos.X(), pos.Y(), parseInt(result[4]), parseInt(result[5]), parseInt(result[6])))
@@ -67,52 +67,92 @@ var maps = ['Felucca', 'Trammel', 'Ilshenar', 'Malas', 'Tokuno']
 function TestRunes() {
     UseClosestRuneOrWalk(1789, 2424, 1)
 }
-function UseClosestRuneOrWalk(dX, dY, map) {
+
+function GotoMap(map)
+{
+    TextWindow.Print('Going to map ' + map)
+
     ReadRunebookFile()
 
     var filteredList = runeList.filter(function (rune) {
         return rune.Map() == map
     })
-    Orion.Print('runes on map ' + filteredList.length)
-    Orion.Print(filteredList[0].Name())
+    if(filteredList.length==0)
+    {
+        return
+    }
+    TextWindow.Print(filteredList[0].Name())
     filteredList.sort(function (placeA, placeB) {
-        Orion.Print(placeA.DistanceTo(dX, dY))
-        return placeA.DistanceTo(dX, dY) - placeB.DistanceTo(dX, dY);
-    })
-    Orion.Print(filteredList[0].Name())
-
-    filteredList = filteredList.slice(0, 5)
-    filteredList.forEach(function (rune) {
-        Orion.Print('slice ' + rune.Name())
-    })
-
-    // filteredList = filteredList.filter(function (rune) {
-    //     return Orion.GetPathArrayEx(dX, dY, 255, rune.X(), rune.Y(), 255, 2, 255).length > 1;
-    // })
-    filteredList.forEach(function (rune) {
-        var pathDistance = Orion.GetPathArrayEx(dX, dY, 255, rune.X(), rune.Y(), 255, 2, 255).length;
-        if (pathDistance > 0) {
-            Orion.Print('Path distance = '+pathDistance)
-            if (pathDistance < Orion.GetPathArray(rune.X(), rune.Y(), 255, 2, 255).length) {
-                rune.Recall()
-            }
-            else {
-                Orion.Print(dX + ' '+ dY)
-                WalkTo(coordinate(dX, dY,255,"Destination"))
-            }
-            return;
-        }
-        Orion.Print('From ' + rune.Name())
-        Orion.Print(Orion.GetPathArrayEx(dX, dY, rune.X(), rune.Y()).length)
-        Orion.Print(rune.X() + '   ' + rune.Y())
+        return placeA.DistanceTo(1000, 500) - placeB.DistanceTo(1000, 500);
     })
     filteredList[0].Recall()
-
+    Orion.Wait(1000)
 }
 
-function TestPathArray() {
-    Orion.Print(Orion.GetPathArrayEx(1657, 2030, 1608, 2305).length)
+function UseClosestRuneOrWalk(dX, dY, map, walkPathLength) {
+    TextWindow.Print('Finding Closest to ' + dX + ' ' + dY + 'Map:' + map)
+    ReadRunebookFile()
+
+    var filteredList = runeList.filter(function (rune) {
+        return rune.Map() == map
+    })
+    TextWindow.Print('runes on map ' + filteredList.length)
+    TextWindow.Print(filteredList[0].Name())
+    filteredList.sort(function (placeA, placeB) {
+        return placeA.DistanceTo(dX, dY) - placeB.DistanceTo(dX, dY);
+    })
+
+    filteredList = filteredList.slice(0, 3)
+    filteredList.forEach(function (rune, i) {
+        TextWindow.Print(i + ' : ' + rune.Name())
+    })
+    Orion.Wait(1000)
+
+    filteredList = filteredList.filter(function (rune, i) {
+        rune.CalculatePath(dX, dY)
+        var pathable = rune.CanPathTo()
+        return pathable
+    })
+
+    filteredList.sort(function (placeA, placeB) {
+        return placeA.PathLength() - placeB.PathLength();
+    })
+    filteredList.forEach(function (rune, i) {
+        TextWindow.Print('ordered:' + i + ' : ' + rune.Name())
+    })
+
+    var returnRune = null
+    if (walkPathLength == null)
+        walkPathLength = Orion.GetPathArray(dX, dY, 255, 2, 255).length
+    TextWindow.Print('Walk Distance ' + walkPathLength, 78)
+
+    filteredList.every(function (rune, i) {
+        TextWindow.Print(i + ' Closest Rune ' + rune.Name())
+        var pathDistance = rune.PathLength();
+        TextWindow.Print(i + 'Closest Rune: ' + pathDistance)
+
+        if (pathDistance > 0) {
+
+            if (pathDistance < walkPathLength || walkPathLength == 0) {
+                TextWindow.Print('Closer than walking')
+                rune.Recall()
+                Orion.Wait(2000)
+                return false
+                // returnRune = rune
+            }
+            TextWindow.Print('Ill walk')
+            WalkTo(coordinate(dX, dY, 255, "Destination"))
+
+            return false
+        }
+        else {
+            TextWindow.Print('Cant use Rune ' + 'from: ' + rune.X() + ' ' + rune.Y() + ' ' + rune.Name() + ' to ' + dX + ' ' + dY)
+            Orion.Wait(1000)
+        }
+    })
+    WalkTo(coordinate(dX, dY, 255, "Target Destination"))
 }
+
 function GetMap() {
     return Orion.ObjAtLayer(21, Player.Serial()).Map()
 }
@@ -128,22 +168,22 @@ function WriteRunesFile(_private) {
 }
 
 function ReadRunebookFile(_private) {
-    var file = Orion.NewFile();
-
-    if (file.Open('RuneBooks.json', true)) {
-        var rune = []
-        while (rune != null && rune) {
-            rune = file.ReadLine()
-            if (rune != '') {
-                var runeJson = JSON.parse(rune)
-                runeList.push(runeEntry(runeJson.serial, runeJson.map, runeJson.locName, runeJson.x, runeJson.y, runeJson.recallButton, runeJson.gateButton, runeJson.sacredButton))
+    if (runeList.length < 1) {
+        var file = Orion.NewFile();
+        if (file.Open('RuneBooks.json', true)) {
+            var rune = []
+            while (rune != null && rune) {
+                rune = file.ReadLine()
+                if (rune != '') {
+                    var runeJson = JSON.parse(rune)
+                    runeList.push(runeEntry(runeJson.serial, runeJson.map, runeJson.locName, runeJson.x, runeJson.y, runeJson.recallButton, runeJson.gateButton, runeJson.sacredButton))
+                }
             }
         }
+        file.Close();
     }
-    file.Close();
 }
 function runeEntry(_serial, _map, _name, _X, _Y, _recall, _gate, _sacred) {
-    Orion.Print('Method Entry - coordinate')
     return {
         serial: _serial,
         map: _map,
@@ -153,6 +193,7 @@ function runeEntry(_serial, _map, _name, _X, _Y, _recall, _gate, _sacred) {
         recallButton: _recall,
         gateButton: _gate,
         sacredButton: _sacred,
+        pathDistance: 0,
         X: function () {
 
             return this.x;
@@ -183,19 +224,27 @@ function runeEntry(_serial, _map, _name, _X, _Y, _recall, _gate, _sacred) {
             var ret = Math.sqrt(2) * diagonalSteps + straightSteps
             return ret;
         },
-        CanPathTo: function (tx, ty) {
-            return Orion.GetPathArrayEx(tx, ty, x, y).length > 0
+        CalculatePath: function (tx, ty) {
+            TextWindow.Print('Check Path:'+tx +' '+ ty +' '+ this.x +' '+ this.y)
+           this.pathDistance = Orion.GetPathArrayEx(parseInt(tx), parseInt(ty), 0, parseInt(this.x), parseInt(this.y), 0, 4, 255).length
+           TextWindow.Print('Check Path:'+this.Name() + this.pathDistance)
+        },
+        CanPathTo: function () {
+            return this.pathDistance > 0
+        },
+        PathLength: function () {
+            return this.pathDistance
         },
         Recall: function () {
-            Orion.Print(this.serial + '   ' + this.recallButton)
+            TextWindow.Print(this.serial + '   ' + this.recallButton)
             UseBook(this.serial, this.recallButton)
         },
         Gate: function () {
-            Orion.Print(this.serial + '   ' + this.gateButton)
+            TextWindow.Print(this.serial + '   ' + this.gateButton)
             UseBook(this.serial, this.gateButton)
         },
         Sacred: function () {
-            Orion.Print(this.serial + '   ' + this.sacredButton)
+            TextWindow.Print(this.serial + '   ' + this.sacredButton)
             UseBook(this.serial, this.sacredButton)
         }
     }
