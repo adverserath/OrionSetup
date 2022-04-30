@@ -1,5 +1,5 @@
 function SelectMultipleLocations(_) {
-	Orion.Print('Method Entry - SelectMultipleLocations')
+  Orion.Print('Method Entry - SelectMultipleLocations')
   var locations = [];
   var selected;
   var selecting = true;
@@ -17,7 +17,7 @@ function SelectMultipleLocations(_) {
 }
 
 function SelectMultipleTargets(_) {
-	Orion.Print('Method Entry - SelectMultipleTargets')
+  Orion.Print('Method Entry - SelectMultipleTargets')
   var objects = [];
   var selected;
   var selecting = true;
@@ -37,7 +37,7 @@ function SelectMultipleTargets(_) {
 }
 
 function SelectTarget(itemUsage) {
-	Orion.Print('Method Entry - SelectTarget')
+  Orion.Print('Method Entry - SelectTarget')
   if (itemUsage != null) {
     Orion.Print("Select your" + itemUsage);
   }
@@ -48,7 +48,7 @@ function SelectTarget(itemUsage) {
 }
 
 function SelectCoordinate(text) {
-	Orion.Print('Method Entry - SelectCoordinate')
+  Orion.Print('Method Entry - SelectCoordinate')
   if (text != null) {
     Orion.Print(text)
   }
@@ -61,7 +61,7 @@ function SelectCoordinate(text) {
 }
 
 function UseItemOnTarget(item, target) {
-	Orion.Print('Method Entry - UseItemOnTarget')
+  Orion.Print('Method Entry - UseItemOnTarget')
   Orion.UseObject(item.Serial());
   if (Orion.WaitForTarget(5000)) {
     Orion.TargetObject(target.Serial());
@@ -69,19 +69,19 @@ function UseItemOnTarget(item, target) {
 }
 
 function UseItemOnTargets(item, targets) {
-	Orion.Print('Method Entry - UseItemOnTargets')
+  Orion.Print('Method Entry - UseItemOnTargets')
   targets.forEach(function (target) {
-	
+
     UseItemOnTarget(item, target);
   });
 }
 
 function RandomTarget(_private) {
-	Orion.Print('Method Entry - RandomTarget')
+  Orion.Print('Method Entry - RandomTarget')
   var nearby = Orion.FindTypeEx(any, any, ground,
     'nothumanmobile|live|ignoreself|ignorefriends', 10, 3)
     .filter(function (mob) {
-	
+
       return mob.Notoriety() >= 3
         && mob.Notoriety() < 7;
     });
@@ -89,7 +89,7 @@ function RandomTarget(_private) {
 }
 
 function PrintContainer(object, mobile, ignoreNonStealable) {
-	Orion.Print('Method Entry - PrintContainer')
+  Orion.Print('Method Entry - PrintContainer')
   Orion.Print('PrintContainer')
   var items = ''
   if (mobile != null) {
@@ -99,7 +99,7 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
   Orion.Wait(100)
   Orion.FindTypeEx(any, any, object.Serial())
     .filter(function (item) {
-	
+
       if (ignoreNonStealable) {
         return !Orion.Contains(item.Properties(), 'Blessed') && !Orion.Contains(item.Properties(), 'Insured')
           && ((item.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 20) <= 10;
@@ -109,7 +109,7 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
       }
     })
     .forEach(function (item) {
-	
+
       items += '--<b>' + item.Name() + '</b>\n'
       items += '<code>' + item.Properties() + '</code>\n'
     })
@@ -118,7 +118,7 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
 }
 
 function WalkTo(object, distance, timeMS, walking) {
-	Orion.Print('Method Entry - WalkTo')
+  Orion.Print('Method Entry - WalkTo')
   Orion.Print("Start WalkTo")
   if (typeof object === "string") {
     Orion.Print('finding ' + object)
@@ -143,14 +143,14 @@ function WalkTo(object, distance, timeMS, walking) {
     walking = 1;
   }
   var Z = 0
-  if(object.hasOwnProperty('z'))
+  if (object.hasOwnProperty('z'))
     Z = object.Z()
   var result = Orion.WalkTo(object.X(), object.Y(), Z, distance, 255, walking, 1, timeMS);
   return result
 }
 
 function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, walking) {
-	Orion.Print('Method Entry - WalkToAvoiding')
+  Orion.Print('Method Entry - WalkToAvoiding')
   Orion.Print('Going to' + object.X() + ' ' + object.Y())
   if (distance == null) {
     distance = 2;
@@ -174,13 +174,13 @@ function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, wal
     }
 
     avoidarray.forEach(function (object) {
-	
+
       if (object.Distance() < avoiddistance) {
         StayAway(object.Serial(), avoiddistance + 2)
 
       }
       Orion.GetTilesInRect('land', object.X() - avoiddistance, object.Y() - avoiddistance, object.X() + avoiddistance, object.Y() + avoiddistance).forEach(function (tile) {
-	
+
         //Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
         Orion.SetBadLocation(tile.X(), tile.Y());
       })
@@ -195,18 +195,18 @@ function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, wal
 }
 
 function AddBadLocationGrid() {
-	Orion.Print('Method Entry - AddBadLocationGrid')
+  Orion.Print('Method Entry - AddBadLocationGrid')
   var start = SelectCoordinate()
   var end = SelectCoordinate();
 
   Orion.GetTilesInRect('land', start.X(), start.Y(), end.X(), end.Y()).forEach(function (tile) {
-	
+
     Orion.SetBadLocation(tile.X(), tile.Y());
   })
 }
 
 function FelWalkTo(object, distance, timeMS, walking) {
-	Orion.Print('Method Entry - FelWalkTo')
+  Orion.Print('Method Entry - FelWalkTo')
 
   if (distance == null) {
     distance = 1;
@@ -227,7 +227,7 @@ function FelWalkTo(object, distance, timeMS, walking) {
 }
 
 function InRange(p1, p2, range) {
-	Orion.Print('Method Entry - InRange')
+  Orion.Print('Method Entry - InRange')
 
   return (p1.X() >= (p2.X() - range))
     && (p1.X() <= (p2.X() + range))
@@ -237,7 +237,7 @@ function InRange(p1, p2, range) {
 }
 
 function BorderEdge(x, y, p2, range) {
-	Orion.Print('Method Entry - BorderEdge')
+  Orion.Print('Method Entry - BorderEdge')
 
   return (x == (p2.X() - range))
     || (x == (p2.X() + range))
@@ -247,7 +247,7 @@ function BorderEdge(x, y, p2, range) {
 }
 
 function GetDistanceToSqrt(_private) {
-	Orion.Print('Method Entry - GetDistanceToSqrt')
+  Orion.Print('Method Entry - GetDistanceToSqrt')
   var p1 = Player
   var p2 = SelectTarget()
   while (true) {
@@ -262,7 +262,7 @@ function GetDistanceToSqrt(_private) {
 }
 
 function ShowRange(targetId, range) {
-	Orion.Print('Method Entry - ShowRange')
+  Orion.Print('Method Entry - ShowRange')
   Orion.ClearFakeMapObjects();
   if (Orion.ObjectExists(targetId)) {
     var target = Orion.FindObject(targetId)
@@ -270,14 +270,14 @@ function ShowRange(targetId, range) {
     var y = target.Y();
 
     range.forEach(function (distance) {
-	
+
       Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance)
         .filter(function (tile) {
-	
+
           return BorderEdge(x, y, tile, distance);
         })
         .forEach(function (tile) {
-	
+
           Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
         }
         )
@@ -287,7 +287,6 @@ function ShowRange(targetId, range) {
 }
 
 function StayAway(targetId, distance) {
-	Orion.Print('Method Entry - StayAway')
   if (Orion.ObjectExists(targetId)) {
     var target = Orion.FindObject(targetId)
     var x = target.X();
@@ -295,11 +294,11 @@ function StayAway(targetId, distance) {
     var tiles =
       Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance)
         .filter(function (tile) {
-	
+
           return BorderEdge(x, y, tile, distance);
         })
         .sort(function (t1, t2) {
-	
+
           return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
         });
     var closest = tiles.shift()
@@ -307,10 +306,8 @@ function StayAway(targetId, distance) {
   }
 }
 
-function Here()
-{
-	Orion.Print('Method Entry - Here')
-  return coordinate(Player.X(),Player.Y(),Player.Z(),"Saved Location")
+function Here() {
+  return coordinate(Player.X(), Player.Y(), Player.Z(), "Saved Location")
 }
 
 function coordinate(xLoc, yLoc, zLoc, _name) {
@@ -321,33 +318,33 @@ function coordinate(xLoc, yLoc, zLoc, _name) {
     visited: false,
     locName: _name,
     X: function () {
-	
+
       return this.x;
     },
     Y: function () {
-	
+
       return this.y;
     },
     Z: function () {
-	
+
       return this.z;
     },
     Visited: function (val) {
-	
+
       if (val != null) {
         this.visited = val
       }
       return this.visited;
     },
     Name: function () {
-	
+
       if (this.locName == null)
         return 'coordinate';
       else
         return this.locName;
     },
     DistanceTo: function (tx, ty) {
-	
+
       var dx = Math.abs(tx - this.X());
       var dy = Math.abs(ty - this.Y());
       var min = Math.min(dx, dy);
@@ -357,7 +354,38 @@ function coordinate(xLoc, yLoc, zLoc, _name) {
       var straightSteps = max - min;
       var ret = Math.sqrt(2) * diagonalSteps + straightSteps
       return ret;
-    },
-
+    }
   }
+}
+
+function FindGroundItemWithName(name) {
+  return Orion.FindTypeEx(any, any, ground, 'item', 18).filter(function (item) {
+    return Orion.Contains(item.Name(), name)
+  }).shift()
+}
+
+function FindBackpackItemWithName(name) {
+  return Orion.FindTypeEx(any, any, backpack, 'item', 18).filter(function (item) {
+    return Orion.Contains(item.Name(), name)
+  }).shift()
+}
+
+function FindGroundItemWithProperties(properties) {
+  var items = Orion.FindTypeEx(any, any, ground, 'item', 18)
+  properties.forEach(function (prop) {
+    items = items.filter(function (item) {
+      return Orion.Contains(item.Properties(), prop)
+    })
+  })
+  return items.shift()
+}
+
+function FindBackpackWithProperties(properties) {
+  var items = Orion.FindTypeEx(any, any, backpack, 'item', 18)
+  properties.forEach(function (prop) {
+    items = items.filter(function (item) {
+      return Orion.Contains(item.Properties(), prop)
+    })
+  })
+  return items.shift()
 }

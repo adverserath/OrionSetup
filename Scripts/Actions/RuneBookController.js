@@ -68,8 +68,7 @@ function TestRunes() {
     UseClosestRuneOrWalk(1789, 2424, 1)
 }
 
-function GotoMap(map)
-{
+function GotoMap(map) {
     TextWindow.Print('Going to map ' + map)
 
     ReadRunebookFile()
@@ -77,8 +76,7 @@ function GotoMap(map)
     var filteredList = runeList.filter(function (rune) {
         return rune.Map() == map
     })
-    if(filteredList.length==0)
-    {
+    if (filteredList.length == 0) {
         return
     }
     TextWindow.Print(filteredList[0].Name())
@@ -121,15 +119,18 @@ function UseClosestRuneOrWalk(dX, dY, map, walkPathLength) {
         TextWindow.Print('ordered:' + i + ' : ' + rune.Name())
     })
 
-    var returnRune = null
     if (walkPathLength == null)
         walkPathLength = Orion.GetPathArray(dX, dY, 255, 2, 255).length
     TextWindow.Print('Walk Distance ' + walkPathLength, 78)
 
+    // if all runes are 0 PATH, then try the first one
+    // if recall fails then try next
+
+
     filteredList.every(function (rune, i) {
         TextWindow.Print(i + ' Closest Rune ' + rune.Name())
         var pathDistance = rune.PathLength();
-        TextWindow.Print(i + 'Closest Rune: ' + pathDistance)
+        TextWindow.Print(i + ' Closest Rune: ' + pathDistance)
 
         if (pathDistance > 0) {
 
@@ -150,6 +151,7 @@ function UseClosestRuneOrWalk(dX, dY, map, walkPathLength) {
             Orion.Wait(1000)
         }
     })
+
     WalkTo(coordinate(dX, dY, 255, "Target Destination"))
 }
 
@@ -225,9 +227,9 @@ function runeEntry(_serial, _map, _name, _X, _Y, _recall, _gate, _sacred) {
             return ret;
         },
         CalculatePath: function (tx, ty) {
-            TextWindow.Print('Check Path:'+tx +' '+ ty +' '+ this.x +' '+ this.y)
-           this.pathDistance = Orion.GetPathArrayEx(parseInt(tx), parseInt(ty), 0, parseInt(this.x), parseInt(this.y), 0, 4, 255).length
-           TextWindow.Print('Check Path:'+this.Name() + this.pathDistance)
+            TextWindow.Print('Check Path:' + tx + ' ' + ty + ' ' + this.x + ' ' + this.y)
+            this.pathDistance = Orion.GetPathArrayEx(parseInt(tx), parseInt(ty), 0, parseInt(this.x), parseInt(this.y), 0, 4, 255).length
+            TextWindow.Print('Check Path:' + this.Name() + this.pathDistance)
         },
         CanPathTo: function () {
             return this.pathDistance > 0

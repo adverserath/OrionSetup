@@ -1,14 +1,18 @@
 var seabook = '0x40019854'
-var seakey = '0x4003D723'
-var seaBox = '0x40055745'
-var seaBin = '0x400F63CF'
-var mapMibBox = '0x4006BE64'
-var netLoot = '0x400DEE70'
 
+function FishMonitor() {
+    while (true) {
+        Orion.Wait(5000)
+        if (Orion.ScriptRunning('SeaFish') == 0) {
+            BotPush('SeaFish Stopped')
+            Orion.Wait(60000)
+        }
+    }
+}
 function SeaFish() {
-Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', false)
+    Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', false)
     var startTime = Orion.Now()
-    var returnTime = Orion.Now()+600000
+    var returnTime = Orion.Now()//600000
 
     while (!Player.Dead()) {
         if (Orion.FindTypeEx(any, any, ground,
@@ -73,55 +77,64 @@ Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', false)
                     }
                 });
             }
-            Orion.FindListEx('JustFish').forEach(function (fish){
-            Orion.Wait(800)
-            Orion.UseType('0x13F6', '0xFFFF');
-				if (Orion.WaitForTarget(1000))
-					Orion.TargetObject(fish.Serial());
+            Orion.FindListEx('JustFish').forEach(function (fish) {
+
+                Orion.UseType('0x13F6', '0xFFFF');
+                if (Orion.WaitForTarget(1000)) {
+                    Orion.TargetObject(fish.Serial());
+                }
+                Orion.Wait(1000)
             })
+
             if (Player.Weight() > Player.MaxWeight()) {
                 Orion.ActivateClient();
                 Orion.PauseScript();
             }
-            if (Player.Weight() > (Player.MaxWeight() - 100)||returnTime<Orion.Now()) {
-				returnTime = Orion.Now()+600000
+            if (Player.Weight() > (Player.MaxWeight() - 100) || returnTime < Orion.Now()) {
+                returnTime = Orion.Now() + 600000
                 RecallRune(seabook);
                 Orion.Wait(1000);
                 SortFishLoot()
 
-      //          if (Player.WarMode())
-            //        Orion.PauseScript();
-                RecallRune(seakey);
+                //          if (Player.WarMode())
+                //        Orion.PauseScript();
+                RecallRune(FindBackpackItemWithName("A Ship Key"));
                 Orion.Wait(2000);
             }
             startTime = Orion.Now()
             Orion.UseObject('0x40026413');
-            if (Orion.WaitForTarget(1000))
+            if (Orion.WaitForTarget(1000)) {
+                Orion.Wait(300)
                 Orion.TargetTileRelative('any', -3, -3, 65533);
-            Orion.Say('forward');
-            Orion.Wait(2000);
-            Orion.Say('stop');
-            Orion.Wait(8000);
+            }
+            if (!Orion.HaveTarget()) {
+                Orion.Say('forward');
+                Orion.Wait(2000);
+                Orion.Say('stop');
+                Orion.Wait(8000);
+            }
+            else {
+                Orion.CancelTarget()
+            }
         }
         else {
-        var stopTime = Orion.Now()+60000
-        Orion.FindTypeEx(any, any, ground,
-            'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').forEach(function (mob){
-            Orion.Print('kill '+ mob.Name())
-            Orion.Attack(mob.Serial())
-            Orion.Wait(300)
-            })
-        Orion.AddDisplayTimer('monster', 60000,'AboveChar');
+            var stopTime = Orion.Now() + 60000
+            Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').forEach(function (mob) {
+                    Orion.Print('kill ' + mob.Name())
+                    Orion.Attack(mob.Serial())
+                    Orion.Wait(300)
+                })
+            Orion.AddDisplayTimer('monster', 60000, 'AboveChar');
             Orion.Say('stop')
-            while(Orion.FindTypeEx(any, any, ground,
-            'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').length != 0 && stopTime > Orion.Now())
-            {
-            	Orion.Wait(1000);
-            	if(Player.Hits()<Player.MaxHits())
-            	{
-            	Orion.CastTarget('Close Wounds', self)
-            	Orion.Wait(3000)
-            	}
+            while (Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').length != 0 && stopTime > Orion.Now()) {
+                Orion.Print("Waiting")
+                Orion.Wait(1000);
+                if (Player.Hits() < Player.MaxHits()) {
+                    Orion.CastTarget('Close Wounds', self)
+                    Orion.Wait(3000)
+                }
             }
             Orion.RemoveDisplayTimer('monster')
         }
@@ -130,15 +143,21 @@ Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', false)
 }
 
 function SortFishLoot() {
-    WalkTo(seaBox)
+    WalkTo(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial())
     Orion.Wait(1000);
-    MoveItemText("Waterstained SOS|Ancient SOS|Message In|Treasure Map", mapMibBox)
-    MoveItemText("Fishing Net", netLoot)
+    MoveItemText("Fabled Fishing Net", FindGroundItemWithProperties(["Engraved: Fabled Nets"]).Serial())
+    MoveItemText("Fishing Net", FindGroundItemWithProperties(["Engraved: Special Nets"]).Serial())
+
+    MoveAllSOSInBagToChests();
+    MoveStashMapsInBagToChests();
 
     Orion.FindListEx('Fishies').forEach(function (fish) {
-        MoveItemsFromPlayer(seaBox, fish.Graphic(), any);
+        MoveItemsFromPlayer(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial(), fish.Graphic(), any);
     })
+
+    MoveItemText("Waterstained SOS|Ancient SOS|Message In|Treasure Map", FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial())
     Orion.Wait(1000);
+    var seaBin = FindGroundItemWithName("A Trash Barrel").Serial()
     WalkTo(seaBin)
     Orion.FindListEx('UnwantedStuff').forEach(function (notFish) {
         //Orion.DropHere(notFish.Serial());
@@ -152,13 +171,6 @@ function StartFishing() {
     // How far to look for trees from the player
     var range = 16;
     AutoFisherman(range);
-}
-
-function OpenAnyMiBs() {
-    Orion.FindTypeEx('0xA30C').forEach(function (_) {
-        Orion.UseObject(_.Serial())
-        Orion.Wait(1800)
-    })
 }
 
 function Messages() {
@@ -524,6 +536,10 @@ function GetWater2(range) {
 //#include Actions/Automated/DriveBoat.js
 //#include helpers/Map.js
 //#include helpers/SOS.js
+//#include helpers/SOSList.js
 //#include helpers/PathFinding.js
 //#include WIP/TestScripts.js
 //#include helpers/ItemManager.js
+//#include helpers/Notifier.js
+//#include helpers/Pet.js
+//#include Fighting/Tamer.js

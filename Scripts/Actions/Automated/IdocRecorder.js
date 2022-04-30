@@ -5,11 +5,10 @@
 //#include Actions/Automated/IDOC.js
 //#include Actions/RuneBookController.js
 
-function PathTest()
-{
-//1181 2639 Destard to 998 2645
-Orion.Print(Orion.GetPathArrayEx(1181, 2639, 0, 998, 2645, 0, 0, 0).length)
-Orion.Print(Orion.GetPathArrayEx(998, 2645, 0, 1181, 2639, 0, 0, 0).length)
+function PathTest() {
+    //1181 2639 Destard to 998 2645
+    Orion.Print(Orion.GetPathArrayEx(1181, 2639, 0, 998, 2645, 0, 0, 0).length)
+    Orion.Print(Orion.GetPathArrayEx(998, 2645, 0, 1181, 2639, 0, 0, 0).length)
 }
 function GetMap() {
     return Orion.ObjAtLayer(21, Player.Serial()).Map()
@@ -22,24 +21,21 @@ function GreatlyWalker() {
 
 function GreatlyWalkerAllMaps() {
     greatly = true
-    for(i=0;i<4;i++)
-    {
-    HouseWalker(i)
-	}
+    for (i = 0; i < 4; i++) {
+        HouseWalker(i)
+    }
 }
 
 function HouseWalker(map) {
-if(map == null)
-{
-	map = GetMap()
-	}
-	else{
-	if(map!=GetMap())
-	{
-	GotoMap(map)
-	}
-	}
-	
+    if (map == null) {
+        map = GetMap()
+    }
+    else {
+        if (map != GetMap()) {
+            GotoMap(map)
+        }
+    }
+
     Orion.Print('Method Entry - HouseWalker')
 
     if (Orion.ScriptRunning('RecordHouses') <= 0)
@@ -61,27 +57,43 @@ if(map == null)
         .sort(function (t1, t2) {
             return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
         })
-    Orion.Print('Houses on route ' + walkroute.length)
-Orion.Wait(1000)
+    Orion.Print('All Houses on map ' + walkroute.length)
+
     while (walkroute.length > 0) {
-        walkroute = walkroute.filter(function (house) {
-            var diff = Math.abs(house.HouseStatus()[house.HouseStatus().length - 1].Date() - new Date());
-            var minutes = Math.floor((diff / 1000) / 60);
-            if (minutes < 120) {
-                Orion.Print("Already Checked " + house.Serial())
-            }
-            return minutes > 120
-        })
-        if(walkroute.length == 0)
-        {
-        	return
+        TextWindow.Print('-----------------------------------------')
+
+        var checkedCount = 0
+
+        walkroute = houseList
+            .filter(function (house) {
+                if (greatly) {
+                    return house.Map() == GetMap()
+                        && house.HouseStatus()[house.HouseStatus().length - 1].Condition() == 'This Structure Is Greatly Worn'
+                }
+                return house.Map() == GetMap()
+            })
+            .sort(function (t1, t2) {
+                return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
+            }).filter(function (house) {
+                var diff = Math.abs(house.HouseStatus()[house.HouseStatus().length - 1].Date() - new Date());
+                var minutes = Math.floor((diff / 1000) / 60);
+                if (minutes < 120) {
+                    checkedCount++
+                }
+                return minutes > 120
+            })
+        TextWindow.Print('Checked Houses:' + checkedCount)
+        if (walkroute.length == 0) {
+            return
         }
+        TextWindow.Print('Remaining Houses:' + walkroute.length)
+
         var house = walkroute[0]
         var pathToDest = Orion.GetPathArrayEx(Player.X(), Player.Y(), Player.Z(), house.X(), house.Y(), Player.Z(), 1, 255, 0, 0).length
         var houseDist = house.DistanceTo()
-        TextWindow.Print('Next House : Path:' + pathToDest + '\t Distance' + houseDist)
-        if (pathToDest == 0 || pathToDest > 50) {
-            //            TextWindow.Print('Cant reach - ' + house.Serial() +' map:'+ house.Map() + ' X:' +house.X() +' Y:' + house.Y())
+        TextWindow.Print('NEXT HOUSE : ' + house.Serial() + '  X' + house.X() + ' Y' + house.Y() + '\nPath:' + pathToDest + '\t Distance' + houseDist)
+
+        if (houseDist > 20 && (pathToDest == 0 || pathToDest > 100)) {
             Orion.Print("Call RuneWalk")
             UseClosestRuneOrWalk(house.X(), house.Y(), house.Map(), pathToDest)
             walkroute = walkroute.slice(1)
@@ -89,11 +101,15 @@ Orion.Wait(1000)
         else if (WalkTo(house, 12)) {
             Orion.Print('Ill walk')
         }
-        Orion.Wait(200)
-        walkroute = walkroute.slice(1).sort(function (t1, t2) {
-            return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
-        })
-     //   Orion.PauseScript()
+        var checkTime = Orion.GetGlobal('fileUpdated')
+        // while (checkTime>(Orion.Now()-4000)) {
+        //     TextWindow.Print('Wait' + (Orion.Now()-4000) + ' ' + checkTime)
+        //     Orion.Wait(500)
+        // }
+        Orion.Wait(400)
+        ReadHouseFile()
+
+        //   Orion.PauseScript()
     }
 }
 
@@ -136,7 +152,7 @@ function RecordHouses() {
     var updated = false
     var lastUpdated = Orion.Now()
     while (true) {
-        Orion.Wait(500)
+        Orion.Wait(200)
         Orion.FindTypeEx(any, any, ground, 'item', 60).filter(function (item) {
             return item.Name() === 'A House Sign'
         }).forEach(function (houseSign) {
@@ -150,8 +166,6 @@ function RecordHouses() {
             .filter(function (house) { return house.X() > Player.X() - 18 && house.X() < Player.X() + 18 })
             .filter(function (house) { return house.Y() > Player.Y() - 18 && house.Y() < Player.Y() + 18 })
             .map(function (house) {
-                //Orion.Resend()
-                //Orion.Wait(000)
                 if (Orion.FindObject(house.Serial()) == null) {
                     Orion.Print('Deleted House ' + house.Serial())
                     return house.Serial()
@@ -162,11 +176,12 @@ function RecordHouses() {
             updated = true
 
         }
-        if (updated && lastUpdated < Orion.Now() - 5000) {
+        if (updated && lastUpdated < Orion.Now() - 4000) {
             Orion.Print('Updated File')
             lastUpdated = Orion.Now()
             WriteHouseFile()
             updated = false
+            Orion.SetGlobal('fileUpdated', lastUpdated);
         }
     }
 }
@@ -186,7 +201,7 @@ function CheckHouse(sign) {
             house.AddHouseStatus(newStatus)
             var lastSeen = dhm(newStatus.Date() - lastStatus.Date())
             TextWindow.Print('Last seen ' + lastSeen)
-            Orion.Wait(4000)
+            //Orion.Wait(4000)
         }
         else {
             if (house.HouseStatus().length > 1) {
@@ -346,6 +361,7 @@ function HouseStatus(sign, jsonObject) {
 }
 
 function ReadHouseFile(_private) {
+    houseList = []
     Orion.Print('Method Entry - ReadHouseFile')
 
     var file = Orion.NewFile();

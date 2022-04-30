@@ -223,5 +223,6 @@
         <item graphic="0x44C5" color="0x0000" comment="Captain Snook" count="0"/>
         <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0"/>
         <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0"/>
+        <item graphic="0x09CC" color="any" comment="A Big Fish" count="0"/>
     </findlist>
 </data>

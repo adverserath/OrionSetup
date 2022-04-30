@@ -77,33 +77,6 @@ function ReadAllSOSToFile() {
     newFile.Close();
 }
 
-function GetSOSLocation(sos) {
-    Orion.Print('Method Entry - GetSOSLocation')
-    if (sos == null)
-        sos = SelectTarget()
-
-    Orion.Print('Checking')
-    var pos = SoSInSoSList(sos.Serial())
-    if (pos !== null) {
-        return pos;
-    }
-    Orion.Print('Reading from Map')
-
-    Orion.UseObject(sos.Serial())
-    Orion.Wait(500)
-    var gump0 = Orion.GetGump('last');
-    if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x550A461B')) {
-        var com = gump0.CommandList()[2]
-        //Orion.Print(com)
-        Orion.Print(com.match(/.*@(.*)@.*/i)[1])
-        pos = Orion.SextantToXY(com.match(/.*@(.*)@.*/i)[1],1);
-        Orion.Print('X:' + pos.X() + ' Y: ' + pos.Y())
-        gump0.Select(Orion.CreateGumpHook(0));
-        Orion.Wait(400);
-        return pos;
-    }
-}
-
 function GoToSOS() {
     Orion.Print('Method Entry - GoToSOS')
     var sos = SelectTarget()
