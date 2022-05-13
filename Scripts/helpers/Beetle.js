@@ -1,6 +1,6 @@
 function getMyBeetle() {
     Orion.UseObject(Player.Serial())
-    Orion.Wait(400)
+    Orion.Wait(800)
     var bettles = Orion.FindTypeEx('0x0317', any, ground, 'nothumanmobile', 15)
     Orion.Print("beetles" + bettles.length)
     var bettlesPacks = bettles.filter(function (mob) {
@@ -8,6 +8,8 @@ function getMyBeetle() {
         var owned = Orion.WaitForContextMenu(1000);
         Orion.Print(mob.Name() + owned + "\n\n")
         Orion.Wait(500)
+        Orion.CancelContextMenu();
+        Orion.CancelContextMenu();
         return owned;
     })
 

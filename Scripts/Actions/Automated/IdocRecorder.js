@@ -4,23 +4,41 @@
 //#include helpers/ItemManager.js
 //#include Actions/Automated/IDOC.js
 //#include Actions/RuneBookController.js
+//#include helpers/Debug.js
 
-function PathTest() {
-    //1181 2639 Destard to 998 2645
-    Orion.Print(Orion.GetPathArrayEx(1181, 2639, 0, 998, 2645, 0, 0, 0).length)
-    Orion.Print(Orion.GetPathArrayEx(998, 2645, 0, 1181, 2639, 0, 0, 0).length)
+function RuneWalkOption() {
+var x = Orion.InputText(60000, "Input X")
+            var y = Orion.InputText(60000, "Input Y")
+			var map = GetMap()
+            UseClosestRuneOrWalk(parseInt(x), parseInt(y), map, 0)
+
 }
 function GetMap() {
     return Orion.ObjAtLayer(21, Player.Serial()).Map()
 }
+
 var greatly = false
+var idoc = false
 function GreatlyWalker() {
     greatly = true
     HouseWalker()
 }
 
+function HouseWalkerAllMaps() {
+    for (i = 0; i < 4; i++) {
+        HouseWalker(i)
+    }
+}
+
 function GreatlyWalkerAllMaps() {
     greatly = true
+    for (i = 0; i < 4; i++) {
+        HouseWalker(i)
+    }
+}
+
+function IDOCWalkerAllMaps() {
+    idoc = true
     for (i = 0; i < 4; i++) {
         HouseWalker(i)
     }
@@ -36,7 +54,7 @@ function HouseWalker(map) {
         }
     }
 
-    Orion.Print('Method Entry - HouseWalker')
+    Debug(' Method Entry - HouseWalker')
 
     if (Orion.ScriptRunning('RecordHouses') <= 0)
         Orion.ToggleScript('RecordHouses')
@@ -51,6 +69,10 @@ function HouseWalker(map) {
             if (greatly) {
                 return house.Map() == GetMap()
                     && house.HouseStatus()[house.HouseStatus().length - 1].Condition() == 'This Structure Is Greatly Worn'
+            }
+            if (idoc) {
+                return house.Map() == GetMap()
+                    && house.HouseStatus()[house.HouseStatus().length - 1].Condition() == 'This Structure Is In Danger Of Collapsing'
             }
             return house.Map() == GetMap()
         })
@@ -69,6 +91,10 @@ function HouseWalker(map) {
                 if (greatly) {
                     return house.Map() == GetMap()
                         && house.HouseStatus()[house.HouseStatus().length - 1].Condition() == 'This Structure Is Greatly Worn'
+                }
+                if (idoc) {
+                    return house.Map() == GetMap()
+                        && house.HouseStatus()[house.HouseStatus().length - 1].Condition() == 'This Structure Is In Danger Of Collapsing'
                 }
                 return house.Map() == GetMap()
             })
@@ -134,8 +160,8 @@ function GreatlyGump() {
         gump.AddHtmlGump(1, 0, 0, 300, 500, '0x0BB8');
         gump.Select('htmlgump', 1);
         var yPos = 10
-        greatlyList.forEach(function (greatly) {
-            gump.AddText(10, yPos += 20, '0', greatly.Name() + '  ' + Orion.GetDistance(greatly.X(), greatly.Y()));
+        greatlyList.forEach(function (_greatly) {
+            gump.AddText(10, yPos += 20, '0', _greatly.Name() + '  ' + Orion.GetDistance(_greatly.X(), _greatly.Y()));
 
         })
 
@@ -362,7 +388,7 @@ function HouseStatus(sign, jsonObject) {
 
 function ReadHouseFile(_private) {
     houseList = []
-    Orion.Print('Method Entry - ReadHouseFile')
+    Debug(' Method Entry - ReadHouseFile')
 
     var file = Orion.NewFile();
 

@@ -1,7 +1,8 @@
 //#include helpers/Target.js
+//#include helpers/Debug.js
 
 function CastSpellOnTarget(spellName, targetID) {
-	Orion.Print('Method Entry - CastSpellOnTarget')
+	Debug(' Method Entry - CastSpellOnTarget')
 	var startCastTime = Orion.Now();
 	Orion.CancelWaitTarget();
 	Orion.Print('Cast on ' + targetID)
@@ -23,7 +24,7 @@ function CastSpellOnTarget(spellName, targetID) {
 }
 
 function CastSpellOnTargetV2(spellName, targetID) {
-	Orion.Print('Method Entry - CastSpellOnTargetV2')
+	Debug(' Method Entry - CastSpellOnTargetV2')
 	var startCastTime = Orion.Now();
 	while (!Orion.HaveTarget()) {
 		Orion.Cast(spellName);
@@ -34,7 +35,7 @@ function CastSpellOnTargetV2(spellName, targetID) {
 }
 
 function MarkRune(runeItem) {
-	Orion.Print('Method Entry - MarkRune')
+	Debug(' Method Entry - MarkRune')
 	Orion.Print("MarkRune")
 	if (typeof runeItem === "string") {
 		runeItem = Orion.FindObject(runeItem)
@@ -44,7 +45,7 @@ function MarkRune(runeItem) {
 }
 
 function RecallRune(runeItem) {
-	Orion.Print('Method Entry - RecallRune:'+runeItem)
+	Debug(' Method Entry - RecallRune:'+runeItem)
 	if (typeof runeItem === "string") {
 		runeItem = Orion.FindObject(runeItem)
 		Orion.Print('Found '+runeItem)
@@ -69,7 +70,7 @@ function RecallRune(runeItem) {
 }
 
 function TakeOffClothesAndMeditate(_private) {
-	Orion.Print('Method Entry - TakeOffClothesAndMeditate')
+	Debug(' Method Entry - TakeOffClothesAndMeditate')
 	var equipment = [];
 	//		Orion.Undress();
 
@@ -83,7 +84,7 @@ function TakeOffClothesAndMeditate(_private) {
 }
 
 function GoHome() {
-	Orion.Print('Method Entry - GoHome')
+	Debug(' Method Entry - GoHome')
 	Orion.OpenContainer(backpack)
 	var runebook = Orion.FindTypeEx('0x22C5')
 		.filter(function (book) {
@@ -103,7 +104,7 @@ function GoHome() {
 }
 
 function KeepGateOpen() {
-	Orion.Print('Method Entry - KeepGateOpen')
+	Debug(' Method Entry - KeepGateOpen')
 	var gateTarget = SelectTarget()
 	while (true) {
 		var gates = Orion.FindTypeEx('0x0F6C', any, ground, '', 1).length
@@ -119,7 +120,7 @@ function KeepGateOpen() {
 
 
 function StayHiddenMagically() {
-	Orion.Print('Method Entry - StayHiddenMagically')
+	Debug(' Method Entry - StayHiddenMagically')
 	while (true) {
 		if (!Player.Hidden()) {
 			Orion.CastTarget('Invisibility', self)
@@ -130,7 +131,7 @@ function StayHiddenMagically() {
 }
 
 function ReleaseAllSummons(_) {
-	Orion.Print('Method Entry - ReleaseAllSummons')
+	Debug(' Method Entry - ReleaseAllSummons')
 	Orion.FindTypeEx(any, any, ground, 'live|ignoreself', 15, 1 | 2)
 		.filter(function (mob) {
 	
@@ -142,7 +143,7 @@ function ReleaseAllSummons(_) {
 }
 
 function WaitFrozen(spellname) {
-	Orion.Print('Method Entry - WaitFrozen')
+	Debug(' Method Entry - WaitFrozen')
 	while (Player.Frozen()) {
 		Orion.Print("casting " + spellname)
 		Orion.Wait(100)
@@ -151,7 +152,7 @@ function WaitFrozen(spellname) {
 }
 
 function Cast(spellName, targetSerial) {
-	Orion.Print('Method Entry - Cast')
+	Debug(' Method Entry - Cast')
 	Orion.Print(spellName)
 	while (Orion.ScriptRunning('Walk') == 1 || Orion.IsWalking()) {
 		Orion.Wait(400)
@@ -166,6 +167,6 @@ function Cast(spellName, targetSerial) {
 }
 
 function ManaCheck(required, lmc) {
-	Orion.Print('Method Entry - ManaCheck')
+	Debug(' Method Entry - ManaCheck')
 	return Player.Mana() > required * lmc
 }

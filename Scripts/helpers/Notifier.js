@@ -1,8 +1,10 @@
+//#include helpers/Debug.js
+
 var hook;
 var key;
 
 function BotPush(message, disableNotify) {
-	Orion.Print('Method Entry - BotPush')
+	Debug(' Method Entry - BotPush')
     TelegramPost(message, disableNotify)
     DiscordPost(message)
 }
@@ -11,7 +13,7 @@ function BotPush(message, disableNotify) {
 //single space
 //Second Word 2 = API key
 function DiscordPost(message) {
-	Orion.Print('Method Entry - DiscordPost')
+	Debug(' Method Entry - DiscordPost')
     if (hook == null && key == null) {
         var file = Orion.NewFile();
         open = file.Open('discordkey.conf');
@@ -38,7 +40,7 @@ function DiscordPost(message) {
 //single space
 //Third Word =  chat id
 function TelegramPost(message, disableNotify) {
-	Orion.Print('Method Entry - TelegramPost')
+	Debug(' Method Entry - TelegramPost')
     if (disableNotify == null) {
         disableNotify = false;
     }
@@ -65,7 +67,7 @@ function TelegramPost(message, disableNotify) {
 
 var shouldNotify = [];
 function NotifySkill(skillName) {
-	Orion.Print('Method Entry - NotifySkill')
+	Debug(' Method Entry - NotifySkill')
     if (Orion.SkillValue(skillName) % 1 == 0) {
 
         if (shouldNotify.indexOf(skillName) > -1)

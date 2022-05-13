@@ -1,5 +1,5 @@
 function SelectMultipleLocations(_) {
-  Orion.Print('Method Entry - SelectMultipleLocations')
+  Debug(' Method Entry - SelectMultipleLocations')
   var locations = [];
   var selected;
   var selecting = true;
@@ -16,8 +16,9 @@ function SelectMultipleLocations(_) {
   return locations;
 }
 
+
 function SelectMultipleTargets(_) {
-  Orion.Print('Method Entry - SelectMultipleTargets')
+  Debug(' Method Entry - SelectMultipleTargets')
   var objects = [];
   var selected;
   var selecting = true;
@@ -37,7 +38,7 @@ function SelectMultipleTargets(_) {
 }
 
 function SelectTarget(itemUsage) {
-  Orion.Print('Method Entry - SelectTarget')
+  Debug(' Method Entry - SelectTarget')
   if (itemUsage != null) {
     Orion.Print("Select your" + itemUsage);
   }
@@ -48,7 +49,7 @@ function SelectTarget(itemUsage) {
 }
 
 function SelectCoordinate(text) {
-  Orion.Print('Method Entry - SelectCoordinate')
+  Debug(' Method Entry - SelectCoordinate')
   if (text != null) {
     Orion.Print(text)
   }
@@ -61,7 +62,7 @@ function SelectCoordinate(text) {
 }
 
 function UseItemOnTarget(item, target) {
-  Orion.Print('Method Entry - UseItemOnTarget')
+  Debug(' Method Entry - UseItemOnTarget')
   Orion.UseObject(item.Serial());
   if (Orion.WaitForTarget(5000)) {
     Orion.TargetObject(target.Serial());
@@ -69,7 +70,7 @@ function UseItemOnTarget(item, target) {
 }
 
 function UseItemOnTargets(item, targets) {
-  Orion.Print('Method Entry - UseItemOnTargets')
+  Debug(' Method Entry - UseItemOnTargets')
   targets.forEach(function (target) {
 
     UseItemOnTarget(item, target);
@@ -77,7 +78,7 @@ function UseItemOnTargets(item, targets) {
 }
 
 function RandomTarget(_private) {
-  Orion.Print('Method Entry - RandomTarget')
+  Debug(' Method Entry - RandomTarget')
   var nearby = Orion.FindTypeEx(any, any, ground,
     'nothumanmobile|live|ignoreself|ignorefriends', 10, 3)
     .filter(function (mob) {
@@ -89,7 +90,7 @@ function RandomTarget(_private) {
 }
 
 function PrintContainer(object, mobile, ignoreNonStealable) {
-  Orion.Print('Method Entry - PrintContainer')
+  Debug(' Method Entry - PrintContainer')
   Orion.Print('PrintContainer')
   var items = ''
   if (mobile != null) {
@@ -118,20 +119,20 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
 }
 
 function WalkTo(object, distance, timeMS, walking) {
-  Orion.Print('Method Entry - WalkTo')
-  Orion.Print("Start WalkTo")
+  TextWindow.Print('Method Entry - WalkTo')
+  TextWindow.Print("Start WalkTo")
   if (typeof object === "string") {
     Orion.Print('finding ' + object)
     object = Orion.FindObject(object)
   }
 
   if (object.hasOwnProperty('name') && object.Name() != null && object.Name() != '') {
-    Orion.Print("Walking to object ")
-    Orion.Print(object.X() + '  ' + object.Y())
+    TextWindow.Print("Walking to object ")
+    TextWindow.Print(object.X() + '  ' + object.Y())
   }
   else {
-    Orion.Print("Walking to coord ")
-    Orion.Print(object.X() + ' ' + object.Y())
+    TextWindow.Print("Walking to coord ")
+    TextWindow.Print(object.X() + ' ' + object.Y())
   }
   if (distance == null) {
     distance = 1;
@@ -145,12 +146,13 @@ function WalkTo(object, distance, timeMS, walking) {
   var Z = 0
   if (object.hasOwnProperty('z'))
     Z = object.Z()
+  Orion.ToggleScript('MonitorWalkBlock',true)
   var result = Orion.WalkTo(object.X(), object.Y(), Z, distance, 255, walking, 1, timeMS);
   return result
 }
 
 function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, walking) {
-  Orion.Print('Method Entry - WalkToAvoiding')
+  Debug(' Method Entry - WalkToAvoiding')
   Orion.Print('Going to' + object.X() + ' ' + object.Y())
   if (distance == null) {
     distance = 2;
@@ -195,7 +197,7 @@ function WalkToAvoiding(object, avoidarray, avoiddistance, distance, timeMS, wal
 }
 
 function AddBadLocationGrid() {
-  Orion.Print('Method Entry - AddBadLocationGrid')
+  Debug(' Method Entry - AddBadLocationGrid')
   var start = SelectCoordinate()
   var end = SelectCoordinate();
 
@@ -206,7 +208,7 @@ function AddBadLocationGrid() {
 }
 
 function FelWalkTo(object, distance, timeMS, walking) {
-  Orion.Print('Method Entry - FelWalkTo')
+  Debug(' Method Entry - FelWalkTo')
 
   if (distance == null) {
     distance = 1;
@@ -227,7 +229,7 @@ function FelWalkTo(object, distance, timeMS, walking) {
 }
 
 function InRange(p1, p2, range) {
-  Orion.Print('Method Entry - InRange')
+  Debug(' Method Entry - InRange')
 
   return (p1.X() >= (p2.X() - range))
     && (p1.X() <= (p2.X() + range))
@@ -237,7 +239,7 @@ function InRange(p1, p2, range) {
 }
 
 function BorderEdge(x, y, p2, range) {
-  Orion.Print('Method Entry - BorderEdge')
+  Debug(' Method Entry - BorderEdge')
 
   return (x == (p2.X() - range))
     || (x == (p2.X() + range))
@@ -247,7 +249,7 @@ function BorderEdge(x, y, p2, range) {
 }
 
 function GetDistanceToSqrt(_private) {
-  Orion.Print('Method Entry - GetDistanceToSqrt')
+  Debug(' Method Entry - GetDistanceToSqrt')
   var p1 = Player
   var p2 = SelectTarget()
   while (true) {
@@ -262,7 +264,7 @@ function GetDistanceToSqrt(_private) {
 }
 
 function ShowRange(targetId, range) {
-  Orion.Print('Method Entry - ShowRange')
+  Debug(' Method Entry - ShowRange')
   Orion.ClearFakeMapObjects();
   if (Orion.ObjectExists(targetId)) {
     var target = Orion.FindObject(targetId)
@@ -380,7 +382,7 @@ function FindGroundItemWithProperties(properties) {
   return items.shift()
 }
 
-function FindBackpackWithProperties(properties) {
+function FindBackpackItemWithProperties(properties) {
   var items = Orion.FindTypeEx(any, any, backpack, 'item', 18)
   properties.forEach(function (prop) {
     items = items.filter(function (item) {
@@ -389,3 +391,36 @@ function FindBackpackWithProperties(properties) {
   })
   return items.shift()
 }
+
+function BlockTest()
+{
+    Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', true)
+    Orion.WarMode(true)
+}
+
+function MonitorWalkBlock()
+{
+Orion.Wait(100)
+Orion.ClearBadLocations();
+Orion.ClearFakeMapObjects();
+var lastX = Player.X()
+var lastY = Player.Y()
+while(Orion.IsWalking())
+{
+Orion.Wait(400)
+if(Player.X() == lastX && Player.Y() == lastY)
+{
+Orion.Print('block')
+      Orion.GetTilesInRect('any', Player.X() - 3, Player.Y() - 3, Player.X() + 3, Player.Y() + 3)
+        .forEach(function (tile) {
+		Orion.SetBadLocation(tile.X(), tile.Y());
+          Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+        }
+        )
+
+}
+lastX = Player.X()
+lastY = Player.Y()
+}
+}
+//#include helpers/Debug.js

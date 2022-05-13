@@ -60,7 +60,7 @@ function SeaFish() {
                     Orion.UseObject(corpse.Serial())
                     Orion.Ignore(corpse.Serial())
                     Orion.Wait(2000)
-                    OpenAnyMiBs()
+                    //OpenAnyMiBs()
                     if (startX < Player.X()) {
                         Orion.Say('left')
                         while (startX < Player.X()) {
@@ -93,7 +93,12 @@ function SeaFish() {
             if (Player.Weight() > (Player.MaxWeight() - 100) || returnTime < Orion.Now()) {
                 returnTime = Orion.Now() + 600000
                 RecallRune(seabook);
-                Orion.Wait(1000);
+                Orion.Wait(1500);
+                Orion.Step('East')
+                Orion.Step('East')
+                Orion.Step('North')
+                Orion.Step('North')
+                Orion.Step('North')
                 SortFishLoot()
 
                 //          if (Player.WarMode())
@@ -142,6 +147,12 @@ function SeaFish() {
     BotPush('Fisher is dead')
 }
 
+function MobsInArea()
+{
+var mobs = Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').length
+                Orion.Print(mobs)
+}
 function SortFishLoot() {
     WalkTo(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial())
     Orion.Wait(1000);

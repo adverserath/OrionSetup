@@ -1,23 +1,16 @@
 //#include helpers/Target.js
+//#include helpers/Debug.js
 
 function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recursive) {
-	Orion.Print('Method Entry - MoveItems')
+	Debug(' Method Entry - MoveItems')
     if (typeof fromContainer === "string") {
         fromContainer = Orion.FindObject(fromContainer)
     }
     if (typeof toContainer === "string") {
         toContainer = Orion.FindObject(toContainer)
     }
-    DebugText('Sorting');
-    DebugText('From:' + fromContainer.Serial());
-    DebugText('To:' + toContainer.Serial());
-    DebugText('Graphic:' + graphicIDs);
-    DebugText('Color:' + color);
-    DebugText('Amount:' + amount);
-    DebugText('Recursive:' + recursive);
 
     if (color == null) {
-        DebugText('Any color');
         color = any;
         if (recursive == null) {
             recursive = true
@@ -25,20 +18,15 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recurs
     }
     if (fromContainer.Serial() != backpack) {
         WalkTo(fromContainer, 1)
-        DebugText('Here');
     }
     if (toContainer.Serial() != backpack) {
         WalkTo(toContainer, 1)
-        DebugText('Here');
     }
     for (var attempt = 0; attempt < 2; attempt++) {
         var items = Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial(), '', 'finddistance', '', recursive);
-        DebugText('Moving:' + items.length);
-
         items.forEach(function (item) {
 	
             DebugText('Moving:' + item.Name());
-            Orion.Print('Moving:' + item.Name());
             Orion.MoveItem(item.Serial(), 0, toContainer.Serial(), amount);
             Orion.Wait(900);
         });
@@ -46,50 +34,44 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recurs
 }
 
 function MoveItemsFromPlayer(toContainer, graphicIDs, color, amount) {
-	Orion.Print('Method Entry - MoveItemsFromPlayer')
+	Debug(' Method Entry - MoveItemsFromPlayer')
     if (typeof toContainer === "string") {
         toContainer = Orion.FindObject(toContainer)
     }
-    TextWindow.Print('MoveItemsFromPlayer:' + ' Graphic:' + graphicIDs + ' Colour:' + color + 'Amount:' + amount)
-    Orion.Print('Moving objects to ' + toContainer.Serial())
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, color, amount);
-    Orion.Print('Finished MoveItemsFromPlayer')
 }
 
 function MoveItemsFromBackpackTop(toContainer, graphicIDs, color, amount) {
-	Orion.Print('Method Entry - MoveItemsFromBackpackTop')
+	Debug(' Method Entry - MoveItemsFromBackpackTop')
     if (typeof toContainer === "string") {
         toContainer = Orion.FindObject(toContainer)
     }
-    TextWindow.Print('MoveItemsFromBackpackTop:' + ' Graphic:' + graphicIDs + ' Colour:' + color + 'Amount:' + amount)
-    Orion.Print('Moving objects to ' + toContainer.Serial())
     MoveItems(Orion.FindObject('backpack'), toContainer, graphicIDs, color, amount, false);
-    Orion.Print('Finished MoveItemsFromBackpackTop')
 }
 //#include helpers/Target.js
 
 function EmptyTargetXToTargetY() {
-	Orion.Print('Method Entry - EmptyTargetXToTargetY')
+	Debug(' Method Entry - EmptyTargetXToTargetY')
     EmptyContainerToAnother(SelectTarget(), SelectTarget())
 }
 
 function EmptyContainerToAnother(fromContainer, toContainer) {
-	Orion.Print('Method Entry - EmptyContainerToAnother')
+	Debug(' Method Entry - EmptyContainerToAnother')
     WalkTo(toContainer, 2);
     Orion.FindTypeEx(any, any, fromContainer.Serial(), 3).forEach(function (items) {
-	
+        DebugText('Moving:' + items.Name());
         Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
         Orion.Wait(850);
     });
     Orion.FindTypeEx(any, any, fromContainer.Serial(), 3).forEach(function (items) {
-	
+        DebugText('Moving:' + items.Name());
         Orion.MoveItem(items.Serial(), 0, toContainer.Serial());
         Orion.Wait(850);
     });
 }
 
 function Restock(listName) {
-	Orion.Print('Method Entry - Restock')
+	Debug(' Method Entry - Restock')
     var requiredItems = Orion.GetFindList(listName).Items();
     var first = false;
     requiredItems.forEach(function (reqItem) {
@@ -130,7 +112,7 @@ function Restock(listName) {
 }
 
 function CountAroundPlayer(graphicId) {
-	Orion.Print('Method Entry - CountAroundPlayer')
+	Debug(' Method Entry - CountAroundPlayer')
     var boxes = Orion.FindTypeEx(any, any, ground, '', '', '', true).filter(function (container) {
 	
         return container.Serial() != Player.Serial() && container.Serial() != 0;
@@ -144,7 +126,7 @@ function CountAroundPlayer(graphicId) {
 }
 
 function GetEmptyFromListInBackpack(listName) {
-	Orion.Print('Method Entry - GetEmptyFromListInBackpack')
+	Debug(' Method Entry - GetEmptyFromListInBackpack')
     var requiredItems = Orion.GetFindList(listName);
     var result = requiredItems.Items().filter(function (item) {
 	
@@ -155,12 +137,12 @@ function GetEmptyFromListInBackpack(listName) {
 }
 
 function listHasEmptyInBackpack(listName) {
-	Orion.Print('Method Entry - listHasEmptyInBackpack')
+	Debug(' Method Entry - listHasEmptyInBackpack')
     return GetEmptyFromListInBackpack(listName).length > 0;
 }
 
 function MoveItemText(text, to, alert) {
-	Orion.Print('Method Entry - MoveItemText')
+	Debug(' Method Entry - MoveItemText')
     if (typeof to === "string") {
         Orion.Print('finding ' + to)
         to = Orion.FindObject(to)
@@ -173,14 +155,14 @@ function MoveItemText(text, to, alert) {
             if (alert) {
                 BotPush('Looted' + loot.Name())
             }
-            Orion.Print('Moving - ' + loot.Name())
+            DebugText('Moving:' + loot.Name());
             Orion.MoveItem(loot.Serial(), 0, to.Serial())
             Orion.Wait(850);
         })
 }
 
 function MoveItemTextFromTo(text, from, to) {
-	Orion.Print('Method Entry - MoveItemTextFromTo')
+	Debug(' Method Entry - MoveItemTextFromTo')
     if (typeof to === "string") {
         to = Orion.FindObject(to)
     }
@@ -199,6 +181,7 @@ function MoveItemTextFromTo(text, from, to) {
         .forEach(function (loot) {
 	
             Orion.Wait(400)
+            DebugText('Moving:' + loot.Name());
             Orion.MoveItem(loot.Serial(), 0, to.Serial())
             Orion.Wait(400);
         })
@@ -219,13 +202,11 @@ function MoveItemTextFromTo(text, from, to) {
         })
 }
 
-function MoveScrolls(_) {
-	Orion.Print('Method Entry - MoveScrolls')
-    var scrollIndex = 0;
+function MoveScrolls(scrollBox) {
+	Debug(' Method Entry - MoveScrolls')
     var firstScroll = parseInt('0x1F2D');
     for (var index = 0; index < 65; index++) {
         var scrollId = '0x' + (firstScroll + index).toString(16).toUpperCase();
-        Orion.Print(scrollId)
         Orion.FindTypeEx(scrollId, any, backpack)
             .forEach(function (loot) {
 	

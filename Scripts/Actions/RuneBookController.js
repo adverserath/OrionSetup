@@ -64,9 +64,6 @@ function A____ReadAllBooksToFile() {
 }
 var maps = ['Felucca', 'Trammel', 'Ilshenar', 'Malas', 'Tokuno']
 
-function TestRunes() {
-    UseClosestRuneOrWalk(1789, 2424, 1)
-}
 
 function GotoMap(map) {
     TextWindow.Print('Going to map ' + map)
@@ -80,14 +77,16 @@ function GotoMap(map) {
         return
     }
     TextWindow.Print(filteredList[0].Name())
-    filteredList.sort(function (placeA, placeB) {
-        return placeA.DistanceTo(1000, 500) - placeB.DistanceTo(1000, 500);
-    })
+    if (filteredList.length > 1) {
+        filteredList.sort(function (placeA, placeB) {
+            return placeA.DistanceTo(1000, 500) - placeB.DistanceTo(1000, 500);
+        })
+    }
     filteredList[0].Recall()
     Orion.Wait(1000)
 }
 
-function UseClosestRuneOrWalk(dX, dY, map, walkPathLength) {
+function UseClosestRuneOrWalk(dX, dY, map, walkPathLength, walkToDistance) {
     TextWindow.Print('Finding Closest to ' + dX + ' ' + dY + 'Map:' + map)
     ReadRunebookFile()
 
@@ -95,64 +94,79 @@ function UseClosestRuneOrWalk(dX, dY, map, walkPathLength) {
         return rune.Map() == map
     })
     TextWindow.Print('runes on map ' + filteredList.length)
-    TextWindow.Print(filteredList[0].Name())
-    filteredList.sort(function (placeA, placeB) {
-        return placeA.DistanceTo(dX, dY) - placeB.DistanceTo(dX, dY);
-    })
+    if (filteredList.length > 1)
+        filteredList.sort(function (placeA, placeB) {
+            return placeA.DistanceTo(dX, dY) - placeB.DistanceTo(dX, dY);
+        })
 
-    filteredList = filteredList.slice(0, 3)
+    filteredList = filteredList.slice(0, 6)
+    var closestRune = filteredList[0]
     filteredList.forEach(function (rune, i) {
         TextWindow.Print(i + ' : ' + rune.Name())
     })
+
     Orion.Wait(1000)
+    //Pathable doesnt work between 2 points
+    if (GetMap() == map) {
+        filteredList = filteredList.filter(function (rune, i) {
+            rune.CalculatePath(dX, dY)
+            var pathable = rune.CanPathTo(dX, dY)
+            TextWindow.Print(i + ' pathable : ' + pathable)
+            return pathable
+        })
 
-    filteredList = filteredList.filter(function (rune, i) {
-        rune.CalculatePath(dX, dY)
-        var pathable = rune.CanPathTo()
-        return pathable
-    })
+        if (filteredList.length > 1)
+            filteredList.sort(function (placeA, placeB) {
+                return placeA.PathLength() - placeB.PathLength();
+            })
+    }
 
-    filteredList.sort(function (placeA, placeB) {
-        return placeA.PathLength() - placeB.PathLength();
-    })
+    filteredList = filteredList.slice(0, 4)
     filteredList.forEach(function (rune, i) {
-        TextWindow.Print('ordered:' + i + ' : ' + rune.Name())
+        TextWindow.Print('filtered: ' + rune.PathLength() + ' steps: ' + i + ' : ' + rune.Name())
     })
 
     if (walkPathLength == null)
         walkPathLength = Orion.GetPathArray(dX, dY, 255, 2, 255).length
-    TextWindow.Print('Walk Distance ' + walkPathLength, 78)
+    if (walkToDistance == null)
+        walkToDistance = 0
+    TextWindow.Print('Walk Distance ' + walkPathLength + ' Close as ' + walkToDistance)
 
     // if all runes are 0 PATH, then try the first one
     // if recall fails then try next
+	if(filteredList.length==0)
+	{
+		filteredList.push(closestRune)
+	}
+    if (walkPathLength > 50 || walkPathLength == 0) {
+        TextWindow.Print('Lets Rune if its quicker')
+        filteredList.every(function (rune, i) {
+            TextWindow.Print(i + ' Closest Rune ' + rune.Name())
 
-
-    filteredList.every(function (rune, i) {
-        TextWindow.Print(i + ' Closest Rune ' + rune.Name())
-        var pathDistance = rune.PathLength();
-        TextWindow.Print(i + ' Closest Rune: ' + pathDistance)
-
-        if (pathDistance > 0) {
-
-            if (pathDistance < walkPathLength || walkPathLength == 0) {
-                TextWindow.Print('Closer than walking')
+            if (walkPathLength==0 || walkPathLength > rune.PathLength()||filteredList.length==1) {
+                if(walkPathLength!=0)
+                    TextWindow.Print("Recalling is " + (walkPathLength - rune.PathLength()) + ' tiles shorter')
                 rune.Recall()
                 Orion.Wait(2000)
-                return false
-                // returnRune = rune
             }
-            TextWindow.Print('Ill walk')
-            WalkTo(coordinate(dX, dY, 255, "Destination"))
+            // TextWindow.Print("Walk To" + dX + " "+ dY + " "+ walkToDistance)
+            // Orion.Print("From here: "+ rune.CalculatePath())
 
-            return false
-        }
-        else {
-            TextWindow.Print('Cant use Rune ' + 'from: ' + rune.X() + ' ' + rune.Y() + ' ' + rune.Name() + ' to ' + dX + ' ' + dY)
-            Orion.Wait(1000)
-        }
-    })
+            if (WalkTo(coordinate(dX, dY, 255, "Target Destination"), walkToDistance)) {
+                TextWindow.Print("I can walk from here")
+                return false
+            }
+            if (Orion.GetDistance(dX, dY) < 4) {
+                TextWindow.Print("I'm Close enough")
+                return false
+            }
+            TextWindow.Print("Cant walk from here")
+            return true
+        })
+    }
+    TextWindow.Print("Out recall loop")
 
-    WalkTo(coordinate(dX, dY, 255, "Target Destination"))
+    WalkTo(coordinate(dX, dY, 255, "Target Destination"), walkToDistance)
 }
 
 function GetMap() {
@@ -160,8 +174,8 @@ function GetMap() {
 }
 function WriteRunesFile(_private) {
     var file = Orion.NewFile();
-    file.Remove('RuneBooks.json');
-    if (file.Open('RuneBooks.json')) {
+    file.Remove(Player.Name() + '-RuneBooks.json');
+    if (file.Open(Player.Name() + '-RuneBooks.json')) {
         runeList.forEach(function (rune) {
             file.Write(JSON.stringify(rune) + '\n')
         })
@@ -170,15 +184,17 @@ function WriteRunesFile(_private) {
 }
 
 function ReadRunebookFile(_private) {
+    var books = Orion.FindType('0x22C5')
     if (runeList.length < 1) {
         var file = Orion.NewFile();
-        if (file.Open('RuneBooks.json', true)) {
+        if (file.Open(Player.Name() + '-RuneBooks.json', true)) {
             var rune = []
             while (rune != null && rune) {
                 rune = file.ReadLine()
                 if (rune != '') {
                     var runeJson = JSON.parse(rune)
-                    runeList.push(runeEntry(runeJson.serial, runeJson.map, runeJson.locName, runeJson.x, runeJson.y, runeJson.recallButton, runeJson.gateButton, runeJson.sacredButton))
+                    if (books.indexOf(runeJson.serial) >= 0)
+                        runeList.push(runeEntry(runeJson.serial, runeJson.map, runeJson.locName, runeJson.x, runeJson.y, runeJson.recallButton, runeJson.gateButton, runeJson.sacredButton))
                 }
             }
         }
@@ -195,7 +211,7 @@ function runeEntry(_serial, _map, _name, _X, _Y, _recall, _gate, _sacred) {
         recallButton: _recall,
         gateButton: _gate,
         sacredButton: _sacred,
-        pathDistance: 0,
+        pathlength: 0,
         X: function () {
 
             return this.x;
@@ -227,15 +243,16 @@ function runeEntry(_serial, _map, _name, _X, _Y, _recall, _gate, _sacred) {
             return ret;
         },
         CalculatePath: function (tx, ty) {
-            TextWindow.Print('Check Path:' + tx + ' ' + ty + ' ' + this.x + ' ' + this.y)
-            this.pathDistance = Orion.GetPathArrayEx(parseInt(tx), parseInt(ty), 0, parseInt(this.x), parseInt(this.y), 0, 4, 255).length
-            TextWindow.Print('Check Path:' + this.Name() + this.pathDistance)
+            //   TextWindow.Print('tx: ' +tx + ' ty: ' + ty)
+            //   TextWindow.Print('Orion.GetPathArrayEx(' + this.x + ', ' + this.y + ', ' + parseInt(tx) + ', ' + parseInt(ty) + ', ' + 256 + ', ' + 4 + ', ' + 255 + ')')
+            this.pathlength = Orion.GetPathArrayEx(this.x, this.y, 256, parseInt(tx), parseInt(ty), 256, 4, 255).length
+            return this.pathlength
         },
-        CanPathTo: function () {
-            return this.pathDistance > 0
+        CanPathTo: function (tx, ty) {
+            return this.CalculatePath(tx, ty) > 0
         },
         PathLength: function () {
-            return this.pathDistance
+            return this.pathlength
         },
         Recall: function () {
             TextWindow.Print(this.serial + '   ' + this.recallButton)
@@ -251,3 +268,4 @@ function runeEntry(_serial, _map, _name, _X, _Y, _recall, _gate, _sacred) {
         }
     }
 }
+//#include helpers/Target.js

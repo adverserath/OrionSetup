@@ -1,15 +1,12 @@
 function DebugStart(_private) {
-	Orion.Print('Method Entry - DebugStart')
   TextWindow.Open();
 }
 
 function DebugText(message) {
-	Orion.Print('Method Entry - DebugText')
-  TextWindow.Print(Orion.Time() + ' : ' + message);
+  TextWindow.Print(new Date().toISOString().replace(/[A-Za-z]/g,' ') + ' : ' + message);
 }
 
 function DebugObject(object) {
-	Orion.Print('Method Entry - DebugObject')
   if (object == null) {
     DebugText('Target is null');
   }
@@ -20,4 +17,16 @@ function DebugObject(object) {
   }
 }
 
-
+function Debug(input)
+{
+  if (typeof input === "string") {
+    DebugText(input)
+  }
+  else if (input ==null)
+  {
+	  DebugText('null object')
+  }
+  else{
+  	DebugObject(input)
+  }
+}

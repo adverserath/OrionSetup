@@ -1,3 +1,5 @@
+
+// (startX, startY, startZ, endX, endY, endZ, distanceXY, distanceZ);
 var portalLocation = [
     coordinate(1434, 1699, 2, 'britain mint'),
     coordinate(2724, 2192, 0, 'bucs mint'),
@@ -45,40 +47,85 @@ var portalLocation = [
     //coordinate(4195,3263,5,'dungeon underworld')//locked land
 ]
 
-var rareBox = '0x4014460B'
-var goldChestId = '0x40026602'
-var essenceBox = '0x400C5E3B'
-var recipeBox = '0x4006968E'
-var talismanBox = '0x400CD952'
-
-var regBoxId = '0x400F48A7'
-var bin = '0x400F63CF'
+var _rareBox = 'TMap Rares'
+var _craftingBox = 'Crafting Material'
+var _essenceBox = 'Crafting Resource'
+var _recipeBox = 'Craft Recipes'
+var _talismanBox = 'Talismans'
+var _regBoxId = 'Scrolls and Reags'
+var _bin = 'A Trash Barrel'
+var _transcendenceBook = 'Transcendence Book'
 
 var mount = null;
-var home = '0x40144BF0'
-var TranscendenceBook = '0x4013C7B3'
+var home = '0x40144BF0' //Runebook or Rune of Home
 var bankGold = true
-var bankRune = '0x40145441'
+var bankRune = '0x40145441' //Runebook or Rune of Bank
 var usingPet = true;
 var incompleteBox = ''
+
+var useRuneBooks = true
+
+function MonitorAndDoStashBox() {
+    TextWindow.Open()
+    var chest = Orion.FindTypeEx('0x0E3D', any, ground, 'item', 20).filter(function (box) {
+        return Orion.Contains(box.Properties(), "T-Map Trammel Stash")
+    })[0]
+    while (true) {
+        Debug(' Starting New Map')
+        Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', 0)
+        Orion.WarMode(0)
+        WalkTo(chest)
+        Orion.Wait(500)
+        Debug(' Get Map')
+        Orion.OpenContainer(chest.Serial())
+        Debug(' Open Container')
+        Orion.Wait(600)
+        var maps = Orion.FindTypeEx('0x14EC', any, chest.Serial()).filter(function (map) {
+            return Orion.Contains(map.Properties(), "Trammel") && Orion.Contains(map.Properties(), "Stash")
+        })
+        Debug(' List Maps')
+        if (maps.length > 0) {
+            Orion.Print('Found ' + maps.length + ' maps')
+            var currentMap = maps[0]
+            Orion.Wait(800)
+            Orion.MoveItem(currentMap.Serial())
+            Debug(' Move Map')
+            Orion.Wait(800)
+            DoAllMapsInBag([currentMap])
+        }
+        else {
+            Orion.Print('No Maps, Waiting for new map')
+            Orion.Wait(60000)
+        }
+    }
+}
 
 function DoSpecificMap() {
     var maps = []
     maps.push(SelectTarget())
     DoAllMapsInBag(maps)
 }
+
 function DoAllMaps() {
     DoAllMapsInBag()
 }
-function DoAllMapsInBag(inMaps) {
 
-    if (usingPet) {
-        Mount(false)
-        Orion.Print('Select Pet')
-        mount = SelectTarget()
+function DoAllMapsInBag(inMaps) {
+    Debug(' DoAllMapsInBag')
+
+    if (usingPet && mount == null) {
+        mount = getMyBeetle()
+        Debug(' Got Beetle')
+
+        if (mount == null) {
+            Mount(false)
+            Orion.Print('Select Pet')
+            mount = SelectTarget()
+        }
         Orion.Print('Mount =' + mount.Name())
         Mount(true)
     }
+    ResetContainerView()
     var maps;
     //Find all in bag when not single
     Orion.Print('Get Maps')
@@ -98,6 +145,10 @@ function DoAllMapsInBag(inMaps) {
         Mount(true)
 
         Heal()
+
+        Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', 1)
+        Orion.WarMode(1)
+        Orion.Wait(800)
         if (!GoToClosestPortal() &&
             Orion.GetDistance(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y()) > 5) {
             Orion.Print('No Portal Found')
@@ -130,6 +181,7 @@ function DoAllMapsInBag(inMaps) {
                 }
             }
 
+            Orion.Print('Heal Checks')
             Heal()
             //Dig Chest
             Orion.Print('Dig Chest Up')
@@ -138,10 +190,16 @@ function DoAllMapsInBag(inMaps) {
             Orion.WaitContextMenuID(map.Serial(), 1);
             if (Orion.WaitForTarget(1000)) {
                 Orion.TargetTile('any', Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y(), 0);
-                Orion.Wait(26000)
-                var monsters =                 Orion.FindTypeEx(any, any, ground,
+                Orion.Wait(27000)
+                var monsters = Orion.FindTypeEx(any, any, ground,
                     'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal|red')
-                WalkTo(safeSpot)
+                var safePath = Orion.GetPathArray(safeSpot.X(), safeSpot.Y())
+                if (safePath.length > 11) {
+                    WalkTo(safePath[10])
+                }
+                else {
+                    WalkTo(safeSpot)
+                }
                 Orion.Print('Hide')
                 //                Orion.UseSkill('Hiding')
 
@@ -154,9 +212,9 @@ function DoAllMapsInBag(inMaps) {
 
                 Orion.Print('Fight Monsters')
                 monsters.forEach(function (closemob) {
-                        Orion.Attack(closemob.Serial())
-                        Orion.Wait(50)
-                    })
+                    Orion.Attack(closemob.Serial())
+                    Orion.Wait(50)
+                })
                 Orion.WarMode(0);
 
                 Orion.Wait(10000)
@@ -185,7 +243,10 @@ function DoAllMapsInBag(inMaps) {
             Heal()
             var chestid = LootChest()
             if (chestid == null) {
-                Orion.PauseScript()
+                Orion.Wait(4000)
+                chestid = LootChest()
+                if (chestid == null)
+                    Orion.PauseScript()
             }
 
             while (Orion.FindTypeEx(any, any, ground,
@@ -233,6 +294,7 @@ function DoAllMapsInBag(inMaps) {
 
 function SortLoot() {
     if (bankGold) {
+        Orion.Print('Going to Bank')
         RecallRune(bankRune);
         Orion.Say("bank")
         Orion.Wait(500)
@@ -242,11 +304,7 @@ function SortLoot() {
     }
     ReturnHomeSortLoot()
 }
-function UnlockTest()
-{
-var t = SelectTarget()
- CastSpellOnTarget('Unlock', t.Serial())
-}
+
 function WalkToQuestArrow() {
     WalkTo(coordinate(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y()))
 }
@@ -254,7 +312,7 @@ function WalkToQuestArrow() {
 function LootChest() {
     Orion.Print('Start Loot Script')
 
-    var chest = Orion.FindTypeEx(any, any, ground, 'item', 10).filter(function (item) { return Orion.Contains(item.Name(), 'Treasure Chest') }).shift()
+    var chest = Orion.FindTypeEx(any, any, ground, 'item', 13).filter(function (item) { return Orion.Contains(item.Name(), 'Treasure Chest') }).shift()
     if (chest != null) {
         WalkTo(chest)
         while (!Orion.OpenContainer(chest.Serial(), 1000, 'reach that|too away|appears to be trapped')) {
@@ -285,32 +343,52 @@ function LootChest() {
 }
 
 function ReturnHomeSortLoot() {
+    Orion.Print('Going to House')
     if (Orion.FindObject(home) == null) {
         home = Orion.FindTypeEx('0x22C5', any, backpack)
             .filter(function (book) { return Orion.Contains(book.Properties(), 'Home') }).shift().Serial()
     }
     RecallRune(home)
+    Orion.Wait(1000)
+    Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', 0)
+    Orion.WarMode(0)
+    Orion.Wait(300)
 
-    MoveItemsFromPlayer(goldChestId, '0x0EED')
+    while (Player.WarMode()) {
+        Orion.Print('Disable War Mode')
+        Orion.Wait(200)
+        Orion.WarMode(0)
+    }
+
+    var craftingBox = FindGroundItemWithProperties([_craftingBox]).Serial()
+    var rareBox = FindGroundItemWithProperties([_rareBox]).Serial()
+    var essenceBox = FindGroundItemWithProperties([_essenceBox]).Serial()
+    var recipeBox = FindGroundItemWithProperties([_recipeBox]).Serial()
+    var talismanBox = FindGroundItemWithProperties([_talismanBox]).Serial()
+    var regBoxId = FindGroundItemWithProperties([_regBoxId]).Serial()
+    var bin = FindGroundItemWithProperties([_bin]).Serial()
+    var transcendenceBook = FindGroundItemWithProperties([_transcendenceBook]).Serial()
+
+    MoveItemsFromPlayer(craftingBox, '0x0EED')
     MoveItemText("Essence|Crafting Resource", essenceBox)
     MoveItemText("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", regBoxId)
 
     Orion.Print('Move Gold')
-    MoveItemTextFromTo("Gold Coin", backpack, Orion.FindObject(goldChestId))
+    MoveItemTextFromTo("Gold Coin", backpack, Orion.FindObject(craftingBox))
 
-    MoveItems(backpack, Orion.FindObject(goldChestId), '0x0EED', any, 0, true) //Gold
+    MoveItems(backpack, Orion.FindObject(craftingBox), '0x0EED', any, 0, true) //Gold
     Orion.Print('Move Reg')
     MoveItemTextFromTo("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", backpack, Orion.FindObject(regBoxId))
     Orion.Print('Move Gem')
     MoveItemTextFromTo("Raptor Teeth|Faery Dust|Wolf Eye|Crushed Glass|Bottle Of Ichor|Daemon Claw|Essence|Crafting Resource|Goblin Blood|Slith Tongue", backpack, Orion.FindObject(essenceBox))//Gems
     Orion.Print('Move Stuff')
-    MoveItemTextFromTo('Board|Ingot|Leather|Cloth', backpack, Orion.FindObject(goldChestId))
+    MoveItemTextFromTo('Board|Ingot|Leather|Cloth', backpack, Orion.FindObject(craftingBox))
     Orion.Print('Move Artifact')
     MoveItems(backpack, rareBox, '0xE75') //Artifact bag
     Orion.Print('Move Fragment')
     MoveItemTextFromTo('Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', backpack, rareBox)
     Orion.Print('Move Transendance')
-    MoveItemTextFromTo('Transcendence', backpack, TranscendenceBook)
+    MoveItemTextFromTo('Transcendence', backpack, transcendenceBook)
 
     Orion.Print('Move Recipes')
     MoveItemTextFromTo('Recipe', backpack, Orion.FindObject(recipeBox))
@@ -325,25 +403,36 @@ function ReturnHomeSortLoot() {
 }
 
 function GoToClosestPortal() {
-    Orion.Print('Find Portals')
+    Debug(' Method Entry - GoToClosestPortal')
+
     var x = Orion.QuestArrowPosition().X()
     var y = Orion.QuestArrowPosition().Y()
 
-    portalLocation = portalLocation.sort(function (loc1, loc2) {
-        return (loc1.DistanceTo(x, y) - loc2.DistanceTo(x, y))
-    })
-    Orion.Print("Try first")
-    if (!TryLocation(portalLocation.shift())) {
-        Orion.Print("Try second")
-        RecallRune(home)
-        if (!TryLocation(portalLocation.shift())) {
-            Orion.Print("Try third")
-            RecallRune(home)
-            return TryLocation(portalLocation.shift())
-        }
+    if (useRuneBooks) {
+        UseClosestRuneOrWalk(x, y, 1, null, 10)
+        safeSpot = Here()
+        Orion.WalkTo(x, y, 0, 2, 255, 1)
+        return Orion.GetDistance(x, y) < 10
     }
+    else {
+        Orion.Print('Find Portals')
 
-    return true
+        portalLocation = portalLocation.sort(function (loc1, loc2) {
+            return (loc1.DistanceTo(x, y) - loc2.DistanceTo(x, y))
+        })
+        Orion.Print("Try first")
+        if (!TryLocation(portalLocation.shift())) {
+            Orion.Print("Try second")
+            RecallRune(home)
+            if (!TryLocation(portalLocation.shift())) {
+                Orion.Print("Try third")
+                RecallRune(home)
+                return TryLocation(portalLocation.shift())
+            }
+        }
+
+        return true
+    }
 }
 
 var safeSpot = null
@@ -370,10 +459,10 @@ function TryLocation(portal) {
 
     //Cross water at skara
     if (Orion.Contains(portal.Name(), 'skara')) {
-    Orion.Wait(2000)
-            if (!Orion.WalkTo(x, y, 1, 1, 255, 1)) {
-	CrossAtSkara()
-	}
+        Orion.Wait(2000)
+        if (!Orion.WalkTo(x, y, 1, 1, 255, 1)) {
+            CrossAtSkara()
+        }
     }
 
     if (!Orion.WalkTo(x, y, 1, 10, 255, 1)) {
@@ -388,14 +477,13 @@ function TryLocation(portal) {
     return Orion.WalkTo(x, y, 0, 2, 255, 1)
 }
 
-function CrossAtSkara()
-{
+function CrossAtSkara() {
 
-        	Orion.WalkTo(679, 2233, 0, 1, 255, 1)
-            Orion.WalkTo(683, 2234, 0, 1, 255, 1)
-            Orion.Say('cross')
-            Orion.Wait(1000)
-        
+    Orion.WalkTo(679, 2233, 0, 1, 255, 1)
+    Orion.WalkTo(683, 2234, 0, 1, 255, 1)
+    Orion.Say('cross')
+    Orion.Wait(1000)
+
 }
 
 function Mount(getOn) {
@@ -462,8 +550,19 @@ function TestPrintLayers() {
 
     }
 }
+
+function ResetContainerView() {
+    Debug(' DoAllMapsInBag')
+
+    for (var index = 0; index < 8; index++) {
+        Orion.CloseGump('container');
+    }
+    Orion.OpenContainer(backpack)
+}
 //#include helpers/Target.js
 //#include helpers/Magic.js
+//#include helpers/Beetle.js
 //#include helpers/Notifier.js
 //#include helpers/ItemManager.js
 //#include helpers/Debug.js
+//#include Actions/RuneBookController.js

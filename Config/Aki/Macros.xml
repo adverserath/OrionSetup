@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="true" delay="0.1">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x400CFB27" graphic="0x22C5" color="0x084C"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000038E" id="0x00000059" button="50"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="-128"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="0"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="0"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="0"/>
     </macro>
     <macro name="PeaceArea" looped="false" delay="1">
         <action type="1" convert_type="0" waiting_time="1000" serial="0x40173554" graphic="0x14F6" color="0x0000"/>
