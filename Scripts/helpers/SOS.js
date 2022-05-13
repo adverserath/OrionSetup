@@ -1,5 +1,6 @@
 //#include helpers/SOSList.js
 //#include helpers/Target.js
+//#include helpers/Debug.js
 
 var sosZones = [
 /*0*/[8, 88, (88 + 8), (3927 + 88)],
@@ -19,7 +20,7 @@ var sosZones = [
 ]
 
 function GetZone(x, y) {
-    Orion.Print('Method Entry - GetZone')
+    Debug(' Method Entry - GetZone')
     for (var index = 0; index < sosZones.length; index++) {
         var zone = sosZones[index]
         if (x >= zone[0] && x <= zone[2] && y >= zone[1] && y <= zone[3]) {
@@ -30,7 +31,7 @@ function GetZone(x, y) {
 }
 
 function SoSInSoSList(sosSerial) {
-    Orion.Print('Method Entry - SoSInSoSList')
+    Debug(' Method Entry - SoSInSoSList')
     var loc = null;
     for (var index = 0; index < sosList.length; index++) {
         var sos = sosList[index];
@@ -43,7 +44,7 @@ function SoSInSoSList(sosSerial) {
 }
 
 function GetSOSLocation(sosObject) {
-    Orion.Print('Method Entry - GetSOSLocation')
+    Debug(' Method Entry - GetSOSLocation')
     if (sosObject == null)
         sosObject = SelectTarget()
 
@@ -73,8 +74,11 @@ function GetSOSLocation(sosObject) {
 var foundSOS = 0
 function MoveAllSOSInBagToChests() {
     // Find all SOS in bag
+    var currentSOSs = Orion.FindType('0x14EE', any, backpack)
     OpenAnyMiBs()
-    var SOSs = Orion.FindTypeEx('0x14EE', any, backpack)
+    var SOSs = Orion.FindTypeEx('0x14EE', any, backpack).filter(function (sos){
+        return currentSOSs.indexOf(sos.Serial())==-1
+    })
     SOSs.forEach(function (sos) {
 
         var pos = GetSOSLocation(sos)
