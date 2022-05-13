@@ -5,7 +5,7 @@
 
 var scale = 16
 var gridscale = 0;
-var vessel = '0x40030BED'
+var vessel = 'Tiller Man'
 
 function DriveBoatTo() {
 	Debug(' Method Entry - DriveBoatTo')
@@ -53,12 +53,11 @@ function SteerPath(route, distance, destinationX, destinationY) {
 
   var startTime = Orion.Now()
   while (Orion.InJournal('You are now piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
-    var boat = Orion.FindObject(vessel)
-    if(boat.Distance()>1)
-    {
-      WalkTo(boat)
-    }
-    Orion.UseObject(vessel)
+    var boat = FindGroundItemWithName([vessel])
+    var hold = FindGroundItemWithName(["Cargo Hold"])
+
+    WalkTo(boat)
+    Orion.UseObject(boat.Serial())
     Orion.Wait(1000)
   }
   for (var index = 0; index < route.length; index++) {
@@ -87,8 +86,9 @@ function SteerPath(route, distance, destinationX, destinationY) {
   Orion.StopSailOnBoat()
   startTime = Orion.Now()
   while (Orion.InJournal('You are no longer piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
-    Orion.UseObject(vessel)
-    Orion.Wait(1000)
+    Orion.Print('Trying to stop steering')
+    Orion.UseObject(boat.Serial())
+    Orion.Wait(2000)
   }
 }
 
@@ -98,10 +98,12 @@ function SteerToObject(target, distance) {
   if (distance == null || distance < 2) {
     distance = 2
   }
+  var boat = FindGroundItemWithName([vessel])
 
   var startTime = Orion.Now()
   while (Orion.InJournal('You are now piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
-    Orion.UseObject(vessel)
+    WalkTo(boat)
+    Orion.UseObject(boat.Serial())
     Orion.Wait(1000)
   }
 
@@ -119,9 +121,11 @@ function SteerToObject(target, distance) {
   Orion.StopSailOnBoat()
   startTime = Orion.Now()
   while (Orion.InJournal('You are no longer piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
-    Orion.UseObject(vessel)
+    Orion.UseObject(boat.Serial())
     Orion.Wait(1000)
   }
+  WalkTo(boat)
+
 }
 
 function GetDirection(item) {
@@ -236,6 +240,12 @@ function SailToCorpse(checkOnly) {
     Orion.UseObject(corpse.Serial())
     Orion.Ignore(corpse.Serial())
     Orion.Wait(2000)
+    var hold = FindGroundItemWithName(["Cargo Hold"])
+
+    if(hold.Distance()>1)
+    {
+      WalkTo(hold)
+    }
     SteerToObject(coordinate(startX, startY), 1)
 
   });

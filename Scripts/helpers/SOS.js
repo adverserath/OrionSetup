@@ -71,9 +71,10 @@ function GetSOSLocation(sosObject) {
     }
 }
 
-var foundSOS = 0
 function MoveAllSOSInBagToChests() {
     // Find all SOS in bag
+    var foundSOS = 0
+
     var currentSOSs = Orion.FindType('0x14EE', any, backpack)
     OpenAnyMiBs()
     var SOSs = Orion.FindTypeEx('0x14EE', any, backpack).filter(function (sos){
@@ -92,11 +93,12 @@ function MoveAllSOSInBagToChests() {
         Orion.Wait(800)
         foundSOS++
     })
-    BotPush('SOS found :' + foundSOS, true)
+    CountGlobalValue('foundSOS', foundSOS, 'SOS found')
 }
 
-var foundMaps = 0
 function MoveStashMapsInBagToChests() {
+    var foundMaps = 0
+
     // Move stash maps to box
     var maps = Orion.FindTypeEx('0x14EC', any, backpack).filter(function (map) {
         return Orion.Contains(map.Properties(), "Trammel") && Orion.Contains(map.Properties(), "Stash")
@@ -111,7 +113,7 @@ function MoveStashMapsInBagToChests() {
         Orion.Wait(800)
         foundMaps++
     })
-    BotPush('Maps found :' + foundMaps, true)
+    CountGlobalValue('foundMaps', foundMaps, 'Maps found')
 }
 
 function OpenAnyMiBs() {

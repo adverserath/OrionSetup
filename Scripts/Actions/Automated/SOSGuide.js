@@ -25,44 +25,51 @@ var _transcendenceBook = 'Transcendence Book'
 function AutoSOSDoerClosest() {
     while (true) {
         for (var sosLevel = 0; sosLevel < 14; sosLevel++) {
-            var currentSOSBox = FindGroundItemWithProperties(["SOS " + sosLevel])
+            Orion.Print('Checking Zone: ' + sosLevel)
+
+            var currentSOSBox = FindGroundItemWithProperties(["SOS " + sosLevel + '\n'])
             if (currentSOSBox != null) {
                 WalkTo(currentSOSBox)
+				Orion.Wait(500)
                 Orion.OpenContainer(currentSOSBox.Serial())
                 if (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0")) {
                     var soses = Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial())
                     var SosMap = []
-                   while(Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial()).length>0)
-                    {
-                    soses.forEach(function (sos) {
-                        Orion.MoveItem(sos.Serial(), 1, backpack);
-                        Orion.Wait(1000)
-                    })
+                    while (Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial()).length > 0) {
+                        soses.forEach(function (sos) {
+                            Orion.MoveItem(sos.Serial(), 1, backpack);
+                            Orion.Wait(1000)
+                        })
                     }
                     Orion.FindTypeEx('0x14EE').forEach(function (sos) {
                         var pos = GetSOSLocation(sos)
                         var zone = GetZone(pos.X(), pos.Y())
+                        Orion.Print('Zone: ' + zone)
                         SosMap.push([sos.Serial(), pos.X(), pos.Y(), zone])
                     })
                     SosMap.sort(function (s1, s2) {
                         return s1[2] + s1[1] - s2[2] + s2[1]
                     })
-                    while(Orion.FindTypeEx('0x14EE', any, backpack).length>0)
-{
-                    SosMap.forEach(function (sos) {
-                        Orion.MoveItem(sos[0], 1, currentSOSBox.Serial());
-                        Orion.Wait(1000)
-                    })
-}
+                    while (Orion.FindTypeEx('0x14EE', any, backpack).length > 0) {
+                        SosMap.forEach(function (sos) {
+                            Orion.MoveItem(sos[0], 1, currentSOSBox.Serial());
+                            Orion.Wait(1000)
+                        })
+                    }
                     SosMap.forEach(function (sos) {
                         WalkTo(currentSOSBox)
                         Orion.OpenContainer(currentSOSBox.Serial())
                         Orion.Wait(2000)
-						Orion.Print('Doing '+ sos[0])
-                        Orion.MoveItem(sos[0], 1, backpack);
-                        Orion.Wait(2000)
-                        DoSOSInOrder()
-
+                        Orion.Print('Doing ' + sos[0])
+                        while (Orion.FindTypeEx('0x14EE', any, backpack).length == 0) {
+                            Orion.MoveItem(sos[0], 1, backpack);
+                            Orion.Wait(2000)
+                        }
+                        Orion.ToggleScript('DoSOSInOrder', true)
+                        Orion.Wait(1000)
+                        while (Orion.ScriptRunning('DoSOSInOrder') != 0) {
+                            Orion.Wait(2000)
+                        }
                     })
                 }
                 else {
@@ -77,7 +84,7 @@ function AutoSOSDoerClosest() {
 function AutoSOSDoer() {
     while (true) {
         for (var sosLevel = 0; sosLevel < 14; sosLevel++) {
-            var currentSOSBox = FindGroundItemWithProperties(["SOS " + sosLevel])
+            var currentSOSBox = FindGroundItemWithProperties(["SOS " + sosLevel + '\n'])
             if (currentSOSBox != null) {
                 if (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0")) {
                     var soses = Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial()).slice(0, 9)
@@ -97,7 +104,7 @@ function AutoSOSDoer() {
 }
 function GetSoSFromGroup() {
     Debug(' Method Entry - GetSoSFromGroup')
-    Orion.Launch("cmd.exe", ['/c', 'a:/Orion Launcher/OA/Scripts/soslocations.jpg']);
+    OpenMap()
     Orion.Print('Make sure you have all SOS in sos.txt')
     Orion.Print('Enter Groups')
     var group = Orion.InputText()
@@ -122,6 +129,10 @@ function GetSoSFromGroup() {
     })
 }
 
+function OpenMap()
+{
+    Orion.Launch("cmd.exe", ['/c', 'a:/Orion Launcher/OA/Scripts/soslocations.jpg']);
+}
 function ReadAllSOSToFile() {
     Debug(' Method Entry - ReadAllSOSToFile')
     var soses = []
@@ -187,11 +198,14 @@ function GoToClosestSOS(distance) {
 ///#include soslocations.jpg
 function DoSOSInOrder() {
     Debug(' Method Entry - DoSOSInOrder')
-    var seakey = FindBackpackItemWithProperties([_seakey]).Serial()
-
+    var seakey = FindBackpackItemWithName([_seakey]).Serial()
+    Orion.Print('Key ' + seakey)
     RecallRune(seakey);
     Orion.Wait(1000)
-
+    var boatStorage = FindGroundItemWithName(['Cargo Hold'])
+    if (boatStorage != null) {
+        WalkTo(boatStorage)
+    }
     //IF chest is on boat floor, pick it up and go again
 
     Orion.Print("ALL SOS must be parsed into \OA\Scripts\helpers\SOSList.js, using ReadAllSOSToFile")
@@ -218,15 +232,49 @@ function DoSOSInOrder() {
             }
             Orion.Wait(10000)
         }
-        BankAndHome()
-
+        ChestRecoveryService()
     }
 }
 
+function ChestRecoveryService()
+{
+    var seakey = FindBackpackItemWithName([_seakey]).Serial()
+
+    var droppedChest = FindGroundItemWithName(["Chest"])
+
+    if (droppedChest != null) {
+        Orion.OpenContainer(droppedChest.Serial())
+        Orion.Wait(1000)
+        var goldInChest = Orion.FindTypeEx('0x0EED', any, droppedChest.Serial())
+        var availableGoldWeight = (Player.MaxWeight() - Player.Weight()) * 120
+        Orion.Print('Can carry gold: '+ availableGoldWeight)
+        if (goldInChest.length > 0 && Player.Weight() < (Player.MaxWeight() - 67)) {
+            Orion.Print('Move Gold to backpack')
+            Orion.MoveItem(goldInChest[0].Serial(), availableGoldWeight, backpack)
+        }
+        BankAndHome()
+        Orion.Wait(1000)
+        RecallRune(seakey);
+        Orion.Wait(1000)
+        var boatStorage = FindGroundItemWithName(['Cargo Hold'])
+        if (boatStorage != null) {
+            WalkTo(boatStorage)
+            WalkTo(droppedChest)
+            Orion.MoveItem(droppedChest.Serial(), 0, backpack)
+            Orion.Wait(1000)
+        }
+    }
+    BankAndHome()
+}
+
 function BankAndHome() {
+    Debug(' Method Entry - BankAndHome')
+
     Orion.Wait(1000)
     if (bankGold && Player.Gold() > 0) {
-        RecallRune(bankRune);
+        RecallRune(bankRune)
+        CountGlobalValue('goldCollected', Player.Gold(), 'Gold Collected')
+        CountGlobalValue('mibsComplete', 1, 'Mibs Completed')
         Orion.Wait(1000)
         Orion.Say("bank")
         Orion.Wait(500)
@@ -235,7 +283,6 @@ function BankAndHome() {
     }
     RecallRune(seabook);
     ChestLootManager()
-    RecallRune(seakey);
     Orion.Wait(1000)
 }
 
@@ -316,8 +363,8 @@ function ChestLootManager() {
 
     //Orion.ActivateClient();
     //   BotPush('Paused')
-    if (Player.WarMode())
-        Orion.PauseScript()
+    //    if (Player.WarMode())
+    //        Orion.PauseScript()
 }
 
 function Resume() {

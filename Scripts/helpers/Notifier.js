@@ -4,7 +4,7 @@ var hook;
 var key;
 
 function BotPush(message, disableNotify) {
-	Debug(' Method Entry - BotPush')
+    Debug(' Method Entry - BotPush')
     TelegramPost(message, disableNotify)
     DiscordPost(message)
 }
@@ -13,7 +13,7 @@ function BotPush(message, disableNotify) {
 //single space
 //Second Word 2 = API key
 function DiscordPost(message) {
-	Debug(' Method Entry - DiscordPost')
+    Debug(' Method Entry - DiscordPost')
     if (hook == null && key == null) {
         var file = Orion.NewFile();
         open = file.Open('discordkey.conf');
@@ -40,7 +40,7 @@ function DiscordPost(message) {
 //single space
 //Third Word =  chat id
 function TelegramPost(message, disableNotify) {
-	Debug(' Method Entry - TelegramPost')
+    Debug(' Method Entry - TelegramPost')
     if (disableNotify == null) {
         disableNotify = false;
     }
@@ -67,13 +67,13 @@ function TelegramPost(message, disableNotify) {
 
 var shouldNotify = [];
 function NotifySkill(skillName) {
-	Debug(' Method Entry - NotifySkill')
+    Debug(' Method Entry - NotifySkill')
     if (Orion.SkillValue(skillName) % 1 == 0) {
 
         if (shouldNotify.indexOf(skillName) > -1)
             BotPush(skillName + ' is at ' + Orion.SkillValue(skillName) % 10)
         shouldNotify = shouldNotify.filter(function (skill) {
-	
+
             return skill != skillName
         })
     }
@@ -81,4 +81,15 @@ function NotifySkill(skillName) {
         shouldNotify.push(skillName)
 
     }
+}
+
+
+function CountGlobalValue(name, value, publishText) {
+    var globalValue = Orion.GetGlobal(name)
+    if (globalValue == null || isNaN(globalValue))
+        globalValue = '0'
+    var reportValue = parseInt(globalValue);
+    reportValue += value
+    Orion.SetGlobal(name, reportValue)
+    BotPush(publishText + ' = ' + reportValue, true)
 }
