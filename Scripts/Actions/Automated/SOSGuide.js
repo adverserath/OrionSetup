@@ -10,7 +10,7 @@ var netLoot = '0x400DEE70'
 //var rareBox = '0x4014460B'
 var mapMibBox = '0x4006BE64'
 var bankGold = true
-var bankRune = '0x4011634E'
+var bankRune = '0x4008436F'
 
 
 var _rareBox = 'TMap Rares'
@@ -22,9 +22,14 @@ var _regBoxId = 'Scrolls and Reags'
 var _bin = 'A Trash Barrel'
 var _transcendenceBook = 'Transcendence Book'
 
+
+//orc lighthouse X1954 Y3747
 function AutoSOSDoerClosest() {
+var startNumber = parseInt(Orion.InputText(60000,'Start at which number'))
+
     while (true) {
-        for (var sosLevel = 0; sosLevel < 14; sosLevel++) {
+        for (var sosLevel = startNumber; sosLevel < 14; sosLevel++) {
+        startNumber=0
             Orion.Print('Checking Zone: ' + sosLevel)
 
             var currentSOSBox = FindGroundItemWithProperties(["SOS " + sosLevel + '\n'])
@@ -226,7 +231,7 @@ function DoSOSInOrder() {
             //Open MIBs and add them to the list here?
             //ProcessMib()
             //Fish
-            Orion.UseObject('0x40026413');
+            Orion.UseObject('0x4008475A');
             if (Orion.WaitForTarget(1000)) {
                 Orion.TargetTileRelative('any', -3, -3, 65533);
             }
@@ -382,3 +387,5 @@ function Resume() {
 //#include helpers/PathFinding.js
 //#include WIP/TestScripts.js
 //#include helpers/SOSList.js
+//#include helpers/Pet.js
+//#include Fighting/Tamer.js

@@ -146,7 +146,7 @@ function WalkTo(object, distance, timeMS, walking) {
   var Z = 0
   if (object.hasOwnProperty('z'))
     Z = object.Z()
-  Orion.ToggleScript('MonitorWalkBlock',true)
+  Orion.ToggleScript('MonitorWalkBlock', true)
   var result = Orion.WalkTo(object.X(), object.Y(), Z, distance, 255, walking, 1, timeMS);
   return result
 }
@@ -392,35 +392,31 @@ function FindBackpackItemWithProperties(properties) {
   return items.shift()
 }
 
-function BlockTest()
-{
-    Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', true)
-    Orion.WarMode(true)
+function BlockTest() {
+  Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', true)
+  Orion.WarMode(true)
 }
 
-function MonitorWalkBlock()
-{
-Orion.Wait(100)
-Orion.ClearBadLocations();
-Orion.ClearFakeMapObjects();
-var lastX = Player.X()
-var lastY = Player.Y()
-while(Orion.IsWalking())
-{
-Orion.Wait(400)
-if(Player.X() == lastX && Player.Y() == lastY)
-{
-Orion.Print('block')
+function MonitorWalkBlock() {
+  Orion.Wait(100)
+  Orion.ClearBadLocations();
+  Orion.ClearFakeMapObjects();
+  var lastX = Player.X()
+  var lastY = Player.Y()
+  while (Orion.IsWalking()) {
+    Orion.Wait(400)
+    if (Player.X() == lastX && Player.Y() == lastY) {
+      Orion.Print('Walking is blocked')
       Orion.GetTilesInRect('any', Player.X() - 3, Player.Y() - 3, Player.X() + 3, Player.Y() + 3)
         .forEach(function (tile) {
-		Orion.SetBadLocation(tile.X(), tile.Y());
+          Orion.SetBadLocation(tile.X(), tile.Y());
           Orion.AddFakeMapObject(Orion.Random(10000), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
         }
         )
 
-}
-lastX = Player.X()
-lastY = Player.Y()
-}
+    }
+    lastX = Player.X()
+    lastY = Player.Y()
+  }
 }
 //#include helpers/Debug.js

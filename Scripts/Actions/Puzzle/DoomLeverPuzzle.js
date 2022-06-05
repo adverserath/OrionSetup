@@ -54,7 +54,7 @@ function ResControlAtLeverPuzzle() {
 
 }
 
-function UseGate() {
+function UseGate(_) {
     var gate = Orion.FindTypeEx('0x0F6C', any, ground, 'item|near', 25).shift()
     while (gate == null) {
         Orion.Wait(1000)
@@ -75,7 +75,7 @@ function UseGate() {
     Orion.Wait(2000)
 }
 
-function ResAtAhnk() {
+function ResAtAhnk(_) {
     var ahnk = Orion.FindTypeEx('0x0002', any, ground, 'item|near', 15).shift()
     if (ahnk != null) {
         WalkTo(ahnk, 1)
@@ -97,3 +97,5 @@ function FastInsure()
 	Orion.WaitContextMenuCliloc(Player.Serial(), 3006201);
 }
 //#include helpers/Target.js
+//#include helpers/Debug.js
+//#include helpers/Magic.js

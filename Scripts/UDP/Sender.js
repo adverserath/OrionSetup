@@ -12,7 +12,7 @@
 //#include Fighting/Corpses.js
 //#include Fighting/Bushido.js
 //#include Actions/Event/PumpkinPicker.js
-
+//#include Fighting/SpellWeaving.js
 
 
 function gridX(x, size) {

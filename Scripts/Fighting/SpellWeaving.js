@@ -115,7 +115,7 @@ function SpellWeavingKills() {
                 summoned = true
             }
 
-            if (!Orion.BuffExists('Arcane Empowerment') && Orion.ClientLastAttack() != '0x00000000') {
+            if (Player.Mana()>40 && !Orion.BuffExists('Arcane Empowerment') && Orion.ClientLastAttack() != '0x00000000') {
                 Cast('Arcane Empowerment')
                 continue;
             }

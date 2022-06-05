@@ -10,7 +10,7 @@
 //#include Fighting/SpellWeaving.js
 //#include Fighting/Corpses.js
 //#include Fighting/Healing.js
-//#include Actions/Event/PumpkinPicker.js
+///#include Actions/Event/PumpkinPicker.js
 var udpPort = 2598;
 
 function Message_Receiver() {

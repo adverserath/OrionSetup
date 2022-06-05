@@ -266,7 +266,16 @@ function StealTarget() {
 		}
 		Orion.Wait(1000)
 		Orion.UseSkillTarget('Stealing', target.Serial())
+		Orion.WaitForTarget()
+		Orion.TargetObject(target.Serial())
+		Orion.CancelTarget()
 	}
+}
+
+function FastInsure()
+{
+	Orion.RequestContextMenu(Player.Serial());
+	Orion.WaitContextMenuCliloc(Player.Serial(), 3006201);
 }
 
 function HighlightArtifact() {
@@ -356,6 +365,7 @@ function TrainStealth() {
 
 	}
 }
+//#include helpers/Debug.js
 //#include helpers/Target.js
 //#include Stealther.js
 //#include Actions/Tricks.js

@@ -1,7 +1,7 @@
 //#include helpers/Target.js
 //#include helpers/Notifier.js
 //#include helpers/Magic.js
-
+//#include helpers/Debug.js
 var vowel = ['a', 'e', 'i', 'o', 'u']
 var cons = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
 var selectedTarget;
