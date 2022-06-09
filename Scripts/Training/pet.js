@@ -1,5 +1,7 @@
 //#include helpers/Target.js
 //#include helpers/Pet.js
+//#include helpers/Debug.js
+
 function CuHealing() {
 	var target = SelectTarget()
 	while (true) {

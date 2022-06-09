@@ -13,7 +13,7 @@
 //#include Fighting/Bushido.js
 //#include Actions/Event/PumpkinPicker.js
 //#include Fighting/SpellWeaving.js
-
+//#include Fighting/Healing.js
 
 function gridX(x, size) {
     return x * size

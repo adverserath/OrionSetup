@@ -62,7 +62,9 @@ function ResponseHandler(recv) {
             Orion.ToggleScript('Walk');
             Orion.Wait(100)
         }
-
+        if(Orion.GetDistance(recvp[1], recvp[2])>5){
+		    Orion.InterruptCast();
+        }
         Orion.ToggleScript('Walk', true, [recvp[1], recvp[2], recvp[3], recvp[4]])
         Orion.Print('obj' + recvp[4])
         if (recvp[5] != null) {
@@ -110,6 +112,7 @@ function ResponseHandler(recv) {
         PetStop()
     }
     if (command[1] == 'RH') {
+        Orion.InterruptCast();
         Orion.Print("Go Home")
         Orion.ToggleScript('GoHome');
     }

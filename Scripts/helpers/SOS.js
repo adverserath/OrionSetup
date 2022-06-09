@@ -84,16 +84,21 @@ function MoveAllSOSInBagToChests() {
 
         var pos = GetSOSLocation(sos)
         var zone = GetZone(pos.X(), pos.Y())
-        var chest = Orion.FindTypeEx('0x0E3D', any, ground, 'item', 20).filter(function (box) {
-            return Orion.Contains(box.Properties(), "SOS " + zone + '\n')
-        })[0]
-        WalkTo(chest)
-        Orion.Wait(800)
-        Orion.MoveItem(sos.Serial(), 1, chest.Serial())
-        Orion.Wait(800)
+        MoveSoSToChest(sos.Serial(), zone)
         foundSOS++
     })
     CountGlobalValue('foundSOS', foundSOS, 'SOS found')
+}
+
+function MoveSoSToChest(serial, zone)
+{
+    var chest = Orion.FindTypeEx('0x0E3D', any, ground, 'item', 20).filter(function (box) {
+        return Orion.Contains(box.Properties(), "SOS " + zone + '\n')
+    })[0]
+    WalkTo(chest)
+    Orion.Wait(800)
+    Orion.MoveItem(serial, 1, chest.Serial())
+    Orion.Wait(800)
 }
 
 function MoveStashMapsInBagToChests() {

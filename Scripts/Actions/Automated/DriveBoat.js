@@ -226,81 +226,81 @@ function IsAllWater(fromX, fromY) {
 function SailToCorpse(checkOnly) {
 
 	Debug(' Method Entry - SailToCorpse')
-	                var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 2);
+	              //   var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 2);
 
-                var startX = Player.X()
-                corpses.forEach(function (corpse) {
-                    if (corpse.Y() < Player.Y()) {
-                        Orion.Say('forward')
-                        while (corpse.Y() < Player.Y()) {
-                            Orion.Wait(50)
-                        }
-                        Orion.Say('stop')
-                    }
-                    else if (corpse.Y() > Player.Y()) {
-                        Orion.Say('back')
-                        while (corpse.Y() > Player.Y()) {
-                            Orion.Wait(50)
-                        }
-                        Orion.Say('stop')
-                    }
-                    Orion.Wait(200)
+                // var startX = Player.X()
+                // corpses.forEach(function (corpse) {
+                //     if (corpse.Y() < Player.Y()) {
+                //         Orion.Say('forward')
+                //         while (corpse.Y() < Player.Y()) {
+                //             Orion.Wait(50)
+                //         }
+                //         Orion.Say('stop')
+                //     }
+                //     else if (corpse.Y() > Player.Y()) {
+                //         Orion.Say('back')
+                //         while (corpse.Y() > Player.Y()) {
+                //             Orion.Wait(50)
+                //         }
+                //         Orion.Say('stop')
+                //     }
+                //     Orion.Wait(200)
 
-                    if (corpse.X() < Player.X()) {
-                        Orion.Say('left')
-                        while (corpse.X() < Player.X()) {
-                            Orion.Wait(50)
-                        }
-                        Orion.Say('stop')
-                    }
-                    else if (corpse.X() > Player.X()) {
-                        Orion.Say('right')
-                        while (corpse.X() > Player.X()) {
-                            Orion.Wait(50)
-                        }
-                        Orion.Say('stop')
-                    }
-                    WalkTo(corpse);
-                    Orion.UseObject(corpse.Serial())
-                    Orion.Ignore(corpse.Serial())
-                    Orion.Wait(2000)
-                    //OpenAnyMiBs()
-                    if (startX < Player.X()) {
-                        Orion.Say('left')
-                        while (startX < Player.X()) {
-                            Orion.Wait(50)
-                        }
-                        Orion.Say('stop')
-                    }
-                    else if (startX > Player.X()) {
-                        Orion.Say('right')
-                        while (startX > Player.X()) {
-                            Orion.Wait(50)
-                        }
-                        Orion.Say('stop')
-                    }
-                });
+                //     if (corpse.X() < Player.X()) {
+                //         Orion.Say('left')
+                //         while (corpse.X() < Player.X()) {
+                //             Orion.Wait(50)
+                //         }
+                //         Orion.Say('stop')
+                //     }
+                //     else if (corpse.X() > Player.X()) {
+                //         Orion.Say('right')
+                //         while (corpse.X() > Player.X()) {
+                //             Orion.Wait(50)
+                //         }
+                //         Orion.Say('stop')
+                //     }
+                //     WalkTo(corpse);
+                //     Orion.UseObject(corpse.Serial())
+                //     Orion.Ignore(corpse.Serial())
+                //     Orion.Wait(2000)
+                //     //OpenAnyMiBs()
+                //     if (startX < Player.X()) {
+                //         Orion.Say('left')
+                //         while (startX < Player.X()) {
+                //             Orion.Wait(50)
+                //         }
+                //         Orion.Say('stop')
+                //     }
+                //     else if (startX > Player.X()) {
+                //         Orion.Say('right')
+                //         while (startX > Player.X()) {
+                //             Orion.Wait(50)
+                //         }
+                //         Orion.Say('stop')
+                //     }
+                // });
   //Wait for corpse
-//  var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 8);
-//  while (corpses.length == 0 && !checkOnly) {
-//    Orion.Wait(1000)
-//    corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 8);
-//  }
-//  var startX = Player.X()
-//  var startY = Player.Y()
-//  corpses.forEach(function (corpse) {
+ var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 8);
+ while (corpses.length == 0 && !checkOnly) {
+   Orion.Wait(1000)
+   corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 8);
+ }
+ var startX = Player.X()
+ var startY = Player.Y()
+ corpses.forEach(function (corpse) {
 	
-//    SteerToObject(corpse, 2)
-//    WalkTo(corpse,2,4000)
-//    Orion.UseObject(corpse.Serial())
-//    Orion.Ignore(corpse.Serial())
-//    Orion.Wait(2000)
-//   var hold = FindGroundItemWithName(["Cargo Hold"])
+   SteerToObject(corpse, 2)
+   WalkTo(corpse,2,4000,1,false)
+   Orion.UseObject(corpse.Serial())
+   Orion.Ignore(corpse.Serial())
+   Orion.Wait(2000)
+  var hold = FindGroundItemWithName(["Cargo Hold"])
 
-//    if(hold.Distance()>1)
-//    {
-//      WalkTo(hold)
-//    }
-//    SteerToObject(coordinate(startX, startY), 1)
-//  });
+   if(hold.Distance()>1)
+   {
+     WalkTo(hold,2,4000,1,false)
+   }
+   SteerToObject(coordinate(startX, startY), 1)
+ })
 }

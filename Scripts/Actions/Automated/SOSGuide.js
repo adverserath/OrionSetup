@@ -22,7 +22,6 @@ var _regBoxId = 'Scrolls and Reags'
 var _bin = 'A Trash Barrel'
 var _transcendenceBook = 'Transcendence Book'
 
-
 //orc lighthouse X1954 Y3747
 function AutoSOSDoerClosest() {
 var startNumber = parseInt(Orion.InputText(60000,'Start at which number'))
@@ -50,7 +49,12 @@ var startNumber = parseInt(Orion.InputText(60000,'Start at which number'))
                         var pos = GetSOSLocation(sos)
                         var zone = GetZone(pos.X(), pos.Y())
                         Orion.Print('Zone: ' + zone)
-                        SosMap.push([sos.Serial(), pos.X(), pos.Y(), zone])
+                        Orion.Print('CHECK' + zone + ' ' + sosLevel + '  ' + (sosLevel==zone))
+                        if(zone == sosLevel)
+	                        SosMap.push([sos.Serial(), pos.X(), pos.Y(), zone])
+	                       else{
+								MoveSoSToChest(sos.Serial(), zone)
+	                       }
                     })
                     SosMap.sort(function (s1, s2) {
                         return s1[2] + s1[1] - s2[2] + s2[1]
@@ -59,7 +63,7 @@ var startNumber = parseInt(Orion.InputText(60000,'Start at which number'))
                         SosMap.forEach(function (sos) {
                             Orion.MoveItem(sos[0], 1, currentSOSBox.Serial());
                             Orion.Wait(1000)
-                        })
+                         })
                     }
                     SosMap.forEach(function (sos) {
                         WalkTo(currentSOSBox)

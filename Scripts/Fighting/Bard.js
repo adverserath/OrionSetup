@@ -1,4 +1,16 @@
 var bardRange;
+
+function StopExisting()
+{
+if(Orion.ScriptRunning('Provoke'))
+	Orion.ToggleScript('Provoke')
+if(Orion.ScriptRunning('Discord'))
+	Orion.ToggleScript('Discord')
+if(Orion.ScriptRunning('Peacemaking'))
+	Orion.ToggleScript('Peacemaking')
+	Orion.Wait(100)
+}
+
 function Provoke() {
     var startedHidden = Player.Hidden()
     Orion.PrintFast(self, 20, 1, "Provocation")

@@ -109,20 +109,62 @@ function MageryHealing() {
             })
             .forEach(function (patient) {
 
-                if (patient != null && !Player.Paralyzed()) {
+                if (patient != null && !Player.Paralyzed() && patient.Hits() < (patient.MaxHits() - 5)) {
                     if (!Player.Frozen()) {
                         if (Orion.SkillValue('Magery') > 500 && patient != null && patient.Poisoned()) {
                             Orion.CastTarget('Arch Cure', patient.Serial())
-                        }
-                        else if (Orion.SkillValue('Magery') > 30 && patient != null && !patient.Poisoned() && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 5)) {
-                            Orion.CastTarget('Greater Heal', patient.Serial())
                         }
                         else if (Orion.SkillValue('Spellweaving') > 300 && patient != null && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 10) && gorTime < (Orion.Now() - 60000)) {
                             Orion.CastTarget('Gift of renewal', patient.Serial())
                             gorTime = Orion.Now()
                         }
+                        else if (Orion.SkillValue('Magery') > 30 && patient != null && !patient.Poisoned() && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 5)) {
+                            Orion.CastTarget('Greater Heal', patient.Serial())
+                        }
                         else if (Orion.SkillValue('Magery') > 90 && patient.Dead() && patient.Distance() <= 1) {
                             Orion.CastTarget('Resurrection', patient.Serial())
+                        }
+                    }
+                    Orion.Wait(300);
+                }
+            })
+    }
+}
+
+function MageryHealingNoCure() {
+    var selected;
+    var selecting = true;
+    var patients = [];
+    var gorTime = Orion.Now() - 60000;
+    while (selecting) {
+        selected = SelectTarget();
+        if (selected == null) {
+            selecting = false
+        }
+        else if (selected.Mobile()) {
+            patients.push(selected)
+        }
+
+    }
+
+    patients.forEach(function (patient) {
+        Orion.Print("Selected:" + patient.Name())
+    })
+
+    while (true) {
+        Orion.Wait(200)
+        patients.filter(function (patient) {
+            return patient.Distance() <= 10
+        })
+            .sort(function (patientA, patientB) {
+                return patientA.Hits() - patientB.Hits()
+            })
+            .forEach(function (patient) {
+
+                if (patient != null && !Player.Paralyzed() && patient.Hits() < (patient.MaxHits() - 5)) {
+                    if (!Player.Frozen()) {
+                        if (Orion.SkillValue('Magery') > 30 && patient != null && !patient.Poisoned() && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 5)) {
+                            Orion.CastTarget('Greater Heal', patient.Serial())
                         }
                     }
                     Orion.Wait(300);

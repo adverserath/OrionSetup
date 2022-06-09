@@ -118,7 +118,7 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
   BotPush(items)
 }
 
-function WalkTo(object, distance, timeMS, walking) {
+function WalkTo(object, distance, timeMS, walking, monitored) {
   TextWindow.Print('Method Entry - WalkTo')
   TextWindow.Print("Start WalkTo")
   if (typeof object === "string") {
@@ -146,7 +146,8 @@ function WalkTo(object, distance, timeMS, walking) {
   var Z = 0
   if (object.hasOwnProperty('z'))
     Z = object.Z()
-  Orion.ToggleScript('MonitorWalkBlock', true)
+  if (monitored)
+    Orion.ToggleScript('MonitorWalkBlock', true)
   var result = Orion.WalkTo(object.X(), object.Y(), Z, distance, 255, walking, 1, timeMS);
   return result
 }

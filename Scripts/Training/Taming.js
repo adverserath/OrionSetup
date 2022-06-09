@@ -2,63 +2,131 @@
 //#include helpers/Notifier.js
 //#include helpers/Magic.js
 //#include helpers/Debug.js
+//#include helpers/PathWalker.js
+
 var vowel = ['a', 'e', 'i', 'o', 'u']
 var cons = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']
 var selectedTarget;
 var startingPetCount;
 var walkLocations = [];
+var usePreloaded = false
+var preLoadedTames = [
+    pet('Walrus', '0x00DD', 361),
+    pet('Snow Leopard', '0x0040', 541),
+    pet('Grey White Wolf', '0x0022', 661),
+    pet('Blue White Wolf', '0x0025', 661),
+    pet('Polar Bear', '0x00D5', 361)
+]
+
+function CreateDaggerIslePath() {
+    CreatePath('DaggerIsleTaming')
+}
+
+function TrainOnDaggerIsle() {
+    usePreloaded = true
+    ReloadTamables()
+    walkLocations = LoadWalkLocations('DaggerIsleTaming')
+    TrainTaming()
+}
+
+function LoadWalkLocations(locationName) {
+    return ReadPath(locationName)
+}
+
+function ReloadTamables() {
+    if (usePreloaded) {
+        selectedTarget = []
+        preLoadedTames.forEach(function (animal) {
+            if (animal.Trainable())
+                selectedTarget.push(animal.Graphic())
+        })
+    }
+}
+
+function pet(_name, _type, _skill) {
+    return {
+        name: _name,
+        type: _type,
+        skill: _skill,
+        Name: function () {
+
+            return this.name;
+        },
+        Graphic: function () {
+
+            return this.type;
+        },
+        Trainable: function () {
+            Orion.Print(Orion.SkillValue('Animal Taming', 'base') + ' animal:' + this.skill)
+            var tamable = Orion.SkillValue('Animal Taming', 'base') > this.skill && Orion.SkillValue('Animal Taming', 'base') < (this.skill + 400)
+            Orion.Print(this.name + ' is tamble: ' + tamable)
+            return tamable
+        }
+    }
+}
 
 function TrainTaming() {
-    if (selectedTarget == null) {
-        selectedTarget = [];
-    }
     startingPetCount = Player.Followers();
     var tames = 0;
     if (Orion.ScriptRunning('TrainTaming') > 1) {
         Orion.ToggleScript('TrainTaming', true);
     }
-    Orion.Print("Select the animals you taming, you can add them in later using AddNewTameToList");
 
-    Orion.WarMode(1);
-    Orion.Wait(500);
+    if (selectedTarget == null) {
+        selectedTarget = [];
 
-    while (Player.WarMode() == true) {
-        Orion.Print("Select Targets then leave war mode")
-        var animal = SelectTarget();
-        if (animal != null && animal.Mobile() == true) {
-            selectedTarget.push(animal.Graphic())
-        }
-        else {
-            Orion.Print("That wasnt an animal, waiting 5 seconds")
-            Orion.Wait(5000);
-        }
-        Orion.Wait(1000);
 
-    }
-    Orion.Print("Select a rune bag")
-    var runeBag = SelectTarget();
+        Orion.Print("Select the animals you taming, you can add them in later using AddNewTameToList");
 
-    var useRunes = runeBag != null;
-    Orion.Print(useRunes)
-    var runes;
-    walkLocations.push(coordinate(Player.X(), Player.Y(), Player.Z(), 'start'))
-    if (useRunes) {
-        runes = Orion.FindTypeEx('0x1F14', any, runeBag.Serial());
-    }
-    else {
         Orion.WarMode(1);
         Orion.Wait(500);
 
         while (Player.WarMode() == true) {
-            Orion.Print("Select Walk Location")
-            var tile = SelectCoordinate();
-            if (tile != null) {
-                walkLocations.push(tile)
+            Orion.Print("Select Targets then leave war mode")
+            var animal = SelectTarget();
+            if (animal != null && animal.Mobile() == true) {
+                selectedTarget.push(animal.Graphic())
             }
             else {
-                Orion.WarMode(0);
+                Orion.Print("That wasnt an animal, waiting 5 seconds")
+                Orion.Wait(5000);
             }
             Orion.Wait(1000);
+
+        }
+    }
+    if (walkLocations.length > 0) {
+        var runeBag = null;
+        var runes = 0;
+        var useRunes = false;
+
+    }
+    else {
+        Orion.Print("Select a rune bag")
+        var runeBag = SelectTarget();
+
+        var useRunes = runeBag != null;
+        Orion.Print(useRunes)
+        var runes;
+        walkLocations.push(coordinate(Player.X(), Player.Y(), Player.Z(), 'start'))
+        if (useRunes) {
+            runes = Orion.FindTypeEx('0x1F14', any, runeBag.Serial());
+        }
+        else {
+            Orion.WarMode(1);
+            Orion.Wait(500);
+
+            while (Player.WarMode() == true) {
+                Orion.Print("Select Walk Location")
+                var tile = SelectCoordinate();
+                if (tile != null) {
+                    walkLocations.push(tile)
+                }
+                else {
+                    Orion.WarMode(0);
+                }
+                Orion.Wait(1000);
+            }
         }
     }
     var startingSkill = Orion.SkillValue('Animal Taming', 'real')
@@ -69,7 +137,7 @@ function TrainTaming() {
 
     while (!Player.Dead()) {
         var animals = [];
-    //    Orion.Wait(800);
+        //    Orion.Wait(800);
         TextWindow.Print("Looking for tamables");
 
         if (selectedTarget.length > 0) {
@@ -99,11 +167,12 @@ function TrainTaming() {
         TextWindow.Print("Found:" + animals.length);
         if (animals.length == 0 && walkLocations.length > 0) {
             walkLocation++;
-            if(walkLocation>=walkLocations.length){
+            if (walkLocation >= walkLocations.length) {
                 walkLocation = 0;
+                ReloadTamables()
             }
 
-            WalkTo(walkLocations[walkLocation],5,10000)
+            WalkTo(walkLocations[walkLocation], 5, 10000)
         }
         while (Player.WarMode() == true) {
             Orion.Print("Select More type of animal then leave war mode")
@@ -240,7 +309,7 @@ function Tame(animal) {
             && Orion.InJournal(tamingPass, '', '0', '-1', startTime, Orion.Now()) == null) {
             //Orion.UseObject('0x40156CE2');
             //   TextWindow.Print('Waiting because timer is active')
-           // StayAway(animal.Serial(), );
+            // StayAway(animal.Serial(), );
             Orion.Wait(500);
         }
         Orion.RemoveDisplayTimer('SkillInUse');
