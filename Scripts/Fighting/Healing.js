@@ -118,7 +118,7 @@ function MageryHealing() {
                             Orion.CastTarget('Gift of renewal', patient.Serial())
                             gorTime = Orion.Now()
                         }
-                        else if (Orion.SkillValue('Magery') > 30 && patient != null && !patient.Poisoned() && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 5)) {
+                        else if (Orion.SkillValue('Magery') > 300 && patient != null && !patient.Poisoned() && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 5)) {
                             Orion.CastTarget('Greater Heal', patient.Serial())
                         }
                         else if (Orion.SkillValue('Magery') > 90 && patient.Dead() && patient.Distance() <= 1) {
