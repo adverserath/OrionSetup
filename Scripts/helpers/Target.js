@@ -231,11 +231,31 @@ function FelWalkTo(object, distance, timeMS, walking) {
 
 function InRange(p1, p2, range) {
   Debug(' Method Entry - InRange')
-
+  if (typeof p1 === "string") {
+    p1 = Orion.FindObject(p1)
+  }
+  if (typeof p2 === "string") {
+    p2 = Orion.FindObject(p2)
+  }
   return (p1.X() >= (p2.X() - range))
     && (p1.X() <= (p2.X() + range))
     && (p1.Y() >= (p2.Y() - range))
     && (p1.Y() <= (p2.Y() + range));
+}
+
+function InLOSRange(p1, p2, range) {
+  Debug(' Method Entry - InRange')
+  if (typeof p1 === "string") {
+    p1 = Orion.FindObject(p1)
+  }
+  if (typeof p2 === "string") {
+    p2 = Orion.FindObject(p2)
+  }
+  return (p1.X() >= (p2.X() - range))
+    && (p1.X() <= (p2.X() + range))
+    && (p1.Y() >= (p2.Y() - range))
+    && (p1.Y() <= (p2.Y() + range))
+    && Orion.InLOS(p1.X(), p1.Y(), p1.Z(), p2.X(), p2.Y(), p2.Z())
 
 }
 

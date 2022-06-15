@@ -5,7 +5,7 @@ var options = ["NESW", "NEWS", "NWES", "WNES", "NSEW", "NSWE", "NWSE", "WNSE", "
 //        ["ENSW", 1],
 //    ]
 
-    var tried = []    
+    var tried = [ ["NSEW", 2],["NEWS", 2],["NESW", 1],["NWES", 1]]    
 function workMatch(settings) {
 
     var optionSet = options

@@ -62,8 +62,8 @@ function ResponseHandler(recv) {
             Orion.ToggleScript('Walk');
             Orion.Wait(100)
         }
-        if(Orion.GetDistance(recvp[1], recvp[2])>5){
-		    Orion.InterruptCast();
+        if (Orion.GetDistance(recvp[1], recvp[2]) > 5 && Player.Frozen()) {
+            Orion.InterruptCast();
         }
         Orion.ToggleScript('Walk', true, [recvp[1], recvp[2], recvp[3], recvp[4]])
         Orion.Print('obj' + recvp[4])
@@ -139,6 +139,10 @@ function ResponseHandler(recv) {
         Orion.Print("Close")
         Orion.CloseUO()
     }
+    if (command[1] == 'RecoverCorpse') {
+        Orion.Print("Get My Corpse")
+        OpenOwnCorpses()
+    }
     if (command[1] == 'Search' && recvp[1] == 'Corpse') {
         Orion.Print('Search Corpses')
         OpenNearbyCorpses();
@@ -172,11 +176,11 @@ function UDPClientServer() {
 
 function SendWho() {
     var skills = []
-    var skillNames =  ['SpellWeaving','Magery','Animal Taming','Necromancy','Mysticism','Spirit Speak','Discordance','Provocation','Peacemaking']
-        skillNames.forEach( function (sn){
-            skills.push([sn,Orion.SkillValue(sn)])
-        }
-        )
+    var skillNames = ['SpellWeaving', 'Magery', 'Animal Taming', 'Necromancy', 'Mysticism', 'Spirit Speak', 'Discordance', 'Provocation', 'Peacemaking']
+    skillNames.forEach(function (sn) {
+        skills.push('['+sn +', '+ Orion.SkillValue(sn)+']')
+    }
+    )
 
     Orion.UdpSend(2597, "Player:::" + '{"name":"' + Player.Name() + '", "port":' + udpPort + ', "serial":"' + Player.Serial() + '", "skills":"' + skills + '"}');
 }

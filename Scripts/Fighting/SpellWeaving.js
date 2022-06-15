@@ -1,3 +1,32 @@
+function KillTargetWithWoD(enemy) {
+    while (enemy != null && enemy.Exists() && !enemy.Dead()) {
+        if (enemy.Distance() <= 10 && enemy.inLOS() && !Orion.IsWalking() && !Player.Frozen() && ReadyForWod(enemy)) {
+            Orion.Cast('Word Of Death')
+            Orion.WaitTargetObject('serial', relativeTargetDistance);
+            if (Orion.WaitForTarget(4000)) {
+                while (!enemy.Distance() <= 10 || !enemy.inLOS()) {
+                    Orion.Wait(300)
+                }
+                Orion.TargetObject(enemy.Serial());
+                Orion.Wait(1000)
+            }
+        }
+    }
+
+}
+
+function GetArcaneLevel() {
+    var focus = Orion.FindTypeEx('0x3155')
+        .filter(function (gem) {
+            return gem.Properties().indexOf('Strength Bonus') != -1
+        }).shift()
+    return (focus.Properties().match(/Strength\sBonus\s(\d)/i) || [])[1] || 0;
+}
+
+function ReadyForWod(enemy) {
+    return enemy.Hits() < (parseInt(0.05 * GetArcaneLevel() * 25))
+}
+
 function CastWOD() {
     var lastUpdate = Orion.Now()
 
@@ -115,7 +144,7 @@ function SpellWeavingKills() {
                 summoned = true
             }
 
-            if (Player.Mana()>40 && !Orion.BuffExists('Arcane Empowerment') && Orion.ClientLastAttack() != '0x00000000') {
+            if (Player.Mana() > 40 && !Orion.BuffExists('Arcane Empowerment') && Orion.ClientLastAttack() != '0x00000000') {
                 Cast('Arcane Empowerment')
                 continue;
             }
@@ -150,10 +179,11 @@ function SpellWeavingKills() {
             }
 
             //WOD
-            var wodTargets = allTargets.filter(function (mob) { 
-            if(WoDReds)
-            	return mob.Distance() <= (10) && mob.Notoriety()==6
-            return mob.Distance() <= (10)})
+            var wodTargets = allTargets.filter(function (mob) {
+                if (WoDReds)
+                    return mob.Distance() <= (10) && mob.Notoriety() == 6
+                return mob.Distance() <= (10)
+            })
                 .filter(function (enemy) {
                     return enemy.Exists() &&
                         enemy.Hits() < (hitmarker) &&
@@ -164,14 +194,14 @@ function SpellWeavingKills() {
                 Cast('Word Of Death', wodTargets.shift().Serial())
                 continue;
             }
-
-            if (Player.Mana() > 70) {
-                var fsTargets = allTargets.filter(function (mob) { return mob.Distance() <= (10) })
-               if (fsTargets.length > 0) {
-                   Cast('Energy Bolt', fsTargets.shift().Serial())
-                    continue;
-               }
-            }
+            if (Orion.SkillValue('Magery') > 600 && Orion.SkillValue('Evaluating Intelligence') > 600)
+                if (Player.Mana() > 70) {
+                    var fsTargets = allTargets.filter(function (mob) { return mob.Distance() <= (10) })
+                    if (fsTargets.length > 0) {
+                        Cast('Energy Bolt', fsTargets.shift().Serial())
+                        continue;
+                    }
+                }
 
             Orion.Wait(500)
         }

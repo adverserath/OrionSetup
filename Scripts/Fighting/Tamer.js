@@ -80,7 +80,7 @@ function VetAllNearBondedPets() {
     var pets = [];
     var gorTime = Orion.Now() - 60000;
     while (true) {
-        pets = Orion.FindTypeEx(any, any, ground, 'nothuman', 10, 'blue|green').filter(function (_) { return Orion.Contains(_.Properties(), 'bonded') })
+        pets = Orion.FindTypeEx(any, any, ground, 'nothuman', 10, 'green').filter(function (_) { return Orion.Contains(_.Properties(), 'bonded') })
         Orion.Wait(200)
         pets.filter(function (pet) {
             return pet.Distance() <= 10
@@ -91,15 +91,17 @@ function VetAllNearBondedPets() {
             .forEach(function (pet) {
 
                 if (pet != null && !Player.Paralyzed()) {
-                    if (pet.Distance() <= 2 && Orion.SkillValue('veterinary') > 300 && pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits() - 5) || pet.Dead())
-                        && !Orion.BuffExists('veterinary')) {
+                    if(Orion.SkillValue('Veterinary'))
+                        Orion.Print('im a vet')
+                    if (pet.Distance() <= 2 && Orion.SkillValue('Veterinary') > 300 && pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits() - 5) || pet.Dead())
+                        && !Orion.BuffExists('Veterinary')) {
                         Orion.WaitWhileTargeting(1000);
                         Orion.BandageTarget(pet.Serial());
                         Orion.AddDisplayTimer('bandagePet',
-                            Orion.BuffTimeRemaining('veterinary'),
+                            Orion.BuffTimeRemaining('Veterinary'),
                             'Top', 'Circle', 'HealOther', 0, 0,
                             'any', -1, '0x0000FFFE');
-                        Orion.DisplayTimerSetIcon('veterinary', 'Top', '0x0E21');
+                        Orion.DisplayTimerSetIcon('Veterinary', 'Top', '0x0E21');
                     }
                     else if (!Player.Frozen()) {
                         if (Player.Mana() > 15 && Orion.SkillValue('Magery') > 300 && pet != null && pet.Poisoned() && !Player.Frozen()) {

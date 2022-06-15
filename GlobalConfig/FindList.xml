@@ -18,6 +18,8 @@
         <item graphic="any" color="any" comment="Legendary Arti" count="0">
             <property name="Legendary Artifact" value_min="0" value_max="100"/>
         </item>
+        <item graphic="0xA769" color="0x0501" comment="Summer's Blessing - 6/11/2022" count="0"/>
+        <item graphic="0x0F80" color="0x0000" comment="10 Daemon Bone" count="0"/>
     </findlist>
     <findlist name="Inscription">
         <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>

@@ -5,7 +5,7 @@ function ShowDPS() {
     var damageDealt = 0
     var damageTaken = 0
     var lastCounted = Orion.LastJournalMessage().Timer()
-    var mount = Orion.FindObject('mount').Serial()
+    var mount = Orion.FindObject('mount')
     var lastMessage = Orion.LastJournalMessage();
     while (true) {
         Orion.Wait(200)
@@ -16,7 +16,7 @@ function ShowDPS() {
         while (pastMessage != null && pastMessage.Timer() > Orion.Now() - 1000) {
             if (pastMessage.Serial() == '0xFFFFFFFF' &&
                 Orion.Contains(pastMessage.Text(), 'damageecho')) {
-                if (!Orion.Contains(pastMessage.Text(), Player.Serial()) && !Orion.Contains(pastMessage.Text(), mount)) {
+                if (!Orion.Contains(pastMessage.Text(), Player.Serial()) && (mount==null || !Orion.Contains(pastMessage.Text(), mount.Serial()))) {
                     var outcome = parseInt(pastMessage.Text().match(/^damageecho:\s\w*=\w*\s\w*=(\d*)/i)[1])
                     dps += outcome
                     if (pastMessage.Timer() > lastCounted)

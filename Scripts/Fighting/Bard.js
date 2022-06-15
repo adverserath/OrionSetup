@@ -1,14 +1,32 @@
 var bardRange;
 
-function StopExisting()
-{
-if(Orion.ScriptRunning('Provoke'))
-	Orion.ToggleScript('Provoke')
-if(Orion.ScriptRunning('Discord'))
-	Orion.ToggleScript('Discord')
-if(Orion.ScriptRunning('Peacemaking'))
-	Orion.ToggleScript('Peacemaking')
-	Orion.Wait(100)
+function DrawGumps() {
+    var target = SelectTarget()
+    BardGump(target.Serial())
+}
+
+
+function BardGump(serial, x, y) {
+    var gumpId = serial
+    gump = Orion.CreateCustomGump(gumpId);
+    gump.SetNoClose(false);
+    gump.Clear();
+    gump.AddHtmlGump(1, 10, 10, 160, 120, '0x1400', 1, 0);
+    gump.Select('htmlgump', 1);
+    gump.AddText(10, 10, '0x0035', '-- ' + serial);
+
+    gump.Select('gump');
+    gump.Update();
+}
+
+function StopExisting() {
+    if (Orion.ScriptRunning('Provoke'))
+        Orion.ToggleScript('Provoke')
+    if (Orion.ScriptRunning('Discord'))
+        Orion.ToggleScript('Discord')
+    if (Orion.ScriptRunning('Peacemaking'))
+        Orion.ToggleScript('Peacemaking')
+    Orion.Wait(100)
 }
 
 function Provoke() {
@@ -19,7 +37,7 @@ function Provoke() {
 
     var t1 = GetSmartTarget()
     Orion.Print(t1)
-    var t2 = GetSmartTarget()
+    var t2 = GetSmartTarget(t1)
     Orion.Print(t2)
 
     var rand = Orion.Random(1000);
@@ -186,14 +204,20 @@ function ResetGlobals(_) {
 
 }
 
-function GetSmartTarget(_) {
+function GetSmartTarget(firstTarget) {
     ResetGlobals()
+
     var counter = 1
     Orion.FindTypeEx(any, any, ground,
-        'live|ignoreself|ignorefriends', bardRange, 3 | 4 | 5 | 6)
+        'live|ignoreself|ignorefriends', bardRange, 'blue|gray|criminal|orange|red')
         //NO PLAYERS
         .filter(function (mob) {
-            return mob.Properties().indexOf('Legacy') == -1
+            if (firstTarget != null) {
+                return mob.Properties().indexOf('Legacy') == -1
+                    && InRange(firstTarget, mob, 12)
+            }
+            else
+                return mob.Properties().indexOf('Legacy') == -1
         })
         //Order of closeness
         .sort(function (mobA, mobB) {
@@ -208,10 +232,15 @@ function GetSmartTarget(_) {
             Orion.Print(counter++)
         })
     //Wait for selection
+
     while (Orion.GetGlobal('smartTarget').length == 0) {
         Orion.Wait(100)
     }
+    var result = Orion.GetGlobal('smartTarget')
+    Orion.SetGlobal('smartTarget', null)
     //Return Chosen Mob
-    return Orion.GetGlobal('smartTarget')
+    return result
 }
 //#include helpers/Magic.js
+//#include helpers/Target.js
+//#include helpers/Debug.js

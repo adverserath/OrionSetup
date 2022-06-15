@@ -1,3 +1,38 @@
+//#include helpers/Target.js
+
+//#include helpers/Debug.js
+
+function DrawGumps()
+{
+    var target = SelectTarget()
+        BardGump(target.Serial())
+
+}
+
+
+function BardGump(serial,x,y)
+{
+    var gumpId = serial
+    var itemSerial = 0
+    gump = Orion.CreateCustomGump(gumpId);
+    gump.SetNoClose(false);
+    gump.Clear();
+    gump.AddHtmlGump(1, x, y, 240, 800, '0x1400', 1, 0);
+    gump.Select('htmlgump', 1);
+    gump.AddText(10, 10, '0x0035', '-- ' + serial);
+
+	var spoilerSerial = itemSerial++;
+	gump.AddSpoiler(spoilerSerial, 580, 200, 1, 290, Player.Graphic(), '0x0827', '0x0827', '0x0826', '0x0826', '0x0826');
+	gump.SetSpoilerText('Is spoiler o.O', 0, 0x0035, 0x0021);
+
+	// Select spoiler as current container for new items
+	gump.Select('spoiler', spoilerSerial);
+	gump.AddButton(itemSerial++, 45, 85, '0x00F6', '0x00F5', '0x00F4', '0', 0, 2);
+
+
+    gump.Select('gump');
+    gump.Update();
+}
 
 function TestResponseAllControls(unused)
 {
@@ -117,32 +152,32 @@ function TestCustomGumpAllControls()
 	for (var i = 0, j = 0; i < 9; i++)
 	{
 		if (i == 4)
-			gump.AddTilePic(330 + i * 20, 284, '0x0B1A');
+			gump.AddTilePic(330 + i * 10, 284, '0x0B1A');
 		else
 		{
 			gump.AddTilePic(330 + i * 20, 284, 0x1853 + j);
 			j++;
 		}
 	}
-	gump.AddTilePic(485, 340, '0x0C84');
-	gump.AddTilePic(335, 340, '0x0C84');
-	gump.AddTilePic(445, 330, '0x2102');
-	gump.AddTilePic(400, 360, '0x09CC', '0', 0, '0', 1);
-	gump.AddTilePic(425, 355, '0x09BA', '0', 0, '0', 1);
+	gump.AddTilePic(48, 340, '0x0C84');
+	gump.AddTilePic(33, 340, '0x0C84');
+	gump.AddTilePic(405, 330, '0x0080');
+	gump.AddTilePic(00, 360, '0x09CC', '0', 0, '0', 1);
+	gump.AddTilePic(25, 355, '0x09BA', '0', 0, '0', 1);
 	gump.AddTilePic(405, 370, '0x09CF', '0', 0, '0', 1);
 	gump.AddTilePic(405, 350, '0x09AD');
-	gump.AddTilePic(430, 390, '0x09AD');
-	gump.AddTilePic(385, 390, '0x09AD');
-	gump.AddTilePic(335, 390, '0x09BB');
+	gump.AddTilePic(40, 390, '0x09AD');
+	gump.AddTilePic(85, 390, '0x09AD');
+	gump.AddTilePic(35, 390, '0x09BB');
 	// Colorise the pig with a global RGB color
 	gump.AddGlobalColor(1, "#FF00FF");
-	gump.AddTilePic(475, 390, '0x09BB');
+	gump.AddTilePic(74, 390, '0x09BB');
 	gump.AddGlobalColor(0);
 	
 	// Colorise the pig with a global RGBA color
 	gump.AddBlending(1);
 	gump.AddGlobalColor(1, "#7FFF00FF");
-	gump.AddTilePic(515, 390, '0x09BB');
+	gump.AddTilePic(515, 90, '0x09BB');
 	gump.AddGlobalColor(0);
 	gump.AddBlending(0);
 
@@ -242,6 +277,7 @@ function TestCustomGumpAllControls()
 
 	// Select spoiler as current container for new items
 	gump.Select('spoiler', spoilerSerial);
+	gump.AddButton(itemSerial++, 45, 85, '0x00F6', '0x00F5', '0x00F4', '0', 0, 2);
 
 	x = 5;
 	y = 5;

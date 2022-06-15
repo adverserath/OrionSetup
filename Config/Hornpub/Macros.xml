@@ -12,4 +12,8 @@
         <action type="5" convert_type="0" waiting_time="1000" value="9"/>
         <action type="3" convert_type="9" waiting_time="1000" serial="0x0000A923" graphic="0x0190" color="0x83EA"/>
     </macro>
+    <macro name="macro" looped="false" delay="1">
+        <action type="16" convert_type="0" waiting_time="1000" serial="0x0000A923" graphic="0x0000" color="0x0000"/>
+        <action type="17" convert_type="0" waiting_time="1000" serial="0x0000A923" graphic="0x0001" color="0x0000"/>
+    </macro>
 </data>

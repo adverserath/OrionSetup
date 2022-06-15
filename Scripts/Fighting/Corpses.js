@@ -219,6 +219,18 @@ function OpenNearbyCorpses() {
     });
 }
 
+function OpenOwnCorpses() {
+    var corpses = Orion.FindTypeEx('0x2006', any, 'ground', any, 15).filter(function (corpse){
+    Orion.Print(Orion.Contains(corpse.Name(),Player.Name()))
+    return Orion.Contains(corpse.Properties(),Player.Name())
+    })
+    corpses.forEach(function (corpse) {
+    	WalkTo(corpse)
+        if(Orion.OpenContainer(corpse.Serial()))
+        	Orion.Ignore(corpse.Serial());
+    });
+}
+
 function HideCorpse() {
     var target = SelectTarget()
     Orion.Hide(target.Serial())

@@ -1,24 +1,23 @@
 var LMC = 0.40
 var looting = false
 
-function OpenMyCorpse()
-{
-Orion.FindTypeEx('0x2006', any, ground, 'item', 40).filter(function (corpse){
-return Orion.Contains(corpse.Properties(), Player.Name())
-}).forEach(function (corpse){
-WalkTo(corpse)
-Orion.Wait(100)
-Orion.UseObject(corpse.Serial())
-})
+function OpenMyCorpse() {
+    Orion.FindTypeEx('0x2006', any, ground, 'item', 40).filter(function (corpse) {
+        return Orion.Contains(corpse.Properties(), Player.Name())
+    }).forEach(function (corpse) {
+        WalkTo(corpse)
+        Orion.Wait(100)
+        Orion.UseObject(corpse.Serial())
+    })
 
 }
 function SampireLoops() {
-Orion.Print('Do you want to target a specific mob?')
-var targetSpecificMob = SelectTarget()
-if(targetSpecificMob != null)
-	Orion.SetGlobal("mobType",targetSpecificMob.Graphic())
-else
-	Orion.SetGlobal("mobType",any)
+    Orion.Print('Do you want to target a specific mob?')
+    var targetSpecificMob = SelectTarget()
+    if (targetSpecificMob != null)
+        Orion.SetGlobal("mobType", targetSpecificMob.Graphic())
+    else
+        Orion.SetGlobal("mobType", any)
     //Start Target Script
     Orion.Exec('TargetClosest', true);
     // Orion.Exec('SuperLooter', true);
@@ -66,14 +65,13 @@ function SetLocations(_) {
 }
 
 var mobType
-function GetMobType()
-{
-if(mobType==null)
-	mobType = Orion.GetGlobal("mobType")
-if(mobType==null)
-	return any
-else
-return mobType
+function GetMobType() {
+    if (mobType == null)
+        mobType = Orion.GetGlobal("mobType")
+    if (mobType == null)
+        return any
+    else
+        return mobType
 }
 
 function LocationLoop(_) {
@@ -150,11 +148,11 @@ function SampireSpells() {
                     CastSpell(spellName);
                 }
                 //Consecrate Weapon
-          //      spellName = "Consecrate Weapon"
-         //       if (ManaCheck(10, LMC) && !Orion.BuffExists(spellName)) {
-         //           Orion.PrintFast(self, '0x0111', 1, spellName);
-         //           CastSpell(spellName);
-        //        }
+                //      spellName = "Consecrate Weapon"
+                //       if (ManaCheck(10, LMC) && !Orion.BuffExists(spellName)) {
+                //           Orion.PrintFast(self, '0x0111', 1, spellName);
+                //           CastSpell(spellName);
+                //        }
 
                 //Curse Weapon
                 spellName = "Curse Weapon"
@@ -201,23 +199,21 @@ function TargetClosest(_) {
                     closest.concat(Orion.FindTypeEx(any, any, ground,
                         'live|ignoreself|ignorefriends', 12, 'gray|criminal|red|enemy')
                         .filter(function (mob) { return mob.WarMode() }))
-                        
+
                     closest = closest.sort(function (mobA, mobB) {
-                            return mobA.Distance() - mobB.Distance()
-                        });
-                        
-                        if (closest.filter(function(mob){return !mob.WarMode()}).length == 0) {
+                        return mobA.Distance() - mobB.Distance()
+                    });
+
+                    if (closest.filter(function (mob) { return !mob.WarMode() }).length == 0) {
                         Orion.PrintFast(self, '0x0111', 1, 'Loot');
-						if(looting)
-                        	OpenCorpsesWhenIdle()
-                        if (locations.length > 0)
-                        {
-                        while(Player.Weight()>Player.MaxWeight())
-                        {
-                        Orion.Wait(1000)
-                        }
+                        if (looting)
+                            OpenCorpsesWhenIdle()
+                        if (locations.length > 0) {
+                            while (Player.Weight() > Player.MaxWeight()) {
+                                Orion.Wait(1000)
+                            }
                             LocationLoop()
-                    }
+                        }
                     }
                     if (closest.length > 0) {
                         Orion.Exec('HonorSampire', true, [closest[0].Serial()]);
@@ -233,7 +229,7 @@ function TargetClosest(_) {
 
                         WalkTo(closest[0])
                         Orion.PrintFast(self, '0x0111', 1, closest[0].Name());
-                    
+
 
                     }
                 }
@@ -289,5 +285,6 @@ function CastSpell(spell, target) {
 //#include helpers/DpsGump.js
 //#include helpers/Target.js
 //#include helpers/Magic.js
+//#include helpers/Debug.js
 
 //#include Actions/Automated/BagOfSending.js
