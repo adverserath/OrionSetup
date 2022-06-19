@@ -103,11 +103,11 @@ function VetAllNearBondedPets() {
                             'any', -1, '0x0000FFFE');
                         Orion.DisplayTimerSetIcon('Veterinary', 'Top', '0x0E21');
                     }
-                    else if (!Player.Frozen()) {
-                        if (Player.Mana() > 15 && Orion.SkillValue('Magery') > 300 && pet != null && pet.Poisoned() && !Player.Frozen()) {
+                    else if (!Player.Frozen() && !pet.Dead()) {
+                        if (Player.Mana() > 15 && Orion.SkillValue('Magery') > 300 && pet != null && pet.Poisoned() && !Player.Frozen()&& pet.Hits() < (pet.MaxHits() - 5)) {
                             Orion.CastTarget('Arch Cure', pet.Serial())
                         }
-                        else if (Player.Mana() > 15 && Orion.SkillValue('Magery') > 30 && pet != null && !pet.Poisoned() && pet.Hits() < (pet.MaxHits() - 5)) {
+                        else if (Player.Mana() > 15 && Orion.SkillValue('Magery') > 30 && pet != null && !pet.Poisoned() && pet.Hits() < (pet.MaxHits() - 10)) {
                             Orion.CastTarget('Greater Heal', pet.Serial())
                         }
                         else if (Player.Mana() > 15 && Orion.SkillValue('Spellweaving') > 300 && pet != null && pet.Hits() < (pet.MaxHits() - 2) && gorTime < (Orion.Now() - 60000)) {

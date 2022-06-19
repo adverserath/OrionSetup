@@ -14,6 +14,12 @@
 //#include Actions/Event/PumpkinPicker.js
 //#include Fighting/SpellWeaving.js
 //#include Fighting/Healing.js
+//#include helpers/Gates.js
+
+function test()
+{
+GateTo('Mistas')
+}
 
 function gridX(x, size) {
     return x * size
@@ -40,7 +46,11 @@ var buttons = //x y CallBackID Text FunctionName
         [[100, 30, 61, "Go Home", 'Sender_GoHome'], [100, 30, 62, "Say", 'Sender_Speak'], [100, 30, 63, "Accept Gump", 'Sender_AcceptGump']],
         [[100, 30, 71, "Reload", 'Sender_Reload'], [100, 30, 72, "CloseUO", 'Sender_CloseUO']]
     ]
-
+var spells = 
+[
+        [[100, 30, 81, "Word Of Death", 'Sender_CastTarget'], [100, 30, 82, "Gift Of Life", 'Sender_CastSelf']],
+         [[100, 30, 91, 'Bless', 'Sender_CastMount'], [100, 30, 92, "Gift Of Life", 'Sender_CastMount']],
+]
 function Sender_CloseUO(serial) {
     Sender(serial, 'CloseUO:');
     if (serial === '*')
@@ -153,6 +163,36 @@ function Sender_PetAttack(serial) {
     }
 }
 
+function Sender_CastTarget(serial,spellName) {
+    var target = SelectTarget();
+    if (target != null) {
+        Sender(serial, 'Cast:' +spellName+':'+ target.Serial());
+        if (serial === '*')
+            Orion.CastTarget(spellName, target.Serial())
+    }
+}
+
+function Sender_Cast(serial, spellName) {
+        Sender(serial, 'Cast:' +spellName);
+        if (serial === '*')
+            Orion.Cast(spellName)
+}
+
+function Sender_CastMount(serial, spellName) {
+        Sender(serial, 'Cast:' +spellName+':mount');
+        if (serial === '*')
+        {
+            Orion.CastTarget(spellName, 'mount')
+        }
+}
+
+function Sender_CastSelf(serial, spellName) {
+        Sender(serial, 'Cast:' +spellName+':self');
+        if (serial === '*')
+            Orion.CastTarget(spellName, 'self')
+}
+
+
 function Sender_PetGuard(serial) {
     Sender(serial, 'PG');
     if (serial === '*')
@@ -228,6 +268,8 @@ function AutoFollowAndKill(serial) {
 }
 function HostCallback(_) {
     Orion.LoadScript('UDP/Sender.js')
+                    Orion.Print( "test")
+
     var code = CustomGumpResponse.ReturnCode();
     if (code == 0) {
         var gump = Orion.CreateCustomGump(15);
@@ -247,14 +289,26 @@ function HostCallback(_) {
     if (code.toString().length == 3) {
         var playerLocation = parseInt(code.toString()[0]) - 1
         clientSerial = players[playerLocation].serial
-        code = code.toString().substring(1, 3)
+        code = parseInt(code)//.toString().substring(1, 3)
     }
+                Orion.Print( code)
 
     buttons.forEach(function (rowLayer) {
         rowLayer.forEach(function (button) {
             if (button[2] == code) {
                 Orion.Print('Execute ' + button[4] + ' ' + clientSerial + '|')
-                Orion.ToggleScript(button[4], true, clientSerial)
+                Orion.ToggleScript(button[4], true, [clientSerial,button[3]])
+                return
+            }
+        })
+    });
+    spells.forEach(function (rowLayer) {
+        rowLayer.forEach(function (button) {
+                        Orion.Print('Execute ' + button[2] + ' ' +code)
+
+            if (button[2] == code) {
+                Orion.Print('Execute ' + button[4] + ' ' + clientSerial + '|')
+                Orion.ToggleScript(button[4], true, [clientSerial,button[3]])
                 return
             }
         })
@@ -296,7 +350,7 @@ function HostGump(_) {
 
     var widest = partition * (players.length + 1);
 
-    gump.AddHtmlGump(1, 0, 0, widest, buttons.length * 30 + 30, '0x0BB8');
+    gump.AddHtmlGump(1, 0, 0, widest, buttons.length * 30 + 130, '0x0BB8');
     gump.Select('htmlgump', 1);
 
     gump.AddResizepic(partition / 2 - 45, 10, '0x0BB7', 90, 30);
@@ -315,6 +369,15 @@ function HostGump(_) {
         row++;
     });
 
+    spells.forEach(function (rowLayer) {
+        rowLayer.forEach(function (button) {
+            gump.AddResizepic(gridX(column, button[0]), gridY(row, button[1]) + 30, '0x24EA', button[0], button[1], button[2], 1);
+            gump.AddText(gridTX(column, button[0]), gridTY(row, button[1]) + 30, '0', button[3]);
+            column++;
+        })
+        column = 0
+        row++;
+    });
 
     var i = 1;
     row = 0;

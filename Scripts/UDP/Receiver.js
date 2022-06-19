@@ -62,7 +62,7 @@ function ResponseHandler(recv) {
             Orion.ToggleScript('Walk');
             Orion.Wait(100)
         }
-        if (Orion.GetDistance(recvp[1], recvp[2]) > 5 && Player.Frozen()) {
+        if (Orion.GetDistance(recvp[1], recvp[2]) > 12 && Player.Frozen()) {
             Orion.InterruptCast();
         }
         Orion.ToggleScript('Walk', true, [recvp[1], recvp[2], recvp[3], recvp[4]])
@@ -82,6 +82,16 @@ function ResponseHandler(recv) {
             MountPet(true)
             Orion.Print("Mount " + recvp[1])
         }
+    }
+    if (command[1] == 'Cast') {
+        Orion.Print('Cast')
+
+        if(recvp[2]==null)
+        	Orion.Cast(recvp[1])
+        else
+        {
+        	Orion.CastTarget(recvp[1],recvp[2])
+        	}
     }
     if (command[1] == 'A') {
         Orion.Print("Attack")
