@@ -42,10 +42,23 @@ function SelectTarget(itemUsage) {
   if (itemUsage != null) {
     Orion.Print("Select your" + itemUsage);
   }
-  Orion.WaitForAddObject('myTarget');
-  Orion.TargetObject('myTarget');
-  var target = Orion.FindObject('myTarget');
-  return target;
+  var type = Orion.WaitForAddType('myTarget');
+  if (type == 1 || type == 2) {
+    Orion.TargetObject('myTarget');
+    var target = Orion.FindObject('myTarget');
+    return target;
+  }
+  else if (type == 3) {
+
+    var objList = Orion.FindType(any, any, ground, 'nearmouse|mobile',12,any)
+    
+    if(objList.length>0)
+    {  
+      var target = Orion.FindObject(objList[0]);
+      return target;
+    }
+}
+  return
 }
 
 function SelectCoordinate(text) {

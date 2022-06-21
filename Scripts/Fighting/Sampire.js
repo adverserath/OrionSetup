@@ -11,6 +11,11 @@ function OpenMyCorpse() {
     })
 
 }
+function ToggleJustParagons()
+{
+Orion.SetGlobal("justParagons", true)
+}
+
 function SampireLoops() {
     Orion.Print('Do you want to target a specific mob?')
     var targetSpecificMob = SelectTarget()
@@ -75,11 +80,18 @@ function GetMobType() {
 }
 
 function LocationLoop(_) {
+    var targetColor = any
+    if (Orion.GetGlobal("justParagons"))
+    {
+    Orion.Print('Killing Paragons')
+    targetColor = '0x0501' 
+    }
+
     if (Player.Poisoned() || Player.Hits() < Player.Hits() / 2) {
         return;
     }
     {
-        var mobCount = Orion.FindTypeEx(GetMobType(), any, ground,
+        var mobCount = Orion.FindTypeEx(GetMobType(), targetColor, ground,
             'live|ignoreself|ignorefriends|near', 6, 'gray|criminal|red|enemy').length
         Orion.Print('Checking next location')
 
@@ -91,7 +103,8 @@ function LocationLoop(_) {
             WalkTo(locations[currentlocation++])
 
             //Find Next Target Far away
-            var farMobs = Orion.FindTypeEx(GetMobType(), any, ground,
+            
+            var farMobs = Orion.FindTypeEx(GetMobType(), targetColor, ground,
                 'live|ignoreself|ignorefriends|near', 30, 'gray|criminal|red|enemy')
             if (farMobs.length > 0) {
                 WalkTo(farMobs[0])
@@ -176,6 +189,13 @@ function SampireSpells() {
 }
 
 function TargetClosest(_) {
+    var targetColor = any
+    if (Orion.GetGlobal("justParagons"))
+    {
+    Orion.Print('Killing Paragons')
+    targetColor = '0x0501' 
+    }
+    
     SetLocations()
     while (true) {
         Orion.Wait(500)
@@ -184,7 +204,7 @@ function TargetClosest(_) {
             var lastAttacker = Orion.FindObject(Orion.ClientLastAttack())
 
             if (lastAttacker == null) {
-                var closest = Orion.FindTypeEx(GetMobType(), any, ground,
+                var closest = Orion.FindTypeEx(GetMobType(), targetColor, ground,
                     'live|ignoreself|ignorefriends|near', 1, 'gray|criminal|red|enemy')
 
                 if (closest.length > 0) {

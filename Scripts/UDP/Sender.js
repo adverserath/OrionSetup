@@ -16,10 +16,31 @@
 //#include Fighting/Healing.js
 //#include helpers/Gates.js
 
-function test()
+function TargetTest()
 {
+SelectTarget()
+}
+function ToMistas()
+{
+RecallRune('0x4012AFCE')
 GateTo('Mistas')
 }
+function ToTW()
+{
+RecallRune('0x4001983C')
+Orion.Wait(1000)
+WalkTo('0x4015E476')
+	Orion.UseObject('0x4015E476');
+	if (Orion.WaitForGump(1000))
+	{
+		var gump0 = Orion.GetGump('last');
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xF9A23032'))
+		{
+			gump0.Select(Orion.CreateGumpHook(1111825));
+			Orion.Wait(100);
+		}
+	}}
+
 
 function gridX(x, size) {
     return x * size
@@ -38,18 +59,20 @@ function gridTY(y, size) {
 
 var buttons = //x y CallBackID Text FunctionName
     [
-        [[100, 30, 11, "Follow", 'Sender_FollowMe'], [100, 30, 12, "Walk To", 'Sender_WalkToHere'], [100, 30, 13, "Walk To Me", 'Sender_WalkToMe']],
-        [[50, 30, 21, "Mount", 'Sender_MountPet'], [50, 30, 22, "UnMount", 'Sender_UnmountPet'], [50, 30, 23, "War", 'Sender_War'], [50, 30, 24, "Peace", 'Sender_Peace']],
-        [[100, 30, 31, "Attack", 'Sender_Attack'], [100, 30, 32, "AF and Kill", 'AutoFollowAndKill'], [100, 30, 25, "Open Corpses", 'Sender_OpenCorpses']],
-        [[100, 30, 41, "Pet Guard", 'Sender_PetGuard'], [100, 30, 42, "Pet Come", 'Sender_PetCome'], [100, 30, 43, "Pet Attack", 'Sender_PetAttack']],
-        [[100, 30, 51, "Pet Stop", 'Sender_PetStop'], [100, 30, 52, "Pet Stay", 'Sender_PetStay']],
-        [[100, 30, 61, "Go Home", 'Sender_GoHome'], [100, 30, 62, "Say", 'Sender_Speak'], [100, 30, 63, "Accept Gump", 'Sender_AcceptGump']],
-        [[100, 30, 71, "Reload", 'Sender_Reload'], [100, 30, 72, "CloseUO", 'Sender_CloseUO']]
+        [[100, 30, 1100, "Follow", 'Sender_FollowMe'], [100, 30, 1200, "Walk To", 'Sender_WalkToHere'], [100, 30, 1300, "Walk To Me", 'Sender_WalkToMe']],
+        [[50, 30, 2100, "Mount", 'Sender_MountPet'], [50, 30, 2200, "UnMount", 'Sender_UnmountPet'], [50, 30, 2300, "War", 'Sender_War'], [50, 30, 2400, "Peace", 'Sender_Peace']],
+        [[100, 30, 3100, "Attack", 'Sender_Attack'], [100, 30, 3200, "AF and Kill", 'AutoFollowAndKill'], [100, 30, 2500, "Open Corpses", 'Sender_OpenCorpses']],
+        [[100, 30, 4100, "Pet Guard", 'Sender_PetGuard'], [100, 30, 4200, "Pet Come", 'Sender_PetCome'], [100, 30, 4300, "Pet Attack", 'Sender_PetAttack']],
+        [[100, 30, 5100, "Pet Stop", 'Sender_PetStop'], [100, 30, 5200, "Pet Stay", 'Sender_PetStay']],
+        [[100, 30, 6100, "Go Home", 'Sender_GoHome'], [100, 30, 6200, "Say", 'Sender_Speak'], [100, 30, 6300, "Accept Gump", 'Sender_AcceptGump']],
+        [[100, 30, 7100, "Reload", 'Sender_Reload'], [100, 30, 7200, "CloseUO", 'Sender_CloseUO']]
     ]
 var spells = 
 [
-        [[100, 30, 81, "Word Of Death", 'Sender_CastTarget'], [100, 30, 82, "Gift Of Life", 'Sender_CastSelf']],
-         [[100, 30, 91, 'Bless', 'Sender_CastMount'], [100, 30, 92, "Gift Of Life", 'Sender_CastMount']],
+        [[100, 30, 8100, "Word Of Death", 'Sender_CastTarget'], [100, 30, 8200, "Gift Of Life", 'Sender_CastSelf']],
+         [[100, 30, 9100, 'Bless', 'Sender_CastMount'], [100, 30, 9200, "Gift Of Life", 'Sender_CastMount']],
+         [[100, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [100, 30, 1020, "Thunderstorm", 'Sender_Cast']],
+
 ]
 function Sender_CloseUO(serial) {
     Sender(serial, 'CloseUO:');
@@ -286,7 +309,8 @@ function HostCallback(_) {
     var players = LoadPlayerJson()
 
     var clientSerial = '*'
-    if (code.toString().length == 3) {
+    Orion.Print(code)
+    if (code.toString().length == 5) {
         var playerLocation = parseInt(code.toString()[0]) - 1
         clientSerial = players[playerLocation].serial
         code = parseInt(code)//.toString().substring(1, 3)
