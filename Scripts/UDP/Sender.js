@@ -15,31 +15,7 @@
 //#include Fighting/SpellWeaving.js
 //#include Fighting/Healing.js
 //#include helpers/Gates.js
-
-function TargetTest()
-{
-SelectTarget()
-}
-function ToMistas()
-{
-RecallRune('0x4012AFCE')
-GateTo('Mistas')
-}
-function ToTW()
-{
-RecallRune('0x4001983C')
-Orion.Wait(1000)
-WalkTo('0x4015E476')
-	Orion.UseObject('0x4015E476');
-	if (Orion.WaitForGump(1000))
-	{
-		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xF9A23032'))
-		{
-			gump0.Select(Orion.CreateGumpHook(1111825));
-			Orion.Wait(100);
-		}
-	}}
+//#include helpers/Quest.js
 
 
 function gridX(x, size) {
@@ -65,15 +41,16 @@ var buttons = //x y CallBackID Text FunctionName
         [[100, 30, 4100, "Pet Guard", 'Sender_PetGuard'], [100, 30, 4200, "Pet Come", 'Sender_PetCome'], [100, 30, 4300, "Pet Attack", 'Sender_PetAttack']],
         [[100, 30, 5100, "Pet Stop", 'Sender_PetStop'], [100, 30, 5200, "Pet Stay", 'Sender_PetStay']],
         [[100, 30, 6100, "Go Home", 'Sender_GoHome'], [100, 30, 6200, "Say", 'Sender_Speak'], [100, 30, 6300, "Accept Gump", 'Sender_AcceptGump']],
-        [[100, 30, 7100, "Reload", 'Sender_Reload'], [100, 30, 7200, "CloseUO", 'Sender_CloseUO']]
+        [[100, 30, 7100, "Reload", 'Sender_Reload'], [100, 30, 7200, "CloseUO", 'Sender_CloseUO'], [100, 30, 7300, "RecoverCorpse", 'Sender_Method']]
     ]
-var spells = 
-[
+var spells =
+    [
         [[100, 30, 8100, "Word Of Death", 'Sender_CastTarget'], [100, 30, 8200, "Gift Of Life", 'Sender_CastSelf']],
-         [[100, 30, 9100, 'Bless', 'Sender_CastMount'], [100, 30, 9200, "Gift Of Life", 'Sender_CastMount']],
-         [[100, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [100, 30, 1020, "Thunderstorm", 'Sender_Cast']],
+        [[100, 30, 9100, 'Bless', 'Sender_CastMount'], [100, 30, 9200, "Gift Of Life", 'Sender_CastMount']],
+        [[100, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [100, 30, 1020, "Thunderstorm", 'Sender_Cast']
+            , [100, 30, 1030, "GotoMistas", 'Sender_Method'], [100, 30, 1040, "GotoTW", 'Sender_Method'], [100, 30, 1050, "QuestRenew", 'Sender_Method']],
 
-]
+    ]
 function Sender_CloseUO(serial) {
     Sender(serial, 'CloseUO:');
     if (serial === '*')
@@ -132,7 +109,6 @@ function Sender_WalkToHere(serial) {
     Sender(serial, 'W:' + pathLocation.X() + ':' + pathLocation.Y() + ':' + pathLocation.Z());
     if (serial === '*')
         Orion.WalkTo(pathLocation.X(), pathLocation.Y(), pathLocation.Z(), 0, 3, 1)
-
 }
 
 function Sender_OpenCorpses(serial) {
@@ -186,33 +162,43 @@ function Sender_PetAttack(serial) {
     }
 }
 
-function Sender_CastTarget(serial,spellName) {
-    var target = SelectTarget();
+function Sender_CastTarget(serial, spellName, _target) {
+    var target
+    if (_target == null)
+        target = SelectTarget().Serial();
+    else
+        target = _target
+
     if (target != null) {
-        Sender(serial, 'Cast:' +spellName+':'+ target.Serial());
+        Sender(serial, 'Cast:' + spellName + ':' + target);
         if (serial === '*')
-            Orion.CastTarget(spellName, target.Serial())
+            Orion.CastTarget(spellName, target)
     }
 }
 
 function Sender_Cast(serial, spellName) {
-        Sender(serial, 'Cast:' +spellName);
-        if (serial === '*')
-            Orion.Cast(spellName)
+    Sender(serial, 'Cast:' + spellName);
+    if (serial === '*')
+        Orion.Cast(spellName)
+}
+
+function Sender_Method(serial, methodName) {
+    Sender(serial, 'Method:' + methodName);
+    if (serial === '*')
+        Orion.ToggleScript(methodName);
 }
 
 function Sender_CastMount(serial, spellName) {
-        Sender(serial, 'Cast:' +spellName+':mount');
-        if (serial === '*')
-        {
-            Orion.CastTarget(spellName, 'mount')
-        }
+    Sender(serial, 'Cast:' + spellName + ':mount');
+    if (serial === '*') {
+        Orion.CastTarget(spellName, 'mount')
+    }
 }
 
 function Sender_CastSelf(serial, spellName) {
-        Sender(serial, 'Cast:' +spellName+':self');
-        if (serial === '*')
-            Orion.CastTarget(spellName, 'self')
+    Sender(serial, 'Cast:' + spellName + ':self');
+    if (serial === '*')
+        Orion.CastTarget(spellName, 'self')
 }
 
 
@@ -270,13 +256,9 @@ function AutoFollowAndKill(serial) {
         while (Player.WarMode()) {
             Orion.Wait(100)
             if (!Orion.IsWalking() && lastX != Player.X() || lastY != Player.Y() || (lastDirection != Player.Direction())) {
-                var offset = -1 * 1
                 Orion.Wait(100)
                 if (!Orion.IsWalking()) {
-                    players.forEach(function (player) {
-                        Sender_WalkToMe(player.serial, offset)
-                        offset *= -1
-                    })
+                    WalkToOffset()
                 }
                 lastDirection = Player.Direction()
                 lastX = Player.X()
@@ -291,7 +273,7 @@ function AutoFollowAndKill(serial) {
 }
 function HostCallback(_) {
     Orion.LoadScript('UDP/Sender.js')
-                    Orion.Print( "test")
+    Orion.Print("test")
 
     var code = CustomGumpResponse.ReturnCode();
     if (code == 0) {
@@ -315,24 +297,24 @@ function HostCallback(_) {
         clientSerial = players[playerLocation].serial
         code = parseInt(code)//.toString().substring(1, 3)
     }
-                Orion.Print( code)
+    Orion.Print(code)
 
     buttons.forEach(function (rowLayer) {
         rowLayer.forEach(function (button) {
             if (button[2] == code) {
                 Orion.Print('Execute ' + button[4] + ' ' + clientSerial + '|')
-                Orion.ToggleScript(button[4], true, [clientSerial,button[3]])
+                Orion.ToggleScript(button[4], true, [clientSerial, button[3]])
                 return
             }
         })
     });
     spells.forEach(function (rowLayer) {
         rowLayer.forEach(function (button) {
-                        Orion.Print('Execute ' + button[2] + ' ' +code)
+            Orion.Print('Execute ' + button[2] + ' ' + code)
 
             if (button[2] == code) {
                 Orion.Print('Execute ' + button[4] + ' ' + clientSerial + '|')
-                Orion.ToggleScript(button[4], true, [clientSerial,button[3]])
+                Orion.ToggleScript(button[4], true, [clientSerial, button[3]])
                 return
             }
         })
@@ -344,7 +326,7 @@ function Sender(serial, message, playerName) {
     var players = LoadPlayerJson()
 
     players.forEach(function (player) {
-       Orion.Print('Send To:' + player.name + ' on ' + player.port)
+        Orion.Print('Send To:' + player.name + ' on ' + player.port)
         if (playerName == null || player.name === playerName)
             Orion.UdpSend(player.port, serial + '|' + message)
     })
@@ -360,6 +342,7 @@ function LoadPlayerJson(_) {
 }
 
 function HostGump(_) {
+    Shared.AddVar('Distance', 1)
     var gumpId = 60
     var gump = Orion.CreateCustomGump(gumpId);
     gump.Clear()
@@ -470,7 +453,7 @@ function NewSubscriber(recv) {
                     }
                     pl.skills = jsPlayer.skills
                     Orion.Print("Updated Skills")
-                    Orion.SetGlobal('updPlayers', JSON.stringify(players));                    
+                    Orion.SetGlobal('updPlayers', JSON.stringify(players));
                 }
             })
             if (shouldAdd) {
