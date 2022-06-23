@@ -11,6 +11,9 @@
 //#include Fighting/Corpses.js
 //#include Fighting/Healing.js
 ///#include Actions/Event/PumpkinPicker.js
+//#include helpers/Gates.js
+//#include helpers/Quest.js
+
 var udpPort = 2598;
 
 function Message_Receiver() {
@@ -86,12 +89,11 @@ function ResponseHandler(recv) {
     if (command[1] == 'Cast') {
         Orion.Print('Cast')
 
-        if(recvp[2]==null)
-        	Orion.Cast(recvp[1])
-        else
-        {
-        	Orion.CastTarget(recvp[1],recvp[2])
-        	}
+        if (recvp[2] == null)
+            Orion.Cast(recvp[1])
+        else {
+            Orion.CastTarget(recvp[1], recvp[2])
+        }
     }
     if (command[1] == 'A') {
         Orion.Print("Attack")
@@ -157,6 +159,10 @@ function ResponseHandler(recv) {
         Orion.Print('Search Corpses')
         OpenNearbyCorpses();
     }
+    if (command[1] == 'Method') {
+        Orion.Print('Run Method: ' + recvp[1])
+        Orion.ToggleScript(recvp[1]);
+    }
 }
 
 function Reload() {
@@ -188,7 +194,7 @@ function SendWho() {
     var skills = []
     var skillNames = ['SpellWeaving', 'Magery', 'Animal Taming', 'Necromancy', 'Mysticism', 'Spirit Speak', 'Discordance', 'Provocation', 'Peacemaking']
     skillNames.forEach(function (sn) {
-        skills.push('['+sn +', '+ Orion.SkillValue(sn)+']')
+        skills.push('[' + sn + ', ' + Orion.SkillValue(sn) + ']')
     }
     )
 

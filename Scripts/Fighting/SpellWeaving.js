@@ -208,7 +208,150 @@ function SpellWeavingKills() {
     }
 }
 
+function SmartHealer() {
+    Orion.Print('SmartHealer')
+    var targets = Orion.FindTypeEx(any, any, ground, 'nothuman', 10, 'green').filter(function (_) { return Orion.Contains(_.Properties(), 'bonded') })
+    targets.push(Orion.FindObject(self))
+    Orion.PartyMembers().forEach(function (party) {
+        var partyGuy = Orion.FindObject(party)
+        if (partyGuy != null)
+            targets.push(partyGuy)
+    })
+    targets.sort(function (patientA, patientB) {
+        return (patientA.Hits() / patientA.MaxHits()) - (patientB.Hits() / patientB.MaxHits())
+    })
+        .forEach(function (patient) {
+
+            if (patient != null && !Player.Paralyzed() && patient.Hits() < (patient.MaxHits() - 5)) {
+                if (!Player.Frozen()) {
+                    if (Orion.SkillValue('Magery') > 500 && patient != null && patient.Poisoned()) {
+                        Orion.CastTarget('Arch Cure', patient.Serial());
+                    }
+                    else if (Orion.SkillValue('Spellweaving') > 300 && patient != null && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 10) && gorTime < (Orion.Now() - 60000)) {
+                        Orion.CastTarget('Gift of renewal', patient.Serial())
+                        gorTime = Orion.Now()
+                    }
+                    else if (Orion.SkillValue('Magery') > 300 && patient != null && !patient.Poisoned() && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 5)) {
+                        Orion.CastTarget('Greater Heal', patient.Serial());
+
+                    }
+                    else if (Orion.SkillValue('Magery') > 90 && patient.Dead() && patient.Distance() <= 1) {
+                        Orion.CastTarget('Resurrection', patient.Serial());
+                    }
+                }
+                Orion.Wait(300);
+            }
+        })
+
+}
+
+function SmartWither() {
+    Orion.Print('SmartWither')
+    var allTargets = Orion.FindTypeEx(any, any, ground,
+        'live|ignoreself|ignorefriends|inlos', 18, 'gray|criminal|orange|red')
+    var mobsInRange = allTargets.filter(function (mob) { return mob.Distance() <= 4 }).length
+    if (mobsInRange > 2) {
+        Orion.Print('Targets:' + mobsInRange)
+        Orion.Cast('*', 'Wither');
+    }
+    else {
+        Orion.Print('Not enough Targets')
+    }
+
+}
+
+function SmartThunderStorm() {
+    Orion.Print('SmartThunderStorm')
+    var focus = Orion.FindTypeEx('0x3155')
+        .filter(function (gem) {
+            return gem.Properties().indexOf('Strength Bonus') != -1
+        }).shift()
+
+    var gemstr = parseInt((focus.Properties().match(/Strength\sBonus\s(\d)/i) || [])[1] || 0);
+
+    var allTargets = Orion.FindTypeEx(any, any, ground,
+        'live|ignoreself|ignorefriends|inlos', 18, 'gray|criminal|orange|red')
+    var thunderTargets = allTargets.filter(function (mob) { return mob.Distance() <= (3 + gemstr) })
+    if (thunderTargets.length > 0) {
+        Orion.Print('Targets:' + thunderTargets.length)
+
+        Orion.Cast('Thunderstorm');
+        Orion.Wait(150)
+    }
+    else {
+        Orion.Print('Not enough Targets')
+    }
+}
+
+function SmartWildfire() {
+    Orion.Print('SmartWildfire')
+    var focus = Orion.FindTypeEx('0x3155')
+        .filter(function (gem) {
+            return gem.Properties().indexOf('Strength Bonus') != -1
+        }).shift()
+
+    var gemstr = parseInt((focus.Properties().match(/Strength\sBonus\s(\d)/i) || [])[1] || 0);
+
+    var allTargets = Orion.FindTypeEx(any, any, ground,
+        'live|ignoreself|ignorefriends|inlos', 18, 'gray|criminal|orange|red')
+    var fireTargets = allTargets.filter(function (mob) { return mob.Distance() <= (5 + gemstr) })
+
+    if (fireTargets.length > 0) {
+        Orion.Print('Targets:' + fireTargets.length)
+        var furthest = fireTargets.sort(function (mobA, mobB) {
+            return mobB.Distance() - mobA.Distance()
+        })
+        Orion.AddHighlightCharacter(furthest[0].Serial(), '0x0161');
+        Orion.Print(furthest[0].Serial() + '   ' + furthest[0].Distance())
+        Orion.CastTarget('Wildfire', furthest[0].Serial());
+        Orion.Wait(150)
+    }
+    else {
+        Orion.Print('Not enough Targets')
+    }
+
+}
 
 
+function SmartWoD() {
+    Orion.Print('SmartWoD')
+    //Word Of Death on last attacker or weakest target
+
+    var focus = Orion.FindTypeEx('0x3155')
+        .filter(function (gem) {
+            return gem.Properties().indexOf('Strength Bonus') != -1
+        }).shift()
+
+    var gemstr = (focus.Properties().match(/Strength\sBonus\s(\d)/i) || [])[1] || 0;
+    var hitmarker = parseInt(0.05 * gemstr * 25)
+    Orion.Print('Getting targets under:' + (parseInt(0.05 * gemstr * 100)) + '%')
+    var attacker = Orion.FindObject(Orion.ClientLastAttack())
+    var target = null
+    if (attacker != null && attacker.Hits() < hitmarker) {
+        Orion.Print('Last Target')
+        target = attacker
+    }
+    else {
+        Orion.Print('Find Target')
+
+        var entireAreaMobs = Orion.FindTypeEx(any, any, ground,
+            'live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|orange|red')
+            .filter(function (enemy) {
+                return !Orion.Contains(enemy.Properties(), 'Legacy')
+                    && !Orion.Contains(enemy.Properties(), 'Loyalty')
+                    && enemy.Hits() <= hitmarker && enemy.Hits() > 0
+            })
+
+        entireAreaMobs.forEach(function (mob) {
+            Orion.AddHighlightCharacter(mob.Serial(), '0x0161');
+        })
+        Orion.Print('all targets:' + entireAreaMobs.length)
+        target = entireAreaMobs.shift()
+    }
+
+    if (target != null)
+        Orion.CastTarget('Word Of Death', target.Serial());
+
+}
 //#include helpers/Magic.js
 //#include helpers/Movement.js

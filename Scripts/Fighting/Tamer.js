@@ -25,6 +25,7 @@ function VetMultiPets() {
     while (selecting) {
         selected = SelectTarget();
         if (selected == null) {
+            Orion.Print('Null selected')
             selecting = false
         }
         else if (selected.Mobile()) {
@@ -91,7 +92,7 @@ function VetAllNearBondedPets() {
             .forEach(function (pet) {
 
                 if (pet != null && !Player.Paralyzed()) {
-                    if(Orion.SkillValue('Veterinary'))
+                    if (Orion.SkillValue('Veterinary'))
                         Orion.Print('im a vet')
                     if (pet.Distance() <= 2 && Orion.SkillValue('Veterinary') > 300 && pet != null && (pet.Poisoned() || pet.Hits() < (pet.MaxHits() - 5) || pet.Dead())
                         && !Orion.BuffExists('Veterinary')) {
@@ -104,7 +105,7 @@ function VetAllNearBondedPets() {
                         Orion.DisplayTimerSetIcon('Veterinary', 'Top', '0x0E21');
                     }
                     else if (!Player.Frozen() && !pet.Dead()) {
-                        if (Player.Mana() > 15 && Orion.SkillValue('Magery') > 300 && pet != null && pet.Poisoned() && !Player.Frozen()&& pet.Hits() < (pet.MaxHits() - 5)) {
+                        if (Player.Mana() > 15 && Orion.SkillValue('Magery') > 300 && pet != null && pet.Poisoned() && !Player.Frozen() && pet.Hits() < (pet.MaxHits() - 5)) {
                             Orion.CastTarget('Arch Cure', pet.Serial())
                         }
                         else if (Player.Mana() > 15 && Orion.SkillValue('Magery') > 30 && pet != null && !pet.Poisoned() && pet.Hits() < (pet.MaxHits() - 10)) {

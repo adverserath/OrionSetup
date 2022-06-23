@@ -24,17 +24,17 @@ var _transcendenceBook = 'Transcendence Book'
 
 //orc lighthouse X1954 Y3747
 function AutoSOSDoerClosest() {
-var startNumber = parseInt(Orion.InputText(60000,'Start at which number'))
+    var startNumber = parseInt(Orion.InputText(60000, 'Start at which number'))
 
     while (true) {
         for (var sosLevel = startNumber; sosLevel < 14; sosLevel++) {
-        startNumber=0
+            startNumber = 0
             Orion.Print('Checking Zone: ' + sosLevel)
 
             var currentSOSBox = FindGroundItemWithProperties(["SOS " + sosLevel + '\n'])
             if (currentSOSBox != null) {
                 WalkTo(currentSOSBox)
-				Orion.Wait(500)
+                Orion.Wait(500)
                 Orion.OpenContainer(currentSOSBox.Serial())
                 if (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0")) {
                     var soses = Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial())
@@ -49,12 +49,12 @@ var startNumber = parseInt(Orion.InputText(60000,'Start at which number'))
                         var pos = GetSOSLocation(sos)
                         var zone = GetZone(pos.X(), pos.Y())
                         Orion.Print('Zone: ' + zone)
-                        Orion.Print('CHECK' + zone + ' ' + sosLevel + '  ' + (sosLevel==zone))
-                        if(zone == sosLevel)
-	                        SosMap.push([sos.Serial(), pos.X(), pos.Y(), zone])
-	                       else{
-								MoveSoSToChest(sos.Serial(), zone)
-	                       }
+                        Orion.Print('CHECK' + zone + ' ' + sosLevel + '  ' + (sosLevel == zone))
+                        if (zone == sosLevel)
+                            SosMap.push([sos.Serial(), pos.X(), pos.Y(), zone])
+                        else {
+                            MoveSoSToChest(sos.Serial(), zone)
+                        }
                     })
                     SosMap.sort(function (s1, s2) {
                         return s1[2] + s1[1] - s2[2] + s2[1]
@@ -63,7 +63,7 @@ var startNumber = parseInt(Orion.InputText(60000,'Start at which number'))
                         SosMap.forEach(function (sos) {
                             Orion.MoveItem(sos[0], 1, currentSOSBox.Serial());
                             Orion.Wait(1000)
-                         })
+                        })
                     }
                     SosMap.forEach(function (sos) {
                         WalkTo(currentSOSBox)
@@ -138,8 +138,7 @@ function GetSoSFromGroup() {
     })
 }
 
-function OpenMap()
-{
+function OpenMap() {
     Orion.Launch("cmd.exe", ['/c', 'a:/Orion Launcher/OA/Scripts/soslocations.jpg']);
 }
 function ReadAllSOSToFile() {
@@ -245,8 +244,7 @@ function DoSOSInOrder() {
     }
 }
 
-function ChestRecoveryService()
-{
+function ChestRecoveryService() {
     var seakey = FindBackpackItemWithName([_seakey]).Serial()
 
     var droppedChest = FindGroundItemWithName(["Chest"])
@@ -256,7 +254,7 @@ function ChestRecoveryService()
         Orion.Wait(1000)
         var goldInChest = Orion.FindTypeEx('0x0EED', any, droppedChest.Serial())
         var availableGoldWeight = (Player.MaxWeight() - Player.Weight()) * 120
-        Orion.Print('Can carry gold: '+ availableGoldWeight)
+        Orion.Print('Can carry gold: ' + availableGoldWeight)
         if (goldInChest.length > 0 && Player.Weight() < (Player.MaxWeight() - 67)) {
             Orion.Print('Move Gold to backpack')
             Orion.MoveItem(goldInChest[0].Serial(), availableGoldWeight, backpack)
@@ -345,7 +343,7 @@ function ChestLootManager() {
     MoveItemText("Essence|Crafting Resource", FindGroundItemWithProperties([_essenceBox]).Serial())
     Orion.Print(_rareBox)
 
-    MoveItemText("Backpack|Wedding|Oars|Copper Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), true)
+    MoveItemText("Enchanted|Driftwood|Backpack|Wedding|Oars|Copper Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Woven|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), true)
     Orion.Print("scrolls")
 
     MoveScrolls(FindGroundItemWithProperties([_regBoxId]).Serial())

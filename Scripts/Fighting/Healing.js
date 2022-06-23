@@ -105,7 +105,7 @@ function MageryHealing() {
             return patient.Distance() <= 10
         })
             .sort(function (patientA, patientB) {
-                return patientA.Hits() - patientB.Hits()
+                return (patientA.Hits() / patientA.MaxHits()) - (patientB.Hits() / patientB.MaxHits())
             })
             .forEach(function (patient) {
 

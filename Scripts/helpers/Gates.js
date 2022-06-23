@@ -92,19 +92,25 @@ function GateTo(placeName) {
     if (gate != null) {
         WalkTo(gate)
         Orion.UseType('0x0F6C|0x4BCB', '0xFFFF', 'ground');
-
+        Orion.Wait(100)
         Orion.UseObject('0x4012F148');
-            if (Orion.WaitForGump(1000))
-            {
+        if (Orion.WaitForGump(2000)) {
+            var retries = 0
+            while (!Player.Hidden() || retries > 5) {
+                retries++
                 var gump0 = Orion.GetGump('last');
-                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8'))
-                {
+                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8')) {
+                    Orion.Wait(200)
                     var gumpHook0 = Orion.CreateGumpHook(1);
+                    Orion.Wait(200)
                     gumpHook0.AddCheck(GetRadioNumber(placeName)[0].RadioButton(), true);
+                    Orion.Wait(200)
                     gump0.Select(gumpHook0);
                     Orion.Wait(100);
                 }
+                Orion.Wait(500)
             }
+        }
     }
 }
 
@@ -143,6 +149,35 @@ function GateTo(placeName) {
 
 function GoTo() {
     GateTo('Britain')
+}
+
+function GotoMistas() {
+    GoHome()
+    Orion.Wait(500)
+    var portalCrystals = Orion.FindTypeEx('0x468A', any, ground, 'item', 20)
+    var portalCrystal = portalCrystals.shift()
+
+    if (portalCrystal != null) {
+        WalkTo(portalCrystal)
+        Orion.Say('luna mint')
+    }
+    Orion.Wait(500)
+    GateTo('Mistas')
+}
+
+function GotoTW() {
+    GoHome()
+    Orion.Wait(1000)
+    WalkTo('0x4015E476')
+    Orion.UseObject('0x4015E476');
+    if (Orion.WaitForGump(1000)) {
+        Orion.Wait(300)
+        var gump0 = Orion.GetGump('last');
+        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xF9A23032')) {
+            gump0.Select(Orion.CreateGumpHook(1111825));
+            Orion.Wait(100);
+        }
+    }
 }
 
 //#include helpers/Target.js

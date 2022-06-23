@@ -45,10 +45,10 @@ function MarkRune(runeItem) {
 }
 
 function RecallRune(runeItem) {
-	Debug(' Method Entry - RecallRune:'+runeItem)
+	Debug(' Method Entry - RecallRune:' + runeItem)
 	if (typeof runeItem === "string") {
 		runeItem = Orion.FindObject(runeItem)
-		Orion.Print('Found '+runeItem)
+		Orion.Print('Found ' + runeItem)
 	}
 	var startCastTime = Orion.Now();
 	var x = Player.X();
@@ -88,7 +88,7 @@ function GoHome() {
 	Orion.OpenContainer(backpack)
 	var runebook = Orion.FindTypeEx('0x22C5')
 		.filter(function (book) {
-	
+
 			return Orion.Contains(book.Properties(), 'Home')
 		}).shift()
 	if (runebook != null) {
@@ -100,7 +100,7 @@ function GoHome() {
 		}
 	}
 	WaitFrozen("Going Home");
-	Orion.WalkTo(Player.X() + 5, Player.Y() - 5, 0, 2)
+	//Orion.WalkTo(Player.X() + 5, Player.Y() - 5, 0, 2)
 }
 
 function KeepGateOpen() {
@@ -134,10 +134,10 @@ function ReleaseAllSummons(_) {
 	Debug(' Method Entry - ReleaseAllSummons')
 	Orion.FindTypeEx(any, any, ground, 'live|ignoreself', 15, 1 | 2)
 		.filter(function (mob) {
-	
+
 			return mob.Properties().indexOf('summoned') != -1
 		}).forEach(function (mobile) {
-	
+
 			Orion.Say(mobile.Name() + ' release')
 		})
 }
