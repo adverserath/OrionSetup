@@ -209,6 +209,7 @@ function SpellWeavingKills() {
 }
 
 function SmartHealer() {
+    
     Orion.Print('SmartHealer')
     var targets = Orion.FindTypeEx(any, any, ground, 'nothuman', 10, 'green').filter(function (_) { return Orion.Contains(_.Properties(), 'bonded') })
     targets.push(Orion.FindObject(self))
@@ -221,16 +222,17 @@ function SmartHealer() {
         return (patientA.Hits() / patientA.MaxHits()) - (patientB.Hits() / patientB.MaxHits())
     })
         .forEach(function (patient) {
+            Orion.Print(patient.Name())
 
             if (patient != null && !Player.Paralyzed() && patient.Hits() < (patient.MaxHits() - 5)) {
                 if (!Player.Frozen()) {
                     if (Orion.SkillValue('Magery') > 500 && patient != null && patient.Poisoned()) {
                         Orion.CastTarget('Arch Cure', patient.Serial());
                     }
-                    else if (Orion.SkillValue('Spellweaving') > 300 && patient != null && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 10) && gorTime < (Orion.Now() - 60000)) {
-                        Orion.CastTarget('Gift of renewal', patient.Serial())
-                        gorTime = Orion.Now()
-                    }
+                    // else if (Orion.SkillValue('Spellweaving') > 300 && patient != null && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 10) && gorTime < (Orion.Now() - 60000)) {
+                    //     Orion.CastTarget('Gift of renewal', patient.Serial())
+                    //     gorTime = Orion.Now()
+                    // }
                     else if (Orion.SkillValue('Magery') > 300 && patient != null && !patient.Poisoned() && !patient.Dead() && patient.Hits() < (patient.MaxHits() - 5)) {
                         Orion.CastTarget('Greater Heal', patient.Serial());
 
@@ -260,7 +262,7 @@ function SmartWither() {
 
 }
 
-function SmartThunderStorm() {
+function SmartThunderstorm() {
     Orion.Print('SmartThunderStorm')
     var focus = Orion.FindTypeEx('0x3155')
         .filter(function (gem) {

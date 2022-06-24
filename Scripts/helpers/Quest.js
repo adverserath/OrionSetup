@@ -30,4 +30,30 @@ function QuestRenew() {
 	}
 	var gump2 = Orion.GetGump('last');
 	gump2.Select(Orion.CreateGumpHook(0));
+	Orion.ToggleScript('ParagonQuestTargetter')
+
+}
+
+function ParagonQuestTargetter()
+{
+	var startTime = Orion.Now()
+while(Orion.InJournal('You have killed all the required quest', '', '0', '-1', startTime, Orion.Now()) == null)
+{
+	if(Player.WarMode())
+	{
+	Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends', 20, 'blue|gray|criminal|red')
+        .filter(function (mob) {
+            return mob.Color()=='0x0501'
+        }).forEach(function (mobile) {
+			Orion.Wait(50)
+			Orion.Print('attack'+mobile.Name())
+Orion.Attack(mobile.Serial())
+    })
+	}
+    Orion.Wait(50)
+
+
+}
+
 }

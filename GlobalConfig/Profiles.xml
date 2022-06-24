@@ -12,7 +12,7 @@
     <profile serial="0x00005DC9" file="Tyr"/>
     <profile serial="0x00006A06" file="Tyr"/>
     <profile serial="0x00006EF6" file="Aki"/>
-    <profile serial="0x000072B7" file="Atten"/>
+    <profile serial="0x000072B7" file="Atten_Sub2"/>
     <profile serial="0x0000813F" file="Tim"/>
     <profile serial="0x000097BB" file="Default"/>
     <profile serial="0x000097F8" file="Barnacle"/>

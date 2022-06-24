@@ -179,5 +179,18 @@ function GotoTW() {
         }
     }
 }
-
+function GotoBlood() {
+    GoHome()
+    Orion.Wait(1000)
+    WalkTo('0x4015E476')
+    Orion.UseObject('0x4015E476');
+    if (Orion.WaitForGump(1000)) {
+        Orion.Wait(300)
+        var gump0 = Orion.GetGump('last');
+        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xF9A23032')) {
+            gump0.Select(Orion.CreateGumpHook(1078308));
+            Orion.Wait(100);
+        }
+    }
+}
 //#include helpers/Target.js

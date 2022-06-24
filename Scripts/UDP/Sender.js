@@ -47,8 +47,8 @@ var spells =
     [
         [[100, 30, 8100, "Word Of Death", 'Sender_CastTarget'], [100, 30, 8200, "Gift Of Life", 'Sender_CastSelf']],
         [[100, 30, 9100, 'Bless', 'Sender_CastMount'], [100, 30, 9200, "Gift Of Life", 'Sender_CastMount']],
-        [[100, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [100, 30, 1020, "Thunderstorm", 'Sender_Cast']
-            , [100, 30, 1030, "GotoMistas", 'Sender_Method'], [100, 30, 1040, "GotoTW", 'Sender_Method'], [100, 30, 1050, "QuestRenew", 'Sender_Method']],
+        [[75, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [75, 30, 1020, "Thunderstorm", 'Sender_Cast']
+            , [75, 30, 1030, "GotoMistas", 'Sender_Method'], [75, 30, 1040, "GotoTW", 'Sender_Method'],[75, 30, 1050, "GotoBlood", 'Sender_Method'], [75, 30, 1060, "QuestRenew", 'Sender_Method']],
 
     ]
 function Sender_CloseUO(serial) {
@@ -140,10 +140,13 @@ function Sender_UnmountPet(serial) {
 }
 
 function Sender_Attack(serial) {
-    var target = SelectTarget().Serial();
-    if (target != null) {
-        Orion.Attack(target)
-        Sender(serial, 'A:' + target);
+    var tobj = SelectTarget()
+    if(tobj.Notoriety()!=2){
+    var target = tobj.Serial();
+        if (target != null) {
+            Orion.Attack(target)
+            Sender(serial, 'A:' + target);
+        }
     }
 }
 function Sender_Speak(serial) {
