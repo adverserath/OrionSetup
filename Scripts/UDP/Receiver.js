@@ -10,6 +10,7 @@
 //#include Fighting/SpellWeaving.js
 //#include Fighting/Corpses.js
 //#include Fighting/Healing.js
+//#include Actions/Automated/Doom.js
 ///#include Actions/Event/PumpkinPicker.js
 //#include helpers/Gates.js
 //#include helpers/Quest.js

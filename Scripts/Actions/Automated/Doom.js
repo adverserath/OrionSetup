@@ -41,12 +41,27 @@ var rooms = [
     Room(coordinate(405, 500, 0, 'Room3 Meet'), coordinate(403, 502, 0, 'Room3 Entry'), coordinate(405, 527, 0, 'Room3 Attack'), demon, true),
     Room(coordinate(360, 476, 0, 'Room4 Meet'), coordinate(357, 476, 0, 'Room4 Entry'), coordinate(340, 500, 0, 'Room4 Attack'), undead, true),
     Room(coordinate(365, 433, 0, 'Room5 Meet'), coordinate(361, 433, 0, 'Room5 Entry'), coordinate(330, 431, 0, 'Room5 Attack'), demon, true),
-    Room(coordinate(403, 429, 0, 'Room6 Meet'), coordinate(403, 429, 0, 'Room6 Entry'), coordinate(381, 428, 0, 'Room6 Attack'), demon, false),
+    Room(coordinate(381, 429, 0, 'Room6 Meet'), coordinate(401, 429, 0, 'Room6 Entry'), coordinate(407, 428, 0, 'Room6 Attack'), demon, false),
 
 ]
 
 var groupSize = 0
+
+var hitmarker = function(){
+    var focus = Orion.FindTypeEx('0x3155')
+    .filter(function (gem) {
+        return gem.Properties().indexOf('Strength Bonus') != -1
+    }).shift()
+    if(focus!=null){
+    var gemstr = (focus.Properties().match(/Strength\sBonus\s(\d)/i) || [])[1] || 0;
+
+return parseInt(0.05 * gemstr * 25)
+}
+return 0
+}()
+
 function DoomGauntlet() {
+
 
     groupSize = Orion.FindTypeEx(any, any, ground,
         'live', 10, 'green').length
@@ -117,7 +132,19 @@ function DoRoom(room) {
 
     mobiles.forEach(function (mobile) {
         Orion.Attack(mobile.Serial());
+        Orion.Wait(500)
     })
+    if(!rooms[room].DeathRay())
+    {
+        WalkTo(coordinate(394, 432, 0, 'Room6 Retreat'))
+        mobiles.forEach(function (mobile) {
+            while(mobile.Exists())
+            {
+                Orion.Wait(3000)
+            }
+        })
+        return
+    }
     mobiles.forEach(function (mobile) {
         if (!Orion.BuffExists('0x9BD2'))
             WalkTo(mobile, 10)
@@ -126,22 +153,32 @@ function DoRoom(room) {
 
         while(!isItDead)
         {
-            while (!Orion.BuffExists('0x9BD2')) {
+            while (!Orion.BuffExists('0x9BD2') && mobile.Exists()) {
                 Orion.Cast('Death Ray')
                 if (Orion.WaitForTarget(4000)) {
                     Orion.TargetObject(mobile.Serial())
                 }
                 Orion.Wait(2000)
             }
-            if(!Orion.DisplayTimerExists('Corpse skin'))
+
+            if(mobile.Hits()<=hitmarker)
             {
-                Orion.AddDisplayTimer('Corpse skin', 20000,'Custom','Bar','Corpse skin', 100,1200);
-                Orion.CastTarget('Corpse skin',mobile.Serial())
-                Orion.Wait(1500)
+                Orion.Print("Wod Time")
+                Sender_Method('*',SmartWoD)
+                Orion.Wait(2000)
+            }
+    		else{
+                if(!Orion.DisplayTimerExists('Corpse skin'))
+                {
+                    Orion.AddDisplayTimer('Corpse skin', 20000,'Custom','Bar','Corpse skin', 100,1200);
+                    Orion.CastTarget('Corpse skin',mobile.Serial())
+                    Orion.Wait(1500)
+                }
+    
+                Sender_CastTarget('*', 'Flame Strike',Orion.FindObject(lastattack).Serial());
             }
 
-            Sender_CastTarget('*', 'Flame Strike',Orion.FindObject(lastattack).Serial());
-            Orion.Wait(2000)
+            Orion.Wait(1000)
             if(!mobile.Exists())
             {
                 Orion.Print('I cant see '+mobile.Name())
@@ -151,6 +188,7 @@ function DoRoom(room) {
                 {
                     Orion.Print(mobile.Name() + ' must be dead')
                     isItDead=true;
+                    Sender_Method('*',CheckArtiChance)
                 }
             }
         }
@@ -162,5 +200,41 @@ function DoRoom(room) {
         Orion.Wait(2000)
     }
 }
+
+function CheckArtiChance()
+{
+        Orion.RequestContextMenu(Player.Serial());
+        Orion.WaitContextMenuID(Player.Serial(), 1);
+        Orion.Wait(500)
+        if (Orion.WaitForGump(2000))
+        {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xFC840358'))
+            {
+                gump0.Select(Orion.CreateGumpHook(11));
+                Orion.Wait(400);
+            }
+        }
+        if (Orion.WaitForGump(2000))
+        {
+            var gump1 = Orion.GetGump('last');
+            if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0xFC840358'))
+            {
+                Orion.Wait(400);
+
+                gump1.Select(Orion.CreateGumpHook(104));
+            }
+        }
+        if (Orion.WaitForGump(2000))
+        {
+            var gump3 = Orion.GetGump('last');
+            if ((gump3 !== null) && (!gump3.Replayed()) && (gump3.ID() === '0xFC840358'))
+            {
+                var points = gump3.Text(14).substring(24).replace(/,/g, '')
+                Orion.SayParty(Player.Name()+' : '+(0.000863316841*Math.pow(10,0.00000425531915*points)*100).toString().substring(0,5)+'%')
+                gump3.Close()
+            }
+        }}
+
 //Healing Script
 //PetCaller
