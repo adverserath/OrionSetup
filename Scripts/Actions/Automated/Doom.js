@@ -49,7 +49,7 @@ var groupSize = 0
 function DoomGauntlet() {
 
     groupSize = Orion.FindTypeEx(any, any, ground,
-        'nothumanmobile|live|ignoreself|ignorefriends', 10, 'green').length
+        'live', 10, 'green').length
     Orion.Print('Group size: ' + groupSize)
     var start = coordinate(421, 426, 0, 'Start')
     Sender('*', 'W:' + start.X() + ':' + start.Y() + ':' + start.Z() + ':' + "");
@@ -103,10 +103,10 @@ function DoRoom(room) {
     WalkTo(rooms[room].Meet(), 0)
 
     while (groupSize != Orion.FindTypeEx(any, any, ground,
-        'nothumanmobile|live|ignoreself|ignorefriends', 3, 'green').length) {
+        'live', 4, 'green').length) {
         Orion.Wait(2000)
     }
-	Orion.Wait(1000)
+    Orion.Wait(1000)
     Sender('*', 'W:' + rooms[room].EntryPoint().X() + ':' + rooms[room].EntryPoint().Y() + ':' + rooms[room].EntryPoint().Z() + ':' + "");
     WalkTo(rooms[room].EntryPoint(), 0)
     Orion.Wait(2000)
@@ -120,14 +120,41 @@ function DoRoom(room) {
     })
     mobiles.forEach(function (mobile) {
         if (!Orion.BuffExists('0x9BD2'))
-            WalkTo(mobile, 12)
-        while (!Orion.BuffExists('0x9BD2')) {
-            Orion.Cast('Death Ray')
-            if (Orion.WaitForTarget(4000)) {
-                Orion.TargetObject(mobile.Serial())
+            WalkTo(mobile, 10)
+        var isItDead = false
+        Sender_WalkToMe('*', 1)
+
+        while(!isItDead)
+        {
+            while (!Orion.BuffExists('0x9BD2')) {
+                Orion.Cast('Death Ray')
+                if (Orion.WaitForTarget(4000)) {
+                    Orion.TargetObject(mobile.Serial())
+                }
+                Orion.Wait(2000)
             }
+            if(!Orion.DisplayTimerExists('Corpse skin'))
+            {
+                Orion.AddDisplayTimer('Corpse skin', 20000,'Custom','Bar','Corpse skin', 100,1200);
+                Orion.CastTarget('Corpse skin',mobile.Serial())
+                Orion.Wait(1500)
+            }
+
+            Sender_CastTarget('*', 'Flame Strike',Orion.FindObject(lastattack).Serial());
             Orion.Wait(2000)
+            if(!mobile.Exists())
+            {
+                Orion.Print('I cant see '+mobile.Name())
+                Orion.Wait(5000)
+                
+                if(!mobile.Exists())
+                {
+                    Orion.Print(mobile.Name() + ' must be dead')
+                    isItDead=true;
+                }
+            }
         }
+
     })
     while (mobiles.filter(function (mob) {
         return mob.Exists()
