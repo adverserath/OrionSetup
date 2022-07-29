@@ -45,10 +45,6 @@ var rooms = [
 
 ]
 
-function Buffs() {
-    Orion.Print(Orion.BuffExists('0x9BD2'))
-    Orion.InfoBuff()
-}
 var groupSize = 0
 function DoomGauntlet() {
 
@@ -91,7 +87,9 @@ function DoomGauntlet() {
         for (var index = room; index < rooms.length; index++) {
             Orion.Print('Doing room ' + index)
             DoRoom(index)
+            //Print next chance of drop
         }
+        room = 0;
     }
 }
 

@@ -12,6 +12,7 @@
 //#include Fighting/Corpses.js
 //#include Fighting/Bushido.js
 //#include Actions/Event/PumpkinPicker.js
+//#include Actions/Automated/Doom.js
 //#include Fighting/SpellWeaving.js
 //#include Fighting/Healing.js
 //#include helpers/Gates.js
