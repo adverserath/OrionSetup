@@ -209,7 +209,7 @@ function SpellWeavingKills() {
 }
 
 function SmartHealer() {
-    
+
     Orion.Print('SmartHealer')
     var targets = Orion.FindTypeEx(any, any, ground, 'nothuman', 10, 'green').filter(function (_) { return Orion.Contains(_.Properties(), 'bonded') })
     targets.push(Orion.FindObject(self))
@@ -218,6 +218,22 @@ function SmartHealer() {
         if (partyGuy != null)
             targets.push(partyGuy)
     })
+    //Heal or Rez
+    targets.filter(function (p) {
+        return p.Poisoned() || p.Dead()
+    }).forEach(function (patient) {
+        Orion.Print(patient.Name())
+        if (!Player.Paralyzed() || Player.Frozen()) {
+            if (Orion.SkillValue('Magery') > 500 && patient != null && patient.Poisoned()) {
+                Orion.CastTarget('Arch Cure', patient.Serial());
+            }
+            else if (Orion.SkillValue('Magery') > 90 && patient.Dead() && patient.Distance() <= 1) {
+                Orion.CastTarget('Resurrection', patient.Serial());
+            }
+            Orion.Wait(300);
+        }
+    })
+
     targets.sort(function (patientA, patientB) {
         return (patientA.Hits() / patientA.MaxHits()) - (patientB.Hits() / patientB.MaxHits())
     })
@@ -250,14 +266,14 @@ function SmartHealer() {
 function SmartWither() {
     Orion.Print('SmartWither')
     var allTargets = Orion.FindTypeEx(any, any, ground,
-        'live|ignoreself|ignorefriends|inlos', 18, 'gray|criminal|orange|red')
-    var mobsInRange = allTargets.filter(function (mob) { return mob.Distance() <= 4 }).length
-    if (mobsInRange > 2) {
+        'live|ignoreself|ignorefriends|inlos', 4, 'gray|criminal|orange|red')
+    var mobsInRange = allTargets.length
+    if (mobsInRange >= 2) {
         Orion.Print('Targets:' + mobsInRange)
-        Orion.Cast('*', 'Wither');
+        Orion.Cast('Wither');
     }
     else {
-        Orion.Print('Not enough Targets')
+        Orion.Print('Not enough Targets: ' + mobsInRange)
     }
 
 }
@@ -357,3 +373,4 @@ function SmartWoD() {
 }
 //#include helpers/Magic.js
 //#include helpers/Movement.js
+
