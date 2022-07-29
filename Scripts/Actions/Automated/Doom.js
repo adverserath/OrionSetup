@@ -5,13 +5,14 @@
 //#include helpers/Debug.js
 //#include UDP/Sender.js
 
-function Room(_meet, _entry, _attack, _slayer, _deathRay) {
+function Room(_meet, _entry, _attack, _slayer, _deathRay, _mobType) {
     return {
         meet: _meet,
         entry: _entry,
         attack: _attack,
         slayer: _slayer,
         deathRay: _deathRay,
+        mobType: _mobType,
         Meet: function () {
             return this.meet;
         },
@@ -29,6 +30,9 @@ function Room(_meet, _entry, _attack, _slayer, _deathRay) {
         },
         DeathRay: function () {
             return this.deathray;
+        },
+        MobType: function () {
+            return this.mobType;
         }
     }
 }
@@ -36,12 +40,12 @@ var undead = '0x400E1A68'
 var demon = '0x400E13B0'
 var none = '0x4008DC96'
 var rooms = [
-    Room(coordinate(471, 430, 0, 'Room1 Meet'), coordinate(471, 428, 0, 'Room1 Entry'), coordinate(492, 444, 0, 'Room1 Attack'), undead, true),
-    Room(coordinate(460, 494, 0, 'Room2 Meet'), coordinate(462, 494, 0, 'Room2 Entry'), coordinate(476, 516, 0, 'Room2 Attack'), none, true),
-    Room(coordinate(405, 500, 0, 'Room3 Meet'), coordinate(403, 502, 0, 'Room3 Entry'), coordinate(405, 527, 0, 'Room3 Attack'), demon, true),
-    Room(coordinate(360, 476, 0, 'Room4 Meet'), coordinate(357, 476, 0, 'Room4 Entry'), coordinate(340, 500, 0, 'Room4 Attack'), undead, true),
-    Room(coordinate(365, 433, 0, 'Room5 Meet'), coordinate(361, 433, 0, 'Room5 Entry'), coordinate(330, 431, 0, 'Room5 Attack'), demon, true),
-    Room(coordinate(381, 429, 0, 'Room6 Meet'), coordinate(401, 429, 0, 'Room6 Entry'), coordinate(407, 428, 0, 'Room6 Attack'), demon, false),
+    Room(coordinate(471, 430, 0, 'Room1 Meet'), coordinate(471, 428, 0, 'Room1 Entry'), coordinate(492, 444, 0, 'Room1 Attack'), undead, true, any),
+    Room(coordinate(460, 494, 0, 'Room2 Meet'), coordinate(462, 494, 0, 'Room2 Entry'), coordinate(476, 516, 0, 'Room2 Attack'), none, true, any),
+    Room(coordinate(405, 500, 0, 'Room3 Meet'), coordinate(403, 502, 0, 'Room3 Entry'), coordinate(405, 527, 0, 'Room3 Attack'), demon, true, any),
+    Room(coordinate(360, 476, 0, 'Room4 Meet'), coordinate(357, 476, 0, 'Room4 Entry'), coordinate(340, 500, 0, 'Room4 Attack'), undead, true, any),
+    Room(coordinate(365, 433, 0, 'Room5 Meet'), coordinate(361, 433, 0, 'Room5 Entry'), coordinate(330, 431, 0, 'Room5 Attack'), demon, true, any),
+    Room(coordinate(381, 429, 0, 'Room6 Meet'), coordinate(401, 429, 0, 'Room6 Entry'), coordinate(407, 428, 0, 'Room6 Attack'), demon, false, '0x013E'),
 
 ]
 
@@ -101,6 +105,7 @@ function DoomGauntlet() {
     while (true) {
         for (var index = room; index < rooms.length; index++) {
             Orion.Print('Doing room ' + index)
+            Sender_Method('*',CheckArtiChance)
             DoRoom(index)
             //Print next chance of drop
         }
@@ -130,7 +135,7 @@ function DoRoom(room) {
     Orion.Wait(2000)
     Sender('*', 'W:' + rooms[room].AttackPoint().X() + ':' + rooms[room].AttackPoint().Y() + ':' + rooms[room].AttackPoint().Z() + ':' + "");
     WalkTo(rooms[room].AttackPoint(), 0)
-    var mobiles = Orion.FindTypeEx(any, any, ground,
+    var mobiles = Orion.FindTypeEx(rooms[room].MobType(), any, ground,
         'nothumanmobile|live|ignoreself|ignorefriends', 30, 'gray|criminal|red|enemy')
 
     mobiles.forEach(function (mobile) {
@@ -202,7 +207,6 @@ function DoRoom(room) {
                 {
                     Orion.Print(mobile.Name() + ' must be dead')
                     isItDead=true;
-                    Sender_Method('*',CheckArtiChance)
                 }
             }
         }
