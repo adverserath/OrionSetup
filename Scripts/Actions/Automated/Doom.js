@@ -140,7 +140,10 @@ function DoRoom(room) {
     if(room==5)
     {
         Orion.Print('Im not fighting that without watching')
-        WalkTo(coordinate(394, 432, 0, 'Room6 Retreat'))
+        var escape = coordinate(394, 432, 0, 'Room6 Retreat')
+        Sender('*', 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "");
+
+        WalkTo(escape)
         mobiles.forEach(function (mobile) {
             while(mobile.Exists())
             {
