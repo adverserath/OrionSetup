@@ -118,11 +118,14 @@ function DoRoom(room) {
     WalkTo(rooms[room].Meet(), 0)
 
     while (groupSize != Orion.FindTypeEx(any, any, ground,
-        'live', 4, 'green').length) {
-        Orion.Wait(2000)
+        'live', 3, 'green').length) {
+        Orion.Print('Waiting for group:'+ Orion.FindTypeEx(any, any, ground,
+            'live', 3, 'green').length)
+            Orion.Wait(2000)
     }
     Orion.Wait(1000)
     Sender('*', 'W:' + rooms[room].EntryPoint().X() + ':' + rooms[room].EntryPoint().Y() + ':' + rooms[room].EntryPoint().Z() + ':' + "");
+    Orion.Wait(1000)
     WalkTo(rooms[room].EntryPoint(), 0)
     Orion.Wait(2000)
     Sender('*', 'W:' + rooms[room].AttackPoint().X() + ':' + rooms[room].AttackPoint().Y() + ':' + rooms[room].AttackPoint().Z() + ':' + "");
@@ -134,8 +137,9 @@ function DoRoom(room) {
         Orion.Attack(mobile.Serial());
         Orion.Wait(500)
     })
-    if(!rooms[room].DeathRay())
+    if(room==5)
     {
+        Orion.Print('Im not fighting that without watching')
         WalkTo(coordinate(394, 432, 0, 'Room6 Retreat'))
         mobiles.forEach(function (mobile) {
             while(mobile.Exists())
@@ -147,20 +151,27 @@ function DoRoom(room) {
     }
     mobiles.forEach(function (mobile) {
         if (!Orion.BuffExists('0x9BD2'))
+        {
+            Orion.Print('Walk To mob')
             WalkTo(mobile, 10)
+        }
         var isItDead = false
         Sender_WalkToMe('*', 1)
 
         while(!isItDead)
         {
-            while (!Orion.BuffExists('0x9BD2') && mobile.Exists()) {
+            Orion.Print('Wait for death')
+
+            while (!Orion.BuffExists('0x9BD2') && mobile.Hits()>0) {
+                Orion.Print('DeathRay')
+
                 Orion.Cast('Death Ray')
                 if (Orion.WaitForTarget(4000)) {
                     Orion.TargetObject(mobile.Serial())
                 }
                 Orion.Wait(2000)
             }
-
+            
             if(mobile.Hits()<=hitmarker)
             {
                 Orion.Print("Wod Time")
