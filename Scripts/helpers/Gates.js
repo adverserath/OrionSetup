@@ -152,16 +152,20 @@ function GoTo() {
 }
 
 function GotoMistas() {
-    GoHome()
-    Orion.Wait(500)
-    var portalCrystals = Orion.FindTypeEx('0x468A', any, ground, 'item', 20)
-    var portalCrystal = portalCrystals.shift()
+    if (Orion.FindTypeEx('0x4BCB|0x4B8F', any, ground, 'item|near', 15).length == 0) {
+        if (Orion.FindTypeEx('0x468A', any, ground, 'item', 20).length == 0) {
+            GoHome()
+            Orion.Wait(500)
+        }
+        var portalCrystals = Orion.FindTypeEx('0x468A', any, ground, 'item', 20)
+        var portalCrystal = portalCrystals.shift()
 
-    if (portalCrystal != null) {
-        WalkTo(portalCrystal)
-        Orion.Say('luna mint')
+        if (portalCrystal != null) {
+            WalkTo(portalCrystal)
+            Orion.Say('luna mint')
+        }
+        Orion.Wait(500)
     }
-    Orion.Wait(500)
     GateTo('Mistas')
 }
 

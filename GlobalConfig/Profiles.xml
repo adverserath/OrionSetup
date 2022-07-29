@@ -6,16 +6,19 @@
     <profile serial="0x00000545" file="Kwazii"/>
     <profile serial="0x0000089E" file="Aki"/>
     <profile serial="0x00000D0D" file="Atten"/>
-    <profile serial="0x000018D7" file="Atten"/>
+    <profile serial="0x000018D7" file="Atten_Sub1"/>
     <profile serial="0x00002D7D" file="Yuna"/>
+    <profile serial="0x000045F6" file="Hornpub"/>
     <profile serial="0x00004F3B" file="Atten"/>
+    <profile serial="0x00004F5C" file="Tiddler"/>
     <profile serial="0x00005DC9" file="Tyr"/>
     <profile serial="0x00006A06" file="Tyr"/>
     <profile serial="0x00006EF6" file="Aki"/>
-    <profile serial="0x000072B7" file="Atten_Sub2"/>
+    <profile serial="0x000072B7" file="Atten_Sub1"/>
     <profile serial="0x0000813F" file="Tim"/>
     <profile serial="0x000097BB" file="Default"/>
     <profile serial="0x000097F8" file="Barnacle"/>
+    <profile serial="0x000099E8" file="Atten"/>
     <profile serial="0x0000A57A" file="BodCollector"/>
     <profile serial="0x0000A70A" file="BodCollector"/>
     <profile serial="0x0000A75F" file="BodCollector"/>
@@ -32,4 +35,6 @@
     <profile serial="0x00165051" file="Crafter"/>
     <profile serial="0x001CD12E" file="Tim"/>
     <profile serial="0x002B3C52" file="Tyr"/>
+    <profile serial="0x00854BEA" file="Atten"/>
+    <profile serial="0x00D9730E" file="Atten"/>
 </data>

@@ -16,6 +16,11 @@
 
 var udpPort = 2598;
 
+function Autostart(_)
+{
+Orion.ToggleScript('Message_Receiver')
+Orion.Print('Started Receiver')
+}
 function Message_Receiver() {
     Orion.Print('Begin Receiver')
     if (!UDPClientServer()) {
@@ -118,6 +123,10 @@ function ResponseHandler(recv) {
     if (command[1] == 'PS') {
         Orion.Print("Pet Stay")
         PetStay()
+    }
+    if (command[1] == 'PF') {
+        Orion.Print("Pet Follow")
+        PetFollow()
     }
     if (command[1] == 'PST') {
         Orion.Print("Pet Stop")

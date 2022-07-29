@@ -1,5 +1,6 @@
 var seabook = '0x40019854'
 
+
 function FishMonitor() {
     while (true) {
         Orion.Wait(5000)
@@ -77,9 +78,13 @@ function SeaFish() {
                     }
                 });
             }
-            Orion.FindListEx('JustFish').forEach(function (fish) {
+            Orion.FindListEx('JustFish')
+            .filter(function(fish){
+return fish.Name()!='A Big Fish' //Dont cut Big Fish
+})
+            .forEach(function (fish) {
 
-                Orion.UseType('0x13F6', '0xFFFF');
+                Orion.UseType('0x0EC3', '0xFFFF'); //Cleaver
                 if (Orion.WaitForTarget(1000)) {
                     Orion.TargetObject(fish.Serial());
                 }
@@ -99,6 +104,7 @@ function SeaFish() {
                 Orion.Step('North')
                 Orion.Step('North')
                 Orion.Step('North')
+
                 SortFishLoot()
 
                 //          if (Player.WarMode())
@@ -107,7 +113,7 @@ function SeaFish() {
                 Orion.Wait(2000);
             }
             startTime = Orion.Now()
-            Orion.UseObject('0x40026413');
+            Orion.UseObject('0x4008475A');
             if (Orion.WaitForTarget(1000)) {
                 Orion.Wait(300)
                 Orion.TargetTileRelative('any', -3, -3, 65533);

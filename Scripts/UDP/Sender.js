@@ -17,6 +17,15 @@
 //#include helpers/Gates.js
 //#include helpers/Quest.js
 
+function DistanceFrom()
+{
+var t = SelectTarget()
+while(true)
+{
+Orion.Print(t.Distance())
+Orion.Wait(1000)
+}
+}
 
 function gridX(x, size) {
     return x * size
@@ -36,17 +45,17 @@ function gridTY(y, size) {
 var buttons = //x y CallBackID Text FunctionName
     [
         [[100, 30, 1100, "Follow", 'Sender_FollowMe'], [100, 30, 1200, "Walk To", 'Sender_WalkToHere'], [100, 30, 1300, "Walk To Me", 'Sender_WalkToMe']],
-        [[50, 30, 2100, "Mount", 'Sender_MountPet'], [50, 30, 2200, "UnMount", 'Sender_UnmountPet'], [50, 30, 2300, "War", 'Sender_War'], [50, 30, 2400, "Peace", 'Sender_Peace']],
-        [[100, 30, 3100, "Attack", 'Sender_Attack'], [100, 30, 3200, "AF and Kill", 'AutoFollowAndKill'], [100, 30, 2500, "Open Corpses", 'Sender_OpenCorpses']],
+        [[50, 30, 2100, "Mount", 'Sender_MountPet'], [50, 30, 2200, "UnMount", 'Sender_UnmountPet'], [50, 30, 2300, "War", 'Sender_War'], [50, 30, 2400, "Peace", 'Sender_Peace'], [70, 30, 2500, "PetCaller", 'Sender_Method']],
+        [[100, 30, 3100, "Attack", 'Sender_Attack'], [100, 30, 3200, "AF and Kill", 'AutoFollowAndKill'], [100, 30, 3300, "Open Corpses", 'Sender_OpenCorpses'], [70, 30, 3400, "Auto Kill", 'AutoKill']],
         [[100, 30, 4100, "Pet Guard", 'Sender_PetGuard'], [100, 30, 4200, "Pet Come", 'Sender_PetCome'], [100, 30, 4300, "Pet Attack", 'Sender_PetAttack']],
-        [[100, 30, 5100, "Pet Stop", 'Sender_PetStop'], [100, 30, 5200, "Pet Stay", 'Sender_PetStay']],
+        [[100, 30, 5100, "Pet Stop", 'Sender_PetStop'], [100, 30, 5200, "Pet Stay", 'Sender_PetStay'], [100, 30, 5300, "Pet Follow", 'Sender_PetFollow']],
         [[100, 30, 6100, "Go Home", 'Sender_GoHome'], [100, 30, 6200, "Say", 'Sender_Speak'], [100, 30, 6300, "Accept Gump", 'Sender_AcceptGump']],
         [[100, 30, 7100, "Reload", 'Sender_Reload'], [100, 30, 7200, "CloseUO", 'Sender_CloseUO'], [100, 30, 7300, "RecoverCorpse", 'Sender_Method']]
     ]
 var spells =
     [
-        [[100, 30, 8100, "Word Of Death", 'Sender_CastTarget'], [100, 30, 8200, "Gift Of Life", 'Sender_CastSelf']],
-        [[100, 30, 9100, 'Bless', 'Sender_CastMount'], [100, 30, 9200, "Gift Of Life", 'Sender_CastMount']],
+        [[100, 30, 8100, "Gift Of Renewal", 'Sender_CastSelf'], [100, 30, 8200, "Gift Of Life", 'Sender_CastSelf'], [100, 30, 8300, "Word Of Death", 'Sender_CastTarget']],
+        [[100, 30, 9100, 'Gift Of Renewal', 'Sender_CastMount'], [100, 30, 9200, "Gift Of Life", 'Sender_CastMount']],
         [[75, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [75, 30, 1020, "Thunderstorm", 'Sender_Cast']
             , [75, 30, 1030, "GotoMistas", 'Sender_Method'], [75, 30, 1040, "GotoTW", 'Sender_Method'],[75, 30, 1050, "GotoBlood", 'Sender_Method'], [75, 30, 1060, "QuestRenew", 'Sender_Method']],
 
@@ -175,7 +184,10 @@ function Sender_CastTarget(serial, spellName, _target) {
     if (target != null) {
         Sender(serial, 'Cast:' + spellName + ':' + target);
         if (serial === '*')
+        {
+            Orion.Print(spellName+' : ' +target)
             Orion.CastTarget(spellName, target)
+        }
     }
 }
 
@@ -226,6 +238,11 @@ function Sender_PetStay(serial) {
     if (serial === '*')
         PetStay()
 }
+function Sender_PetFollow(serial) {
+    Sender(serial, 'PF');
+    if (serial === '*')
+        PetFollow()
+}
 function Sender_GoHome(serial) {
     Sender(serial, 'RH');
     if (serial === '*')
@@ -274,6 +291,21 @@ function AutoFollowAndKill(serial) {
         }
     }
 }
+
+function AutoKill(serial) {
+    var lastAttacker = '';
+    while (true) {
+        Orion.Wait(1000)
+        while (Player.WarMode()) {
+            Orion.Wait(100)
+            if (Orion.ClientLastAttack() !== '0x00000000' && Orion.ClientLastAttack() !== lastAttacker) {
+                Sender(serial, 'A:' + Orion.ClientLastAttack());
+                lastAttacker = Orion.ClientLastAttack()
+            }
+        }
+    }
+}
+
 function HostCallback(_) {
     Orion.LoadScript('UDP/Sender.js')
     Orion.Print("test")
@@ -370,9 +402,11 @@ function HostGump(_) {
     var column = 0;
     //x y CallBackID Text FunctionName
     buttons.forEach(function (rowLayer) {
+        var endOfLastButton = 0
         rowLayer.forEach(function (button) {
-            gump.AddResizepic(gridX(column, button[0]), gridY(row, button[1]) + 30, '0x24EA', button[0], button[1], button[2], 1);
-            gump.AddText(gridTX(column, button[0]), gridTY(row, button[1]) + 30, '0', button[3]);
+            gump.AddResizepic(endOfLastButton, gridY(row, button[1]) + 30, '0x24EA', button[0], button[1], button[2], 1);
+            gump.AddText(endOfLastButton+5, gridTY(row, button[1]) + 30, '0', button[3]);
+            endOfLastButton+=button[0]
             column++;
         })
         column = 0
@@ -398,9 +432,12 @@ function HostGump(_) {
         gump.AddText(group - (partition / 2) - 20, 10, '0x0035', '<h1>' + player.name + '</h1>');
 
         buttons.forEach(function (rowLayer) {
+            var endOfLastButton = 0
+
             rowLayer.forEach(function (button) {
-                gump.AddResizepic(group - partition + gridX(column, button[0]), gridY(row, button[1]) + 30, '0x24EA', button[0], button[1], i + '' + button[2], 1);
-                gump.AddText(group - partition + gridTX(column, button[0]), gridTY(row, button[1]) + 30, '0', button[3]);
+                gump.AddResizepic(group - partition + endOfLastButton, gridY(row, button[1]) + 30, '0x24EA', button[0], button[1], i + '' + button[2], 1);
+                gump.AddText(group - partition + endOfLastButton+5, gridTY(row, button[1]) + 30, '0', button[3]);
+                endOfLastButton+=button[0]
                 column++;
             })
             column = 0

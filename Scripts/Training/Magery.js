@@ -57,6 +57,25 @@ function TrainMagery() {
     }
 }
 
+function WraithTrainMagery()
+{
+while(true)
+{
+if(Player.Followers()==0)
+{
+Orion.Cast("Summon Daemon")
+Orion.Wait(3000)
+}
+        var entireAreaMobs = Orion.FindTypeEx('0x000A', any, ground,
+            'live|ignoreself|inlos', 4)
+        entireAreaMobs.forEach(function (mob) {
+	Orion.CastTarget('Energy Bolt', mob.Serial());
+Orion.Wait(2000)
+
+        })
+}
+}
+
 function TrainResist() {
     Orion.SetDress("magery");
 

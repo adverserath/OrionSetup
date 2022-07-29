@@ -2,6 +2,7 @@
 //#include helpers/Notifier.js
 //#include helpers/Beetle.js
 //#include helpers/ItemManager.js
+//#include helpers/Debug.js
 
 function MoveDropItemToBox() {
     Orion.ClearFakeMapObjects();

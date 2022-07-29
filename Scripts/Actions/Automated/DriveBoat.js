@@ -58,7 +58,7 @@ function SteerPath(route, distance, destinationX, destinationY) {
 
     WalkTo(boat)
     Orion.UseObject(boat.Serial())
-    Orion.Wait(1000)
+    Orion.Wait(600)
   }
   for (var index = 0; index < route.length; index++) {
     var target = route[index];
@@ -77,9 +77,10 @@ function SteerPath(route, distance, destinationX, destinationY) {
         TextWindow.Print('Todo ' + (route.length - index))
         TextWindow.Print('Distance:' + Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()))
         Orion.SailOnBoat(GetDirection(target), true)
-        Orion.Wait(2000)
-        Orion.StopSailOnBoat()
+        Orion.Wait(parseInt(distance*1000/3))
+        
       }
+      Orion.StopSailOnBoat()
     }
   }
   Orion.Wait(1000);

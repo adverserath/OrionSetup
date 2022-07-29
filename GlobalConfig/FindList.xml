@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="25">
+<data version="0" size="26">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -226,5 +226,8 @@
         <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0"/>
         <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0"/>
         <item graphic="0x09CC" color="any" comment="A Big Fish" count="0"/>
+    </findlist>
+    <findlist name="Daemon Bone">
+        <item graphic="0x0F80" color="0x0000" comment="Daemon Bone" count="0"/>
     </findlist>
 </data>

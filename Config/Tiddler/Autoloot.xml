@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="0" size="2">
+    <autoloot name="Gold" container="0x0000BA51" find_list="Gold/Arrows/Artis" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="false" autostart_on_login="false"/>
+    <autoloot name="FishLoot" container="0x0000BA51" find_list="Fishies" ignore_list="Not use" check_los="true" check_weight_limit="true" selected="true" autostart_on_login="true"/>
+</data>

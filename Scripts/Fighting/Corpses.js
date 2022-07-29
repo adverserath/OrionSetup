@@ -195,7 +195,7 @@ function OpenParagonCorpses() {
 
         if (Player.WarMode()) {
             if (Player.Weight() < Player.MaxWeight()) {
-                var corpses = Orion.FindTypeEx('0x2006', '0x0501', 'ground', any, 8);
+                var corpses = Orion.FindTypeEx('0x2006', '0x0501', ground, any, 20);
                 corpses.forEach(function (corpse) {
                     Orion.Print("Walking to " + corpse.Serial())
                     WalkTo(corpse, 2);
@@ -212,19 +212,24 @@ function OpenParagonCorpses() {
 }
 
 function OpenNearbyCorpses() {
-    var corpses = Orion.FindTypeEx('0x2006', any, 'ground', any, 2);
+    var corpses = Orion.FindTypeEx('0x2006', any, ground, any, 2);
     corpses.forEach(function (corpse) {
         Orion.OpenContainer(corpse.Serial());
         // Orion.Ignore(corpse.Serial());
     });
 }
 
-function OpenOwnCorpses() {
-    var corpses = Orion.FindTypeEx('0x2006|0x0ECC', any, 'ground', any, 15).filter(function (corpse){
-    Orion.Print(Orion.Contains(corpse.Name(),Player.Name()))
+function RecoverCorpse() {
+var x = Player.X()+10
+var y = Player.Y()
+    var corpses = Orion.FindTypeEx('0x2006|0x0ECC', any, ground, any, 15).filter(function (corpse){
+        Orion.Print(corpse.Name())
+        Orion.Print(Orion.Contains(corpse.Properties(),Player.Name()))
+    
     return Orion.Contains(corpse.Properties(),Player.Name())
     })
     corpses.forEach(function (corpse) {
+        
     	WalkTo(corpse)
         if(Orion.OpenContainer(corpse.Serial()))
         	Orion.Ignore(corpse.Serial());
