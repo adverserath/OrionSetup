@@ -105,7 +105,7 @@ function DoomGauntlet() {
     while (true) {
         for (var index = room; index < rooms.length; index++) {
             Orion.Print('Doing room ' + index)
-            Sender_Method('*',CheckArtiChance)
+            Sender_Method('*','CheckArtiChance')
             DoRoom(index)
             //Print next chance of drop
         }
@@ -145,7 +145,7 @@ function DoRoom(room) {
     if(room==5)
     {
         Orion.Print('Im not fighting that without watching')
-        var escape = coordinate(394, 432, 0, 'Room6 Retreat')
+        var escape = coordinate(398, 432, 0, 'Room6 Retreat')
         Sender('*', 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "");
 
         WalkTo(escape)
@@ -177,7 +177,7 @@ function DoRoom(room) {
                 if (Orion.WaitForTarget(4000)) {
                     Orion.TargetObject(mobile.Serial())
                 }
-                Orion.Wait(2000)
+                Orion.Wait(3000)
             }
             
             if(mobile.Hits()<=hitmarker)
@@ -249,7 +249,9 @@ function CheckArtiChance()
             if ((gump3 !== null) && (!gump3.Replayed()) && (gump3.ID() === '0xFC840358'))
             {
                 var points = gump3.Text(14).substring(24).replace(/,/g, '')
-                Orion.SayParty(Player.Name()+' : '+(0.000863316841*Math.pow(10,0.00000425531915*points)*100).toString().substring(0,5)+'%')
+                var message = Player.Name()+' : '+(0.000863316841*Math.pow(10,0.00000425531915*points)*100).toString().substring(0,5)+'%'
+                Orion.SayParty(message)
+                BotPush(message)
                 gump3.Close()
             }
         }}
