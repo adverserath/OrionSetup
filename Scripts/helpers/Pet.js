@@ -78,6 +78,7 @@ function PetCaller() {
     while (pet != null) {
         if (pet != null && pet.Hits() < 7 && pet.Distance() > 2) {
             PetFollow()
+            Orion.Wait(1500)
             while (pet.Hits() < 22 && !Orion.Contains(pet.Properties(), "Guarding")) {
                 Orion.Wait(500)
             }
