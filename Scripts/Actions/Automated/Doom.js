@@ -187,6 +187,8 @@ function DoRoom(room) {
                 Orion.Wait(2000)
             }
     		else{
+                if(Player.Mana()>30)
+                {
                 if(!Orion.DisplayTimerExists('Corpse skin'))
                 {
                     Orion.AddDisplayTimer('Corpse skin', 20000,'Custom','Bar','Corpse skin', 100,1200);
@@ -196,6 +198,7 @@ function DoRoom(room) {
     
                 Sender_CastTarget('*', 'Flame Strike',Orion.FindObject(lastattack).Serial());
             }
+        }
 
             Orion.Wait(1000)
             if(!mobile.Exists())
