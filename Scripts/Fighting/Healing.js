@@ -102,7 +102,7 @@ function MageryHealing() {
     while (true) {
         Orion.Wait(200)
         patients.filter(function (patient) {
-            return patient.Distance() <= 10
+            return patient.Distance() <= 10 && (!patient.Dead() || patient.IsHuman())
         })
             .sort(function (patientA, patientB) {
                 return (patientA.Hits() / patientA.MaxHits()) - (patientB.Hits() / patientB.MaxHits())
