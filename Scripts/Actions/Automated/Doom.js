@@ -41,7 +41,7 @@ var demon = '0x400E13B0'
 var none = '0x4008DC96'
 var rooms = [
     Room(coordinate(471, 429, 0, 'Room1 Meet'), coordinate(471, 428, 0, 'Room1 Entry'), coordinate(492, 444, 0, 'Room1 Attack'), undead, true, any),
-    Room(coordinate(463, 494, 0, 'Room2 Meet'), coordinate(462, 494, 0, 'Room2 Entry'), coordinate(476, 516, 0, 'Room2 Attack'), none, true, any),
+    Room(coordinate(463, 494, 0, 'Room2 Meet'), coordinate(462, 494, 0, 'Room2 Entry'), coordinate(476, 513, 0, 'Room2 Attack'), none, true, any),
     Room(coordinate(404, 501, 0, 'Room3 Meet'), coordinate(403, 502, 0, 'Room3 Entry'), coordinate(405, 527, 0, 'Room3 Attack'), demon, true, any),
     Room(coordinate(358, 476, 0, 'Room4 Meet'), coordinate(357, 476, 0, 'Room4 Entry'), coordinate(340, 500, 0, 'Room4 Attack'), undead, true, any),
     Room(coordinate(362, 433, 0, 'Room5 Meet'), coordinate(361, 433, 0, 'Room5 Entry'), coordinate(330, 436, 0, 'Room5 Attack'), demon, true, any),
