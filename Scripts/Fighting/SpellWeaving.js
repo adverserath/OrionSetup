@@ -220,7 +220,7 @@ function SmartHealer() {
     })
     //Heal or Rez
     targets.filter(function (p) {
-        return p.Poisoned() || p.Dead()
+        return p.Poisoned() || (p.Dead() && patient.IsHuman())
     }).forEach(function (patient) {
         Orion.Print(patient.Name())
         if (!Player.Paralyzed() || Player.Frozen()) {
