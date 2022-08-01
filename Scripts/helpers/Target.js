@@ -356,6 +356,7 @@ function StayAway(targetId, distance) {
 }
 
 function StayAwayGetLocation(targetId, distance) {
+  Orion.Print('Enter StayAwayGetLocation')
   if (Orion.ObjectExists(targetId)) {
     var target = Orion.FindObject(targetId)
     var x = target.X();
@@ -387,6 +388,8 @@ function StayAwayGetLocation(targetId, distance) {
     Orion.AddFakeMapObject(i++, '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
         })
     var closest = trimtiles.shift()
+    Orion.Print('Exit StayAwayGetLocation')
+
     return coordinate(closest.X(), closest.Y(), closest.Z(),'Escape')
   }
 }

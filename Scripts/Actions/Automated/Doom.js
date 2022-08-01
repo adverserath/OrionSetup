@@ -5,7 +5,7 @@
 //#include helpers/Debug.js
 //#include UDP/Sender.js
 
-function Room(_meet, _entry, _attack, _slayer, _deathRay, _mobType) {
+function Room(_meet, _entry, _attack, _slayer, _deathRay, _mobType, _hides) {
     return {
         meet: _meet,
         entry: _entry,
@@ -13,6 +13,7 @@ function Room(_meet, _entry, _attack, _slayer, _deathRay, _mobType) {
         slayer: _slayer,
         deathRay: _deathRay,
         mobType: _mobType,
+        hides: _hides,
         Meet: function () {
             return this.meet;
         },
@@ -33,6 +34,9 @@ function Room(_meet, _entry, _attack, _slayer, _deathRay, _mobType) {
         },
         MobType: function () {
             return this.mobType;
+        },
+        Hides: function () {
+            return this.hides;
         }
     }
 }
@@ -40,13 +44,12 @@ var undead = '0x400E1A68'
 var demon = '0x400E13B0'
 var none = '0x4008DC96'
 var rooms = [
-    Room(coordinate(471, 429, 0, 'Room1 Meet'), coordinate(471, 428, 0, 'Room1 Entry'), coordinate(492, 444, 0, 'Room1 Attack'), undead, true, any),
-    Room(coordinate(463, 494, 0, 'Room2 Meet'), coordinate(462, 494, 0, 'Room2 Entry'), coordinate(476, 513, 0, 'Room2 Attack'), none, true, any),
-    Room(coordinate(404, 501, 0, 'Room3 Meet'), coordinate(403, 502, 0, 'Room3 Entry'), coordinate(405, 527, 0, 'Room3 Attack'), demon, true, any),
-    Room(coordinate(358, 476, 0, 'Room4 Meet'), coordinate(357, 476, 0, 'Room4 Entry'), coordinate(340, 500, 0, 'Room4 Attack'), undead, true, any),
-    Room(coordinate(362, 433, 0, 'Room5 Meet'), coordinate(361, 433, 0, 'Room5 Entry'), coordinate(330, 436, 0, 'Room5 Attack'), demon, true, any),
-    Room(coordinate(381, 429, 0, 'Room6 Meet'), coordinate(401, 429, 0, 'Room6 Entry'), coordinate(407, 428, 0, 'Room6 Attack'), demon, false, '0x013E'),
-
+    Room(coordinate(471, 429, 0, 'Room1 Meet'), coordinate(471, 428, 0, 'Room1 Entry'), coordinate(492, 444, 0, 'Room1 Attack'), undead, true, '0x0139', false),
+    Room(coordinate(463, 494, 0, 'Room2 Meet'), coordinate(462, 494, 0, 'Room2 Entry'), coordinate(476, 513, 0, 'Room2 Attack'), none, true, '0x013B', false),
+    Room(coordinate(404, 501, 0, 'Room3 Meet'), coordinate(403, 502, 0, 'Room3 Entry'), coordinate(405, 527, 0, 'Room3 Attack'), demon, true, '0x0132', false),
+    Room(coordinate(358, 476, 0, 'Room4 Meet'), coordinate(357, 476, 0, 'Room4 Entry'), coordinate(340, 500, 0, 'Room4 Attack'), undead, true, '0x0137', true),
+    Room(coordinate(362, 433, 0, 'Room5 Meet'), coordinate(361, 433, 0, 'Room5 Entry'), coordinate(330, 436, 0, 'Room5 Attack'), demon, true, '0x0138', false),
+    Room(coordinate(381, 429, 0, 'Room6 Meet'), coordinate(401, 429, 0, 'Room6 Entry'), coordinate(407, 428, 0, 'Room6 Attack'), demon, false, '0x013E', true),
 ]
 
 var groupSize = 0
@@ -117,6 +120,13 @@ function DoomGauntlet() {
 }
 
 function DoRoom(room) {
+    Orion.Print('Doing room '+room)
+    Orion.RegWrite('room', room);
+
+    if (room == 5) {
+        Orion.PauseScript()
+        Sender_Method('*', 'BoneCutter')
+        }
     Orion.Unequip('RightHand');
     Orion.Wait(800)
     Orion.Print('Equip ' + rooms[room].Slayer())
@@ -147,21 +157,18 @@ function DoRoom(room) {
         mobiles = Orion.FindTypeEx(rooms[room].MobType(), any, ground,
             'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|red|enemy')
 
-        var mobile = mobiles.shift()
+        var mobile = mobiles[0]
+        MoveAwayFromBoss(mobile)
         Orion.Attack(mobile.Serial());
+        Orion.Wait(1000)
 
+        //Dark Father
         if (room == 5) {
             while (!isItDead) {
                 Orion.Wait(1000)
                 //Get away from it
-                if (mobile.Distance < 10) {
-                    var escape = StayAwayGetLocation(mobile.Serial(), 10)
-                    Sender('*', 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "");
-                    Orion.ToggleScript('WalkTo', false, [escape.X(), escape.Y()])
-                }
-                else {
-                    Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
-                }
+                MoveAwayFromBoss(mobile)
+
                 //Use Death Ray
                 if (mobile.Hits() <= hitmarker) {
                     Orion.Print("Wod Time")
@@ -171,86 +178,133 @@ function DoRoom(room) {
                 else if (!Orion.BuffExists('0x9BD2')) {
                     Orion.Print('Walk To mob')
                     WalkTo(mobile, 10)
-                }
-
-                while (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance < 11 && mobile.Distance > 2) {
-                    Orion.Print('DeathRay')
-
-                    Orion.Cast('Death Ray')
-                    if (Orion.WaitForTarget(4000)) {
-                        Orion.TargetObject(mobile.Serial())
+                    
+                    if (Player.Mana() > 40 && !Orion.BuffExists('Arcane Empowerment') && Orion.ClientLastAttack() != '0x00000000') {
+                        Cast('Arcane Empowerment')
+                        Orion.Wait(1000)
                     }
-                    Orion.Wait(1000)
-                    Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
+
+                    if(!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance() < 11 && mobile.Distance() > 2 && Player.Mana() < 50)
+                    {
+                        Orion.CastTarget('Energy Bolt',mobile.Serial())
+                        Orion.Wait(1000)
+                    }
+                    else if (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance() < 11 && mobile.Distance() > 2 && Player.Mana() > 50) {
+                        Orion.Print('DeathRay')
+    
+                        Orion.Cast('Death Ray')
+                        if (Orion.WaitForTarget(4000)) {
+                            Orion.TargetObject(mobile.Serial())
+                        }
+                        Orion.Wait(1000)
+                        Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
+                    }
                 }
+
 
                 if (!mobile.Exists()) {
                     Orion.Print('I cant see ' + mobile.Name())
-                    Orion.Wait(5000)
-
+                    if(rooms[room].Hides())
+                        Orion.Wait(5000)
+                    else
+                        Orion.Wait(500)
                     if (!mobile.Exists()) {
                         Orion.Print(mobile.Name() + ' must be dead')
                         isItDead = true;
                     }
                 }
             }
+
+            //Kill everything else when its dead
+            var otherMobs = Orion.FindTypeEx(any, any, ground,
+            'nothumanmobile|live|ignoreself|ignorefriends', 35, 'gray|criminal|red|enemy')
+            Orion.Unequip('RightHand');
+            Orion.Wait(800)
+            Orion.Equip(rooms[room].Slayer());
+            otherMobs.forEach(function (mob){
+                Sender('*', 'W:' + mob.X() + ':' + mob.Y() + ':' + mob.Z() + ':' + 10);
+                WalkTo(mob,10)
+                Sender_CastTarget('*', 'Flame Strike', mob.Serial());
+                Orion.Wait(2000)
+            })
             return
         }
-        mobiles.forEach(function (mobile) {
-            if (!Orion.BuffExists('0x9BD2')) {
-                Orion.Print('Walk To mob')
-                WalkTo(mobile, 10)
-            }
-            Sender_WalkToMe('*', 1)
+        else {
+            Orion.Print('Found ' + mobiles.length + " mobs")
+            mobiles.forEach(function (mobile) {
+                if (!Orion.BuffExists('0x9BD2')) {
+                    Orion.Print('Walk To mob')
+                    WalkTo(mobile, 10)
+                }
+                Sender_WalkToMe('*', 1)
 
-            while (!isItDead) {
-                Orion.Print('Wait for death')
+                while (!isItDead) {
+                    Orion.Print('Wait for death')
 
-                while (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0) {
-                    Orion.Print('DeathRay')
-
-                    Orion.Cast('Death Ray')
-                    if (Orion.WaitForTarget(4000)) {
-                        Orion.TargetObject(mobile.Serial())
+                    if (mobile.Hits() <= hitmarker) {
+                        Orion.Print("Wod Time")
+                        Sender_Method('*', 'SmartWoD')
+                        Orion.Wait(2000)
                     }
-                    Orion.Wait(3000)
-                }
-
-                if (mobile.Hits() <= hitmarker) {
-                    Orion.Print("Wod Time")
-                    Sender_Method('*', 'SmartWoD')
-                    Orion.Wait(2000)
-                }
-                else {
-                    if (Player.Mana() > 30 || room != 2) {
-                        if (!Orion.DisplayTimerExists('Corpse skin')) {
-                            Orion.AddDisplayTimer('Corpse skin', 20000, 'Custom', 'Bar', 'Corpse skin', 100, 1200);
-                            Orion.CastTarget('Corpse skin', mobile.Serial())
-                            Orion.Wait(1500)
+                    else if (!Orion.BuffExists('0x9BD2')) {
+                        Orion.Print('Walk To mob')
+                        WalkTo(mobile, 10)
+    
+                        while (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance() < 11 && mobile.Distance() > 2 && Player.Mana() > 40) {
+                            Orion.Print('DeathRay')
+        
+                            Orion.Cast('Death Ray')
+                            if (Orion.WaitForTarget(4000)) {
+                                Orion.TargetObject(mobile.Serial())
+                            }
+                            Orion.Wait(1000)
+                            Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
                         }
-
-                        Sender_CastTarget('*', 'Flame Strike', Orion.FindObject(lastattack).Serial());
                     }
-                }
+                    else {
+                        if (Player.Mana() > 30 || room != 2) {
+                            if (!Orion.DisplayTimerExists('Corpse skin')) {
+                                Orion.AddDisplayTimer('Corpse skin', 20000, 'Custom', 'Bar', 'Corpse skin', 100, 1200);
+                                Orion.CastTarget('Corpse skin', mobile.Serial())
+                                Orion.Wait(1500)
+                            }
 
-                Orion.Wait(1000)
-                if (!mobile.Exists()) {
-                    Orion.Print('I cant see ' + mobile.Name())
-                    Orion.Wait(5000)
+                            Sender_CastTarget('*', 'Flame Strike', Orion.FindObject(lastattack).Serial());
+                        }
+                    }
 
+                    Orion.Wait(1000)
                     if (!mobile.Exists()) {
-                        Orion.Print(mobile.Name() + ' must be dead')
-                        isItDead = true;
+                        Orion.Print('I cant see ' + mobile.Name())
+                        if(rooms[room].Hides())
+                            Orion.Wait(5000)
+                        else
+                            Orion.Wait(500)
+                        if (!mobile.Exists()) {
+                            Orion.Print(mobile.Name() + ' must be dead')
+                            isItDead = true;
+                        }
                     }
                 }
-            }
 
-        })
+            })
+        }
     }
     while (mobiles.filter(function (mob) {
         return mob.Exists()
     }).length > 0) {
         Orion.Wait(2000)
+    }
+}
+
+function MoveAwayFromBoss(mobile) {
+    if (mobile.Distance() < 10) {
+        var escape = StayAwayGetLocation(mobile.Serial(), 10)
+        Sender('*', 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "");
+        Orion.ToggleScript('WalkTo', false, [escape.X(), escape.Y()])
+    }
+    else {
+        Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
     }
 }
 
@@ -285,5 +339,33 @@ function CheckArtiChance() {
     }
 }
 
+function BoneCutter() {
+    var blade = Orion.FindTypeEx('0x13B6|0x13FF', any, backpack).shift();
+
+    while (blade.Exists()) {
+        if (!Orion.DisplayTimerExists('RoomCheck')) {
+            Orion.AddDisplayTimer('RoomCheck', 10000, 'Custom', 'Bar', 'RoomCheck', 0, 1200);
+            var room = parseInt(Orion.RegRead('room'));
+            if(room!=5)
+            {
+                Orion.Terminate('BoneCutter')
+            }
+        }
+
+        Orion.Wait(200)
+        var bones = Orion.FindTypeEx('0xECA', any, ground, 'item', 2)
+        bones.forEach(function (bone) {
+            if (!Orion.BuffExists('0x9BD2')) {
+                WalkTo(bone, 1)
+            }
+            Orion.UseObject(blade.Serial());
+            if (Orion.WaitForTarget(1000)) {
+                Orion.TargetObject(bone.Serial());
+            }
+            Orion.Wait(800)
+        });
+    }
+
+}
 //Healing Script
 //PetCaller
