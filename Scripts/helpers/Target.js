@@ -141,6 +141,12 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
 function WalkTo(object, distance, timeMS, walking, monitored) {
   TextWindow.Print('Method Entry - WalkTo')
   TextWindow.Print("Start WalkTo")
+  if (parseInt(object)>0) {
+    var target = coordinate(object, distance)
+    distance = 0
+    object = target;
+  }
+
   if (typeof object === "string") {
     Orion.Print('finding ' + object)
     object = Orion.FindObject(object)
@@ -346,6 +352,42 @@ function StayAway(targetId, distance) {
         });
     var closest = tiles.shift()
     WalkTo(coordinate(closest.X(), closest.Y()), 1)
+  }
+}
+
+function StayAwayGetLocation(targetId, distance) {
+  if (Orion.ObjectExists(targetId)) {
+    var target = Orion.FindObject(targetId)
+    var x = target.X();
+    var y = target.Y();
+    var i = 0;
+    Orion.ClearFakeMapObjects()
+    var bordertiles =
+      Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance)
+        .filter(function (tile) {
+          return BorderEdge(x, y, tile, distance);
+        }).sort(function (t1, t2) {
+          return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
+        });
+
+        var visibleBorder = bordertiles.filter(function (tile) {
+          return Orion.InLOS(tile.X(), tile.Y());
+        })
+
+        var trimtiles = visibleBorder.slice(0,5).filter(function (tile){
+          return Orion.GetPathArray(tile.X(), tile.Y(), tile.Z(), 0, 30, 1, 0).length>=1
+        })
+        if(trimtiles.length==0)
+        {
+          trimtiles = bordertiles.slice(0,15).filter(function (tile){
+            return Orion.GetPathArray(tile.X(), tile.Y(), tile.Z(), 0, 30, 1, 0).length>=1
+          })
+        }
+        trimtiles.forEach(function (tile){
+    Orion.AddFakeMapObject(i++, '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+        })
+    var closest = trimtiles.shift()
+    return coordinate(closest.X(), closest.Y(), closest.Z(),'Escape')
   }
 }
 

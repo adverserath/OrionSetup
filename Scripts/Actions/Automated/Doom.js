@@ -71,8 +71,8 @@ function DoomGauntlet() {
         'live', 10, 'green').length
     Orion.Print('Group size: ' + groupSize)
     var start = coordinate(421, 426, 0, 'Start')
-    Sender('*', 'W:' + start.X() + ':' + start.Y() + ':' + start.Z() + ':' + "");
-    WalkTo(start)
+    Sender('*', 'W:' + start.X() + ':' + start.Y() + ':' + start.Z() + ':' + 15);
+    WalkTo(start,15)
 
     var room = 0
     var activePent = Orion.FindTypeEx('0x0FEA', '0x0676', ground, 'item', 30).shift()
@@ -106,6 +106,9 @@ function DoomGauntlet() {
         for (var index = room; index < rooms.length; index++) {
             Orion.Print('Doing room ' + index)
             Sender_Method('*', 'CheckArtiChance')
+            Sender('*', 'W:' + 423 + ':' + 430 + ':' + Player.Z() + ':' + 25);
+            WalkTo(423,430, 25)
+
             DoRoom(index)
             //Print next chance of drop
         }
@@ -136,25 +139,39 @@ function DoRoom(room) {
     Sender('*', 'W:' + rooms[room].AttackPoint().X() + ':' + rooms[room].AttackPoint().Y() + ':' + rooms[room].AttackPoint().Z() + ':' + "");
     WalkTo(rooms[room].AttackPoint(), 0)
     var mobiles = Orion.FindTypeEx(rooms[room].MobType(), any, ground,
-        'nothumanmobile|live|ignoreself|ignorefriends', 30, 'gray|criminal|red|enemy')
+        'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|red|enemy')
     while (Orion.FindTypeEx(rooms[room].MobType(), any, ground,
-        'nothumanmobile|live|ignoreself|ignorefriends', 30, 'gray|criminal|red|enemy').length != 0) {
+        'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|red|enemy').length != 0) {
         mobiles = Orion.FindTypeEx(rooms[room].MobType(), any, ground,
-            'nothumanmobile|live|ignoreself|ignorefriends', 30, 'gray|criminal|red|enemy')
+            'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|red|enemy')
 
         mobiles.forEach(function (mobile) {
             Orion.Attack(mobile.Serial());
             Orion.Wait(500)
         })
         if (room == 5) {
-            Orion.Print('Im not fighting that without watching')
-            var escape = coordinate(398, 432, 0, 'Room6 Retreat')
-            Sender('*', 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "");
-
-            WalkTo(escape)
             mobiles.forEach(function (mobile) {
                 while (mobile.Exists()) {
-                    Orion.Wait(3000)
+                    Orion.Wait(1000)
+                    if(mobile.Distance<10)
+                    {
+                        var escape = StayAwayGetLocation(mobile.Serial(), 10) 
+                        Sender('*', 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "");
+                        Orion.ToggleScript('WalkTo',false,[escape.X(),escape.Y()])
+                    }
+                    else{
+                        Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
+                    }
+                    while (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance<11&& mobile.Distance>2) {
+                        Orion.Print('DeathRay')
+    
+                        Orion.Cast('Death Ray')
+                        if (Orion.WaitForTarget(4000)) {
+                            Orion.TargetObject(mobile.Serial())
+                        }
+                        Orion.Wait(1000)
+                        Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
+                    }
                 }
             })
             return
@@ -186,7 +203,7 @@ function DoRoom(room) {
                     Orion.Wait(2000)
                 }
                 else {
-                    if (Player.Mana() > 30) {
+                    if (Player.Mana() > 30 || room != 2) {
                         if (!Orion.DisplayTimerExists('Corpse skin')) {
                             Orion.AddDisplayTimer('Corpse skin', 20000, 'Custom', 'Bar', 'Corpse skin', 100, 1200);
                             Orion.CastTarget('Corpse skin', mobile.Serial())

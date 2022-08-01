@@ -18,6 +18,21 @@
 //#include helpers/Gates.js
 //#include helpers/Quest.js
 
+function stayback()
+{
+var mobile = SelectTarget()
+                Orion.Print(mobile.Exists())
+                while (mobile.Exists()) {
+
+                    Orion.Wait(100)
+                Orion.Print(mobile.Distance())
+                    if(mobile.Distance()<10)
+                    {
+                        var escape = StayAwayGetLocation(mobile.Serial(), 10) 
+                       Sender(Player.Serial(), 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "");
+                       Orion.ToggleScript('WalkTo',false,[escape.X(),escape.Y()])
+                    }
+                }}
 function DistanceFrom()
 {
 var t = SelectTarget()
