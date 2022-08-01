@@ -68,13 +68,13 @@ function ResponseHandler(recv) {
         Orion.Print("Walk To")
         if (Orion.ScriptRunning('Walk') != 0 || Orion.IsWalking()) {
             Orion.StopWalking()
-            Orion.ToggleScript('Walk');
+            Orion.Terminate('Walk');
             Orion.Wait(100)
         }
         if (Orion.GetDistance(recvp[1], recvp[2]) > 12 && Player.Frozen()) {
             Orion.InterruptCast();
         }
-        Orion.ToggleScript('Walk', true, [recvp[1], recvp[2], recvp[3], recvp[4]])
+        Orion.ToggleScript('Walk', true, [recvp[1], recvp[2], recvp[3], recvp[4], recvp[5]])
         Orion.Print('obj' + recvp[4])
         if (recvp[5] != null) {
             Orion.UseObject(recvp[4])
@@ -211,12 +211,14 @@ function SendWho() {
     Orion.UdpSend(2597, "Player:::" + '{"name":"' + Player.Name() + '", "port":' + udpPort + ', "serial":"' + Player.Serial() + '", "skills":"' + skills + '"}');
 }
 
-function Walk(x, y, z, dir) {
+function Walk(x, y, z, dir, distance) {
+    if(distance==null)
+        distance = 0
     if (Orion.IsWalking()) {
         Orion.StopWalking()
     }
     if (Orion.GetDistance(x, y) > 0) {
-        Orion.WalkTo(x, y, z, 0, 3, 1)
+        Orion.WalkTo(x, y, z, distance, 3, 1)
     }
     if (dir != null)
         Orion.Turn(dir);

@@ -74,7 +74,7 @@ function DoomGauntlet() {
         'live', 10, 'green').length
     Orion.Print('Group size: ' + groupSize)
     var start = coordinate(421, 426, 0, 'Start')
-    Sender('*', 'W:' + start.X() + ':' + start.Y() + ':' + start.Z() + ':' + 15);
+    Sender('*', 'W:' + start.X() + ':' + start.Y() + ':' + start.Z() + ':' + "" + ':' + 15);
     WalkTo(start, 15)
 
     var room = 0
@@ -109,9 +109,9 @@ function DoomGauntlet() {
         for (var index = room; index < rooms.length; index++) {
             Orion.Print('Doing room ' + index)
             Sender_Method('*', 'CheckArtiChance')
-            Sender('*', 'W:' + 423 + ':' + 430 + ':' + Player.Z() + ':' + 25);
+            Sender('*', 'W:' + 423 + ':' + 430 + ':' + Player.Z() + ':' + "" + ':' + 25);
             WalkTo(423, 430, 25)
-
+            Orion.PauseScript()
             DoRoom(index)
             //Print next chance of drop
         }
@@ -124,7 +124,6 @@ function DoRoom(room) {
     Orion.RegWrite('room', room);
 
     if (room == 5) {
-        Orion.PauseScript()
         Sender_Method('*', 'BoneCutter')
         }
     Orion.Unequip('RightHand');
@@ -197,7 +196,7 @@ function DoRoom(room) {
                             Orion.TargetObject(mobile.Serial())
                         }
                         Orion.Wait(1000)
-                        Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
+                        Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + "" + ':' + 1);
                     }
                 }
 
@@ -229,7 +228,7 @@ function DoRoom(room) {
             Orion.Equip(rooms[room].Slayer());
 
             corners.forEach(function (corner){
-                Sender('*', 'W:' + corner.X() + ':' + corner.Y() + ':' + Player.Z() + ':' + 5);
+                Sender('*', 'W:' + corner.X() + ':' + corner.Y() + ':' + Player.Z() + ':' + "" + ':' + 5);
                 WalkTo(corner.X(), corner.Y(), 5)
     
                 var otherMobs = Orion.FindTypeEx(any, any, ground,
@@ -237,7 +236,7 @@ function DoRoom(room) {
                 
                 otherMobs.forEach(function (mob){
                     while(mob.Exists()){
-                        Sender('*', 'W:' + mob.X() + ':' + mob.Y() + ':' + mob.Z() + ':' + 10);
+                        Sender('*', 'W:' + mob.X() + ':' + mob.Y() + ':' + mob.Z() + ':' + "" + ':' + 10);
                         WalkTo(mob,10)
                         Sender_CastTarget('*', 'Flame Strike', mob.Serial());
                         Orion.Wait(2000)
@@ -276,7 +275,7 @@ function DoRoom(room) {
                                 Orion.TargetObject(mobile.Serial())
                             }
                             Orion.Wait(1000)
-                            Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
+                            Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + "" + ':' + 1);
                         }
                     }
                     else {
@@ -318,11 +317,11 @@ function DoRoom(room) {
 function MoveAwayFromBoss(mobile) {
     if (mobile.Distance() < 10) {
         var escape = StayAwayGetLocation(mobile.Serial(), 10)
-        Sender('*', 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "");
+        Sender('*', 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "" + ':' + "");
         Orion.ToggleScript('WalkTo', false, [escape.X(), escape.Y()])
     }
     else {
-        Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + 1);
+        Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + "" + ':' + 1);
     }
 }
 
