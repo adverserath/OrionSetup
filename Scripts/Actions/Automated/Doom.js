@@ -216,17 +216,35 @@ function DoRoom(room) {
             }
 
             //Kill everything else when its dead
-            var otherMobs = Orion.FindTypeEx(any, any, ground,
-            'nothumanmobile|live|ignoreself|ignorefriends', 35, 'gray|criminal|red|enemy')
+            Orion.Print('___Clear up centre___')
+
+            var corners = [coordinate(405, 419, 0, 'Corner1'),
+            coordinate(405, 449, 0, 'Corner2'),
+            coordinate(435, 421, 0, 'Corner3'),
+            coordinate(443, 449, 0, 'Corner4')
+            ]
+
             Orion.Unequip('RightHand');
             Orion.Wait(800)
             Orion.Equip(rooms[room].Slayer());
-            otherMobs.forEach(function (mob){
-                Sender('*', 'W:' + mob.X() + ':' + mob.Y() + ':' + mob.Z() + ':' + 10);
-                WalkTo(mob,10)
-                Sender_CastTarget('*', 'Flame Strike', mob.Serial());
-                Orion.Wait(2000)
+
+            corners.forEach(function (corner){
+                Sender('*', 'W:' + corner.X() + ':' + corner.Y() + ':' + Player.Z() + ':' + 5);
+                WalkTo(corner.X(), corner.Y(), 5)
+    
+                var otherMobs = Orion.FindTypeEx(any, any, ground,
+                'nothumanmobile|live|ignoreself|ignorefriends', 35, 'gray|criminal|red|enemy')
+                
+                otherMobs.forEach(function (mob){
+                    while(mob.Exists()){
+                        Sender('*', 'W:' + mob.X() + ':' + mob.Y() + ':' + mob.Z() + ':' + 10);
+                        WalkTo(mob,10)
+                        Sender_CastTarget('*', 'Flame Strike', mob.Serial());
+                        Orion.Wait(2000)
+                    }
+                })
             })
+ 
             return
         }
         else {
