@@ -68,8 +68,6 @@ var hitmarker = function () {
 }()
 
 function DoomGauntlet() {
-
-
     groupSize = Orion.FindTypeEx(any, any, ground,
         'live', 10, 'green').length
     Orion.Print('Group size: ' + groupSize)
@@ -123,14 +121,14 @@ function DoomGauntlet() {
         }
         room = 0;
     }
+}
 
-    function WaitForGroup() {
-        while (groupSize != Orion.FindTypeEx(any, any, ground,
-            'live', 3, 'green').length) {
-            Orion.Print('Waiting for group:' + Orion.FindTypeEx(any, any, ground,
-                'live', 3, 'green').length);
-            Orion.Wait(2000);
-        }
+function WaitForGroup() {
+    while (groupSize != Orion.FindTypeEx(any, any, ground,
+        'live', 3, 'green').length) {
+        Orion.Print('Waiting for group:' + Orion.FindTypeEx(any, any, ground,
+            'live', 3, 'green').length);
+        Orion.Wait(500);
     }
 }
 
@@ -150,7 +148,7 @@ function DoRoom(room) {
     WalkTo(rooms[room].Meet(), 0)
 
     WaitForGroup();
-    
+
     Orion.Wait(1000)
     Sender('*', 'W:' + rooms[room].EntryPoint().X() + ':' + rooms[room].EntryPoint().Y() + ':' + rooms[room].EntryPoint().Z() + ':' + "");
     Orion.Wait(1000)
