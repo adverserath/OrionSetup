@@ -141,7 +141,7 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
 function WalkTo(object, distance, timeMS, walking, monitored) {
   TextWindow.Print('Method Entry - WalkTo')
   TextWindow.Print("Start WalkTo")
-  if (parseInt(object)>0) {
+  if (parseInt(object) > 0) {
     var target = coordinate(object, distance)
     distance = 0
     object = target;
@@ -169,12 +169,24 @@ function WalkTo(object, distance, timeMS, walking, monitored) {
   if (walking == null) {
     walking = 1;
   }
+  var x = object.X()
+  var y = object.Y()
+  if (distance > 0 && Orion.GetDistance(x, y) > 24) {
+    var path = Orion.GetPathArray(x, y).reverse();
+    if (path.length > distance) {
+      Orion.Print('Setting Short')
+      x = path[distance].X()
+      y = path[distance].Y()
+      distance = 0
+    }
+  }
+
   var Z = 0
   if (object.hasOwnProperty('z'))
     Z = object.Z()
   if (monitored)
     Orion.ToggleScript('MonitorWalkBlock', true)
-  var result = Orion.WalkTo(object.X(), object.Y(), Z, distance, 255, walking, 1, timeMS);
+  var result = Orion.WalkTo(x, y, Z, distance, 255, walking, 1, timeMS);
   return result
 }
 
@@ -371,26 +383,25 @@ function StayAwayGetLocation(targetId, distance) {
           return Orion.GetDistance(t1.X(), t1.Y()) - Orion.GetDistance(t2.X(), t2.Y())
         });
 
-        var visibleBorder = bordertiles.filter(function (tile) {
-          return Orion.InLOS(tile.X(), tile.Y());
-        })
+    var visibleBorder = bordertiles.filter(function (tile) {
+      return Orion.InLOS(tile.X(), tile.Y());
+    })
 
-        var trimtiles = visibleBorder.slice(0,5).filter(function (tile){
-          return Orion.GetPathArray(tile.X(), tile.Y(), tile.Z(), 0, 30, 1, 0).length>=1
-        })
-        if(trimtiles.length==0)
-        {
-          trimtiles = bordertiles.slice(0,15).filter(function (tile){
-            return Orion.GetPathArray(tile.X(), tile.Y(), tile.Z(), 0, 30, 1, 0).length>=1
-          })
-        }
-        trimtiles.forEach(function (tile){
-    Orion.AddFakeMapObject(i++, '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
-        })
+    var trimtiles = visibleBorder.slice(0, 5).filter(function (tile) {
+      return Orion.GetPathArray(tile.X(), tile.Y(), tile.Z(), 0, 30, 1, 0).length >= 1
+    })
+    if (trimtiles.length == 0) {
+      trimtiles = bordertiles.slice(0, 15).filter(function (tile) {
+        return Orion.GetPathArray(tile.X(), tile.Y(), tile.Z(), 0, 30, 1, 0).length >= 1
+      })
+    }
+    trimtiles.forEach(function (tile) {
+      Orion.AddFakeMapObject(i++, '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+    })
     var closest = trimtiles.shift()
     Orion.Print('Exit StayAwayGetLocation')
 
-    return coordinate(closest.X(), closest.Y(), closest.Z(),'Escape')
+    return coordinate(closest.X(), closest.Y(), closest.Z(), 'Escape')
   }
 }
 

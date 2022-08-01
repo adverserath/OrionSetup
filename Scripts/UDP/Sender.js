@@ -17,15 +17,16 @@
 //#include Fighting/Healing.js
 //#include helpers/Gates.js
 //#include helpers/Quest.js
-
-function DistanceFrom()
-{
-var t = SelectTarget()
-while(true)
-{
-Orion.Print(t.Distance())
-Orion.Wait(1000)
+function WalkTest() {
+    WalkTo(coordinate(423, 430), 25)
+    Sender('*', 'W:' + 423 + ':' + 430 + ':' + -1 + ':' + 2 + ':' + 25);
 }
+function DistanceFrom() {
+    var t = SelectTarget()
+    while (true) {
+        Orion.Print(t.Distance())
+        Orion.Wait(1000)
+    }
 }
 
 function gridX(x, size) {
@@ -58,7 +59,7 @@ var spells =
         [[100, 30, 8100, "Gift Of Renewal", 'Sender_CastSelf'], [100, 30, 8200, "Gift Of Life", 'Sender_CastSelf'], [100, 30, 8300, "Word Of Death", 'Sender_CastTarget']],
         [[100, 30, 9100, 'Gift Of Renewal', 'Sender_CastMount'], [100, 30, 9200, "Gift Of Life", 'Sender_CastMount']],
         [[75, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [75, 30, 1020, "Thunderstorm", 'Sender_Cast']
-            , [75, 30, 1030, "GotoMistas", 'Sender_Method'], [75, 30, 1040, "GotoTW", 'Sender_Method'],[75, 30, 1050, "GotoBlood", 'Sender_Method'], [75, 30, 1060, "QuestRenew", 'Sender_Method']],
+            , [75, 30, 1030, "GotoMistas", 'Sender_Method'], [75, 30, 1040, "GotoTW", 'Sender_Method'], [75, 30, 1050, "GotoBlood", 'Sender_Method'], [75, 30, 1060, "QuestRenew", 'Sender_Method']],
 
     ]
 function Sender_CloseUO(serial) {
@@ -151,8 +152,8 @@ function Sender_UnmountPet(serial) {
 
 function Sender_Attack(serial) {
     var tobj = SelectTarget()
-    if(tobj.Notoriety()!=2){
-    var target = tobj.Serial();
+    if (tobj.Notoriety() != 2) {
+        var target = tobj.Serial();
         if (target != null) {
             Orion.Attack(target)
             Sender(serial, 'A:' + target);
@@ -184,9 +185,8 @@ function Sender_CastTarget(serial, spellName, _target) {
 
     if (target != null) {
         Sender(serial, 'Cast:' + spellName + ':' + target);
-        if (serial === '*')
-        {
-            Orion.Print(spellName+' : ' +target)
+        if (serial === '*') {
+            Orion.Print(spellName + ' : ' + target)
             Orion.CastTarget(spellName, target)
         }
     }
@@ -406,8 +406,8 @@ function HostGump(_) {
         var endOfLastButton = 0
         rowLayer.forEach(function (button) {
             gump.AddResizepic(endOfLastButton, gridY(row, button[1]) + 30, '0x24EA', button[0], button[1], button[2], 1);
-            gump.AddText(endOfLastButton+5, gridTY(row, button[1]) + 30, '0', button[3]);
-            endOfLastButton+=button[0]
+            gump.AddText(endOfLastButton + 5, gridTY(row, button[1]) + 30, '0', button[3]);
+            endOfLastButton += button[0]
             column++;
         })
         column = 0
@@ -437,8 +437,8 @@ function HostGump(_) {
 
             rowLayer.forEach(function (button) {
                 gump.AddResizepic(group - partition + endOfLastButton, gridY(row, button[1]) + 30, '0x24EA', button[0], button[1], i + '' + button[2], 1);
-                gump.AddText(group - partition + endOfLastButton+5, gridTY(row, button[1]) + 30, '0', button[3]);
-                endOfLastButton+=button[0]
+                gump.AddText(group - partition + endOfLastButton + 5, gridTY(row, button[1]) + 30, '0', button[3]);
+                endOfLastButton += button[0]
                 column++;
             })
             column = 0

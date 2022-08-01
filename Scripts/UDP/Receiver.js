@@ -17,10 +17,9 @@
 
 var udpPort = 2598;
 
-function Autostart(_)
-{
-Orion.ToggleScript('Message_Receiver')
-Orion.Print('Started Receiver')
+function Autostart(_) {
+    Orion.ToggleScript('Message_Receiver')
+    Orion.Print('Started Receiver')
 }
 function Message_Receiver() {
     Orion.Print('Begin Receiver')
@@ -212,20 +211,20 @@ function SendWho() {
 }
 
 function Walk(x, y, z, dir, distance) {
-Orion.Print('x=='+x)
-Orion.Print('y=='+y)
-Orion.Print('z=='+z)
-Orion.Print('dir=='+dir)
+    Orion.Print('x==' + x)
+    Orion.Print('y==' + y)
+    Orion.Print('z==' + z)
+    Orion.Print('dir==' + dir)
 
-Orion.Print('distance=='+distance)
-    if(distance==null||distance==undefined)
+    Orion.Print('distance==' + distance)
+    if (distance == null || distance == undefined)
         distance = 0
     if (Orion.IsWalking()) {
         Orion.StopWalking()
     }
-    
+
     if (Orion.GetDistance(x, y) > 0) {
-        Orion.WalkTo(x, y, z, distance, 3, 1)
+        WalkTo(coordinate(x, y, z, 'target'), distance)
     }
     if (dir != null)
         Orion.Turn(dir);

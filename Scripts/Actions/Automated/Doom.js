@@ -74,7 +74,7 @@ function DoomGauntlet() {
 
     Sender('*', 'W:' + 423 + ':' + 430 + ':' + Player.Z() + ':' + Player.Direction() + ':' + 15);
     WalkTo(coordinate(423, 430), 15)
-    Orion.PauseScript()
+    //Orion.PauseScript()
 
     var room = 0
     var activePent = Orion.FindTypeEx('0x0FEA', '0x0676', ground, 'item', 30).shift()
@@ -108,14 +108,14 @@ function DoomGauntlet() {
         for (var index = room; index < rooms.length; index++) {
             Orion.Print('Doing room ' + index)
             Sender_Method('*', 'CheckArtiChance')
-            
+
             Orion.Print('walk to 25')
             Sender('*', 'W:' + 423 + ':' + 430 + ':' + Player.Z() + ':' + Player.Direction() + ':' + 25);
             WalkTo(coordinate(423, 430), 25)
 
             WaitForGroup();
 
-            Orion.PauseScript()
+            //Orion.PauseScript()
             DoRoom(index)
             //Print next chance of drop
         }
@@ -133,12 +133,12 @@ function WaitForGroup() {
 }
 
 function DoRoom(room) {
-    Orion.Print('Doing room '+room)
+    Orion.Print('Doing room ' + room)
     Orion.RegWrite('room', room);
 
     if (room == 5) {
         Sender_Method('*', 'BoneCutter')
-        }
+    }
     Orion.Unequip('RightHand');
     Orion.Wait(800)
     Orion.Print('Equip ' + rooms[room].Slayer())
@@ -166,6 +166,8 @@ function DoRoom(room) {
             'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|red|enemy')
 
         var mobile = mobiles[0]
+        if (mobile == null)
+            return
         MoveAwayFromBoss(mobile)
         Orion.Attack(mobile.Serial());
         Orion.Wait(1000)
@@ -186,20 +188,19 @@ function DoRoom(room) {
                 else if (!Orion.BuffExists('0x9BD2')) {
                     Orion.Print('Walk To mob')
                     WalkTo(mobile, 10)
-                    
+
                     if (Player.Mana() > 40 && !Orion.BuffExists('Arcane Empowerment') && Orion.ClientLastAttack() != '0x00000000') {
                         Cast('Arcane Empowerment')
                         Orion.Wait(1000)
                     }
 
-                    if(!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance() < 11 && mobile.Distance() > 2 && Player.Mana() < 50)
-                    {
-                        Orion.CastTarget('Energy Bolt',mobile.Serial())
+                    if (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance() < 11 && mobile.Distance() > 2 && Player.Mana() < 50) {
+                        Orion.CastTarget('Energy Bolt', mobile.Serial())
                         Orion.Wait(1000)
                     }
                     else if (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance() < 11 && mobile.Distance() > 2 && Player.Mana() > 50) {
                         Orion.Print('DeathRay')
-    
+
                         Orion.Cast('Death Ray')
                         if (Orion.WaitForTarget(4000)) {
                             Orion.TargetObject(mobile.Serial())
@@ -212,7 +213,7 @@ function DoRoom(room) {
 
                 if (!mobile.Exists()) {
                     Orion.Print('I cant see ' + mobile.Name())
-                    if(rooms[room].Hides())
+                    if (rooms[room].Hides())
                         Orion.Wait(5000)
                     else
                         Orion.Wait(500)
@@ -236,23 +237,23 @@ function DoRoom(room) {
             Orion.Wait(800)
             Orion.Equip(rooms[room].Slayer());
 
-            corners.forEach(function (corner){
+            corners.forEach(function (corner) {
                 Sender('*', 'W:' + corner.X() + ':' + corner.Y() + ':' + Player.Z() + ':' + "" + ':' + 5);
                 WalkTo(corner, 5)
-    
+
                 var otherMobs = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 35, 'gray|criminal|red|enemy')
-                
-                otherMobs.forEach(function (mob){
-                    while(mob.Exists()){
+                    'nothumanmobile|live|ignoreself|ignorefriends', 35, 'gray|criminal|red|enemy')
+
+                otherMobs.forEach(function (mob) {
+                    while (mob.Exists()) {
                         Sender('*', 'W:' + mob.X() + ':' + mob.Y() + ':' + mob.Z() + ':' + "" + ':' + 10);
-                        WalkTo(mob,10)
+                        WalkTo(mob, 10)
                         Sender_CastTarget('*', 'Flame Strike', mob.Serial());
                         Orion.Wait(2000)
                     }
                 })
             })
- 
+
             return
         }
         else {
@@ -275,10 +276,10 @@ function DoRoom(room) {
                     else if (!Orion.BuffExists('0x9BD2')) {
                         Orion.Print('Walk To mob')
                         WalkTo(mobile, 10)
-    
+
                         while (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance() < 11 && mobile.Distance() > 2 && Player.Mana() > 40) {
                             Orion.Print('DeathRay')
-        
+
                             Orion.Cast('Death Ray')
                             if (Orion.WaitForTarget(4000)) {
                                 Orion.TargetObject(mobile.Serial())
@@ -302,7 +303,7 @@ function DoRoom(room) {
                     Orion.Wait(1000)
                     if (!mobile.Exists()) {
                         Orion.Print('I cant see ' + mobile.Name())
-                        if(rooms[room].Hides())
+                        if (rooms[room].Hides())
                             Orion.Wait(5000)
                         else
                             Orion.Wait(500)
@@ -372,8 +373,7 @@ function BoneCutter() {
         if (!Orion.DisplayTimerExists('RoomCheck')) {
             Orion.AddDisplayTimer('RoomCheck', 10000, 'Custom', 'Bar', 'RoomCheck', 0, 1200);
             var room = parseInt(Orion.RegRead('room'));
-            if(room!=5)
-            {
+            if (room != 5) {
                 Orion.Terminate('BoneCutter')
             }
         }
