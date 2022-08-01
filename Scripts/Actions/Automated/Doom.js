@@ -49,7 +49,7 @@ var rooms = [
     Room(coordinate(404, 501, 0, 'Room3 Meet'), coordinate(403, 502, 0, 'Room3 Entry'), coordinate(405, 527, 0, 'Room3 Attack'), demon, true, '0x0132', false),
     Room(coordinate(358, 476, 0, 'Room4 Meet'), coordinate(357, 476, 0, 'Room4 Entry'), coordinate(340, 500, 0, 'Room4 Attack'), undead, true, '0x0137', true),
     Room(coordinate(362, 433, 0, 'Room5 Meet'), coordinate(361, 433, 0, 'Room5 Entry'), coordinate(330, 436, 0, 'Room5 Attack'), demon, true, '0x0138', false),
-    Room(coordinate(381, 429, 0, 'Room6 Meet'), coordinate(401, 429, 0, 'Room6 Entry'), coordinate(407, 428, 0, 'Room6 Attack'), demon, false, '0x013E', true),
+    Room(coordinate(400, 429, 0, 'Room6 Meet'), coordinate(401, 429, 0, 'Room6 Entry'), coordinate(407, 428, 0, 'Room6 Attack'), demon, false, '0x013E', true),
 ]
 
 var groupSize = 0
@@ -73,9 +73,10 @@ function DoomGauntlet() {
     groupSize = Orion.FindTypeEx(any, any, ground,
         'live', 10, 'green').length
     Orion.Print('Group size: ' + groupSize)
-    var start = coordinate(421, 426, 0, 'Start')
-    Sender('*', 'W:' + start.X() + ':' + start.Y() + ':' + start.Z() + ':' + "" + ':' + 15);
-    WalkTo(start, 15)
+
+    Sender('*', 'W:' + 423 + ':' + 430 + ':' + Player.Z() + ':' + Player.Direction() + ':' + 15);
+    WalkTo(coordinate(423, 430), 15)
+    Orion.PauseScript()
 
     var room = 0
     var activePent = Orion.FindTypeEx('0x0FEA', '0x0676', ground, 'item', 30).shift()
@@ -109,13 +110,27 @@ function DoomGauntlet() {
         for (var index = room; index < rooms.length; index++) {
             Orion.Print('Doing room ' + index)
             Sender_Method('*', 'CheckArtiChance')
-            Sender('*', 'W:' + 423 + ':' + 430 + ':' + Player.Z() + ':' + "" + ':' + 25);
-            WalkTo(423, 430, 25)
+            
+            Orion.Print('walk to 25')
+            Sender('*', 'W:' + 423 + ':' + 430 + ':' + Player.Z() + ':' + Player.Direction() + ':' + 25);
+            WalkTo(coordinate(423, 430), 25)
+
+            WaitForGroup();
+
             Orion.PauseScript()
             DoRoom(index)
             //Print next chance of drop
         }
         room = 0;
+    }
+
+    function WaitForGroup() {
+        while (groupSize != Orion.FindTypeEx(any, any, ground,
+            'live', 3, 'green').length) {
+            Orion.Print('Waiting for group:' + Orion.FindTypeEx(any, any, ground,
+                'live', 3, 'green').length);
+            Orion.Wait(2000);
+        }
     }
 }
 
@@ -134,12 +149,8 @@ function DoRoom(room) {
     Sender('*', 'W:' + rooms[room].Meet().X() + ':' + rooms[room].Meet().Y() + ':' + rooms[room].Meet().Z() + ':' + "");
     WalkTo(rooms[room].Meet(), 0)
 
-    while (groupSize != Orion.FindTypeEx(any, any, ground,
-        'live', 3, 'green').length) {
-        Orion.Print('Waiting for group:' + Orion.FindTypeEx(any, any, ground,
-            'live', 3, 'green').length)
-        Orion.Wait(2000)
-    }
+    WaitForGroup();
+    
     Orion.Wait(1000)
     Sender('*', 'W:' + rooms[room].EntryPoint().X() + ':' + rooms[room].EntryPoint().Y() + ':' + rooms[room].EntryPoint().Z() + ':' + "");
     Orion.Wait(1000)
@@ -229,7 +240,7 @@ function DoRoom(room) {
 
             corners.forEach(function (corner){
                 Sender('*', 'W:' + corner.X() + ':' + corner.Y() + ':' + Player.Z() + ':' + "" + ':' + 5);
-                WalkTo(corner.X(), corner.Y(), 5)
+                WalkTo(corner, 5)
     
                 var otherMobs = Orion.FindTypeEx(any, any, ground,
                 'nothumanmobile|live|ignoreself|ignorefriends', 35, 'gray|criminal|red|enemy')

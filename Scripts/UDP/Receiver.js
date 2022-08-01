@@ -75,9 +75,9 @@ function ResponseHandler(recv) {
             Orion.InterruptCast();
         }
         Orion.ToggleScript('Walk', true, [recvp[1], recvp[2], recvp[3], recvp[4], recvp[5]])
-        Orion.Print('obj' + recvp[4])
-        if (recvp[5] != null) {
-            Orion.UseObject(recvp[4])
+        Orion.Print('obj' + recvp[6])
+        if (recvp[6] != null) {
+            Orion.UseObject(recvp[6])
         }
         //    Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
     }
@@ -212,11 +212,18 @@ function SendWho() {
 }
 
 function Walk(x, y, z, dir, distance) {
-    if(distance==null)
+Orion.Print('x=='+x)
+Orion.Print('y=='+y)
+Orion.Print('z=='+z)
+Orion.Print('dir=='+dir)
+
+Orion.Print('distance=='+distance)
+    if(distance==null||distance==undefined)
         distance = 0
     if (Orion.IsWalking()) {
         Orion.StopWalking()
     }
+    
     if (Orion.GetDistance(x, y) > 0) {
         Orion.WalkTo(x, y, z, distance, 3, 1)
     }
