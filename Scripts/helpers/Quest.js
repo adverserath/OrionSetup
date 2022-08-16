@@ -51,9 +51,12 @@ while(Orion.InJournal('You have killed all the required quest', '', '0', '-1', s
 Orion.Attack(mobile.Serial())
     })
 	}
-    Orion.Wait(50)
+    Orion.Wait(500)
 
 
 }
+Orion.SayParty("Complete")
+WalkTo('0x4001A6BE',1) // Leave TW
+
 
 }

@@ -43,14 +43,15 @@ function SelectTarget(itemUsage) {
     Orion.Print("Select your" + itemUsage);
   }
   var type = Orion.WaitForAddObject('myTarget');
-  Orion.Print('Type:' + type);
+  Debug('Type:' + type);
   Orion.Wait(100)
   if (type == 1 || type == 2) {
 
 
     Orion.TargetObject('myTarget');
     var target = Orion.FindObject('myTarget');
-    Orion.Print(target);
+    if(target!=null)
+      Debug(target.Serial());
     return target;
   }
   else if (type == 3) {
@@ -141,18 +142,23 @@ function PrintContainer(object, mobile, ignoreNonStealable) {
 function WalkTo(object, distance, timeMS, walking, monitored) {
   TextWindow.Print('Method Entry - WalkTo')
   TextWindow.Print("Start WalkTo")
-  if (parseInt(object) > 0) {
+  Orion.Print(parseInt(object))
+
+  if (typeof object == "string" && object.length==10) {
+    Orion.Print('Walk to object')
+    Orion.Print('finding ' + object)
+    object = Orion.FindObject(object)
+    Orion.Print(object.Name())
+  }
+
+  else if (parseInt(object) > 0) {
+    Orion.Print('Walk to coord')
     var target = coordinate(object, distance)
     distance = 0
     object = target;
   }
 
-  if (typeof object === "string") {
-    Orion.Print('finding ' + object)
-    object = Orion.FindObject(object)
-  }
-
-  if (object.hasOwnProperty('name') && object.Name() != null && object.Name() != '') {
+  if (object.hasOwnProperty('name')) {
     TextWindow.Print("Walking to object ")
     TextWindow.Print(object.X() + '  ' + object.Y())
   }

@@ -18,8 +18,7 @@
 //#include helpers/Gates.js
 //#include helpers/Quest.js
 function WalkTest() {
-    WalkTo(coordinate(423, 430), 25)
-    Sender('*', 'W:' + 423 + ':' + 430 + ':' + -1 + ':' + 2 + ':' + 25);
+Sender_CastTarget('*', "Gift of Life", "self");
 }
 function DistanceFrom() {
     var t = SelectTarget()

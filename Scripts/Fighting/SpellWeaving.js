@@ -220,14 +220,14 @@ function SmartHealer() {
     })
     //Heal or Rez
     targets.filter(function (p) {
-        return p.Poisoned() || (p.Dead() && patient.IsHuman())
+        return p.Poisoned() || (p.Dead() && p.IsHuman())
     }).forEach(function (patient) {
         Orion.Print(patient.Name())
         if (!Player.Paralyzed() || Player.Frozen()) {
             if (Orion.SkillValue('Magery') > 500 && patient != null && patient.Poisoned()) {
                 Orion.CastTarget('Arch Cure', patient.Serial());
             }
-            else if (Orion.SkillValue('Magery') > 90 && patient.Dead() && patient.Distance() <= 1) {
+            else if (Orion.SkillValue('Magery') > 90 && patient.Dead() && patient.Properties().indexOf('Legacy') != -1 && patient.Distance() <= 1) {
                 Orion.CastTarget('Resurrection', patient.Serial());
             }
             Orion.Wait(300);
@@ -253,7 +253,7 @@ function SmartHealer() {
                         Orion.CastTarget('Greater Heal', patient.Serial());
 
                     }
-                    else if (Orion.SkillValue('Magery') > 90 && patient.Dead() && patient.Distance() <= 1) {
+                    else if (Orion.SkillValue('Magery') > 90 && patient.Dead() && patient.Properties().indexOf('Legacy') != -1 && patient.Distance() <= 1) {
                         Orion.CastTarget('Resurrection', patient.Serial());
                     }
                 }

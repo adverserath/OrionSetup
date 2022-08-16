@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="true" delay="1">
-        <action type="1" convert_type="4" waiting_time="1000" serial="0x40007BC9" graphic="0x14F0" color="0x0592"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x401454A4" graphic="0x2259" color="0x044E"/>
+        <action type="1" convert_type="0" waiting_time="1000" serial="0x400DDD35" graphic="0x2259" color="0x044E"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00002873" id="0x54F555DF" button="1"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00002874" id="0x968739DB" button="9"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00002875" id="0x968739DB" button="13"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00002876" id="0x968739DB" button="3"/>
     </macro>
     <macro name="AnimalLore" looped="true" delay="1">
         <action type="5" convert_type="0" waiting_time="1000" value="2"/>

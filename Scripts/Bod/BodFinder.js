@@ -1,11 +1,12 @@
 //#include helpers/Target.js
-
-var cliloc;
+//#include helpers/Debug.js
 
 var smallBodsLibrary = [];
 var largeBodsLibrary = [];
 
 function CreateSmallBod(_name, _quality, _material, _count, _bookId) {
+  Debug('CreateSmallBod')
+
   return {
     name: _name,
     quality: _quality,
@@ -44,6 +45,7 @@ function CreateSmallBod(_name, _quality, _material, _count, _bookId) {
 }
 
 function CreateLargeBod(_bookId) {
+  Debug('CreateLargeBod')
   return {
     bookId: _bookId,
     smallBods: [],
@@ -159,35 +161,81 @@ function CreateLargeBod(_bookId) {
 }
 
 function ReadBookSearch(bookId, readLarge, largeBodId, shouldGetBod) {
-  TextWindow.Open()
-  TextWindow.Clear()
+  Debug('ReadBookSearch')
+  Debug(bookId+ '  '+ readLarge+ '  '+ largeBodId + '  '+ shouldGetBod)
+  Debug('largeBodsLibrary ' + largeBodsLibrary.length)
+
+  Orion.Print('empty:'+(largeBodId===''))
+  Orion.Print('empty:'+(largeBodId===''))
+  Orion.Print('length ' + (largeBodsLibrary.length === 1))
+  if((largeBodId==='')&& (largeBodsLibrary.length === 1))
+  {
+    Orion.Print('largeBodsLibrary '+largeBodsLibrary)
+    largeBodId = largeBodsLibrary[0].getId()
+    Debug(largeBodId)
+  }
+
+Orion.Print('id ('+largeBodId+')')
+//  Orion.PauseScript()
+
   Orion.UseObject(bookId);
+//Reset filter
+  Orion.Wait(400)
   if (Orion.WaitForGump(1000)) {
     var gump0 = Orion.GetGump('last');
     if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF')) {
       gump0.Select(Orion.CreateGumpHook(1));
-      Orion.Wait(100);
+      Orion.Wait(200);
     }
   }
   if (Orion.WaitForGump(1000)) {
     var gump1 = Orion.GetGump('last');
     if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x968739DB')) {
       gump1.Select(Orion.CreateGumpHook(3));
-      Orion.Wait(100);
     }
   }
+  Orion.Wait(200);
+
+Orion.Print('Set Filter ' + largeBodId)
+  if (largeBodId != null && largeBodId!=='') {
+    //Large Bod filters
+    Orion.Print('Setting Filter')
+    var quality = largeBodId.substring(2, 3)
+    Orion.Print('Finding ' + quality)
+    var gump1 = Orion.GetGump('last');
+    if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x968739DB')) {
+
+      if (quality == 'n') { gump1.Select(Orion.CreateGumpHook(9)) }
+      else if (quality == 'e') { gump1.Select(Orion.CreateGumpHook(13)) }
+      Orion.Wait(200);
+
+    }
+
+    var amount = largeBodId.substring(3, 5)
+    Orion.Print('Finding ' + amount)
+    var gump1 = Orion.GetGump('last');
+    if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x968739DB')) {
+
+      if (amount == '10') { gump1.Select(Orion.CreateGumpHook(11)) }
+      else if (amount == '15') { gump1.Select(Orion.CreateGumpHook(15)) }
+      else if (amount == '20') { gump1.Select(Orion.CreateGumpHook(19)) }
+    }
+    Orion.Wait(200);
+  }
+
+
   if (Orion.WaitForGump(1000)) {
     var gump2 = Orion.GetGump('last');
     if ((gump2 !== null) && (!gump2.Replayed()) && (gump2.ID() === '0x968739DB')) {
       gump2.Select(Orion.CreateGumpHook(0));
-      Orion.Wait(100);
+      Orion.Wait(200);
     }
   }
   var endOfBook = false;
 
   while (!endOfBook) {
     while (ReadPageSearch(bookId, readLarge, largeBodId, shouldGetBod)) {
-      Orion.Print('Do it again')
+      TextWindow.Print('Do it again')
     }
     endOfBook = Orion.GetGump('last').ButtonList().join().match(/button\s225/i) == null;
 
@@ -200,6 +248,22 @@ function ReadBookSearch(bookId, readLarge, largeBodId, shouldGetBod) {
 
     }
   }
+  //Undo Filter
+  Orion.Wait(200);
+  if (Orion.WaitForGump(1000)) {
+    var gump0 = Orion.GetGump('last');
+    if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF')) {
+      gump0.Select(Orion.CreateGumpHook(1));
+      Orion.Wait(400);
+    }
+  }
+  if (Orion.WaitForGump(1000)) {
+    var gump1 = Orion.GetGump('last');
+    if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x968739DB')) {
+      gump1.Select(Orion.CreateGumpHook(3));
+      Orion.Wait(200);
+    }
+  }
 }
 
 function getSum(total, num) {
@@ -207,7 +271,10 @@ function getSum(total, num) {
 }
 
 var hasDroppedOne = false;
+
 function ReadPageSearch(bookId, readLarge, largeBodId, shouldGetBod) {
+  TextWindow.Print('Read Page - ' + bookId + " " + readLarge + " " + largeBodId + " " + shouldGetBod)
+  TextWindow.Print('largeBodsLibrary.length - ' + largeBodsLibrary.length)
   if (largeBodsLibrary.length > 0 && shouldGetBod) {
     var needed = largeBodsLibrary.map(function (lb) { return lb.SmallBods().length }).reduce(getSum, 0);
     Orion.Print(needed)
@@ -223,39 +290,46 @@ function ReadPageSearch(bookId, readLarge, largeBodId, shouldGetBod) {
 
   var smallBods = (line.match(/button\s(?:\d*\s){7},\stext\s(?:\d*\s){4},.?\w*\s61(?:\d*\s){4}\d*1062224\s(?:\d*\s){3},.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4}){0,1},\s\w*\s\d*\s\d*\s\d*\s\d*/ig) || []);
 
-  smallBods.forEach(function (bod) {
-    if (!hasDroppedOne) {
-      var matches = (bod.match(/.?\w*\s61(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
-      var buttons = (bod.match(/button(?:\d*\s){7}(\d*)/i) || [])
-      var buttonId = parseInt(buttons[1]) - 1
-      var loc;
-      if (matches[4]) {
+  //Maybe
+  if (!readLarge) {
+    smallBods.forEach(function (bod) {
+      TextWindow.Print(bod)
+      if (!hasDroppedOne) {
+        var matches = (bod.match(/.?\w*\s61(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
+        var buttons = (bod.match(/button(?:\d*\s){7}(\d*)/i) || [])
+        var buttonId = parseInt(buttons[1]) - 1
+        var loc;
+        if (matches[4]) {
 
-        loc = gump.Text(matches[5]).match(/\d\s.\s(\d*)/i)[1];
-        var smallBod = CreateSmallBod(GetString(matches[2]), GetString(matches[3]), GetString(matches[4]), loc, bookId)
-        if (shouldGetBod) {
-          Orion.Print(hasDroppedOne)
-          hasDroppedOne = SmallInLarge(smallBod, buttonId)
+          loc = gump.Text(matches[5]).match(/\d\s.\s(\d*)/i)[1];
+          var smallBod = CreateSmallBod(GetString(matches[2]), GetString(matches[3]), GetString(matches[4]), loc, bookId)
+          if (shouldGetBod) {
+            Orion.Print(hasDroppedOne)
+            hasDroppedOne = SmallInLarge(smallBod, buttonId)
+          }
+          else
+            smallBodsLibrary.push(smallBod)
         }
-        else
-          smallBodsLibrary.push(smallBod)
+        else {
+          loc = gump.Text(matches[5]).match(/\d\s.\s(\d*)/i)[1];
+          var smallBod = CreateSmallBod(GetString(matches[2]), GetString(matches[3]), '', loc, bookId)
+          if (shouldGetBod)
+            hasDroppedOne = SmallInLarge(smallBod, buttonId)
+          else
+            smallBodsLibrary.push(smallBod)
+        }
       }
-      else {
-        loc = gump.Text(matches[5]).match(/\d\s.\s(\d*)/i)[1];
-        var smallBod = CreateSmallBod(GetString(matches[2]), GetString(matches[3]), '', loc, bookId)
-        if (shouldGetBod)
-          hasDroppedOne = SmallInLarge(smallBod, buttonId)
-        else
-          smallBodsLibrary.push(smallBod)
-      }
-    }
-  })
+    })
+  }
 
   if (readLarge) {
+
     var largeBods = (line.match(/button\s(?:\d*\s){7},\stext\s(?:\d*\s){4},.?\w*\s61(?:\d*\s){4}\d*1062225\s(?:\d*\s){3},(.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4})?,(?:\s\w*\s\d*\s\d*\s\d*\s\d*\s,)+)+/ig) || []);
     largeBods.forEach(function (bigBod) {
+      TextWindow.Print(bigBod)
       var innerBods = (bigBod.match(/.?\w*\s103(?:\d*\s){4}(?:\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(?:\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(?:\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(?:\d*)/ig) || []);
       var largeBod = CreateLargeBod(bookId);
+
       var buttons = (bigBod.match(/button(?:\d*\s){7}(\d*)/i) || [])
       var buttonId = parseInt(buttons[1]) - 1
 
@@ -272,6 +346,8 @@ function ReadPageSearch(bookId, readLarge, largeBodId, shouldGetBod) {
         }
       })
       Orion.Wait(20)
+      TextWindow.Print('largeBod.getId() - ' + largeBod.getId())
+
       if (largeBod.getId() === largeBodId) {
         Orion.GetLastGump().Select(Orion.CreateGumpHook(buttonId));
         Orion.Wait(800)
@@ -301,46 +377,7 @@ function SmallInLarge(smallBod, buttonId) {
 }
 
 function GetString(id) {
-  var currentId = cliloc.filter(
-    function (cliLocEntry) {
-      return cliLocEntry.Id() === id
-    })
-  return (currentId.shift().Name())
-}
-
-function ReadCliLoc(_private) {
-  var clilocs = []
-  var file = Orion.NewFile();
-
-  file.Open('OA/cliloc.txt');
-  if (file != null) {
-    var i = 0;
-    var location = '1'
-    while (location != null && location) {
-      location = file.ReadLine();
-
-      if (location != null && location) {
-        var cliloc = location.split(';');
-        var cliLine = {
-          id: cliloc[0],
-          name: cliloc[1],
-          type: cliloc[2],
-          Id: function () {
-            return this.id;
-          },
-          Name: function () {
-            return this.name;
-          },
-          Type: function () {
-            return this.type;
-          }
-        }
-        clilocs.push(cliLine);
-      }
-    }
-  }
-  file.Close();
-  return clilocs;
+  return Orion.GetCliLocString(id)
 }
 
 function BodFill(bod) {
@@ -381,8 +418,8 @@ function FillAllBodsFromBackpack() {
 }
 
 function GetLargeByID() {
-  cliloc = ReadCliLoc();
-  Orion.Print('Paste in the Book ID and bod ID')
+  TextWindow.Open()
+  Orion.Print('Paste in the Book ID and bod ID (ie: 0x400DDD35 L:e15Irabdelt)')
   var id = Orion.InputText();
   var bookBod = id.split(' ')
   TextWindow.Print(bookBod[0])
@@ -401,13 +438,15 @@ function GetLargeByID() {
 
 var counter = 0;
 function BodFinder() {
-  cliloc = ReadCliLoc();
+  Debug('BodFinder')
+  Orion.Print(largeBodsLibrary.length)
   Orion.ResetIgnoreList()
   var targetBook = SelectTarget('Select Target with Large bod in');
   Orion.Ignore(targetBook.Serial())
 
+  
   ReadBookSearch(targetBook.Serial(), true);
-  Orion.Wait(800)
+  Orion.Wait(300)
 
   var bodBook = Orion.FindTypeEx('0x2259');
   bodBook.forEach(function (book) {
@@ -416,8 +455,6 @@ function BodFinder() {
 }
 
 function BodReader() {
-  cliloc = ReadCliLoc();
-
   var bodBook = Orion.FindTypeEx('0x2259');
   bodBook.forEach(function (book) {
     ReadBookSearch(book.Serial(), true, '', false);

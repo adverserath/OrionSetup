@@ -44,7 +44,7 @@ function Callback_Received(data) {
         if (command[0] != '*' && command[0] !== Player.Serial()) {
             return
         }
-        ResponseHandler(recv)
+        Orion.ToggleScript("ResponseHandler",false, [recv])
     }
 }
 
@@ -69,6 +69,7 @@ function ResponseHandler(recv) {
             Orion.StopWalking()
             Orion.Terminate('Walk');
             Orion.Wait(100)
+
         }
         if (Orion.GetDistance(recvp[1], recvp[2]) > 12 && Player.Frozen()) {
             Orion.InterruptCast();
