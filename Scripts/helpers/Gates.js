@@ -170,8 +170,11 @@ function GotoMistas() {
 }
 
 function GotoTW() {
-    GoHome()
-    Orion.Wait(1000)
+    if(Orion.FindObject('0x4015E476')==null)
+    {
+        GoHome()
+        Orion.Wait(2000)
+    }
     WalkTo('0x4015E476')
     Orion.UseObject('0x4015E476');
     if (Orion.WaitForGump(1000)) {
