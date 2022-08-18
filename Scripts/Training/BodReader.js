@@ -1,4 +1,3 @@
-var cliloc;
 
 var smallBodsLibrary = [];
 var largeBodsLibrary = [];
@@ -87,8 +86,6 @@ function CreateLargeBod(_private) {
 }
 
 function BodReader() {
-  cliloc = ReadCliLoc();
-
   var bodBook = Orion.FindTypeEx('0x2259');
   bodBook.forEach(function (book) {
     ReadBook(book.Serial());
@@ -183,44 +180,6 @@ function ReadPage(_private) {
 }
 
 function GetString(id) {
-  var currentId = cliloc.filter(
-    function (cliLocEntry) {
-      return cliLocEntry.Id() === id
-    })
-  return (currentId.shift().Name())
-}
-
-function ReadCliLoc(_private) {
-  var clilocs = []
-  var file = Orion.NewFile();
-
-  file.Open('OA/cliloc.txt');
-  if (file != null) {
-    var i = 0;
-    var location = '1'
-    while (location != null && location) {
-      location = file.ReadLine();
-
-      if (location != null && location) {
-        var cliloc = location.split(';');
-        var cliLine = {
-          id: cliloc[0],
-          name: cliloc[1],
-          type: cliloc[2],
-          Id: function () {
-            return this.id;
-          },
-          Name: function () {
-            return this.name;
-          },
-          Type: function () {
-            return this.type;
-          }
-        }
-        clilocs.push(cliLine);
-      }
-    }
+  Orion.Print(id)
+  return Orion.GetCliLocString(id);
   }
-  file.Close();
-  return clilocs;
-}

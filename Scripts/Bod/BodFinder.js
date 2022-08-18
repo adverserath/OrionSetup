@@ -3,7 +3,10 @@
 
 var smallBodsLibrary = [];
 var largeBodsLibrary = [];
-
+function OpenWindow()
+{
+TextWindow.Open()
+}
 function CreateSmallBod(_name, _quality, _material, _count, _bookId) {
   Debug('CreateSmallBod')
 
@@ -239,6 +242,7 @@ Orion.Print('Set Filter ' + largeBodId)
     }
     endOfBook = Orion.GetGump('last').ButtonList().join().match(/button\s225/i) == null;
 
+    //Next Page Click
     if (Orion.WaitForGump(3000)) {
       var gump1 = Orion.GetGump('last');
       if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x54F555DF')) {
@@ -441,9 +445,13 @@ function BodFinder() {
   Debug('BodFinder')
   Orion.Print(largeBodsLibrary.length)
   Orion.ResetIgnoreList()
-  var targetBook = SelectTarget('Select Target with Large bod in');
+  var targetBook = SelectTarget('Select Target the Bulk Order BOOK with Large bod in');
   Orion.Ignore(targetBook.Serial())
-
+  if(targetBook.Graphic()!='0x2259')
+  {
+    Orion.Print('Select the BOOK with the orders in')
+    Orion.TerminateScript()
+  }
   
   ReadBookSearch(targetBook.Serial(), true);
   Orion.Wait(300)

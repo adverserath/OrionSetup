@@ -6,11 +6,11 @@
 //#include helpers/Gumps.js
 //#include Bod/Bods.js
 //#include ./*.js
+//#include Bod/BodData.js
 
 function Autostart() {
 Orion.Wait(2000)
      GetBods()
-        Orion.Wait(2000)
        // SortBods()
         Orion.Print('Good Bye')
         Orion.CloseUO();

@@ -1,19 +1,65 @@
-//#include helpers/Target.js
-//#include helpers/Debug.js
-//#include helpers/Magic.js
+function IsBodInLarge(bodObject) {
 
+    var bodProperties = bodObject.Properties()
+    if (!Orion.Contains(bodProperties, 'Small Bulk Order'))
+        return true; //Its large
 
-var bodChestSerial = '0x40148DBE'
+    var lines = bodProperties.split('\n')
+    var item = lines[lines.length - 1]
+    var itemlength = item.indexOf(':')
+    var itemName = item.substring(0, itemlength).toLowerCase()
+    TextWindow.Print(itemName + ' ' + largeSmallBodNames.indexOf(itemName))
+    var result = largeSmallBodNames.indexOf(itemName) !== -1
+    TextWindow.Print(itemName + ' : ' + result)
+    return result //is it in the lists
+}
+
+var bodChestSerial = '0x4003EE74' // '0x40148DBE' 
 
 var bodMap = []
 
-function PopulateBookIDs(map) {
-    TextWindow.Print('GetBook:' + map.BookName())
-    var books = Orion.FindTypeEx('0x2259', any, bodChestSerial, '', 2, '', true)
+function GetName(color) {
+    if (color == '0x0A26')
+        return 'Inscription'
+    if (color == '0x0455')
+        return 'Tinker'
+    if (color == '0x044E')
+        return 'Blacksmith'
+    if (color == '0x05E8')
+        return 'Carpentry'
+    if (color == '0x0483')
+        return 'Tailor'
+    if (color == '0x0591')
+        return 'Fletch'
+    if (color == '0x09C9')
+        return 'Alchemy'
+    return 'Other'
+}
+
+
+function NameBODBooksByColor() {
+    Orion.FindTypeEx('0x2259', any, backpack).
+        forEach(function (book) {
+            Orion.RequestContextMenu(book.Serial());
+            Orion.WaitContextMenuID(book.Serial(), 0);
+            if (Orion.WaitForPrompt(1000))
+                Orion.SendPrompt(GetName(book.Color()));
+            Orion.Wait(300)
+            Orion.MoveItem(book.Serial(), 1, '0x4003EE74')
+            Orion.Wait(300)
+        })
+}
+
+function PopulateBookIDs(map, usingBackPack) {
+    var container = bodChestSerial
+    if (usingBackPack)
+        container = backpack
+    TextWindow.Print('GetBook: ' + map.BookName())
+    var books = Orion.FindTypeEx('0x2259', any, container, '', 2, '', true)
         .filter(function (book) {
-            TextWindow.Print('name' + (book.Properties().match(
+            TextWindow.Print('name ' + (book.Properties().match(
                 /Book\sName:\s(\w*)/i) || [])[1] || '')
-            TextWindow.Print('count' + ((book.Properties().match(
+            TextWindow.Print('count ' + ((book.Properties().match(
                 /Deeds\sIn\sBook:\s(\d*)/i
             ) || [])[1] || 0))
 
@@ -29,12 +75,119 @@ function PopulateBookIDs(map) {
         map.SetSerial(books[0].Serial())
     }
     else {
-        BotPush('No Bod Book for ' + map.BookName())
+        Orion.Print('No Bod Book for ' + map.BookName())
         Orion.PauseScript();
     }
 }
 
-function SortBods() {
+function MoveBodsToBooks() {
+    if (bodMap.length == 0) {
+        bodMap.push(createMap('Tailor', '0x00000000', '0x0483'))//tailor
+        bodMap.push(createMap('Fletch', '0x00000000', '0x0591'))//fletch
+        bodMap.push(createMap('Carpentry', '0x00000000', '0x05E8'))//carpentry
+        bodMap.push(createMap('Blacksmith', '0x00000000', '0x044E'))//blacksmith
+        bodMap.push(createMap('Tinker', '0x00000000', '0x0455'))//tinker
+        bodMap.push(createMap('Inscription', '0x00000000', '0x0A26'))//inscription
+        //  bodMap.push(createMap(('Alchemy'), '0x00000000', '0x09C9'))//alchemy
+
+        bodMap.forEach(function (bodMapping) {
+            Orion.Print(bodMapping.BookName())
+            PopulateBookIDs(bodMapping, true)
+            Orion.Print(bodMapping.Serial())
+        }
+        )
+    }
+    var bin = FindGroundItemWithName("A Trash Barrel")
+    if (bin == null)
+        bin = FindBackpackItemWithProperties(['Rubbish'])
+    if (bin == null)
+        bin = ground
+    WalkTo(bin)
+    bodMap.forEach(function (map) {
+        var bodBook = Orion.FindObject(map.Serial())
+        while (Orion.FindTypeEx('0x2258', map.BodColor(), backpack).length > 0 && (((bodBook.Properties().match(
+            /Deeds\sIn\sBook:\s(\d*)/i
+        ) || [])[1] || 0)) != 500) {
+            var bodCount = (((bodBook.Properties().match(
+                /Deeds\sIn\sBook:\s(\d*)/i
+            ) || [])[1] || 0))
+            TextWindow.Print('Book:' + map.BookName() + ' ' + map.Serial() + ' ' + map.BodColor())
+            TextWindow.Print('Currently has ' + bodCount + ' bod in ' + map.BookName())
+
+            Orion.FindTypeEx('0x2258', map.BodColor(), backpack).
+                forEach(function (bod) {
+                    if (IsBodInLarge(bod)) {
+                        //Keeper
+                        Orion.MoveItem(bod.Serial(), 1, map.Serial())
+                        Orion.Wait(800)
+                    }
+                    else {
+                        //Trash
+                        Orion.MoveItem(bod.Serial(), 1, bin.Serial())
+                        Orion.Wait(800)
+                    }
+                })
+            //Orion.MoveItemType('0x2258', map.BodColor(), backpack, 0, map.Serial());
+            //Orion.Wait(800)
+        }
+    });
+}
+function SortBodsBookToColouredBODBooksInBackPack() {
+    Orion.Print('Here')
+
+    var bodBook = SelectTarget()
+    MoveBodsToBooks()
+
+    //emptybods
+    while (((bodBook.Properties().match(
+        /Deeds\sIn\sBook:\s(\d*)/i
+    ) || [])[1] || 0) != 0) {
+        Orion.UseObject(bodBook.Serial());
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF')) {
+                gump0.Select(Orion.CreateGumpHook(1));
+                Orion.Wait(100);
+            }
+        }
+        if (Orion.WaitForGump(1000)) {
+            var gump1 = Orion.GetGump('last');
+            if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x968739DB')) {
+                gump1.Select(Orion.CreateGumpHook(3));
+                Orion.Wait(100);
+            }
+        }
+        if (Orion.WaitForGump(1000)) {
+            var gump2 = Orion.GetGump('last');
+            if ((gump2 !== null) && (!gump2.Replayed()) && (gump2.ID() === '0x968739DB')) {
+                gump2.Select(Orion.CreateGumpHook(0));
+                Orion.Wait(100);
+            }
+        }
+
+        Orion.Wait(400)
+        TextWindow.Print('Start Bod Drop Book')
+
+        while (Orion.FindType('any').length < 80 && (((bodBook.Properties().match(
+            /Deeds\sIn\sBook:\s(\d*)/i
+        ) || [])[1] || 0)) != 0) {
+            Orion.Wait(200)
+            TextWindow.Print('Empting Book')
+            if (Orion.WaitForGump(1000)) {
+                var gump0 = Orion.GetGump('last');
+                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF')) {
+                    gump0.Select(Orion.CreateGumpHook(5));
+                    Orion.Wait(100);
+                }
+            }
+        }
+        Orion.Wait(200)
+
+        MoveBodsToBooks()
+    }
+}
+
+function SortBodsToBODBooksInChest() {
     Orion.Wait(500);
     var chest = Orion.FindObject(bodChestSerial)
     WalkTo(chest);
@@ -104,11 +257,7 @@ function SortBods() {
         }
         Orion.Wait(200)
 
-        bodMap.forEach(function (map) {
-            TextWindow.Print('Book:' + map.BookName() + ' ' + map.Serial() + ' ' + map.BodColor())
-            //MoveItems(Player, map, '0x2258', map.BodColor())
-            MoveItemsFromPlayer(map, '0x2258', map.BodColor(), 0)
-        });
+        MoveBodsToBooks()
     }
     Orion.Ignore(bodBook.Serial())
     MoveItemsFromPlayer(chest, '0x2259', any)
@@ -116,6 +265,7 @@ function SortBods() {
     //Orion.MoveItem(bodBook.Serial(), 0, Player.Serial());
     //  Orion.Wait(1000)
 }
+
 
 function GetBods() {
     if (!((Player.Name().match(/(\w*)ian/gi) || []).length >= 1)) {
@@ -146,16 +296,11 @@ function GetBods() {
             }
         }
         Orion.Print('Runes:' + locations);
-		Orion.Wait(1000)
+        Orion.Wait(1000)
         //      var npcs = ['0x0000511D', '0x0000C052', '0x0000ED92', '0x000000AE', '0x0000A6E2', '0x000002F4']
         var npcs = ['Scribe', 'Tailor', 'tinker', 'carpenter', 'blacksmith', 'bowyer']
 
-        //0x0000511D -ins
-        //0x0000EC37 -weav
-        //0x0000ED92 -tink
-        //0x0000A68F -carp
-        //0x0000A6E2 - arm
-        //0x000002F4 - fletch
+
         for (var recallId = 1; recallId <= locations; recallId++) {
             Orion.Wait(500)
 
@@ -213,7 +358,7 @@ function GetBods() {
                 Orion.Wait(1000)
 
                 Orion.Print('Move Stuff to Book')
-                MoveItemsFromPlayer(Orion.FindTypeEx('0x2259')[0], '0x2258')
+                MoveBodsToBooks()
                 skip = true
             }
 
@@ -227,7 +372,6 @@ function GetBods() {
                 Orion.Print(mobs.length)
                 var npcSerial = mobs.shift().Serial()
 
-                //   var npcSerial = npcs[(recallId - 1)];
                 WalkTo(Orion.FindObject(npcSerial))
                 Orion.Print('GetBod')
                 for (var index = 0; index < 3; index++) {
@@ -285,42 +429,8 @@ function BodReader() {
     });
 }
 
-function ReadCliLoc(_private) {
-    var clilocs = []
-    var file = Orion.NewFile();
-
-    file.Open('cliloc.txt');
-    if (file != null) {
-        var i = 0;
-        var location = '1'
-        while (location != null && location) {
-            //TextWindow.Print(i++)
-            location = file.ReadLine();
-
-            TextWindow.Print(location)
-            if (location != null && location) {
-                TextWindow.Print(location)
-                var cliloc = location.split(';');
-                var cliLine = {
-                    id: cliloc[0],
-                    name: cliloc[1],
-                    type: cliloc[2],
-                    Id: function () {
-                        return this.id;
-                    },
-                    Name: function () {
-                        return this.name;
-                    },
-                    Type: function () {
-                        return this.type;
-                    }
-                }
-                clilocs.push(cliLine);
-                //      TextWindow.Print(cliLine[0])
-                //       TextWindow.Print(cliLine[1])
-            }
-        }
-    }
-    file.Close();
-    return clilocs;
-}
+//#include helpers/Target.js
+//#include helpers/Debug.js
+//#include helpers/Magic.js
+//#include helpers/ItemManager.js
+//#include Bod/BodData.js
