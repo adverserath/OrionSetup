@@ -75,8 +75,8 @@ function PopulateBookIDs(map, usingBackPack) {
         map.SetSerial(books[0].Serial())
     }
     else {
-        Orion.Print('No Bod Book for ' + map.BookName())
-        Orion.PauseScript();
+        Orion.Print(58,'No Bod Book for ' + map.BookName())
+        //Orion.PauseScript();
     }
 }
 
@@ -275,7 +275,7 @@ function GetBods() {
         //Find RuneBook
         var runebook = Orion.FindTypeEx('0x22C5', '0x08A1|0x0850')[0];
         //Check for bod book
-        var bodBook = Orion.FindTypeEx('0x2259', '0x0000')[0];
+        var bodBook = Orion.FindTypeEx('0x2259')[0];
         //loop runebook locations and get bulks
 
         if (runebook == null || bodBook == null) {
@@ -381,10 +381,39 @@ function GetBods() {
                     if (Orion.WaitForGump(1000)) {
                         Orion.Wait(200)
                         var gump0 = Orion.GetGump('last');
-                        if ((gump0 !== null) && (!gump0.Replayed()) && ((gump0.ID() === '0xBE0DAD1E') || (gump0.ID() === '0x9BADE6EA'))) {
+                        var large = '0xBE0DAD1E'
+                        var small = '0x9BADE6EA'
+                        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === large)) {
                             Orion.Wait(200)
+                            Orion.Print(68, 'Accept : Large')
+                            BotPush(Player.Name() + ' Accepted : Large')
+
                             gump0.Select(Orion.CreateGumpHook(1));
                             Orion.Wait(100);
+                        }
+                        else {
+                            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === small)) {
+                                Orion.Print('Small Bod')
+                                Orion.Wait(200)
+                                var gumpinfo = gump0.CommandList();
+                                var line = gumpinfo.join() + ','
+
+                                var smallItemNameLine = line.match(/xmfhtmlgumpcolor 40 120 210 20 (\d*) 0 0 16777215/ig)[0]
+                                var smallItemCliloc = smallItemNameLine.match(/(\d+)/gm)[4];
+                                var isWanted = largeSmallBodIds.indexOf(parseInt(smallItemCliloc)) != -1;
+
+                                if (isWanted) {
+                                    Orion.Print(68, 'Accept :' + Orion.GetCliLocString(smallItemCliloc))
+                                    BotPush(Player.Name() + ' Accepted :' + Orion.GetCliLocString(smallItemCliloc))
+                                    gump0.Select(Orion.CreateGumpHook(1));
+                                }
+                                else {
+                                    Orion.Print(38, 'Reject :' + Orion.GetCliLocString(smallItemCliloc))
+                                    gump0.Select(Orion.CreateGumpHook(0));
+                                }
+
+                                Orion.Wait(100);
+                            }
                         }
                     }
                     Orion.Wait(500);
@@ -414,23 +443,24 @@ function createMap(name, id, color) {
     }
 }
 
-function BodReader() {
-    // Orion.File()
-    TextWindow.Open()
-    var gumpinfo = Orion.GetLastGump().CommandList();
-    gumpinfo.forEach(function (line) {
-        // TextWindow.Print(line);
+// function BodReader() {
+//     // Orion.File()
+//     TextWindow.Open()
+//     var gumpinfo = Orion.GetLastGump().CommandList();
+//     gumpinfo.forEach(function (line) {
+//         // TextWindow.Print(line);
 
-        (line.match(/.?xmfhtmlgumpcolor\s(?:\d*\s){4}(\d*)/i) || []).forEach(function (match) {
+//         (line.match(/.?xmfhtmlgumpcolor\s(?:\d*\s){4}(\d*)/i) || []).forEach(function (match) {
 
-            TextWindow.Print(match)
+//             TextWindow.Print(match)
 
-        })
-    });
-}
+//         })
+//     });
+// }
 
 //#include helpers/Target.js
 //#include helpers/Debug.js
 //#include helpers/Magic.js
 //#include helpers/ItemManager.js
 //#include Bod/BodData.js
+//#include helpers/Notifier.js

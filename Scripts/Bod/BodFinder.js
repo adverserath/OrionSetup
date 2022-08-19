@@ -462,21 +462,21 @@ function BodFinder() {
   })
 }
 
-function BodReader() {
-  var bodBook = Orion.FindTypeEx('0x2259');
-  bodBook.forEach(function (book) {
-    ReadBookSearch(book.Serial(), true, '', false);
-  })
-  counter = 0
-  largeBodsLibrary.forEach(function (lb) {
-    lb.canFill();
-  })
-  counter = 0
-  largeBodsLibrary.forEach(function (lb) {
-    lb.partFull();
-  })
-  counter = 0
-  largeBodsLibrary.forEach(function (lb) {
-    lb.canBribe();
-  })
-}
+// function BodReader() {
+//   var bodBook = Orion.FindTypeEx('0x2259');
+//   bodBook.forEach(function (book) {
+//     ReadBookSearch(book.Serial(), true, '', false);
+//   })
+//   counter = 0
+//   largeBodsLibrary.forEach(function (lb) {
+//     lb.canFill();
+//   })
+//   counter = 0
+//   largeBodsLibrary.forEach(function (lb) {
+//     lb.partFull();
+//   })
+//   counter = 0
+//   largeBodsLibrary.forEach(function (lb) {
+//     lb.canBribe();
+//   })
+// }

@@ -137,7 +137,7 @@ function CreateLargeBod(_bookId) {
   }
 }
 var counter = 0;
-function BodReader() {
+function ReadAllBodBooks_CalculateFillable() {
 
   var bodBook = Orion.FindTypeEx('0x2259');
   bodBook.forEach(function (book) {
@@ -161,25 +161,26 @@ function ReadBook(bookId) {
   TextWindow.Open()
   TextWindow.Clear()
   Orion.UseObject(bookId);
+  Orion.Wait(150)
   if (Orion.WaitForGump(1000)) {
     var gump0 = Orion.GetGump('last');
     if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF')) {
       gump0.Select(Orion.CreateGumpHook(1));
-      Orion.Wait(100);
+      Orion.Wait(150);
     }
   }
   if (Orion.WaitForGump(1000)) {
     var gump1 = Orion.GetGump('last');
     if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x968739DB')) {
       gump1.Select(Orion.CreateGumpHook(3));
-      Orion.Wait(100);
+      Orion.Wait(150);
     }
   }
   if (Orion.WaitForGump(1000)) {
     var gump2 = Orion.GetGump('last');
     if ((gump2 !== null) && (!gump2.Replayed()) && (gump2.ID() === '0x968739DB')) {
       gump2.Select(Orion.CreateGumpHook(0));
-      Orion.Wait(100);
+      Orion.Wait(150);
     }
   }
   var endOfBook = false;
@@ -191,7 +192,7 @@ function ReadBook(bookId) {
       var gump1 = Orion.GetGump('last');
       if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x54F555DF')) {
         gump1.Select(Orion.CreateGumpHook(3));
-        Orion.Wait(100);
+        Orion.Wait(150);
       }
     }
   }

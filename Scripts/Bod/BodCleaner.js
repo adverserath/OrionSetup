@@ -8,8 +8,8 @@
 
 
 function EmptyUnusableSmallsOutBODBooks() {
-    var books = [SelectTarget()]//[Orion.FindObject('0x4014549A')]  //Orion.FindTypeEx('0x2259', any, backpack)
-
+    var books = Orion.FindTypeEx('0x2259', any, backpack)//[SelectTarget()]//[Orion.FindObject('0x4014549A')]  //Orion.FindTypeEx('0x2259', any, backpack)
+	totalBooks = books.length
     books.forEach(function (book) {
         ResetBookToSmall(book);
         ParsePagesForUnusable(book);
@@ -18,14 +18,17 @@ function EmptyUnusableSmallsOutBODBooks() {
 }
 
 var startBookTime = 0
+var booksRead = 0;
+var totalBooks = 0;
 function ParsePagesForUnusable(book) {
+    Orion.Print(38, "Books Read: "+(booksRead++) + "/"+totalBooks)
     Orion.UseObject(book.Serial());
     Orion.Wait(500);
     var endOfBook = false;
     startBookTime = Orion.Now()
     while (!endOfBook) {
         while (ReadPageSearch(book.Serial())) {
-            TextWindow.Print('Check same page again')
+            //TextWindow.Print('Check same page again')
             if (Orion.FindTypeEx('0x2258', any, backpack).length > 10) {
                 MoveBodsToBooks()
             }
@@ -80,7 +83,7 @@ function ResetBookFilter(book) {
 }
 
 function ReadPageSearch(bookId) {
-    TextWindow.Print('Read Page - ' + bookId)
+    //TextWindow.Print('Read Page - ' + bookId)
     hasDroppedOne = false;
     Orion.Wait(80);
     var gump = Orion.GetLastGump();
@@ -88,15 +91,14 @@ function ReadPageSearch(bookId) {
     var line = gumpinfo.join() + ','
 
     var smallBods = (line.match(/button\s(?:\d*\s){7},\stext\s(?:\d*\s){4},.?\w*\s61(?:\d*\s){4}\d*1062224\s(?:\d*\s){3},.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4}){0,1},\s\w*\s\d*\s\d*\s\d*\s\d*/ig) || []);
-    TextWindow.Print("small bods " + smallBods.length)
+  //  TextWindow.Print("small bods " + smallBods.length)
     smallBods.forEach(function (bod) {
-        TextWindow.Print(bod)
+        //TextWindow.Print(bod)
         if (!hasDroppedOne) {
             var matches = (bod.match(/.?xmfhtmlgumpcolor\s61(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
             var buttons = (bod.match(/button(?:\d*\s){7}(\d*)/i) || [])
             var buttonId = parseInt(buttons[1]) - 1
-            Orion.Print('matches ' + matches.length)
-            TextWindow.Print('found ' + matches[2] + Orion.GetCliLocString(matches[2]))
+//            TextWindow.Print('found ' + matches[2] + Orion.GetCliLocString(matches[2]))
 
             hasDroppedOne = SmallInLarge(matches[2], buttonId)
         }

@@ -1,3 +1,18 @@
+
+function MakeBodBuilder()
+{
+    // Request set material and get ingots
+//target small bods
+//target large bod
+    //loop
+        //bin tools with < 20
+        //Get tool
+        //Usetool
+        //get bod type
+        //make X
+        //fill bod
+    //fill large
+}
 //Rewards:
 //for each complete
     //Hand in BOD
