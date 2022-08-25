@@ -18,7 +18,11 @@ var bodItemList = []
 //     })
 //     TextWindow.Print(clilocs.join(','))
 // }
-
+function tests()
+{
+var val = Orion.GumpExists('generic', 'any', '0x38920ABC')
+Orion.Print(val)
+}
 function CreateAllItemMap() {
     ReadBodFile()
     tool = SelectTarget().Graphic()
@@ -150,128 +154,159 @@ function ItemMapping(_cliloc, _name, _menuButton, _createButton, _tool, jsonObje
 }
 function ItemMake(itemBod, count) {
     var i = 0
-    while (i <= count) {
+    while (i < count) {
         Orion.Print(59, 'Made:' + i)
-        if (!Orion.GumpExists(any, any, '0x38920ABD')) {
+        if (!Orion.GumpExists('generic', 'any', '0x38920ABD')) {
+            Orion.Print(48,'use tool')
+
             Orion.UseType(itemBod.Tool())
             Orion.Wait(1200)
         }
         var gump0 = Orion.GetGump('any', '0x38920ABD')
 
-        gump0.Select(Orion.CreateGumpHook(itemBod.MenuButton()));
-        if (Orion.WaitForGump(1000)) {
-            Orion.Wait(400);
-            var gump1 = Orion.GetGump('last');
-            if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x38920ABD')) {
-                gump1.Select(Orion.CreateGumpHook(itemBod.CreateButton()));
-                Orion.WaitForGump(2000)
-                //IF NOT MADE PAUSE
-                i++;
-
-            }
-        }
-    }
-}
-
-function ReadBodFile(_private) {
-    var file = Orion.NewFile();
-
-    if (file.Open('bodbuttons.json', true)) {
-        var item = []
-        while (item != null && item) {
-            var item = file.ReadLine()
-            if (item != '') {
-                var itemJson = JSON.parse(item)
-                bodItemList.push(ItemMapping(null, null, null, null, null, itemJson))
-            }
-        }
-    }
-    file.Close();
-    return bodItemList
-}
-
-function WriteBodFile(_private) {
-    var file = Orion.NewFile();
-    file.Remove('bodbuttons.json');
-    if (file.Open('bodbuttons.json')) {
-        bodItemList.forEach(function (bodItem) {
-            file.Write(JSON.stringify(bodItem) + '\n')
-        })
-    }
-    file.Close();
-}
-
-function FillBulkOrders() {
-    ReadBodFile()
-    var smallOrders = Orion.FindTypeEx('0x2258', any, backpack).filter(function (bod) {
-        var ma = bod.Properties().match(/\d+/g)
-        var full = (ma[1] == ma[2])
-        return Orion.Contains(bod.Properties(), "Small Bulk Order") && !full
-    })
-
-    CloseGumps();
-
-    smallOrders.forEach(function (bod) {
-        Orion.Wait(400)
-        Orion.UseObject(bod.Serial())
-        Orion.Wait(500)
-        Orion.WaitForGump(2000)
-        var gump1 = Orion.GetGump('any', '0x5AFBD742');
-        FillFromBackPack();
-        Orion.Wait(500)
-        Orion.CancelTarget()
-        Orion.Resend()
-        Orion.Wait(500)
-        var ma = Orion.FindObject(bod.Serial()).Properties().match(/\d+/g)
-        var make = parseInt(ma[1])
-        var made = parseInt(ma[2])
-
-        var lines = gump1.CommandList().join('\n')
-        var itemFind = lines.match(/xmfhtmlgumpcolor 75 96 210 20 (\d*) 0 0 32767/)
-        TextWindow.Print(itemFind)
-        if (itemFind.length == 0)
-            return
-        var itemID = itemFind[1]
-        Orion.Print('item ' + Orion.GetCliLocString(itemID))
-
-        var needToMake = (make - made)
-        Orion.Print('need ' + needToMake)
-
-        bodItemList.filter(function (itemBod) {
-            return itemBod.Name() == Orion.GetCliLocString(itemID)
-        })
-            .forEach(function (bodItem) {
-                Orion.Print(68, 'Making ' + bodItem.Name())
-                bodItem.Make(needToMake)
-            })
-        Orion.Print(68, "Done making")
-
-        FillFromBackPack();
-
-        gump1.Close()
-        Orion.Wait(500);
-
-
-        function FillFromBackPack() {
-            Orion.Wait(1000);
-            if ((gump1 !== null)) {
-                gump1.Select(Orion.CreateGumpHook(4));
+        if (gump0.CommandList().join(',').indexOf(itemBod.Cliloc() == -1)) {
+            Orion.Print(48,'menu change')
+            gump0.Select(Orion.CreateGumpHook(itemBod.MenuButton()));
+            if (Orion.WaitForGump(1000)) {
                 Orion.Wait(100);
-                if (Orion.WaitForTarget(1000))
-                    Orion.TargetObject(backpack);
             }
         }
-    })
-    CloseGumps();
 
+        var gump1 = Orion.GetGump('any', '0x38920ABD')
+        if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x38920ABD')) {
+            gump1.Select(Orion.CreateGumpHook(itemBod.CreateButton()));
+            Orion.WaitForGump(2000)
+            //IF NOT MADE PAUSE
+            i++;
+
+        }
+    }
 }
 
-function CloseGumps() {
-    if (Orion.GumpExists(any, any, '0x38920ABD'))
-        Orion.GetGump('any', '0x38920ABD').Close();
-    Orion.Wait(800);
+    function ReadBodFile(_private) {
+        var file = Orion.NewFile();
 
-    if (Orion.GumpExists(any, any, '0x5AFBD742'))
-        Orion.GetGump('any', '0x5AFBD742').Close();
-    Orion.Wait(800);
-}
+        if (file.Open('bodbuttons.json', true)) {
+            var item = []
+            while (item != null && item) {
+                var item = file.ReadLine()
+                if (item != '') {
+                    var itemJson = JSON.parse(item)
+                    bodItemList.push(ItemMapping(null, null, null, null, null, itemJson))
+                }
+            }
+        }
+        file.Close();
+        return bodItemList
+    }
+
+    function WriteBodFile(_private) {
+        var file = Orion.NewFile();
+        file.Remove('bodbuttons.json');
+        if (file.Open('bodbuttons.json')) {
+            bodItemList.forEach(function (bodItem) {
+                file.Write(JSON.stringify(bodItem) + '\n')
+            })
+        }
+        file.Close();
+    }
+
+    function FillBulkOrders() {
+        Orion.Resend()
+        ReadBodFile()
+        var smallOrders = Orion.FindTypeEx('0x2258', any, backpack).filter(function (bod) {
+            var ma = bod.Properties().match(/\d+/g)
+            var full = (ma[1] == ma[2])
+            return Orion.Contains(bod.Properties(), "Small Bulk Order") && !full
+        })
+
+
+        smallOrders.forEach(function (bod) {
+            CloseGumps();
+
+            Orion.Wait(1000)
+            Orion.UseObject(bod.Serial())
+            Orion.WaitForGump(2000)
+            Orion.Wait(2000)
+
+            var gump1 = Orion.GetLastGump()//GetGump('any', '0x5AFBD742');
+            FillFromBackPack(bod);
+            Orion.Resend()
+            Orion.Wait(500)
+            var props = Orion.FindObject(bod.Serial()).Properties()
+            var ma = props.match(/\d+/g)
+            Orion.Print(props)
+            Orion.Print(ma)
+
+            var make = parseInt(ma[1])
+            var made = parseInt(ma[2])
+            Orion.Print(55, "make" + make)
+            Orion.Print(55, "made" + made)
+
+            var lines = gump1.CommandList().join('\n')
+            TextWindow.Print(lines)
+
+            var itemFind = lines.match(/xmfhtmlgumpcolor 75 96 210 20 (\d*) 0 0 32767/)
+            TextWindow.Print('itemid in bod ' + itemFind)
+            if (itemFind.length == 0)
+                return
+            var itemID = itemFind[1]
+            Orion.Print('item ' + Orion.GetCliLocString(itemID))
+
+            var needToMake = (make - made)
+            Orion.Print('need ' + needToMake)
+
+            bodItemList.filter(function (itemBod) {
+                return itemBod.Name() == Orion.GetCliLocString(itemID)
+            })
+                .forEach(function (bodItem) {
+                    Orion.Print(68, 'Making ' + bodItem.Name())
+                    bodItem.Make(needToMake)
+                })
+            Orion.Print(68, "Done making")
+
+            FillFromBackPack(bod);
+
+            gump1.Close()
+            Orion.Wait(500);
+
+
+
+        })
+        CloseGumps();
+
+    }
+
+    function FillFromBackPack(bod) {
+        if (bod == null)
+            bod = SelectTarget()
+        CloseGumps()
+        var gump0 = null
+
+        Orion.AddWaitTargetObject(backpack);
+
+        Orion.UseObject(bod.Serial())
+
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x5AFBD742')) {
+                gump0.Select(Orion.CreateGumpHook(4));
+                Orion.Wait(100);
+            }
+        }
+
+        Orion.CancelTarget()
+
+    }
+
+    function CloseGumps() {
+        // if (Orion.GumpExists('any', 'any', '0x38920ABD'))
+        var gump = Orion.GetGump('any', '0x38920ABD')
+        if (gump != null)
+            gump.Close();
+
+        //if (Orion.GumpExists('any', 'any', '0x5AFBD742'))
+        gump = Orion.GetGump('any', '0x5AFBD742')
+        if (gump != null)
+            gump.Close();
+    }
