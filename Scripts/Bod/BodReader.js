@@ -161,7 +161,7 @@ function ReadBook(bookId) {
   TextWindow.Open()
   TextWindow.Clear()
   Orion.UseObject(bookId);
-  Orion.Wait(150)
+  Orion.Wait(250)
   if (Orion.WaitForGump(1000)) {
     var gump0 = Orion.GetGump('last');
     if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x54F555DF')) {
@@ -199,7 +199,7 @@ function ReadBook(bookId) {
 }
 
 function ReadPage(bookId) {
-  //Orion.Wait(20);
+  Orion.Wait(100);
   var gump = Orion.GetLastGump();
   var gumpinfo = gump.CommandList();
   var line = gumpinfo.join() + ','
@@ -233,7 +233,7 @@ function ReadPage(bookId) {
       else {
         loc = gump.Text(matches[4]).match(/\d\s.\s(\d*)/i)[1];
         largeBod.Add(CreateSmallBod(GetString(matches[1]), GetString(matches[2]), '', loc, bookId))
-      }
+      } 
     })
     largeBodsLibrary.push(largeBod)
   }

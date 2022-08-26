@@ -3,9 +3,8 @@
 
 var smallBodsLibrary = [];
 var largeBodsLibrary = [];
-function OpenWindow()
-{
-TextWindow.Open()
+function OpenWindow() {
+  TextWindow.Open()
 }
 function CreateSmallBod(_name, _quality, _material, _count, _bookId) {
   Debug('CreateSmallBod')
@@ -165,24 +164,23 @@ function CreateLargeBod(_bookId) {
 
 function ReadBookSearch(bookId, readLarge, largeBodId, shouldGetBod) {
   Debug('ReadBookSearch')
-  Debug(bookId+ '  '+ readLarge+ '  '+ largeBodId + '  '+ shouldGetBod)
+  Debug(bookId + '  ' + readLarge + '  ' + largeBodId + '  ' + shouldGetBod)
   Debug('largeBodsLibrary ' + largeBodsLibrary.length)
 
-  Orion.Print('empty:'+(largeBodId===''))
-  Orion.Print('empty:'+(largeBodId===''))
+  Orion.Print('empty:' + (largeBodId === ''))
+  Orion.Print('empty:' + (largeBodId === ''))
   Orion.Print('length ' + (largeBodsLibrary.length === 1))
-  if((largeBodId==='')&& (largeBodsLibrary.length === 1))
-  {
-    Orion.Print('largeBodsLibrary '+largeBodsLibrary)
+  if ((largeBodId === '') && (largeBodsLibrary.length === 1)) {
+    Orion.Print('largeBodsLibrary ' + largeBodsLibrary)
     largeBodId = largeBodsLibrary[0].getId()
     Debug(largeBodId)
   }
 
-Orion.Print('id ('+largeBodId+')')
-//  Orion.PauseScript()
+  Orion.Print('id (' + largeBodId + ')')
+  //  Orion.PauseScript()
 
   Orion.UseObject(bookId);
-//Reset filter
+  //Reset filter
   Orion.Wait(400)
   if (Orion.WaitForGump(1000)) {
     var gump0 = Orion.GetGump('last');
@@ -199,8 +197,8 @@ Orion.Print('id ('+largeBodId+')')
   }
   Orion.Wait(200);
 
-Orion.Print('Set Filter ' + largeBodId)
-  if (largeBodId != null && largeBodId!=='') {
+  Orion.Print('Set Filter ' + largeBodId)
+  if (largeBodId != null && largeBodId !== '') {
     //Large Bod filters
     Orion.Print('Setting Filter')
     var quality = largeBodId.substring(2, 3)
@@ -247,9 +245,8 @@ Orion.Print('Set Filter ' + largeBodId)
       var gump1 = Orion.GetGump('last');
       if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x54F555DF')) {
         gump1.Select(Orion.CreateGumpHook(3));
-        Orion.Wait(100);
+        Orion.Wait(150);
       }
-
     }
   }
   //Undo Filter
@@ -287,7 +284,7 @@ function ReadPageSearch(bookId, readLarge, largeBodId, shouldGetBod) {
     }
   }
   hasDroppedOne = false;
-  Orion.Wait(80);
+  Orion.Wait(150);
   var gump = Orion.GetLastGump();
   var gumpinfo = gump.CommandList();
   var line = gumpinfo.join() + ','
@@ -432,6 +429,7 @@ function GetLargeByID() {
     var bodBook = Orion.FindTypeEx('0x2259');
     bodBook.forEach(function (book) {
       ReadBookSearch(book.Serial(), true, bookBod[1])
+      Orion.Wait(400)
     })
   }
   else {
@@ -447,17 +445,17 @@ function BodFinder() {
   Orion.ResetIgnoreList()
   var targetBook = SelectTarget('Select Target the Bulk Order BOOK with Large bod in');
   Orion.Ignore(targetBook.Serial())
-  if(targetBook.Graphic()!='0x2259')
-  {
+  if (targetBook.Graphic() != '0x2259') {
     Orion.Print('Select the BOOK with the orders in')
     Orion.TerminateScript()
   }
-  
+
   ReadBookSearch(targetBook.Serial(), true);
   Orion.Wait(300)
 
   var bodBook = Orion.FindTypeEx('0x2259');
   bodBook.forEach(function (book) {
+    Orion.Wait(400)
     ReadBookSearch(book.Serial(), false, '', true);
   })
 }
