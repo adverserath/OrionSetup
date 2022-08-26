@@ -67,7 +67,7 @@ function PopulateBookIDs(map, usingBackPack) {
                 /Book\sName:\s(\w*)/i) || [])[1] || '') === map.BookName() &&
                 ((book.Properties().match(
                     /Deeds\sIn\sBook:\s(\d*)/i
-                ) || [])[1] || 0) < 495
+                ) || [])[1] || 0) < 490
         })
     if (books.length > 0) {
         Orion.Print(books[0].Serial())
@@ -75,7 +75,7 @@ function PopulateBookIDs(map, usingBackPack) {
         map.SetSerial(books[0].Serial())
     }
     else {
-        Orion.Print(58,'No Bod Book for ' + map.BookName())
+        Orion.Print(58, 'No Bod Book for ' + map.BookName())
         //Orion.PauseScript();
     }
 }
@@ -92,17 +92,16 @@ function MoveBodsToBooks() {
 
         bodMap.forEach(function (bodMapping) {
             Orion.Print(bodMapping.BookName())
-            PopulateBookIDs(bodMapping, true)
+            var useBooksInBag = false;
+            PopulateBookIDs(bodMapping, useBooksInBag)
             Orion.Print(bodMapping.Serial())
+            Orion.Wait(400)
+            Orion.MoveItem(bodMapping.Serial());
+            Orion.Wait(800)
         }
         )
     }
-    var bin = FindGroundItemWithName("A Trash Barrel")
-    if (bin == null)
-        bin = FindBackpackItemWithProperties(['Rubbish'])
-    if (bin == null)
-        bin = ground
-    WalkTo(bin)
+
     bodMap.forEach(function (map) {
         var bodBook = Orion.FindObject(map.Serial())
         while (Orion.FindTypeEx('0x2258', map.BodColor(), backpack).length > 0 && (((bodBook.Properties().match(
@@ -121,16 +120,13 @@ function MoveBodsToBooks() {
                         Orion.MoveItem(bod.Serial(), 1, map.Serial())
                         Orion.Wait(800)
                     }
-                    else {
-                        //Trash
-                        Orion.MoveItem(bod.Serial(), 1, bin.Serial())
-                        Orion.Wait(800)
-                    }
                 })
             //Orion.MoveItemType('0x2258', map.BodColor(), backpack, 0, map.Serial());
             //Orion.Wait(800)
         }
     });
+    Orion.Wait(800)
+    MoveItemsFromPlayer(bodChestSerial, '0x2259', any)
 }
 function SortBodsBookToColouredBODBooksInBackPack() {
     Orion.Print('Here')
@@ -205,6 +201,9 @@ function SortBodsToBODBooksInChest() {
         Orion.Print(bodMapping.BookName())
         PopulateBookIDs(bodMapping)
         Orion.Print(bodMapping.Serial())
+        Orion.Wait(400)
+        Orion.MoveItem(bodMapping.Serial());
+        Orion.Wait(800)
     }
     )
 
@@ -260,6 +259,7 @@ function SortBodsToBODBooksInChest() {
         MoveBodsToBooks()
     }
     Orion.Ignore(bodBook.Serial())
+    //Return books to chest
     MoveItemsFromPlayer(chest, '0x2259', any)
     Orion.Wait(1000)
     //Orion.MoveItem(bodBook.Serial(), 0, Player.Serial());
@@ -275,10 +275,10 @@ function GetBods() {
         //Find RuneBook
         var runebook = Orion.FindTypeEx('0x22C5', '0x08A1|0x0850')[0];
         //Check for bod book
-        var bodBook = Orion.FindTypeEx('0x2259')[0];
+        //var bodBook = Orion.FindTypeEx('0x2259')[0];
         //loop runebook locations and get bulks
 
-        if (runebook == null || bodBook == null) {
+        if (runebook == null ){//|| bodBook == null) {
             BotPush(Player.Name() + ' has no book')
             Orion.LogOut();
         }
@@ -386,7 +386,7 @@ function GetBods() {
                         if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === large)) {
                             Orion.Wait(200)
                             Orion.Print(68, 'Accept : Large')
-                            BotPush(Player.Name() + ' Accepted : Large')
+                            BotPush(Player.Name() + ' Accepted : Large',true)
 
                             gump0.Select(Orion.CreateGumpHook(1));
                             Orion.Wait(100);
@@ -404,11 +404,13 @@ function GetBods() {
 
                                 if (isWanted) {
                                     Orion.Print(68, 'Accept :' + Orion.GetCliLocString(smallItemCliloc))
-                                    BotPush(Player.Name() + ' Accepted :' + Orion.GetCliLocString(smallItemCliloc))
+                                    BotPush(Player.Name() + ' Accepted :' + Orion.GetCliLocString(smallItemCliloc),true)
                                     gump0.Select(Orion.CreateGumpHook(1));
                                 }
                                 else {
                                     Orion.Print(38, 'Reject :' + Orion.GetCliLocString(smallItemCliloc))
+                                    BotPush(Player.Name() + ' Rejected :' + Orion.GetCliLocString(smallItemCliloc),true)
+
                                     gump0.Select(Orion.CreateGumpHook(0));
                                 }
 
