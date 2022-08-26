@@ -81,6 +81,10 @@ function PopulateBookIDs(map, usingBackPack) {
 }
 
 function MoveBodsToBooks() {
+    var useBooksInBag = false;
+
+    if(useBooksInBag)
+        WalkTo(bodChestSerial, 1)
     if (bodMap.length == 0) {
         bodMap.push(createMap('Tailor', '0x00000000', '0x0483'))//tailor
         bodMap.push(createMap('Fletch', '0x00000000', '0x0591'))//fletch
@@ -92,7 +96,6 @@ function MoveBodsToBooks() {
 
         bodMap.forEach(function (bodMapping) {
             Orion.Print(bodMapping.BookName())
-            var useBooksInBag = false;
             PopulateBookIDs(bodMapping, useBooksInBag)
             Orion.Print(bodMapping.Serial())
             Orion.Wait(400)
