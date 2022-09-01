@@ -247,7 +247,7 @@ function AddBadLocationGrid() {
   var end = SelectCoordinate();
 
   Orion.GetTilesInRect('land', start.X(), start.Y(), end.X(), end.Y()).forEach(function (tile) {
-
+    Orion.Print('block'+tile.X() +' ' + tile.Y())
     Orion.SetBadLocation(tile.X(), tile.Y());
   })
 }

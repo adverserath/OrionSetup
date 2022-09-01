@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="0" size="1">
-    <scavenger name="Bits" container="myTarget" find_list="New find list" ignore_list="Not use" check_weight_limit="true" selected="true" autostart_on_login="true"/>
+    <scavenger name="Bits" container="myTarget" find_list="New find list" ignore_list="Not use" check_weight_limit="true" selected="true" autostart_on_login="false"/>
 </data>

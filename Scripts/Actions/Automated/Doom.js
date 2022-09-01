@@ -52,7 +52,7 @@ var rooms = [
     Room(coordinate(463, 494, 0, 'Room2 Meet'), coordinate(462, 494, 0, 'Room2 Entry'), coordinate(476, 513, 0, 'Room2 Attack'), none, true, '0x013B', false, "Flame Strike"),
     Room(coordinate(404, 501, 0, 'Room3 Meet'), coordinate(403, 502, 0, 'Room3 Entry'), coordinate(405, 527, 0, 'Room3 Attack'), demon, true, '0x0132', false, "Flame Strike"),
     Room(coordinate(358, 476, 0, 'Room4 Meet'), coordinate(357, 476, 0, 'Room4 Entry'), coordinate(340, 500, 0, 'Room4 Attack'), undead, true, '0x0137', true, "Energy Bolt"),
-    Room(coordinate(362, 433, 0, 'Room5 Meet'), coordinate(361, 433, 0, 'Room5 Entry'), coordinate(330, 436, 0, 'Room5 Attack'), demon, true, '0x0138', false, "Energy Bolt"),
+    Room(coordinate(364, 431, 0, 'Room5 Meet'), coordinate(361, 433, 0, 'Room5 Entry'), coordinate(330, 436, 0, 'Room5 Attack'), demon, true, '0x0138', false, "Energy Bolt"),
     Room(coordinate(400, 429, 0, 'Room6 Meet'), coordinate(401, 429, 0, 'Room6 Entry'), coordinate(407, 428, 0, 'Room6 Attack'), demon, false, '0x013E', true, "Flame Strike"),
 ]
 
@@ -111,8 +111,9 @@ function DoomGauntlet() {
     while (true) {
         for (var index = room; index < rooms.length; index++) {
             Orion.Print('Doing room ' + index)
+            Orion.Wait(100)
             Sender_Method('*', 'CheckArtiChance')
-
+            Orion.Wait(400)
             Orion.Print('walk to 25')
             Sender('*', 'W:' + 423 + ':' + 430 + ':' + Player.Z() + ':' + Player.Direction() + ':' + 25);
             WalkTo(coordinate(423, 430), 25)
@@ -140,7 +141,8 @@ function WaitForGroup() {
 function DoRoom(room) {
     Orion.Print('Doing room ' + room)
     Orion.RegWrite('room', room);
-
+    Sender_EatMagicFood('*')
+    Orion.Wait(1000)
     if (room == 5) {
         Sender_Method('*', 'BoneCutter')
         Sender_CastTarget('*', "Gift of Life", "self");
@@ -152,18 +154,17 @@ function DoRoom(room) {
 
     Sender('*', 'W:' + rooms[room].Meet().X() + ':' + rooms[room].Meet().Y() + ':' + rooms[room].Meet().Z() + ':' + "");
     WalkTo(rooms[room].Meet(), 0)
-
+    Sender_Method('*', 'CheckForTraps')
+    Orion.Wait(1000)
     WaitForGroup();
-
-    Orion.Wait(1000)
     Sender('*', 'W:' + rooms[room].EntryPoint().X() + ':' + rooms[room].EntryPoint().Y() + ':' + rooms[room].EntryPoint().Z() + ':' + "");
-    Orion.Wait(1000)
     WalkTo(rooms[room].EntryPoint(), 0)
-    Orion.Wait(2000)
+    Orion.Wait(1000)
     Sender('*', 'W:' + rooms[room].AttackPoint().X() + ':' + rooms[room].AttackPoint().Y() + ':' + rooms[room].AttackPoint().Z() + ':' + "");
     WalkTo(rooms[room].AttackPoint(), 0)
     var mobiles = null
     var isItDead = true
+    Sender_Method('*', 'CheckForTraps')
 
     while (Orion.FindTypeEx(rooms[room].MobType(), any, ground,
         'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|red|enemy').length != 0 || isItDead == false) {
@@ -174,6 +175,9 @@ function DoRoom(room) {
         var mobile = mobiles[0]
         if (mobile == null)
             return
+
+        
+
         MoveAwayFromBoss(mobile)
         Orion.Attack(mobile.Serial());
         Orion.Wait(1000)
@@ -211,13 +215,11 @@ function DoRoom(room) {
 
                         Orion.Cast('Death Ray')
                         if (Orion.WaitForTarget(4000)) {
-                            while(Orion.BuffExists('0x9BD2'))
-                            {
+                            while (Orion.BuffExists('0x9BD2')) {
                                 Orion.Wait(400)
                             }
                             MoveAwayFromBoss(mobile)
-                            while(Orion.IsWalking())
-                            {
+                            while (Orion.IsWalking()) {
                                 Orion.Wait(200)
                             }
                             Orion.TargetObject(mobile.Serial())
@@ -254,6 +256,8 @@ function DoRoom(room) {
             Orion.Wait(800)
             Orion.Equip(rooms[room].Slayer());
 
+            WalkToWorthyCorpse()
+
             corners.forEach(function (corner) {
                 Sender('*', 'W:' + corner.X() + ':' + corner.Y() + ':' + Player.Z() + ':' + "" + ':' + 5);
                 WalkTo(corner, 5)
@@ -265,7 +269,7 @@ function DoRoom(room) {
                     while (mob.Exists()) {
                         Sender('*', 'W:' + mob.X() + ':' + mob.Y() + ':' + mob.Z() + ':' + "" + ':' + 10);
                         WalkTo(mob, 10)
-                        if(Player.Mana()>40)
+                        if (Player.Mana() > 40)
                             Sender_CastTarget('*', rooms[room].Spell(), mob.Serial());
                         Orion.Wait(1000)
                     }
@@ -295,7 +299,7 @@ function DoRoom(room) {
                         Orion.Print('Walk To mob')
                         WalkTo(mobile, 10)
 
-                        while (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance() < 11 && mobile.Distance() > 2 && Player.Mana() > 85*((100-Player.LMC())/100)) {
+                        while (!Orion.BuffExists('0x9BD2') && mobile.Hits() > 0 && mobile.Distance() < 11 && mobile.Distance() > 2 && Player.Mana() > 85 * ((100 - Player.LMC()) / 100)) {
                             Orion.Print('DeathRay')
 
                             Orion.Cast('Death Ray')
@@ -307,12 +311,12 @@ function DoRoom(room) {
                         }
                     }
                     else {
-                        if (Player.Mana() > 50 && rooms[room].Spell()== "Flame strike") {
-                             if (!Orion.DisplayTimerExists('Corpse skin') && rooms[room].Spell()=="Flame Strike") {
-                                 Orion.AddDisplayTimer('Corpse skin', 20000, 'Custom', 'Bar', 'Corpse skin', 100, 1200);
-                                 Orion.CastTarget('Corpse skin', mobile.Serial())
+                        if (Player.Mana() > 50 && rooms[room].Spell() == "Flame strike") {
+                            if (!Orion.DisplayTimerExists('Corpse skin') && rooms[room].Spell() == "Flame Strike") {
+                                Orion.AddDisplayTimer('Corpse skin', 20000, 'Custom', 'Bar', 'Corpse skin', 100, 1200);
+                                Orion.CastTarget('Corpse skin', mobile.Serial())
                                 Orion.Wait(1500)
-                             }
+                            }
 
                             Sender_CastTarget('*', rooms[room].Spell(), Orion.FindObject(lastattack).Serial());
                         }
@@ -328,6 +332,11 @@ function DoRoom(room) {
                         if (!mobile.Exists()) {
                             Orion.Print(mobile.Name() + ' must be dead')
                             isItDead = true;
+                            WalkToWorthyCorpse()
+                            //Leave room and wait
+                            Sender('*', 'W:' + rooms[room].Meet().X() + ':' + rooms[room].Meet().Y() + ':' + rooms[room].Meet().Z() + ':' + "");
+                            WalkTo(rooms[room].Meet(), 0)
+                            WaitForGroup();
                         }
                     }
                 }
@@ -342,18 +351,52 @@ function DoRoom(room) {
     }
 }
 
+var holes = '0x1B71'
+var gas = '0x113C|0x1147'
+var saws = '0x11B1|0x11AC'
+var spikes = '4506|4512'
+var mushroom = '0x1125'
+var traps = '0x1B71|0x113C|0x1147|0x11B1|0x11AC|4506|4512|0x1125'
+function CheckForTraps() {
+    Orion.ClearBadLocations();
+    Orion.Wait(500)
+    Orion.FindTypeEx(traps, any, ground, 'item', 25).forEach(function (trap) {
+        Orion.AddFakeMapObject(trap.Serial(), trap.Graphic(), 58, trap.X(), trap.Y(), (trap.Z()+1));
+        Orion.SetBadLocation(trap.X(), trap.Y());
+        Orion.Print('block'+trap.X() +' ' + trap.Y())
+
+    })
+}
+function WalkToWorthyCorpse() {
+    var bodies = Orion.FindTypeEx('0x2006', any, ground, 'item', 18)
+    Orion.Print(bodies.length)
+    bodies.filter(function (body) {
+        Orion.Print(body.Properties() + ' count : ' + body.Count())
+        return body.Count() > 150
+    }).forEach(function (body) {
+        WalkTo(body)
+        Orion.OpenContainer(body.Serial())
+        Orion.Wait(4000)
+
+    })
+}
 function MoveAwayFromBoss(mobile) {
     if (mobile.Distance() <= 2) {
-        var escape = StayAwayGetLocation(mobile.Serial(), 10)
-        Sender('*', 'W:' + escape.X() + ':' + escape.Y() + ':' + escape.Z() + ':' + "" + ':' + "");
+        var escape = StayAwayGetLocation(mobile.Serial(), 4)
         Orion.ToggleScript('WalkTo', false, [escape.X(), escape.Y()])
     }
-    else {
-        Sender('*', 'W:' + Player.X() + ':' + Player.Y() + ':' + Player.Z() + ':' + "" + ':' + 1);
-    }
+    Orion.PartyMembers().forEach(function (partySerial) {
+        if (InRange(partySerial, mobile, 2)) {
+            var escape = StayAwayGetLocation(mobile.Serial(), 4)
+            Sender(partySerial, 'W:' + escape.X() + ':' + escape.Y() + ':' + Player.Z() + ':' + "" + ':' + 1);
+        }
+    })
+
+
 }
 
 function CheckArtiChance() {
+    Orion.Print('Calculate Chance')
     Orion.RequestContextMenu(Player.Serial());
     Orion.WaitContextMenuID(Player.Serial(), 1);
     Orion.Wait(500)
@@ -375,37 +418,48 @@ function CheckArtiChance() {
     if (Orion.WaitForGump(2000)) {
         var gump3 = Orion.GetGump('last');
         if ((gump3 !== null) && (!gump3.Replayed()) && (gump3.ID() === '0xFC840358')) {
-            var points = gump3.Text(14).substring(24).replace(/,/g, '')
+            var lastPoints = parseInt(Orion.RegRead('doomPoints', 'Software\\OrionAssistant\\vars\\' + Player.Name()))
+            var points = parseInt(gump3.Text(14).substring(24).replace(/,/g, ''))
+            Orion.RegWrite('doomPoints', points, 'Software\\OrionAssistant\\vars\\' + Player.Name());
+            Orion.Print(lastPoints + points)
             var message = Player.Name() + ' : ' + (0.000863316841 * Math.pow(10, 0.00000425531915 * points) * 100).toString().substring(0, 5) + '%'
             Orion.SayParty(message)
-            BotPush(message)
+            BotPush(message + ' room: ' + Orion.RegRead('room'))
+            if (lastPoints > points)
+                BotPush(Player.Name() + ' arti drop')
+
             gump3.Close()
         }
     }
 }
 
 function BoneCutter() {
-    var blade = Orion.FindTypeEx('0x13B6|0x13FF', any, backpack).shift();
-    Orion.Print('Blade:'+blade.Name())
+    var blade = Orion.FindTypeEx('0x13B6|0x13FF|0x0F52', any, backpack).shift();
+    Orion.Print('Blade:' + blade.Name())
     while (blade.Exists()) {
         if (!Orion.DisplayTimerExists('RoomCheck')) {
             Orion.AddDisplayTimer('RoomCheck', 10000, 'Custom', 'Bar', 'RoomCheck', 0, 1200);
             var room = parseInt(Orion.RegRead('room'));
             if (room != 5) {
-                Orion.Terminate('BoneCutter')
+                return
             }
         }
 
         Orion.Wait(200)
-        var bones = Orion.FindTypeEx('0x0ECF', any, ground, 'item', 2)
+        var distance = 2
+        if (Orion.ScriptRunning('DoomGauntlet') == 0)
+            distance = 10
+        var bones = Orion.FindTypeEx('0x0ECF', any, ground, 'item', distance)
         bones.forEach(function (bone) {
+            Orion.Print(47, 'Cutting bone')
             if (!Orion.BuffExists('0x9BD2')) {
-                WalkTo(bone, 1)
+                WalkTo(bone, 2)
             }
             Orion.UseObject(blade.Serial());
             if (Orion.WaitForTarget(1000)) {
                 Orion.TargetObject(bone.Serial());
             }
+
             Orion.Wait(800)
         });
     }

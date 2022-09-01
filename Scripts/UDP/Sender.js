@@ -17,8 +17,20 @@
 //#include Fighting/Healing.js
 //#include helpers/Gates.js
 //#include helpers/Quest.js
-function WalkTest() {
-Sender_CastTarget('*', "Gift of Life", "self");
+
+function FindSomething()
+{
+TextWindow.Open()
+TextWindow.Print(Orion.FindObject('0x0000FEFD').Properties())
+}
+function TestFail()
+{
+Orion.Say('start12345')
+    Orion.Unequip('RightHand');
+    Orion.Wait(800)
+    Orion.Equip('0x4006F200');
+    Orion.Wait(800)
+Orion.Say('end12345')
 }
 function DistanceFrom() {
     var t = SelectTarget()
@@ -191,16 +203,23 @@ function Sender_CastTarget(serial, spellName, _target) {
     }
 }
 
+function Sender_EatMagicFood(serial) {
+    Sender(serial, 'Eat:');
+    if (serial === '*')
+        EatMagicFood()
+}
+
+
 function Sender_Cast(serial, spellName) {
     Sender(serial, 'Cast:' + spellName);
     if (serial === '*')
         Orion.Cast(spellName)
 }
 
-function Sender_Method(serial, methodName) {
-    Sender(serial, 'Method:' + methodName);
+function Sender_Method(serial, methodName, args) {
+    Sender(serial, 'Method:' + methodName+':'+args);
     if (serial === '*')
-        Orion.ToggleScript(methodName);
+        Orion.ToggleScript(methodName,args);
 }
 
 function Sender_CastMount(serial, spellName) {

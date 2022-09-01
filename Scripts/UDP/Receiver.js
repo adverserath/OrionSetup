@@ -14,7 +14,7 @@
 ///#include Actions/Event/PumpkinPicker.js
 //#include helpers/Gates.js
 //#include helpers/Quest.js
-
+//#include helpers/DPSGump.js
 var udpPort = 2598;
 
 function Autostart(_) {
@@ -44,7 +44,10 @@ function Callback_Received(data) {
         if (command[0] != '*' && command[0] !== Player.Serial()) {
             return
         }
-        Orion.ToggleScript("ResponseHandler",false, [recv])
+        //if (Orion.ScriptRunning('ResponseHandler') > 0)
+        //    Orion.PauseScript('ResponseHandler')
+        //Orion.ToggleScript("ResponseHandler", false, [recv])
+        ResponseHandler(recv)
     }
 }
 
@@ -65,20 +68,27 @@ function ResponseHandler(recv) {
     }
     if (command[1] == 'W') {
         Orion.Print("Walk To")
-        if (Orion.ScriptRunning('Walk') != 0 || Orion.IsWalking()) {
+        var i = 0
+        while (Orion.ScriptRunning('Walk') != 0) {
+            Orion.Print('Stop Walk' + i++)
+            Orion.PauseScript('Walk');
+            Orion.Wait(50)
             Orion.StopWalking()
             Orion.Terminate('Walk');
-            Orion.Wait(100)
+            Orion.Wait(50)
+            //            Orion.Wait(200)
 
         }
         if (Orion.GetDistance(recvp[1], recvp[2]) > 12 && Player.Frozen()) {
             Orion.InterruptCast();
         }
         Orion.ToggleScript('Walk', true, [recvp[1], recvp[2], recvp[3], recvp[4], recvp[5]])
+
         Orion.Print('obj' + recvp[6])
         if (recvp[6] != null) {
             Orion.UseObject(recvp[6])
         }
+        return
         //    Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
     }
     if (command[1] == 'M') {
@@ -165,13 +175,22 @@ function ResponseHandler(recv) {
         Orion.Print("Get My Corpse")
         OpenOwnCorpses()
     }
+    if (command[1] == 'Eat') {
+        Orion.Print("Eat Magic Food")
+        EatMagicFood()
+    }
     if (command[1] == 'Search' && recvp[1] == 'Corpse') {
         Orion.Print('Search Corpses')
         OpenNearbyCorpses();
     }
     if (command[1] == 'Method') {
         Orion.Print('Run Method: ' + recvp[1])
-        Orion.ToggleScript(recvp[1]);
+        if (Orion.ScriptRunning(recvp[1]) > 0) {
+            Orion.PauseScript(recvp[1]);
+            Orion.Wait(100)
+            Orion.Terminate(recvp[1]);
+        }
+        Orion.ToggleScript(recvp[1], recvp[2]);
     }
 }
 

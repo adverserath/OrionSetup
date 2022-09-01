@@ -170,3 +170,21 @@ function ManaCheck(required, lmc) {
 	Debug(' Method Entry - ManaCheck')
 	return Player.Mana() > required * lmc
 }
+
+function EatMagicFood() {
+	var backpackFood = getbackPackFood()
+	Orion.Print(backpackFood.length)
+	if (backpackFood.length == 0) {
+		Orion.Cast('Create Food')
+		Orion.Wait(2000)
+	}
+	var backpackFood = getbackPackFood()
+
+	if (backpackFood.length != 0)
+		Orion.UseObject(backpackFood.shift().Serial())
+}
+function getbackPackFood() {
+	var food = '0x09D1|0x097B|0x1608|0x09D0'
+	var backpackFood = Orion.FindTypeEx(food, any, backpack)
+	return backpackFood
+}

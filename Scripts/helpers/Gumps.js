@@ -9,7 +9,7 @@ function AcceptGump(_private) {
 function NotEnoughResourcesGump(_private) {
     var output = Orion.GetLastGump();
     return output.CommandList().filter(function (text) {
-        return text.search('502925') >= 0;
+        return text.search('502925|1044287') >= 0;
 
     }).length > 0;
 }

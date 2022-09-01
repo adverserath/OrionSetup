@@ -10,7 +10,7 @@ var largeSmallBodNames = ['ringmail gloves', 'ringmail tunic', 'ringmail sleeves
     'bone helmet', 'bone gloves', 'bone arms', 'bone leggings', 'bone armor',
     'straw hat', 'tunic', 'long pants', 'boots',
     'leather skirt', 'leather bustier', 'leather shorts', 'female leather armor',
-    'studded armor', 'studded bustier',
+    'studded armor', 'studded bustier', 
     'floppy hat', 'full apron', 'plain dress', 'sandals',
     'bandana', 'shirt', 'skirt', 'thigh boots',
     'tricorne hat', 'cap', 'wide-brim hat', 'tall straw hat',

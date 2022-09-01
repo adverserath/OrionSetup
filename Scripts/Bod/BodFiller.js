@@ -8,20 +8,24 @@
 var tool = null;
 var bodItemList = []
 
-// function RebuildclilocsFromText() {
-//     TextWindow.Open()
-//     var clilocs = []
-//     allCliloc.forEach(function (clilocMapping) {
-//         if (largeSmallBodNames.indexOf(clilocMapping[1]) != -1) {
-//             clilocs.push(clilocMapping[0])
-//         }
-//     })
-//     TextWindow.Print(clilocs.join(','))
-// }
+ function RebuildclilocsFromText() {
+     TextWindow.Open()
+     var clilocs = []
+     allCliloc.forEach(function (clilocMapping) {
+         if (largeSmallBodNames.indexOf(clilocMapping[1]) != -1) {
+             clilocs.push(clilocMapping[0])
+         }
+     })
+     TextWindow.Print(clilocs.join(','))
+ }
+
 
 function CreateAllItemMap() {
     ReadBodFile()
-    tool = SelectTarget().Graphic()
+    var usetool = SelectTarget()
+    Orion.UseObject(usetool.Serial())
+    Orion.Wait(1000)
+    tool = usetool.Graphic()
     TextWindow.Open()
     //open tool manually
     var newmapping = [] // load existing items from json
@@ -72,10 +76,10 @@ function MapAllItems(sideButton) {
             TextWindow.Print(Orion.GetCliLocString(subValue[2]) + ' Adding')
             bodItemList.push(ItemMapping(subValue[2], Orion.GetCliLocString(subValue[2]), sideButton, subValue[1], tool))
         }
-        //}
-        //else {
-        //    TextWindow.Print(Orion.GetCliLocString(subValue[2]) + ' Exists')
-        //}
+        
+        else {
+            TextWindow.Print(Orion.GetCliLocString(subValue[2]) + ' Exists')
+        }
     })
 
 }
@@ -151,6 +155,13 @@ function ItemMapping(_cliloc, _name, _menuButton, _createButton, _tool, jsonObje
 var makeAllButton = true
 
 function ItemMake(itemBod, count) {
+    Orion.Print('Starting Make')
+    var type = null
+    if(currentBod.Color()=='0x05E8')
+    {
+        //makeAllButton = false
+        type='Carpentry'
+    }
     if (makeAllButton) {
         Orion.Print(48, 'use tool')
         var toolsAvailable = Orion.FindTypeEx(itemBod.Tool(), '0x0000', backpack).filter(function (tool) {
@@ -201,12 +212,22 @@ function ItemMake(itemBod, count) {
             toolToUse = Orion.FindObject(toolToUse.Serial())
             Orion.Print(usesAvailable - parseInt(toolToUse.Properties().match(/Uses\sRemaining:\s(\d*)/)[1]))
             Orion.Wait(1000)
+            if(type!=null)
+            {
+                Restock(type);
+                Orion.Wait(500)
+            }
         }
 
     }
     else {
         var i = 0
         while (i < count) {
+            if(type!=null)
+            {
+                Restock(type);
+                Orion.Wait(500)
+            }
             Orion.Print(59, 'Made:' + i)
             if (!Orion.GumpExists('generic', 'any', '0x38920ABD')) {
                 Orion.Print(48, 'use tool')
@@ -214,6 +235,7 @@ function ItemMake(itemBod, count) {
                 Orion.UseType(itemBod.Tool())
                 Orion.Wait(1200)
             }
+            
             var gump0 = Orion.GetGump('any', '0x38920ABD')
 
             if (gump0.CommandList().join(',').indexOf(itemBod.Cliloc() == -1)) {
@@ -264,6 +286,7 @@ function WriteBodFile(_private) {
     file.Close();
 }
 
+var currentBod = null
 function FillBulkOrders() {
     Orion.Resend()
     ReadBodFile()
@@ -275,6 +298,7 @@ function FillBulkOrders() {
 
 
     smallOrders.forEach(function (bod) {
+        currentBod = bod
         CloseGumps();
 
         Orion.Wait(1000)
@@ -310,7 +334,7 @@ function FillBulkOrders() {
         Orion.Print('need ' + needToMake)
 
         bodItemList.filter(function (itemBod) {
-            return itemBod.Name() == Orion.GetCliLocString(itemID)
+            return itemBod.Name() == Orion.GetCliLocString(itemID).toLowerCase()
         })
             .forEach(function (bodItem) {
                 Orion.Print(68, 'Making ' + bodItem.Name())
