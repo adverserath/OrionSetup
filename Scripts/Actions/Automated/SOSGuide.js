@@ -170,7 +170,7 @@ function GoToSOS() {
     var sos = SelectTarget()
     var pos = GetSOSLocation(sos)
     Orion.Wait(1000)
-    SteerTo(pos.X(), pos.Y())
+    SteerTo(pos.X(), pos.Y(),45)
 }
 
 var sosOrder = []

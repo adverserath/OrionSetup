@@ -6,6 +6,7 @@
     <profile serial="0x0000041B" file="Hornpub"/>
     <profile serial="0x00000545" file="Kwazii"/>
     <profile serial="0x0000089E" file="Aki"/>
+    <profile serial="0x00000B40" file="Atten"/>
     <profile serial="0x00000D0D" file="Atten"/>
     <profile serial="0x000018D7" file="Atten_Sub1"/>
     <profile serial="0x00002D7D" file="Yuna"/>

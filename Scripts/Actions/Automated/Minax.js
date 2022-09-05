@@ -1,5 +1,18 @@
 //#include helpers/Target.js
-
+//#include helpers/Debug.js
+function BottleThrowHelper()
+{
+while(true)
+{
+Orion.Wait(500)
+if(!Orion.HaveTarget())
+{
+var bottle = Orion.FindTypeEx('0x099B',any,ground,'item',2)
+if(bottle.length>0)
+Orion.UseObject(bottle[0])
+}
+}
+}
 function BottleThrower() {
     while (true) {
         //Orion.FindTypeEx('0x0190', any, ground, '', 40).forEach(function (bottle) {

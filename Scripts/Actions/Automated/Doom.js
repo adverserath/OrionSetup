@@ -46,7 +46,7 @@ function Room(_meet, _entry, _attack, _slayer, _deathRay, _mobType, _hides, _wea
 }
 var undead = '0x400E1A68'
 var demon = '0x400E13B0'
-var none = '0x4008DC96'
+var none = '0x400C34AF' //46%
 var rooms = [
     Room(coordinate(471, 429, 0, 'Room1 Meet'), coordinate(471, 428, 0, 'Room1 Entry'), coordinate(492, 444, 0, 'Room1 Attack'), undead, true, '0x0139', false, "Flame Strike"),
     Room(coordinate(463, 494, 0, 'Room2 Meet'), coordinate(462, 494, 0, 'Room2 Entry'), coordinate(476, 513, 0, 'Room2 Attack'), none, true, '0x013B', false, "Flame Strike"),

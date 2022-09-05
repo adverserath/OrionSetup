@@ -15,6 +15,8 @@
 //#include helpers/Gates.js
 //#include helpers/Quest.js
 //#include helpers/DPSGump.js
+//#include Actions/Automated/Minax.js
+//#include Actions/Automated/Orchard.js
 var udpPort = 2598;
 
 function Autostart(_) {

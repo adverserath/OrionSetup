@@ -17,21 +17,9 @@
 //#include Fighting/Healing.js
 //#include helpers/Gates.js
 //#include helpers/Quest.js
+//#include Actions/Automated/Minax.js
+//#include Actions/Automated/Orchard.js
 
-function FindSomething()
-{
-TextWindow.Open()
-TextWindow.Print(Orion.FindObject('0x0000FEFD').Properties())
-}
-function TestFail()
-{
-Orion.Say('start12345')
-    Orion.Unequip('RightHand');
-    Orion.Wait(800)
-    Orion.Equip('0x4006F200');
-    Orion.Wait(800)
-Orion.Say('end12345')
-}
 function DistanceFrom() {
     var t = SelectTarget()
     while (true) {
