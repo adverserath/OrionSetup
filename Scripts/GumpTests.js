@@ -2,24 +2,22 @@
 
 //#include helpers/Debug.js
 
-function DrawGumps()
-{
-    var target = SelectTarget()
-        BardGump(target.Serial())
+function DrawGumps() {
+	var target = SelectTarget()
+	BardGump(target.Serial())
 
 }
 
 
-function BardGump(serial,x,y)
-{
-    var gumpId = serial
-    var itemSerial = 0
-    gump = Orion.CreateCustomGump(gumpId);
-    gump.SetNoClose(false);
-    gump.Clear();
-    gump.AddHtmlGump(1, x, y, 240, 800, '0x1400', 1, 0);
-    gump.Select('htmlgump', 1);
-    gump.AddText(10, 10, '0x0035', '-- ' + serial);
+function BardGump(serial, x, y) {
+	var gumpId = serial
+	var itemSerial = 0
+	gump = Orion.CreateCustomGump(gumpId);
+	gump.SetNoClose(false);
+	gump.Clear();
+	gump.AddHtmlGump(1, x, y, 240, 800, '0x1400', 1, 0);
+	gump.Select('htmlgump', 1);
+	gump.AddText(10, 10, '0x0035', '-- ' + serial);
 
 	var spoilerSerial = itemSerial++;
 	gump.AddSpoiler(spoilerSerial, 580, 200, 1, 290, Player.Graphic(), '0x0827', '0x0827', '0x0826', '0x0826', '0x0826');
@@ -30,17 +28,15 @@ function BardGump(serial,x,y)
 	gump.AddButton(itemSerial++, 45, 85, '0x00F6', '0x00F5', '0x00F4', '0', 0, 2);
 
 
-    gump.Select('gump');
-    gump.Update();
+	gump.Select('gump');
+	gump.Update();
 }
 
-function TestResponseAllControls(unused)
-{
+function TestResponseAllControls(unused) {
 	var code = CustomGumpResponse.ReturnCode();
 	Orion.Print('Custom gump response code = ' + code);
-Orion.Print(code)
-	if (code == 0)
-	{
+	Orion.Print(code)
+	if (code == 0) {
 		var gump = Orion.CreateCustomGump(15);
 		gump.Close();
 	}
@@ -81,15 +77,15 @@ Orion.Print(code)
 	}
 }
 
-function TestCustomGumpAllControls()
-{Orion.Print("gump")
+function TestCustomGumpAllControls() {
+	Orion.Print("gump")
 
 	// Create new custom gump with serial 15
 	var gump = Orion.CreateCustomGump(15);
-	
+
 	// This gump will be no closible by a right mouse click
 	gump.SetNoClose(true);
-	
+
 	// Clear gump cpntents (for rebuilds)
 	gump.Clear();
 
@@ -149,12 +145,10 @@ function TestCustomGumpAllControls()
 
 	// Scaled gumppics/tilepics are not supported, but...Orion can do it
 	gump.AddText(380, 340, '0xFFFE', '<img src="gump:0x0041" width=100 height=100>');
-	for (var i = 0, j = 0; i < 9; i++)
-	{
+	for (var i = 0, j = 0; i < 9; i++) {
 		if (i == 4)
 			gump.AddTilePic(330 + i * 10, 284, '0x0B1A');
-		else
-		{
+		else {
 			gump.AddTilePic(330 + i * 20, 284, 0x1853 + j);
 			j++;
 		}
@@ -173,7 +167,7 @@ function TestCustomGumpAllControls()
 	gump.AddGlobalColor(1, "#FF00FF");
 	gump.AddTilePic(74, 390, '0x09BB');
 	gump.AddGlobalColor(0);
-	
+
 	// Colorise the pig with a global RGBA color
 	gump.AddBlending(1);
 	gump.AddGlobalColor(1, "#7FFF00FF");
@@ -189,7 +183,7 @@ function TestCustomGumpAllControls()
 
 	// ComboBox section
 	gump.AddComboBox(itemSerial++, 15, 260, '0x0BB8', 0, '0x0BB8', 200, -3);
-	
+
 	gump.AddComboBoxText('Item 1');
 	gump.AddComboBoxText('Auto selected colored item 2', '0x0021', 1);
 	gump.AddComboBoxText('Colored item 3', '0x0006');
@@ -202,7 +196,7 @@ function TestCustomGumpAllControls()
 	// Text entry section
 	gump.AddResizepic(25, 295, '0x0BB8', 200, 20);
 	gump.AddTextEntry(itemSerial++, 30, 295, '0x0035', 'User text 1', 190, 20);
-	
+
 	gump.AddResizepic(25, 320, '0x0BB8', 200, 20);
 	gump.AddTextEntry(itemSerial++, 30, 320, '0x0052', '', 190, 20);
 	gump.SetTextEntryPlaceholderText('Enter your name');
@@ -214,7 +208,7 @@ function TestCustomGumpAllControls()
 	//gump.AddGumpPic(320 + 45, 50 + 30, '0x0046');
 	// Click on corpse eyes
 	gump.AddHitBox(itemSerial++, 200 + 45, 270 + 30, 60, 30, 1);
-	
+
 	gump.AddTilePic(235, 396, '0x1BC4', '0', itemSerial++, '0x0035');
 
 
@@ -233,7 +227,7 @@ function TestCustomGumpAllControls()
 
 	// HTML gump section
 	var htmlSerial = itemSerial++;
-	gump. AddHtmlGump(htmlSerial, 580, 15, 300, 170, '0x0BB8');
+	gump.AddHtmlGump(htmlSerial, 580, 15, 300, 170, '0x0BB8');
 
 	// Select HTML gump as current container for new items
 	gump.Select('htmlgump', htmlSerial);
@@ -313,23 +307,23 @@ function TestCustomGumpAllControls()
 	gump.AddColoredPolygone(0, 0, 900, 500, "#4FFF0000");
 	gump.AddBlending(0);
 
-gump.AddGumpPic(10, 10, Player.Graphic(), 'red');
+	gump.AddGumpPic(10, 10, Player.Graphic(), 'red');
 	gump.AddLine(25, 25, 100, 175, "red", 3);
 	gump.AddLine(100, 175, 175, 25, "red", 3);
 	gump.AddLine(0, 125, 200, 125, "red", 3);
 	gump.AddLine(0, 125, 175, 25, "red", 3);
 	gump.AddLine(25, 25, 200, 125, "red", 3);
-	
+
 	gump.AddGlobalColor(1, "#FF00FF");
-	
+
 	gump.AddTilePic(-15, 110, '0x09E9');
 	gump.AddTilePic(180, 105, '0x09CC');
 	gump.AddTilePic(8, 12, '0x1BF1');
 	gump.AddTilePic(150, 12, '0x1BE1');
 	gump.AddTilePic(78, 155, '0x0EEF');
-	
+
 	gump.AddGlobalColor(0);
-	
+
 	gump.AddTilePic(78, 55, '0x1FD5', '0x0021');
 
 	// Commit gump changes and update it in client

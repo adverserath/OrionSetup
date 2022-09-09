@@ -100,7 +100,7 @@ function MoveItemToBeetle() {
 function PlaceHouse() {
 var tile = SelectCoordinate()
 
-var date = new Date(2022,3,9,0,52,30)
+var date = new Date(2022,9,8,0,11,10)
 Orion.Print(date)
 
 while(new Date()< date)
@@ -138,12 +138,6 @@ while(true)
 }
 }
 
-
-function IDOCWalker() {
-
-
-
-}
 function IDOCScanner() {
     Orion.IgnoreReset()
     while (true) {

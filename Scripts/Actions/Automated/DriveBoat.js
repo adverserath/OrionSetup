@@ -5,7 +5,9 @@
 
 var scale = 16
 var gridscale = 0;
-var vessel = 'Tiller Man'
+var vessel = ['Tiller Man', 'Wheel']
+
+
 
 function DriveBoatTo() {
   Debug(' Method Entry - DriveBoatTo')
@@ -15,6 +17,14 @@ function DriveBoatTo() {
   var y = Orion.InputText();
   SteerTo(x, y)
 }
+
+function DriveBoatToMapPoint() {
+  Debug(' Method Entry - DriveBoatToMapPoint')
+  var pos = Orion.GetWorldMapPointerPosition();
+  SteerTo(pos.X(), pos.Y())
+}
+
+
 
 function SteerTo(x, y, distance) {
   Debug(' Method Entry - SteerTo')
@@ -53,10 +63,10 @@ function SteerPath(route, distance, destinationX, destinationY) {
 
   var startTime = Orion.Now()
   while (Orion.InJournal('You are now piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
-    var boat = FindGroundItemWithName([vessel])
+    var boat = FindGroundItemWithProperties(vessel)
     var hold = FindGroundItemWithName(["Cargo Hold"])
-
-    WalkTo(boat)
+    Orion.Print(boat.Serial())
+    WalkTo(boat, 2)
     Orion.UseObject(boat.Serial())
     Orion.Wait(600)
   }
@@ -66,16 +76,22 @@ function SteerPath(route, distance, destinationX, destinationY) {
       break;
     }
 
-    Orion.Print('Sailing to index ' + index)
+    Orion.Print('Sailing to index ' + index + '/' + route.length)
     var target = route[index];
-    //        while (Player.X() < (target.X() - 2) || Player.X() > (target.X() + 2) &&
-    //           Player.Y() < (target.Y() - 2) || Player.Y() > (target.Y() + 2)) {
+
     //STOP when within 55 tiles of chest (fishable at 60)
     if (Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()) > distance) {
-      while (((Player.X() > (target.X() + steerSize) || Player.X() < (target.X() - steerSize)) ||
-        (Player.Y() > (target.Y() + steerSize) || Player.Y() < (target.Y() - steerSize))) &&
-        Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()) > distance
+      var timerLoop = Orion.Now() + 10000
+      while (
+        ((Player.X() > (target.X() + steerSize) ||
+          Player.X() < (target.X() - steerSize)) ||
+          (Player.Y() > (target.Y() + steerSize) ||
+            Player.Y() < (target.Y() - steerSize))) &&
+        Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()) > distance &&
+        (timerLoop > Orion.Now())
       ) {
+        var lastLoopTime = Orion.Now()
+
         TextWindow.Clear();
         TextWindow.Print('Player ' + Player.X() + ' ' + Player.Y())
         TextWindow.Print('To ' + target.X() + ' ' + target.Y())
@@ -87,14 +103,22 @@ function SteerPath(route, distance, destinationX, destinationY) {
         for (var time = 0; time < 10; time++) {
           var distanceTo = Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y())
           if (distanceTo > distance) {
-            Orion.Wait(parseInt(distance * 1000 / 30))
+            var waitTime = parseInt(distance * 1000 / 10)
+            Orion.Print(waitTime)
+            Orion.Wait(waitTime)
             TextWindow.Print('Distance:' + distanceTo)
           }
           break;
-
         }
-
+        ////CHECK FOR STOPED MESSAGE
+        var haveStopped = Orion.InJournal('stopped sir', '', '0', '-1', lastLoopTime, Orion.Now()) != null;
+        if (haveStopped) {
+          DealWithBlock(boat)
+          index++
+        }
+        lastLoopTime = Orion.Now()
       }
+      timerLoop = Orion.Now() + 10000
       Orion.Print('Stop ' + index)
       Orion.StopSailOnBoat()
     }
@@ -110,15 +134,56 @@ function SteerPath(route, distance, destinationX, destinationY) {
     Orion.Wait(2000)
   }
 }
+function s__DealWithBlock(boat) {
+  var tiles = Orion.FindTypeEx('0x9253|0x9145|0x920A|0x9231|0x91CC|0x90BE', any, ground,
+    'item', 18)
+    .sort(function (p1, p2) {
+      return p2.Distance() - p1.Distance()
+    });
+  var tile = tiles.shift()
+  if (tile != null) {
+    Orion.SetTrack(true, tile.X(), tile.Y());
 
+    var monsters = Orion.FindTypeEx(any, any, ground,
+      'nothumanmobile|live|ignoreself|ignorefriends', 24, 'gray|criminal|red').filter(function (mob) { return Math.abs(mob.X() - tile.X()) < 8 && Math.abs(mob.Y() - tile.Y()) < 8 })
+    if (monsters.length > 1) {
+      monsters.forEach(function (mob) {
+        Orion.PrintFast(mob.Serial(), 58, 1, 'problem');
+        Orion.Attack(problem.Serial())
+      })
+    }
+    //GoAround
+    startTime = Orion.Now()
+    while (Orion.InJournal('You are no longer piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
+      Orion.Print('Trying to stop steering')
+      Orion.UseObject(boat.Serial())
+      Orion.Wait(2000)
+    }
+    Orion.Say("back")
+    Orion.Wait(5000)
+    Orion.Say("left")
+    Orion.Wait(5000)
+    Orion.Say("forward")
+    Orion.Wait(5000)
+    Orion.UseObject(boat)
+
+  }
+
+  ///Check for mobs
+  ///stop pilot
+  ///Attack all
+  ///Cast Dispel Evil
+}
 
 function SteerToObject(target, distance) {
   Debug(' Method Entry - SteerToObject')
   if (distance == null || distance < 2) {
     distance = 2
   }
-  var boat = FindGroundItemWithName([vessel])
+  var boat = FindGroundItemWithProperties(vessel)
+  WalkTo(boat, 2)
 
+  Orion.Print(boat.Serial())
   var startTime = Orion.Now()
   while (Orion.InJournal('You are now piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
     WalkTo(boat)

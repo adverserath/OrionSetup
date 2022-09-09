@@ -23,6 +23,7 @@ var _bin = 'A Trash Barrel'
 var _transcendenceBook = 'Transcendence Book'
 
 //orc lighthouse X1954 Y3747
+
 function AutoSOSDoerClosest() {
     var startNumber = parseInt(Orion.InputText(60000, 'Start at which number'))
 
@@ -44,21 +45,9 @@ function AutoSOSDoerClosest() {
                             Orion.MoveItem(sos.Serial(), 1, backpack);
                             Orion.Wait(1000)
                         })
+                        Orion.Wait(1000)
                     }
-                    Orion.FindTypeEx('0x14EE').forEach(function (sos) {
-                        var pos = GetSOSLocation(sos)
-                        var zone = GetZone(pos.X(), pos.Y())
-                        Orion.Print('Zone: ' + zone)
-                        Orion.Print('CHECK' + zone + ' ' + sosLevel + '  ' + (sosLevel == zone))
-                        if (zone == sosLevel)
-                            SosMap.push([sos.Serial(), pos.X(), pos.Y(), zone])
-                        else {
-                            MoveSoSToChest(sos.Serial(), zone)
-                        }
-                    })
-                    SosMap.sort(function (s1, s2) {
-                        return s1[2] + s1[1] - s2[2] + s2[1]
-                    })
+                    ProcessAllSosInBackpack(sosLevel, SosMap)
                     while (Orion.FindTypeEx('0x14EE', any, backpack).length > 0) {
                         SosMap.forEach(function (sos) {
                             Orion.MoveItem(sos[0], 1, currentSOSBox.Serial());
@@ -88,6 +77,29 @@ function AutoSOSDoerClosest() {
         }
         Orion.Wait(30000)
     }
+}
+
+function ProcessAllSosInBackpack(sosLevel, SosMap) {
+    Orion.FindTypeEx('0x14EE').forEach(function (sos) {
+        var pos = GetSOSLocation(sos)
+        var zone = GetZone(pos.X(), pos.Y())
+        Orion.Print('Zone: ' + zone)
+        Orion.Print('CHECK' + zone + ' ' + sosLevel + '  ' + (sosLevel == zone))
+        if (zone == sosLevel)
+            SosMap.push([sos.Serial(), pos.X(), pos.Y(), zone])
+        else {
+            MoveSoSToChest(sos.Serial(), zone)
+        }
+    })
+    SosMap.sort(function (s1, s2) {
+        return parseInt(s1[1]/20) - parseInt(s2[1]/20)
+    })
+    SosMap.sort(function (s1, s2) {
+        return parseInt(s1[2]/40) - parseInt(s2[2]/40)
+    })
+    SosMap.forEach(function (sos) {
+        TextWindow.Print(sos[1]+ '  ' + sos[2])
+    })
 }
 
 function AutoSOSDoer() {
@@ -206,7 +218,7 @@ function GoToClosestSOS(distance) {
 ///#include soslocations.jpg
 function DoSOSInOrder() {
     Debug(' Method Entry - DoSOSInOrder')
-    var seakey = FindBackpackItemWithName([_seakey]).Serial()
+    var seakey = FindBackpackItemWithProperties([_seakey,"Ship Recall Rune"]).Serial()
     Orion.Print('Key ' + seakey)
     RecallRune(seakey);
     Orion.Wait(1000)
@@ -223,7 +235,7 @@ function DoSOSInOrder() {
             continue;
         }
         Orion.Wait(1000)
-        Orion.Step(7)
+       // Orion.Step(7)
         var startWeight = Player.Weight()
         while (Orion.ObjectExists(sosId) && Player.Weight() < (startWeight + 150) && !HasChest()) {
             //Check For Corpses
@@ -236,7 +248,7 @@ function DoSOSInOrder() {
             //Fish
             Orion.UseObject('0x4008475A');
             if (Orion.WaitForTarget(1000)) {
-                Orion.TargetTileRelative('any', -3, -3, 65533);
+                Orion.TargetTileRelative('any', 0, 0, 0);
             }
             Orion.Wait(10000)
         }
@@ -245,7 +257,7 @@ function DoSOSInOrder() {
 }
 
 function ChestRecoveryService() {
-    var seakey = FindBackpackItemWithName([_seakey]).Serial()
+    var seakey = FindBackpackItemWithProperties([_seakey,"Ship Recall Rune"]).Serial()
 
     var droppedChest = FindGroundItemWithName(["Chest"])
 
@@ -285,8 +297,8 @@ function BankAndHome() {
         Orion.Wait(1000)
         Orion.Say("bank")
         Orion.Wait(500)
-        MoveItemsFromPlayer(Player.BankSerial(), '0x0EED')
-        Orion.Wait(1000)
+
+        MoveAllGoldToBank()
     }
     RecallRune(seabook);
     ChestLootManager()
@@ -308,7 +320,17 @@ function ChestLootManager() {
     Debug(' Method Entry - ChestLootManager')
     //Walk to goldchest
     Orion.WalkTo(Player.X() + 3, Player.Y() - 3)
-    Orion.Wait(1000)
+    var chests = Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Name(), "Chest") })
+
+    chests.forEach(function (chest) {
+
+        Orion.UseObject(chest.Serial())
+        Orion.Wait(1000)
+
+        Orion.Boxhack(chest.Serial());
+
+    })
+        Orion.Wait(1000)
     //Orion.Print("Move Gold")
     // WalkTo(goldChestId)
     Orion.Print("Engraved: Sea Loot")
@@ -350,13 +372,7 @@ function ChestLootManager() {
 
     Orion.Print(_regBoxId)
     MoveItemText("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", FindGroundItemWithProperties([_regBoxId]).Serial())
-    var chests = Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Name(), "Chest") })
 
-    chests.forEach(function (chest) {
-
-        Orion.UseObject(chest.Serial())
-        Orion.Wait(1000)
-    })
     if (Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Properties(), "The Shipwreck") }).length > 0) {
 
         BotPush('ancient!!')
@@ -368,6 +384,7 @@ function ChestLootManager() {
     WalkTo(FindGroundItemWithProperties([_bin]).Serial())
     MoveItemText("Shipwreck", FindGroundItemWithProperties([_bin]).Serial())
 
+    Orion.CloseGump('container');
     //Orion.ActivateClient();
     //   BotPush('Paused')
     //    if (Player.WarMode())

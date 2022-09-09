@@ -19,6 +19,10 @@
 //#include helpers/Quest.js
 //#include Actions/Automated/Minax.js
 //#include Actions/Automated/Orchard.js
+//#include Actions/PIrating/Pirates.js
+
+var hostPort = 2597;
+var clientServer = "192.168.0.2"
 
 function DistanceFrom() {
     var t = SelectTarget()
@@ -326,7 +330,7 @@ function HostCallback(_) {
         HostGump();
         players = []
         for (var ports = 1; ports < 5; ports++) {
-            Orion.UdpSend(hostPort + ports, '*|WHO')
+            Orion.UdpSend(clientServer, hostPort + ports, '*|WHO')
         }
         return
     }
@@ -370,7 +374,7 @@ function Sender(serial, message, playerName) {
     players.forEach(function (player) {
         Orion.Print('Send To:' + player.name + ' on ' + player.port)
         if (playerName == null || player.name === playerName)
-            Orion.UdpSend(player.port, serial + '|' + message)
+            Orion.UdpSend(clientServer, player.port, serial + '|' + message)
     })
 }
 
@@ -459,7 +463,6 @@ function HostGump(_) {
     gump.Update();
 }
 
-var hostPort = 2597;
 
 var players = []
 function Host() {
@@ -472,7 +475,7 @@ function Host() {
     Orion.SetUdpServerCallback(Player.Name(), 'NewSubscriber');
 
     for (var ports = 1; ports < 5; ports++) {
-        Orion.UdpSend('192.168.0.3', hostPort + ports, '*|WHO')
+        Orion.UdpSend(clientServer, hostPort + ports, '*|WHO')
         Orion.Wait(200)
     }
 }

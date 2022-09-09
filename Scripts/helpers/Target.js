@@ -50,7 +50,7 @@ function SelectTarget(itemUsage) {
 
     Orion.TargetObject('myTarget');
     var target = Orion.FindObject('myTarget');
-    if(target!=null)
+    if (target != null)
       Debug(target.Serial());
     return target;
   }
@@ -144,7 +144,7 @@ function WalkTo(object, distance, timeMS, walking, monitored) {
   TextWindow.Print("Start WalkTo")
   Orion.Print(parseInt(object))
 
-  if (typeof object == "string" && object.length==10) {
+  if (typeof object == "string" && object.length == 10) {
     Orion.Print('Walk to object')
     Orion.Print('finding ' + object)
     object = Orion.FindObject(object)
@@ -247,7 +247,7 @@ function AddBadLocationGrid() {
   var end = SelectCoordinate();
 
   Orion.GetTilesInRect('land', start.X(), start.Y(), end.X(), end.Y()).forEach(function (tile) {
-    Orion.Print('block'+tile.X() +' ' + tile.Y())
+    Orion.Print('block' + tile.X() + ' ' + tile.Y())
     Orion.SetBadLocation(tile.X(), tile.Y());
   })
 }
@@ -476,23 +476,35 @@ function FindBackpackItemWithName(name) {
 }
 
 function FindGroundItemWithProperties(properties) {
+  var returnItems = []
   var items = Orion.FindTypeEx(any, any, ground, 'item', 18)
-  properties.forEach(function (prop) {
-    items = items.filter(function (item) {
-      return Orion.Contains(item.Properties(), prop)
+
+  items.forEach(function (item) {
+    properties.forEach(function (prop) {
+      if (Orion.Contains(item.Properties(), prop)) {
+        returnItems.push(item)
+      }
     })
   })
-  return items.shift()
+
+  TextWindow.Print('FindGroundItemWithProperties:' + properties)
+  TextWindow.Print(returnItems.length)
+  return returnItems.shift()
 }
 
 function FindBackpackItemWithProperties(properties) {
+  var returnItems = []
   var items = Orion.FindTypeEx(any, any, backpack, 'item', 18)
-  properties.forEach(function (prop) {
-    items = items.filter(function (item) {
-      return Orion.Contains(item.Properties(), prop)
+  items.forEach(function (item) {
+    properties.forEach(function (prop) {
+      if (Orion.Contains(item.Properties(), prop)) {
+        returnItems.push(item)
+      }
     })
   })
-  return items.shift()
+  Orion.Print('FindBackpackItemWithProperties:' + properties)
+  Orion.Print(returnItems.length)
+  return returnItems.shift()
 }
 
 function BlockTest() {
