@@ -20,6 +20,7 @@
 //#include Actions/Automated/Minax.js
 //#include Actions/Automated/Orchard.js
 //#include Actions/PIrating/Pirates.js
+//#include gumps/CasterGump.js
 
 var hostPort = 2597;
 var clientServer = "192.168.0.2"

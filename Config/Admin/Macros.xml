@@ -1,2 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data cast_spells_from_book_if_not_scrolls="false"/>
+<data cast_spells_from_book_if_not_scrolls="false">
+    <macro name="TraveKey" looped="false" delay="1">
+        <action type="10" convert_type="2" waiting_time="300" serial="0x400A3C9B" graphic="0x2002" color="0x002A" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="65535" y="65535" z="0" slot="255" container="0x4003E415" relative_x="-91" relative_y="-94" relative_z="0"/>
+        <action type="10" convert_type="2" waiting_time="300" serial="0x400AE363" graphic="0x2002" color="0x0035" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="65535" y="65535" z="0" slot="255" container="0x4003E415" relative_x="-91" relative_y="-94" relative_z="0"/>
+        <action type="10" convert_type="2" waiting_time="300" serial="0x40098795" graphic="0x2002" color="0x0069" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="65535" y="65535" z="0" slot="255" container="0x4003E415" relative_x="-91" relative_y="-94" relative_z="0"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="-130"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
+        <action type="20" convert_type="0" waiting_time="1000" value="-128"/>
+        <action type="10" convert_type="2" waiting_time="300" serial="0x4008A556" graphic="0x1012" color="0x0489" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="96" y="1886" z="0" slot="255" container="0xFFFFFFFF" relative_x="1" relative_y="1" relative_z="0"/>
+        <action type="10" convert_type="2" waiting_time="300" serial="0x4008A558" graphic="0x1012" color="0x0489" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="96" y="1886" z="0" slot="255" container="0xFFFFFFFF" relative_x="1" relative_y="1" relative_z="0"/>
+        <action type="10" convert_type="2" waiting_time="300" serial="0x4008A559" graphic="0x1012" color="0x0489" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="96" y="1886" z="0" slot="255" container="0xFFFFFFFF" relative_x="1" relative_y="1" relative_z="0"/>
+    </macro>
+</data>

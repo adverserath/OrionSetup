@@ -71,11 +71,13 @@ function GetSOSLocation(sosObject) {
     }
 }
 
-function MoveAllSOSInBagToChests() {
+function MoveAllSOSInBagToChests(foundLast) {
     // Find all SOS in bag
     var foundSOS = 0
 
-    var currentSOSs = Orion.FindType('0x14EE', any, backpack)
+    var currentSOSs = []
+    if(foundLast)
+        currentSOSs = Orion.FindType('0x14EE', any, backpack)
     OpenAnyMiBs()
     var SOSs = Orion.FindTypeEx('0x14EE', any, backpack).filter(function (sos){
         return currentSOSs.indexOf(sos.Serial())==-1

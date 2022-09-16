@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="27">
+<data version="0" size="28">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -20,6 +20,7 @@
         </item>
         <item graphic="0xA769" color="0x0501" comment="Summer's Blessing - 6/11/2022" count="0"/>
         <item graphic="0x0F80" color="0x0000" comment="10 Daemon Bone" count="0"/>
+        <item graphic="0x2002" color="0xFFFF" comment="Key" count="0"/>
     </findlist>
     <findlist name="Inscription">
         <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>
@@ -246,5 +247,8 @@
         <item graphic="any" color="any" comment="Legendary" count="0">
             <property name="Legendary Artifact" value_min="0" value_max="100"/>
         </item>
+    </findlist>
+    <findlist name="keys">
+        <item graphic="0x2002" color="-1" comment="Key" count="0"/>
     </findlist>
 </data>

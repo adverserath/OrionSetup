@@ -1,6 +1,7 @@
 var gump
 var row2 = 135;
 var i = 0
+var targets = []
 
 var GumpButtonType = function GumpButtonType() {
     return {
@@ -109,7 +110,9 @@ function CasterGump() {
 
         var spellBarYOffset = 65
 
-        GetAllTarget(12).forEach(function (mob) {
+        targets = GetAllTarget(12)
+        
+        targets.forEach(function (mob) {
             var column = mobNumber % columns//(columns - ((mobNumber + 1) % columns))-1
             var row = parseInt(mobNumber / (width / tileWidth))
             var m_X = tileWidth * column
@@ -166,7 +169,7 @@ function CasterGump() {
         var wait = Orion.Now()+5000
                         Orion.Print('out'+ Orion.GetGlobal('updateGump'))
 
-        while(Orion.GetGlobal('updateGump')!=1 && wait>Orion.Now())
+        while(Orion.GetGlobal('updateGump')!=1 && wait>Orion.Now() && targets.length == GetAllTarget(12).length)
         {
         	Orion.Wait(50)
         }

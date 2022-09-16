@@ -27,6 +27,16 @@ var _transcendenceBook = 'Transcendence Book'
 function AutoSOSDoerClosest() {
     var startNumber = parseInt(Orion.InputText(60000, 'Start at which number'))
 
+    var seakey = FindBackpackItemWithProperties([_seakey]).Serial()//"Ship Recall Rune"
+    RecallRune(seakey);
+    Orion.Wait(2000)
+    Orion.RegWrite('boatX', Player.X());
+    Orion.RegWrite('boatY', Player.Y());
+    RecallRune(seabook);
+    Orion.Wait(2000)
+    Orion.Print(Orion.RegRead('boatX') + ' ' + Orion.RegRead('boatY'))
+    Orion.WalkTo(Player.X() + 3, Player.Y() - 3)
+
     while (true) {
         for (var sosLevel = startNumber; sosLevel < 14; sosLevel++) {
             startNumber = 0
@@ -54,7 +64,17 @@ function AutoSOSDoerClosest() {
                             Orion.Wait(1000)
                         })
                     }
-                    SosMap.forEach(function (sos) {
+                    //SosMap.forEach(function (sos) {
+                    while (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0")) {
+                        var bx = Orion.RegRead('boatX');
+                        var by = Orion.RegRead('boatY');
+                        SosMap.sort(function (s1, s2) {
+                            return DistanceTo(s1[1],s1[2], bx, by) - DistanceTo(s2[1],s2[2], bx, by)
+                        })
+                        SosMap.forEach(function(s){
+                            Orion.Print('distance to '+s[0] + ' ' + DistanceTo(s[1],s[2], bx, by))
+                        })
+                        var sos = SosMap.shift()
                         WalkTo(currentSOSBox)
                         Orion.OpenContainer(currentSOSBox.Serial())
                         Orion.Wait(2000)
@@ -68,15 +88,47 @@ function AutoSOSDoerClosest() {
                         while (Orion.ScriptRunning('DoSOSInOrder') != 0) {
                             Orion.Wait(2000)
                         }
-                    })
+                    }
+
+                    // SosMap.forEach(function (sos) {
+                    //     WalkTo(currentSOSBox)
+                    //     Orion.OpenContainer(currentSOSBox.Serial())
+                    //     Orion.Wait(2000)
+                    //     Orion.Print('Doing ' + sos[0])
+                    //     while (Orion.FindTypeEx('0x14EE', any, backpack).length == 0) {
+                    //         Orion.MoveItem(sos[0], 1, backpack);
+                    //         Orion.Wait(2000)
+                    //     }
+                    //     Orion.ToggleScript('DoSOSInOrder', true)
+                    //     Orion.Wait(1000)
+                    //     while (Orion.ScriptRunning('DoSOSInOrder') != 0) {
+                    //         Orion.Wait(2000)
+                    //     }
+                    // })
                 }
                 else {
                     Orion.Print("Box is empty")
                 }
             }
+            else {
+                RecallRune(seabook);
+                Orion.Wait(3000)
+            }
         }
         Orion.Wait(30000)
     }
+}
+
+function DistanceTo(tx, ty, bx, by) {
+    var dx = Math.abs(tx - bx);
+    var dy = Math.abs(ty - by);
+    var min = Math.min(dx, dy);
+    var max = Math.max(dx, dy);
+
+    var diagonalSteps = min;
+    var straightSteps = max - min;
+    var ret = Math.sqrt(2) * diagonalSteps + straightSteps
+    return ret;
 }
 
 function ProcessAllSosInBackpack(sosLevel, SosMap) {
@@ -92,13 +144,13 @@ function ProcessAllSosInBackpack(sosLevel, SosMap) {
         }
     })
     SosMap.sort(function (s1, s2) {
-        return parseInt(s1[1]/20) - parseInt(s2[1]/20)
+        return parseInt(s1[1] / 20) - parseInt(s2[1] / 20)
     })
     SosMap.sort(function (s1, s2) {
-        return parseInt(s1[2]/40) - parseInt(s2[2]/40)
+        return parseInt(s1[2] / 40) - parseInt(s2[2] / 40)
     })
     SosMap.forEach(function (sos) {
-        TextWindow.Print(sos[1]+ '  ' + sos[2])
+        TextWindow.Print(sos[1] + '  ' + sos[2])
     })
 }
 
@@ -182,7 +234,7 @@ function GoToSOS() {
     var sos = SelectTarget()
     var pos = GetSOSLocation(sos)
     Orion.Wait(1000)
-    SteerTo(pos.X(), pos.Y(),45)
+    SteerTo(pos.X(), pos.Y(), 45)
 }
 
 var sosOrder = []
@@ -218,7 +270,7 @@ function GoToClosestSOS(distance) {
 ///#include soslocations.jpg
 function DoSOSInOrder() {
     Debug(' Method Entry - DoSOSInOrder')
-    var seakey = FindBackpackItemWithProperties([_seakey,"Ship Recall Rune"]).Serial()
+    var seakey = FindBackpackItemWithProperties([_seakey]).Serial()//"Ship Recall Rune"
     Orion.Print('Key ' + seakey)
     RecallRune(seakey);
     Orion.Wait(1000)
@@ -230,12 +282,12 @@ function DoSOSInOrder() {
 
     Orion.Print("ALL SOS must be parsed into \OA\Scripts\helpers\SOSList.js, using ReadAllSOSToFile")
     while (Orion.FindTypeEx('0x14EE', any, backpack).length != 0) {
-        var sosId = GoToClosestSOS(45)
+        var sosId = GoToClosestSOS(30)
         if (sosId === null) {
             continue;
         }
         Orion.Wait(1000)
-       // Orion.Step(7)
+        // Orion.Step(7)
         var startWeight = Player.Weight()
         while (Orion.ObjectExists(sosId) && Player.Weight() < (startWeight + 150) && !HasChest()) {
             //Check For Corpses
@@ -246,23 +298,50 @@ function DoSOSInOrder() {
             //Open MIBs and add them to the list here?
             //ProcessMib()
             //Fish
-            Orion.UseObject('0x4008475A');
-            if (Orion.WaitForTarget(1000)) {
-                Orion.TargetTileRelative('any', 0, 0, 0);
-            }
+            FishAtFeet()
             Orion.Wait(10000)
         }
+
+        //Clear out monsters before recall
+
+        var monsters = GetAllTarget(6)
+        if (monsters.length > 0) {
+            monsters.forEach(function (mob) {
+                Orion.PrintFast(mob.Serial(), 58, 1, 'problem');
+                Orion.Attack(mob.Serial())
+                Orion.Wait(100)
+            })
+            while (GetAllTarget(6).length > 0) {
+                Orion.Wait(2000)
+                Orion.Print("wait for no monsters")
+            }
+        }
+
+        SailToCorpse(true)
         ChestRecoveryService()
     }
 }
 
+function FishAtFeet() {
+    //Orion.WalkTo(Player.X()-1,Player.Y(),Player.Z(),0);
+    Orion.UseObject('0x4008475A')
+    if (Orion.WaitForTarget(1000)) {
+        Orion.TargetTileRelative('water', 0, 0, -5)
+    }
+}
+
 function ChestRecoveryService() {
-    var seakey = FindBackpackItemWithProperties([_seakey,"Ship Recall Rune"]).Serial()
+    Orion.RegWrite('boatX', Player.X());
+    Orion.RegWrite('boatY', Player.Y());
+
+    Orion.Print('METHOD--Chest recovery service')
+    var seakey = FindBackpackItemWithProperties([_seakey, "Ship Recall Rune"]).Serial()
 
     var droppedChest = FindGroundItemWithName(["Chest"])
 
     if (droppedChest != null) {
         Orion.OpenContainer(droppedChest.Serial())
+        Orion.Boxhack(droppedChest.Serial())
         Orion.Wait(1000)
         var goldInChest = Orion.FindTypeEx('0x0EED', any, droppedChest.Serial())
         var availableGoldWeight = (Player.MaxWeight() - Player.Weight()) * 120
@@ -330,9 +409,17 @@ function ChestLootManager() {
         Orion.Boxhack(chest.Serial());
 
     })
-        Orion.Wait(1000)
+    Orion.Wait(1000)
     //Orion.Print("Move Gold")
     // WalkTo(goldChestId)
+
+    Orion.Print("SOSInBag")
+    MoveAllSOSInBagToChests(chests.length != 0);
+
+    Orion.Print("MoveStash")
+    MoveStashMapsInBagToChests();
+
+
     Orion.Print("Engraved: Sea Loot")
     WalkTo(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial())
 
@@ -342,12 +429,6 @@ function ChestLootManager() {
 
     Orion.Print("Engraved: Special Nets")
     MoveItemText("Fishing Net", FindGroundItemWithProperties(["Engraved: Special Nets"]).Serial())
-
-    Orion.Print("SOSInBag")
-    MoveAllSOSInBagToChests();
-
-    Orion.Print("MoveStash")
-    MoveStashMapsInBagToChests();
 
     Orion.Print("Engraved: Sea Loot")
     Orion.FindListEx('Fishies').forEach(function (fish) {
