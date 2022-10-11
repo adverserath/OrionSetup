@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="2" dressbag="0x00000000" catchbag="0x00000000">
-    <object name="mount" id="0x0000966B"/>
-    <object name="myTarget" id="0x00001F4B"/>
+<data version="0" size="1" dressbag="0x00000000" catchbag="0x00000000">
+    <object name="mount" id="0x00006EE8"/>
 </data>

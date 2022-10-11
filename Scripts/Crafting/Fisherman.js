@@ -1,15 +1,6 @@
 var seabook = '0x40019854'
+var cuttingtool = '0x0EC4' //skinningKnife
 
-
-function FishMonitor() {
-    while (true) {
-        Orion.Wait(5000)
-        if (Orion.ScriptRunning('SeaFish') == 0) {
-            BotPush('SeaFish Stopped')
-            Orion.Wait(60000)
-        }
-    }
-}
 function SeaFish() {
     Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', false)
     var startTime = Orion.Now()
@@ -23,7 +14,10 @@ function SeaFish() {
                 var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 2);
                 while (corpses.length == 0) {
                     Orion.Wait(1000)
-                    corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 16);
+                      corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 16)
+    .filter(function (body) {
+      return body.Count() == 150 //sea serpent
+    })
                 }
                 var startX = Player.X()
                 corpses.forEach(function (corpse) {
@@ -84,7 +78,7 @@ return fish.Name()!='A Big Fish' //Dont cut Big Fish
 })
             .forEach(function (fish) {
 
-                Orion.UseType('0x0EC3', '0xFFFF'); //Cleaver
+                Orion.UseType(cuttingtool);
                 if (Orion.WaitForTarget(1000)) {
                     Orion.TargetObject(fish.Serial());
                 }

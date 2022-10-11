@@ -23,7 +23,9 @@ var _bin = 'A Trash Barrel'
 var _transcendenceBook = 'Transcendence Book'
 
 //orc lighthouse X1954 Y3747
-
+function SortSOSToBoxes() {
+    ProcessAllSosInBackpack(-1, [])
+}
 function AutoSOSDoerClosest() {
     var startNumber = parseInt(Orion.InputText(60000, 'Start at which number'))
 
@@ -65,14 +67,16 @@ function AutoSOSDoerClosest() {
                         })
                     }
                     //SosMap.forEach(function (sos) {
-                    while (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0")) {
+                    while (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0") && SosMap.length != 0) {
+                        Orion.Print(58, currentSOSBox.Properties())
+
                         var bx = Orion.RegRead('boatX');
                         var by = Orion.RegRead('boatY');
                         SosMap.sort(function (s1, s2) {
-                            return DistanceTo(s1[1],s1[2], bx, by) - DistanceTo(s2[1],s2[2], bx, by)
+                            return DistanceTo(s1[1], s1[2], bx, by) - DistanceTo(s2[1], s2[2], bx, by)
                         })
-                        SosMap.forEach(function(s){
-                            Orion.Print('distance to '+s[0] + ' ' + DistanceTo(s[1],s[2], bx, by))
+                        SosMap.forEach(function (s) {
+                            Orion.Print('distance to ' + s[0] + ' ' + parseInt(DistanceTo(s[1], s[2], bx, by)))
                         })
                         var sos = SosMap.shift()
                         WalkTo(currentSOSBox)
@@ -132,6 +136,9 @@ function DistanceTo(tx, ty, bx, by) {
 }
 
 function ProcessAllSosInBackpack(sosLevel, SosMap) {
+    Orion.Print('sosLevel: ' + sosLevel)
+    Orion.Print('SosMap: ' + SosMap)
+    Orion.Wait(1000)
     Orion.FindTypeEx('0x14EE').forEach(function (sos) {
         var pos = GetSOSLocation(sos)
         var zone = GetZone(pos.X(), pos.Y())
@@ -291,7 +298,7 @@ function DoSOSInOrder() {
         var startWeight = Player.Weight()
         while (Orion.ObjectExists(sosId) && Player.Weight() < (startWeight + 150) && !HasChest()) {
             //Check For Corpses
-            SailToCorpse(true)
+            KillMonstersAndLoot()
 
             //Should I heal here?
             //HealSelf()
@@ -301,23 +308,8 @@ function DoSOSInOrder() {
             FishAtFeet()
             Orion.Wait(10000)
         }
-
-        //Clear out monsters before recall
-
-        var monsters = GetAllTarget(6)
-        if (monsters.length > 0) {
-            monsters.forEach(function (mob) {
-                Orion.PrintFast(mob.Serial(), 58, 1, 'problem');
-                Orion.Attack(mob.Serial())
-                Orion.Wait(100)
-            })
-            while (GetAllTarget(6).length > 0) {
-                Orion.Wait(2000)
-                Orion.Print("wait for no monsters")
-            }
-        }
-
-        SailToCorpse(true)
+        Orion.Wait(2000)
+        KillMonstersAndLoot()
         ChestRecoveryService()
     }
 }
@@ -446,7 +438,7 @@ function ChestLootManager() {
     MoveItemText("Essence|Crafting Resource", FindGroundItemWithProperties([_essenceBox]).Serial())
     Orion.Print(_rareBox)
 
-    MoveItemText("Enchanted|Driftwood|Backpack|Wedding|Oars|Copper Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Woven|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), true)
+    MoveItemText("Abysmal|Enchanted|Driftwood|Backpack|Wedding|Oars|Copper Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Woven|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), true)
     Orion.Print("scrolls")
 
     MoveScrolls(FindGroundItemWithProperties([_regBoxId]).Serial())
@@ -465,7 +457,7 @@ function ChestLootManager() {
     WalkTo(FindGroundItemWithProperties([_bin]).Serial())
     MoveItemText("Shipwreck", FindGroundItemWithProperties([_bin]).Serial())
 
-    Orion.CloseGump('container');
+    //Orion.CloseGump('container');
     //Orion.ActivateClient();
     //   BotPush('Paused')
     //    if (Player.WarMode())

@@ -2,34 +2,42 @@
 
 var hook;
 var key;
+var discordHook;
+var discordKey;
 
-function BotPush(message, disableNotify) {
+function BotPush(message, disableNotify, guildDiscord) {
     Debug(' Method Entry - BotPush')
     TelegramPost(message, disableNotify)
-    DiscordPost(message)
+    DiscordPost(message, guildDiscord)
 }
 //Create discord.conf in "Orion Launcher" folder
 //First Word 1  = Discord hook ID
 //single space
 //Second Word 2 = API key
-function DiscordPost(message) {
+function DiscordPost(message, guildDiscord) {
     Debug(' Method Entry - DiscordPost')
-    if (hook == null && key == null) {
+    if (discordHook == null && discordKey == null) {
         var file = Orion.NewFile();
         open = file.Open('discordkey.conf');
         if (!file.Opened()) {
             return;
-        }
-        hook = file.Read();
-        key = file.Read();
+		}
+		if(guildDiscord ==true)
+			file.ReadLine()
+		file.Read()
+        discordHook = file.Read();
+        discordKey = file.Read();
         file.Close();
     }
     var bot =
-        "https://discordapp.com/api/webhooks/"
-        + hook
+        "https://discord.com/api/webhooks/"
+        + discordHook
         + "/"
-        + key; // Webhook url
+        + discordKey; // Webhook url
     var paramText = "content=" + message;
+
+    Orion.Print(bot)
+    Orion.Print(paramText)
     Orion.HttpPost(bot, paramText);
 }
 
@@ -93,5 +101,5 @@ function CountGlobalValue(name, value, publishText, reset) {
         reportValue = 0
     reportValue += value
     Orion.SetGlobal(name, reportValue)
-    BotPush(publishText + ' = ' + reportValue, true)
+    BotPush(Player.Name() + ' ' + publishText + ' = ' + reportValue, true)
 }

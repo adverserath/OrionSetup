@@ -299,6 +299,7 @@ function SortLoot() {
         Orion.Say("bank")
         Orion.Wait(500)
         Orion.Print('Move Gold')
+         CountGlobalValue('goldCollected', Player.Gold(), 'Gold Collected')
         MoveItemTextFromTo("Gold Coin", Player.Serial(), Player.BankSerial())
         Orion.Wait(1000)
     }

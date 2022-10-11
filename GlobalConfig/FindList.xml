@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="28">
+<data version="0" size="29">
     <findlist name="Gold/Arrows/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
         <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
@@ -250,5 +250,11 @@
     </findlist>
     <findlist name="keys">
         <item graphic="0x2002" color="-1" comment="Key" count="0"/>
+    </findlist>
+    <findlist name="HighSDI">
+        <item graphic="any" color="any" comment="SDI" count="0">
+            <property name="Spell Damage Increase" value_min="0" value_max="100"/>
+            <property name="PropertiesCount" value_min="1" value_max="3"/>
+        </item>
     </findlist>
 </data>
