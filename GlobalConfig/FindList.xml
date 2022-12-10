@@ -1,260 +1,269 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="29">
-    <findlist name="Gold/Arrows/Artis">
-        <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
-        <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
-        <item graphic="0x0F3F" color="0x0000" comment="Arrow" count="0"/>
-        <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0"/>
-        <item graphic="any" color="any" comment="Lesser Arti" count="0">
-            <property name="Lesser Artifact" value_min="0" value_max="100"/>
-            <property name="Weight" value_min="1" value_max="2"/>
-        </item>
-        <item graphic="any" color="any" comment="Major Arti" count="0">
+<data version="0" size="33">
+    <findlist name="Gold/Treasure/Artis">
+        <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0" enabled="true"/>
+        <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0" enabled="true"/>
+        <item graphic="any" color="any" comment="Major Arti" count="0" enabled="true">
             <property name="Major Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="Greater Arti" count="0">
-            <property name="Greater Artifact" value_min="0" value_max="100"/>
-        </item>
-        <item graphic="any" color="any" comment="Legendary Arti" count="0">
+        <item graphic="any" color="any" comment="Legendary Arti" count="0" enabled="true">
             <property name="Legendary Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="0xA769" color="0x0501" comment="Summer's Blessing - 6/11/2022" count="0"/>
-        <item graphic="0x0F80" color="0x0000" comment="10 Daemon Bone" count="0"/>
-        <item graphic="0x2002" color="0xFFFF" comment="Key" count="0"/>
     </findlist>
     <findlist name="Inscription">
-        <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4"/>
-        <item graphic="0x0EF3" color="0x0000" comment="Blank Scroll" count="100"/>
-        <item graphic="0x0F8D" color="0x0000" comment="Spiders' Silk" count="100"/>
-        <item graphic="0x0F8C" color="0x0000" comment="Sulfurous Ash" count="100"/>
-        <item graphic="0x0F86" color="0x0000" comment="Mandrake Root" count="100"/>
-        <item graphic="0x0F88" color="0x0000" comment="Nightshade" count="100"/>
-        <item graphic="0x0F84" color="0x0000" comment="Garlic" count="100"/>
-        <item graphic="0x0F85" color="0x0000" comment="Ginseng" count="100"/>
-        <item graphic="0x0F7B" color="0x0000" comment="Blood Moss" count="100"/>
-        <item graphic="0x0F7A" color="0x0000" comment="Black Pearl" count="100"/>
+        <item graphic="0x0FBF" color="0x0000" comment="Scribes Pen" count="4" enabled="true"/>
+        <item graphic="0x0EF3" color="0x0000" comment="Blank Scroll" count="100" enabled="true"/>
+        <item graphic="0x0F8D" color="0x0000" comment="Spiders' Silk" count="100" enabled="true"/>
+        <item graphic="0x0F8C" color="0x0000" comment="Sulfurous Ash" count="100" enabled="true"/>
+        <item graphic="0x0F86" color="0x0000" comment="Mandrake Root" count="100" enabled="true"/>
+        <item graphic="0x0F88" color="0x0000" comment="Nightshade" count="100" enabled="true"/>
+        <item graphic="0x0F84" color="0x0000" comment="Garlic" count="100" enabled="true"/>
+        <item graphic="0x0F85" color="0x0000" comment="Ginseng" count="100" enabled="true"/>
+        <item graphic="0x0F7B" color="0x0000" comment="Blood Moss" count="100" enabled="true"/>
+        <item graphic="0x0F7A" color="0x0000" comment="Black Pearl" count="100" enabled="true"/>
     </findlist>
     <findlist name="Carpentry">
-        <item graphic="0x1034" color="0x0000" comment="Saw" count="0"/>
-        <item graphic="0x1BD7" color="0x0000" comment="Board" count="100"/>
+        <item graphic="0x1034" color="0x0000" comment="Saw" count="0" enabled="true"/>
+        <item graphic="0x1BD7" color="0x0000" comment="Board" count="100" enabled="true"/>
     </findlist>
     <findlist name="Leather">
-        <item graphic="0x1079" color="0x0000" comment="Pile Of Hides" count="0"/>
+        <item graphic="0x1079" color="0x0000" comment="Pile Of Hides" count="0" enabled="true"/>
     </findlist>
     <findlist name="Ores">
-        <item graphic="0x019B8" color="any" comment="Ore" count="0"/>
-        <item graphic="0x019B7" color="any" comment="ore" count="0"/>
-        <item graphic="0x019B9" color="any" comment="ore" count="0"/>
-        <item graphic="0x019BA" color="any" comment="ore" count="0"/>
-        <item graphic="0x3197" color="0x0000" comment="Fire Ruby" count="0"/>
-        <item graphic="0x3192" color="0x0000" comment="Dark Sapphire" count="0"/>
-        <item graphic="0x3195" color="0x0000" comment="Ecru Citrine" count="0"/>
-        <item graphic="0x3194" color="0x0000" comment="Perfect Emerald" count="0"/>
-        <item graphic="0x3198" color="0x0000" comment="Blue Diamond" count="0"/>
-        <item graphic="0x5732" color="0x0000" comment="Crystalline Blackrock" count="0"/>
-        <item graphic="0x0F28" color="0x0497" comment="A Small Piece Of Blackrock" count="0"/>
-        <item graphic="0x3193" color="0x0000" comment="Turquoise" count="0"/>
-        <item graphic="0x423A" color="any" comment="Sand" count="0"/>
+        <item graphic="0x019B8" color="any" comment="Ore" count="0" enabled="true"/>
+        <item graphic="0x019B7" color="any" comment="ore" count="0" enabled="true"/>
+        <item graphic="0x019B9" color="any" comment="ore" count="0" enabled="true"/>
+        <item graphic="0x019BA" color="any" comment="ore" count="0" enabled="true"/>
+        <item graphic="0x3197" color="0x0000" comment="Fire Ruby" count="0" enabled="true"/>
+        <item graphic="0x3192" color="0x0000" comment="Dark Sapphire" count="0" enabled="true"/>
+        <item graphic="0x3195" color="0x0000" comment="Ecru Citrine" count="0" enabled="true"/>
+        <item graphic="0x3194" color="0x0000" comment="Perfect Emerald" count="0" enabled="true"/>
+        <item graphic="0x3198" color="0x0000" comment="Blue Diamond" count="0" enabled="true"/>
+        <item graphic="0x5732" color="0x0000" comment="Crystalline Blackrock" count="0" enabled="true"/>
+        <item graphic="0x0F28" color="0x0497" comment="A Small Piece Of Blackrock" count="0" enabled="true"/>
+        <item graphic="0x3193" color="0x0000" comment="Turquoise" count="0" enabled="true"/>
+        <item graphic="0x423A" color="any" comment="Sand" count="0" enabled="true"/>
     </findlist>
     <findlist name="Mining">
-        <item graphic="0x0F39|0x0F39" color="0x0000" comment="Shovel" count="5"/>
+        <item graphic="0x0F39|0x0F39" color="0x0000" comment="Shovel" count="5" enabled="true"/>
     </findlist>
     <findlist name="Tinkering">
-        <item graphic="0x1EB8" color="0x0000" comment="Tinker's Tools" count="3"/>
-        <item graphic="0x1BD7" color="0x0000" comment="Board" count="200"/>
-        <item graphic="0x1BF2" color="0x0000" comment="Ingots" count="200"/>
+        <item graphic="0x1EB8" color="0x0000" comment="Tinker's Tools" count="3" enabled="true"/>
+        <item graphic="0x1BD7" color="0x0000" comment="Board" count="200" enabled="true"/>
+        <item graphic="0x1BF2" color="0x0000" comment="Ingots" count="200" enabled="true"/>
     </findlist>
     <findlist name="Tailoring">
-        <item graphic="0x0F9D" color="0x0000" comment="Sewing Kit" count="3"/>
-        <item graphic="0x1766" color="0x0000" comment="Cut Cloth" count="800"/>
+        <item graphic="0x0F9D" color="0x0000" comment="Sewing Kit" count="3" enabled="true"/>
+        <item graphic="0x1766" color="0x0000" comment="Cut Cloth" count="800" enabled="true"/>
     </findlist>
     <findlist name="Fletching">
-        <item graphic="0x1BD7" color="0x0000" comment="Board" count="200"/>
-        <item graphic="0x1022" color="0x0000" comment="Fletching" count="3"/>
+        <item graphic="0x1BD7" color="0x0000" comment="Board" count="200" enabled="true"/>
+        <item graphic="0x1022" color="0x0000" comment="Fletching" count="3" enabled="true"/>
     </findlist>
     <findlist name="FletchingShaft">
-        <item graphic="0x1BD7" color="0x0000" comment="Board" count="1"/>
-        <item graphic="0x1022" color="0x0000" comment="Arrow Fletching" count="3"/>
+        <item graphic="0x1BD7" color="0x0000" comment="Board" count="1" enabled="true"/>
+        <item graphic="0x1022" color="0x0000" comment="Arrow Fletching" count="3" enabled="true"/>
     </findlist>
     <findlist name="Alchemy">
-        <item graphic="0x0F0E" color="0x0000" comment="Empty Bottle" count="50"/>
-        <item graphic="0x0F88" color="0x0000" comment="Nightshade" count="500"/>
-        <item graphic="0x0E9B" color="0x0000" comment="Mortar And Pestle" count="3"/>
-        <item graphic="0x0F84" color="0x0000" comment="Garlic" count="200"/>
+        <item graphic="0x0F0E" color="0x0000" comment="Empty Bottle" count="50" enabled="true"/>
+        <item graphic="0x0F88" color="0x0000" comment="Nightshade" count="500" enabled="true"/>
+        <item graphic="0x0E9B" color="0x0000" comment="Mortar And Pestle" count="3" enabled="true"/>
+        <item graphic="0x0F84" color="0x0000" comment="Garlic" count="200" enabled="true"/>
     </findlist>
     <findlist name="Gold/Arrows">
-        <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0"/>
-        <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
-        <item graphic="0x0F3F" color="0x0000" comment="Arrow" count="0"/>
-        <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0"/>
+        <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0" enabled="true"/>
+        <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0" enabled="true"/>
+        <item graphic="0x0F3F" color="0x0000" comment="Arrow" count="0" enabled="true"/>
+        <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0" enabled="true"/>
     </findlist>
     <findlist name="Blacksmithy">
-        <item graphic="0x0FBB" color="0x0000" comment="Tongs" count="3"/>
-        <item graphic="0x1BF2" color="0x0000" comment="Ingots" count="200"/>
+        <item graphic="0x0FBB" color="0x0000" comment="Tongs" count="3" enabled="true"/>
+        <item graphic="0x1BF2" color="0x0000" comment="Ingots" count="200" enabled="true"/>
     </findlist>
     <findlist name="Lumber">
-        <item graphic="0x1BD7" color="any" comment="Boards" count="0"/>
-        <item graphic="0x3191" color="0x0000" comment="Luminescent Fungi" count="0"/>
-        <item graphic="0x318F" color="0x0000" comment="Bark Fragment" count="0"/>
-        <item graphic="0x3190" color="0x0000" comment="Parasitic Plant" count="0"/>
-        <item graphic="0x2F5F" color="0x0000" comment="Switch" count="0"/>
-        <item graphic="0x3199" color="0x0000" comment="Brilliant Amber" count="0"/>
+        <item graphic="0x1BD7" color="any" comment="Boards" count="0" enabled="true"/>
+        <item graphic="0x3191" color="0x0000" comment="Luminescent Fungi" count="0" enabled="true"/>
+        <item graphic="0x318F" color="0x0000" comment="Bark Fragment" count="0" enabled="true"/>
+        <item graphic="0x3190" color="0x0000" comment="Parasitic Plant" count="0" enabled="true"/>
+        <item graphic="0x2F5F" color="0x0000" comment="Switch" count="0" enabled="true"/>
+        <item graphic="0x3199" color="0x0000" comment="Brilliant Amber" count="0" enabled="true"/>
     </findlist>
     <findlist name="Runes">
-        <item graphic="0x1F14" color="any" comment="Recall Rune" count="10"/>
+        <item graphic="0x1F14" color="any" comment="Recall Rune" count="10" enabled="true"/>
     </findlist>
     <findlist name="Fishies">
-        <item graphic="0x09CC" color="0x0000" comment="Fish" count="0"/>
-        <item graphic="0x09CD" color="0x0000" comment="Fish" count="0"/>
-        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0"/>
-        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0"/>
-        <item graphic="0x4307" color="0x0000" comment="Redbelly Bream" count="0"/>
-        <item graphic="0x0DD6" color="any" comment="Wondrous Fish" count="0"/>
-        <item graphic="0x4306" color="0x0000" comment="Bluegill Sunfish" count="0"/>
-        <item graphic="0x4303" color="0x0000" comment="Yellow Perch" count="0"/>
-        <item graphic="0x44C4" color="0x0000" comment="Pike" count="0"/>
-        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0"/>
-        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0"/>
-        <item graphic="0x09CD" color="0x0000" comment="Smallmouth Bass" count="0"/>
-        <item graphic="0x44C6" color="0x0000" comment="Green Catfish" count="0"/>
-        <item graphic="0x4304" color="0x0000" comment="Blue Marlin" count="0"/>
-        <item graphic="0x44C3" color="0x0000" comment="Yellowtail Barracuda" count="0"/>
-        <item graphic="0x44C5" color="0x0000" comment="Captain Snook" count="0"/>
-        <item graphic="0x573A" color="0x0000" comment="Delicate Scales" count="0"/>
-        <item graphic="0x3196" color="0x0000" comment="White Pearl" count="0"/>
-        <item graphic="0xA30C" color="0x0000" comment="A Message In A Bottle" count="0"/>
-        <item graphic="0x14EC" color="0x0000" comment="A Tattered Treasure Map Leading To A Mage's Stash" count="0"/>
-        <item graphic="0x0DCA" color="any" comment="A Special Fishing Net" count="0"/>
-        <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0"/>
-        <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0"/>
-        <item graphic="0x097A" color="0x0000" comment="Raw Fish Steak" count="0"/>
-        <item graphic="0x09CC" color="any" comment="A Big Fish" count="0"/>
-        <item graphic="0x14F8" color="0x0000" comment="Rope" count="0"/>
+        <item graphic="0x09CC" color="0x0000" comment="Fish" count="0" enabled="true"/>
+        <item graphic="0x09CD" color="0x0000" comment="Fish" count="0" enabled="true"/>
+        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0" enabled="true"/>
+        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0" enabled="true"/>
+        <item graphic="0x4307" color="0x0000" comment="Redbelly Bream" count="0" enabled="true"/>
+        <item graphic="0x0DD6" color="any" comment="Wondrous Fish" count="0" enabled="true"/>
+        <item graphic="0x4306" color="0x0000" comment="Bluegill Sunfish" count="0" enabled="true"/>
+        <item graphic="0x4303" color="0x0000" comment="Yellow Perch" count="0" enabled="true"/>
+        <item graphic="0x44C4" color="0x0000" comment="Pike" count="0" enabled="true"/>
+        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0" enabled="true"/>
+        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0" enabled="true"/>
+        <item graphic="0x09CD" color="0x0000" comment="Smallmouth Bass" count="0" enabled="true"/>
+        <item graphic="0x44C6" color="0x0000" comment="Green Catfish" count="0" enabled="true"/>
+        <item graphic="0x4304" color="0x0000" comment="Blue Marlin" count="0" enabled="true"/>
+        <item graphic="0x44C3" color="0x0000" comment="Yellowtail Barracuda" count="0" enabled="true"/>
+        <item graphic="0x44C5" color="0x0000" comment="Captain Snook" count="0" enabled="true"/>
+        <item graphic="0x573A" color="0x0000" comment="Delicate Scales" count="0" enabled="true"/>
+        <item graphic="0x3196" color="0x0000" comment="White Pearl" count="0" enabled="true"/>
+        <item graphic="0xA30C" color="0x0000" comment="A Message In A Bottle" count="0" enabled="true"/>
+        <item graphic="0x14EC" color="0x0000" comment="A Tattered Treasure Map Leading To A Mage's Stash" count="0" enabled="true"/>
+        <item graphic="0x0DCA" color="any" comment="A Special Fishing Net" count="0" enabled="true"/>
+        <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0" enabled="true"/>
+        <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0" enabled="true"/>
+        <item graphic="0x097A" color="0x0000" comment="Raw Fish Steak" count="0" enabled="true"/>
+        <item graphic="0x09CC" color="any" comment="A Big Fish" count="0" enabled="true"/>
+        <item graphic="0x14F8" color="0x0000" comment="Rope" count="0" enabled="true"/>
     </findlist>
     <findlist name="UnwantedStuff">
-        <item graphic="0x170F" color="0x06AB" comment="Shoes" count="0"/>
-        <item graphic="0x1711" color="0x0000" comment="Thigh Boots" count="0"/>
-        <item graphic="0x170D" color="0x0000" comment="Sandals" count="0"/>
-        <item graphic="0x170B" color="0x0000" comment="Boots" count="0"/>
-        <item graphic="0x170F" color="0x0000" comment="Shoes" count="0"/>
+        <item graphic="0x170F" color="0x06AB" comment="Shoes" count="0" enabled="true"/>
+        <item graphic="0x1711" color="0x0000" comment="Thigh Boots" count="0" enabled="true"/>
+        <item graphic="0x170D" color="0x0000" comment="Sandals" count="0" enabled="true"/>
+        <item graphic="0x170B" color="0x0000" comment="Boots" count="0" enabled="true"/>
+        <item graphic="0x170F" color="0x0000" comment="Shoes" count="0" enabled="true"/>
     </findlist>
     <findlist name="mushrooms">
-        <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0"/>
-        <item graphic="0x26B7" color="0x0000" comment="Zoogi Fungus" count="0"/>
+        <item graphic="0x0D16" color="0x0000" comment="Miniature Mushroom" count="0" enabled="true"/>
+        <item graphic="0x26B7" color="0x0000" comment="Zoogi Fungus" count="0" enabled="true"/>
     </findlist>
     <findlist name="Eggs">
-        <item graphic="0x9F180" color="0x0000" comment="EasterEgg" count="0"/>
-        <item graphic="0x9F17" color="0x0000" comment="Easter Egg" count="0"/>
-        <item graphic="0x9F14" color="0x0000" comment="Easter Egg" count="0"/>
-        <item graphic="0x9F16" color="0x0000" comment="Easter Egg" count="0"/>
-        <item graphic="0x9F15" color="0x0000" comment="Easter Egg" count="0"/>
-        <item graphic="0x9F18" color="0x0000" comment="Easter Egg" count="0"/>
+        <item graphic="0x9F180" color="0x0000" comment="EasterEgg" count="0" enabled="true"/>
+        <item graphic="0x9F17" color="0x0000" comment="Easter Egg" count="0" enabled="true"/>
+        <item graphic="0x9F14" color="0x0000" comment="Easter Egg" count="0" enabled="true"/>
+        <item graphic="0x9F16" color="0x0000" comment="Easter Egg" count="0" enabled="true"/>
+        <item graphic="0x9F15" color="0x0000" comment="Easter Egg" count="0" enabled="true"/>
+        <item graphic="0x9F18" color="0x0000" comment="Easter Egg" count="0" enabled="true"/>
     </findlist>
     <findlist name="MinaxFountain">
-        <item graphic="0x9BF4" color="0x09C4" comment="Canal EW" count="0"/>
-        <item graphic="0x9BE7" color="0x09C4" comment="Canal NS" count="0"/>
-        <item graphic="0x9BEB" color="0x09C4" comment="Canal NW" count="0"/>
-        <item graphic="0x9BEF" color="0x09C4" comment="Canal NE" count="0"/>
-        <item graphic="0x9BFC" color="0x09C4" comment="Canal SE" count="0"/>
-        <item graphic="0x9BF8" color="0x09C4" comment="Canal SW" count="0"/>
+        <item graphic="0x9BF4" color="0x09C4" comment="Canal EW" count="0" enabled="true"/>
+        <item graphic="0x9BE7" color="0x09C4" comment="Canal NS" count="0" enabled="true"/>
+        <item graphic="0x9BEB" color="0x09C4" comment="Canal NW" count="0" enabled="true"/>
+        <item graphic="0x9BEF" color="0x09C4" comment="Canal NE" count="0" enabled="true"/>
+        <item graphic="0x9BFC" color="0x09C4" comment="Canal SE" count="0" enabled="true"/>
+        <item graphic="0x9BF8" color="0x09C4" comment="Canal SW" count="0" enabled="true"/>
     </findlist>
     <findlist name="ImbueItems">
-        <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0"/>
-        <item graphic="0x0F3F" color="0x0000" comment="Arrow" count="0"/>
-        <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0"/>
-        <item graphic="any" color="any" comment="minor" count="0">
+        <item graphic="0x1BFB" color="0x0000" comment="Crossbow Bolt" count="0" enabled="true"/>
+        <item graphic="0x0F3F" color="0x0000" comment="Arrow" count="0" enabled="true"/>
+        <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0" enabled="true"/>
+        <item graphic="any" color="any" comment="minor" count="0" enabled="true">
             <property name="Minor Magic Item" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="lesser" count="0">
+        <item graphic="any" color="any" comment="lesser" count="0" enabled="true">
             <property name="Lesser Magic Item" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="greater" count="0">
+        <item graphic="any" color="any" comment="greater" count="0" enabled="true">
             <property name="Greater Magic Item" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="major" count="0">
+        <item graphic="any" color="any" comment="major" count="0" enabled="true">
             <property name="Major Magic Item" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="lesser artifact" count="0">
+        <item graphic="any" color="any" comment="lesser artifact" count="0" enabled="true">
             <property name="Lesser Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="greater artifact" count="0">
+        <item graphic="any" color="any" comment="greater artifact" count="0" enabled="true">
             <property name="Greater Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="major artifact" count="0">
+        <item graphic="any" color="any" comment="major artifact" count="0" enabled="true">
             <property name="Major Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="legendary artifact" count="0">
+        <item graphic="any" color="any" comment="legendary artifact" count="0" enabled="true">
             <property name="Legendary Artifact" value_min="0" value_max="100"/>
         </item>
     </findlist>
     <findlist name="ImbueIngred">
-        <item graphic="0x5744" color="0x0000" comment="Silver Snake Skin" count="0"/>
-        <item graphic="0x3196" color="0x0000" comment="White Pearl" count="0"/>
-        <item graphic="0x0E24" color="0x0483" comment="Silver Serpent Venom" count="0"/>
-        <item graphic="0x5731" color="0x0000" comment="Undying Flesh" count="0"/>
-        <item graphic="0x1767" color="0x081B" comment="Abyssal Cloth" count="0"/>
-        <item graphic="0x5742" color="0x0000" comment="Boura Pelt" count="0"/>
-        <item graphic="0x3187" color="0x02DB" comment="Taint" count="0"/>
-        <item graphic="0x4007" color="0x0000" comment="Void Essence" count="0"/>
-        <item graphic="0x3184" color="0x0000" comment="Corruption" count="0"/>
-        <item graphic="0x3183" color="0x0000" comment="Blight" count="0"/>
-        <item graphic="0x3190" color="0x0000" comment="Parasitic Plant" count="0"/>
-        <item graphic="0x5747" color="0x0000" comment="Raptor Teeth" count="0"/>
-        <item graphic="0x571C" color="any" comment="Essence Of Anything" count="0"/>
+        <item graphic="0x5744" color="0x0000" comment="Silver Snake Skin" count="0" enabled="true"/>
+        <item graphic="0x3196" color="0x0000" comment="White Pearl" count="0" enabled="true"/>
+        <item graphic="0x0E24" color="0x0483" comment="Silver Serpent Venom" count="0" enabled="true"/>
+        <item graphic="0x5731" color="0x0000" comment="Undying Flesh" count="0" enabled="true"/>
+        <item graphic="0x1767" color="0x081B" comment="Abyssal Cloth" count="0" enabled="true"/>
+        <item graphic="0x5742" color="0x0000" comment="Boura Pelt" count="0" enabled="true"/>
+        <item graphic="0x3187" color="0x02DB" comment="Taint" count="0" enabled="true"/>
+        <item graphic="0x4007" color="0x0000" comment="Void Essence" count="0" enabled="true"/>
+        <item graphic="0x3184" color="0x0000" comment="Corruption" count="0" enabled="true"/>
+        <item graphic="0x3183" color="0x0000" comment="Blight" count="0" enabled="true"/>
+        <item graphic="0x3190" color="0x0000" comment="Parasitic Plant" count="0" enabled="true"/>
+        <item graphic="0x5747" color="0x0000" comment="Raptor Teeth" count="0" enabled="true"/>
+        <item graphic="0x571C" color="any" comment="Essence Of Anything" count="0" enabled="true"/>
+        <item graphic="any" color="any" comment="Crafting Resource" count="0" enabled="true">
+            <property name="Crafting Resource" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="0x572C" color="0x0000" comment="Goblin Blood" count="0" enabled="true"/>
     </findlist>
     <findlist name="Weapons">
-        <item graphic="0x0DF0" color="any" comment="Black Staff" count="0"/>
-        <item graphic="0x1439" color="any" comment="War Hammer" count="0"/>
-        <item graphic="0x0E89" color="any" comment="Quarter Staff" count="0"/>
+        <item graphic="0x0DF0" color="any" comment="Black Staff" count="0" enabled="true"/>
+        <item graphic="0x1439" color="any" comment="War Hammer" count="0" enabled="true"/>
+        <item graphic="0x0E89" color="any" comment="Quarter Staff" count="0" enabled="true"/>
     </findlist>
     <findlist name="JustFish">
-        <item graphic="0x09CC" color="0x0000" comment="Fish" count="0"/>
-        <item graphic="0x09CD" color="0x0000" comment="Fish" count="0"/>
-        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0"/>
-        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0"/>
-        <item graphic="0x4307" color="0x0000" comment="Redbelly Bream" count="0"/>
-        <item graphic="0x0DD6" color="any" comment="Wondrous Fish" count="0"/>
-        <item graphic="0x4306" color="0x0000" comment="Bluegill Sunfish" count="0"/>
-        <item graphic="0x4303" color="0x0000" comment="Yellow Perch" count="0"/>
-        <item graphic="0x44C4" color="0x0000" comment="Pike" count="0"/>
-        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0"/>
-        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0"/>
-        <item graphic="0x09CD" color="0x0000" comment="Smallmouth Bass" count="0"/>
-        <item graphic="0x44C6" color="0x0000" comment="Green Catfish" count="0"/>
-        <item graphic="0x4304" color="0x0000" comment="Blue Marlin" count="0"/>
-        <item graphic="0x44C3" color="any" comment="Yellowtail Barracuda" count="0"/>
-        <item graphic="0x44C5" color="0x0000" comment="Captain Snook" count="0"/>
-        <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0"/>
-        <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0"/>
-        <item graphic="0x09CC" color="any" comment="A Big Fish" count="0"/>
+        <item graphic="0x09CC" color="0x0000" comment="Fish" count="0" enabled="true"/>
+        <item graphic="0x09CD" color="0x0000" comment="Fish" count="0" enabled="true"/>
+        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0" enabled="true"/>
+        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0" enabled="true"/>
+        <item graphic="0x4307" color="0x0000" comment="Redbelly Bream" count="0" enabled="true"/>
+        <item graphic="0x0DD6" color="any" comment="Wondrous Fish" count="0" enabled="true"/>
+        <item graphic="0x4306" color="0x0000" comment="Bluegill Sunfish" count="0" enabled="true"/>
+        <item graphic="0x4303" color="0x0000" comment="Yellow Perch" count="0" enabled="true"/>
+        <item graphic="0x44C4" color="0x0000" comment="Pike" count="0" enabled="true"/>
+        <item graphic="0x09CF" color="0x0000" comment="Fish" count="0" enabled="true"/>
+        <item graphic="0x09CE" color="0x0000" comment="Uncommon Shiner" count="0" enabled="true"/>
+        <item graphic="0x09CD" color="0x0000" comment="Smallmouth Bass" count="0" enabled="true"/>
+        <item graphic="0x44C6" color="0x0000" comment="Green Catfish" count="0" enabled="true"/>
+        <item graphic="0x4304" color="0x0000" comment="Blue Marlin" count="0" enabled="true"/>
+        <item graphic="0x44C3" color="any" comment="Yellowtail Barracuda" count="0" enabled="true"/>
+        <item graphic="0x44C5" color="0x0000" comment="Captain Snook" count="0" enabled="true"/>
+        <item graphic="0x44C4" color="0x09D3" comment="Yellowtail Barracuda" count="0" enabled="true"/>
+        <item graphic="0x4305" color="0x0000" comment="Blue Marlin" count="0" enabled="true"/>
+        <item graphic="0x09CC" color="any" comment="A Big Fish" count="0" enabled="true"/>
     </findlist>
     <findlist name="Daemon Bone">
-        <item graphic="0x0F80" color="0x0000" comment="Daemon Bone" count="0"/>
+        <item graphic="0x0F80" color="0x0000" comment="Daemon Bone" count="0" enabled="true"/>
     </findlist>
     <findlist name="Artis">
-        <item graphic="any" color="any" comment="Major Arti" count="0">
+        <item graphic="any" color="any" comment="Major Arti" count="0" enabled="true">
             <property name="Major Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="Legendary Arti" count="0">
+        <item graphic="any" color="any" comment="Legendary Arti" count="0" enabled="true">
             <property name="Legendary Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="SDI 18" count="0">
+        <item graphic="any" color="any" comment="SDI 18" count="0" enabled="true">
             <property name="Spell Damage Increase" value_min="16" value_max="18"/>
         </item>
-        <item graphic="any" color="any" comment="Greater Artifact" count="0">
+        <item graphic="any" color="any" comment="Greater Artifact" count="0" enabled="true">
             <property name="Greater Artifact" value_min="0" value_max="100"/>
         </item>
-        <item graphic="any" color="any" comment="Legendary" count="0">
+        <item graphic="any" color="any" comment="Legendary" count="0" enabled="true">
             <property name="Legendary Artifact" value_min="0" value_max="100"/>
         </item>
     </findlist>
     <findlist name="keys">
-        <item graphic="0x2002" color="-1" comment="Key" count="0"/>
+        <item graphic="0x2002" color="-1" comment="Key" count="0" enabled="true"/>
     </findlist>
     <findlist name="HighSDI">
-        <item graphic="any" color="any" comment="SDI" count="0">
+        <item graphic="any" color="any" comment="SDI" count="0" enabled="true">
             <property name="Spell Damage Increase" value_min="0" value_max="100"/>
             <property name="PropertiesCount" value_min="1" value_max="3"/>
         </item>
+    </findlist>
+    <findlist name="CraftIngredient">
+        <item graphic="any" color="any" comment="Ingredient" count="0" enabled="true">
+            <property name="Crafting Resource" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="0x572C" color="0x0000" comment="Goblin Blood" count="0" enabled="true"/>
+    </findlist>
+    <findlist name="RecountContainersList">
+        <item graphic="0x0E75|0x0E76|0x0E79" color="0xFFFF" comment="" count="0" enabled="true"/>
+        <item graphic="0x0E75|0xA1F6|0x0E79" color="0xFFFF" comment="" count="0" enabled="true"/>
+    </findlist>
+    <findlist name="Maps">
+        <item graphic="0x14EC" color="0x0000" comment="Map" count="0" enabled="true"/>
+    </findlist>
+    <findlist name="Gold">
+        <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0" enabled="true"/>
+        <item graphic="0x0F87" color="0x0496" comment="Lucky Coin" count="0" enabled="true"/>
     </findlist>
 </data>

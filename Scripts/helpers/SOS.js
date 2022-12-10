@@ -53,21 +53,35 @@ function GetSOSLocation(sosObject) {
     if (pos !== null) {
         return pos;
     }
-    Orion.Print('Reading from Map')
-
-    Orion.UseObject(sosObject.Serial())
     Orion.Wait(500)
-    var gump0 = Orion.GetGump('last');
+    Orion.Print(55, 'Reading from SOS:' + sosObject.Serial())
+    do {
+        Orion.UseObject(sosObject.Serial())
+        Orion.WaitForGump(1500)
+    } while (Orion.InJournal('You must wait to perform another action.', 'sys', 0, any, Orion.Now() - 500))
+
+    var gump0 = Orion.GetGump(any, '0x550A461B')
+    while (gump0 == null) {
+        Orion.Print('looking for SOS gump')
+        Orion.Wait(1000)
+        gump0 = Orion.GetGump(any, '0x550A461B')
+    }
+    Orion.Print(gump0.Replayed())
+    Orion.Print(gump0.ID())
+
     if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x550A461B')) {
         var com = gump0.CommandList()[2]
         //Orion.Print(com)
         Orion.Print(com.match(/.*@(.*)@.*/i)[1])
         pos = Orion.SextantToXY(com.match(/.*@(.*)@.*/i)[1], 1);
-        Orion.Print('X:' + pos.X() + ' Y: ' + pos.Y())
+        Orion.Print(65, 'X:' + pos.X() + ' Y: ' + pos.Y())
         gump0.Select(Orion.CreateGumpHook(0));
-        Orion.Wait(400);
-        Orion.Print('SOS Zone: ' + GetZone(pos.X(), pos.Y()))
+        Orion.Wait(200);
+        Orion.Print(65, 'SOS Zone: ' + GetZone(pos.X(), pos.Y()))
         return pos;
+    }
+    else {
+        Orion.Print(65, 'Last gumps was not SOS')
     }
 }
 
@@ -76,29 +90,30 @@ function MoveAllSOSInBagToChests(foundLast) {
     var foundSOS = 0
 
     var currentSOSs = []
-    if(foundLast)
+    if (foundLast)
         currentSOSs = Orion.FindType('0x14EE', any, backpack)
     OpenAnyMiBs()
-    var SOSs = Orion.FindTypeEx('0x14EE', any, backpack).filter(function (sos){
-        return currentSOSs.indexOf(sos.Serial())==-1
+    var SOSs = Orion.FindTypeEx('0x14EE', any, backpack).filter(function (sos) {
+        return currentSOSs.indexOf(sos.Serial()) == -1
     })
     SOSs.forEach(function (sos) {
 
         var pos = GetSOSLocation(sos)
+        Orion.Print(pos)
         var zone = GetZone(pos.X(), pos.Y())
+        Orion.Wait(850)
+        Orion.Print(zone)
         MoveSoSToChest(sos.Serial(), zone)
         foundSOS++
     })
     CountGlobalValue('foundSOS', foundSOS, 'SOS found')
 }
 
-function MoveSoSToChest(serial, zone)
-{
+function MoveSoSToChest(serial, zone) {
     var chest = Orion.FindTypeEx('0x0E3D', any, ground, 'item', 20).filter(function (box) {
         return Orion.Contains(box.Properties(), "SOS " + zone + '\n')
     })[0]
     WalkTo(chest)
-    Orion.Wait(800)
     Orion.MoveItem(serial, 1, chest.Serial())
     Orion.Wait(800)
 }

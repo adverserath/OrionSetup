@@ -2,53 +2,50 @@
 //#include helpers/Target.js
 //#include helpers/Notifier.js
 
-function LeverPuller()
-{
-var start = coordinate(Player.X(),Player.Y(),Player.Z(),'start')
-while(true)
-{
-WalkTo(start)
-Orion.Wait(2000)
-var npc = Orion.FindTypeEx(any, any, ground,
+function LeverPuller() {
+  var start = coordinate(Player.X(), Player.Y(), Player.Z(), 'start')
+  while (true) {
+    WalkTo(start)
+    Orion.Wait(2000)
+    var npc = Orion.FindTypeEx(any, any, ground,
       'any', 30, any).filter(function (mob) {
-        return mob.Properties()=="A Lever"
-      }).forEach(function (mob){
-WalkTo(mob)
-Orion.Wait(300)
-Orion.UseObject(mob.Serial())
+        return mob.Properties() == "A Lever"
+      }).forEach(function (mob) {
+        WalkTo(mob)
+        Orion.Wait(300)
+        Orion.UseObject(mob.Serial())
       })
 
-//ord/anord
-Orion.FindTypeEx('0x19AB', any, ground,
-      'any', 30, any).forEach(function (flame){
-WalkTo(flame)
-Orion.Say("ord")
-Orion.Say("anord")
+    //ord/anord
+    Orion.FindTypeEx('0x19AB', any, ground,
+      'any', 30, any).forEach(function (flame) {
+        WalkTo(flame)
+        Orion.Say("ord")
+        Orion.Say("anord")
       })
-}
+  }
 }
 
-function ShowWarCreature()
-{
-while(true){
+function ShowWarCreature() {
+  while (true) {
     Orion.Wait(100)
     var npc = Orion.FindTypeEx(any, any, ground,
       'mobile', 20, any).filter(function (mob) {
         return mob.WarMode()
-      }).forEach(function (mob){
+      }).forEach(function (mob) {
 
-Orion.AddHighlightCharacter(mob.Serial(), '0x4444');
-Orion.PrintFast(mob.Serial(),1,1,"War")
+        Orion.AddHighlightCharacter(mob.Serial(), '0x4444');
+        Orion.PrintFast(mob.Serial(), 1, 1, "War")
       })
-          var npc = Orion.FindTypeEx(any, any, ground,
+    var npc = Orion.FindTypeEx(any, any, ground,
       'mobile|ignoreself', 20, any).filter(function (mob) {
         return !mob.WarMode()
-      }).forEach(function (mob){
-Orion.PrintFast(mob.Serial(),2,1,"No War")
+      }).forEach(function (mob) {
+        Orion.PrintFast(mob.Serial(), 2, 1, "No War")
 
-Orion.RemoveHighlightCharacter(mob.Serial());
+        Orion.RemoveHighlightCharacter(mob.Serial());
       })
-}
+  }
 }
 
 function DanDar() {
@@ -67,6 +64,7 @@ function DanDar() {
   }
 }
 
+
 function DrawLOS() {
   Orion.SetLOSOptions('ignoredestpos');
   while (true) {
@@ -79,15 +77,15 @@ function DrawLOS() {
     var y = target.Y();
 
     range.forEach(function (distance) {
-      Orion.GetTilesInRect('land', x - distance, y - distance, x + distance, y + distance).concat()
+      Orion.GetTilesInRect('land', x - distance, y - distance, -10, x + distance, y + distance, 255).concat()
 
         .forEach(function (tile) {
-          if (Orion.InLOS(Player.X(), Player.Y(), Player.Z(), tile.X(), tile.Y(), tile.Z()) && tile.Z()>Player.Z()) {
-            Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A',  tile.Z(), tile.X(), tile.Y(), tile.Z());
+          if (Orion.InLOS(Player.X(), Player.Y(), Player.Z(), tile.X(), tile.Y(), tile.Z())) {
+            Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', tile.Z(), tile.X(), tile.Y(), tile.Z() + 1);
 
           }
           else {
-        //    Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
+            //Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x3197', tile.X(), tile.Y(), tile.Z());
           }
         }
         )
@@ -128,16 +126,19 @@ function PrintArrow() {
   }
 }
 
-
-function EscapeTest()
-{
-	if (Orion.WaitForGump(1000))
-	{
-		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()))
-		{
-			gump0.Select(Orion.CreateGumpHook(1157135));
-			Orion.Wait(100);
-		}
-	}
+function ShowUnderworldSpikes() {
+  Orion.GetTilesInRect('', Player.X() - 20, Player.Y() - 20, -100, Player.X() + 20, Player.Y() + 20, 255).forEach(function (tile) {
+    if (tile.Graphic() == '0x11A5') {
+      Orion.AddFakeMapObject(Orion.Random(10000) + tile.Y(), '0x051A', '0x3197', tile.X(), tile.Y(), Player.Z());
+    }
+  })
+}
+function EscapeTest() {
+  if (Orion.WaitForGump(1000)) {
+    var gump0 = Orion.GetGump('last');
+    if ((gump0 !== null) && (!gump0.Replayed())) {
+      gump0.Select(Orion.CreateGumpHook(1157135));
+      Orion.Wait(100);
+    }
+  }
 }

@@ -289,14 +289,14 @@ function ReadPageSearch(bookId, readLarge, largeBodId, shouldGetBod) {
   var gumpinfo = gump.CommandList();
   var line = gumpinfo.join() + ','
 
-  var smallBods = (line.match(/button\s(?:\d*\s){7},\stext\s(?:\d*\s){4},.?\w*\s61(?:\d*\s){4}\d*1062224\s(?:\d*\s){3},.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4}){0,1},\s\w*\s\d*\s\d*\s\d*\s\d*/ig) || []);
+  var smallBods = (line.match(/button\s(?:\d*\s){7},\stext\s(?:\d*\s){4},.?\w*\s61(?:\d*\s){4}\d*1062224\s(?:\d*\s){3},.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){3,4}(\d*)(?:\d*\s){1,4}){0,1},\s\w*\s\d*\s\d*\s\d*\s\d*/ig) || []);
 
   //Maybe
   if (!readLarge) {
     smallBods.forEach(function (bod) {
       TextWindow.Print(bod)
       if (!hasDroppedOne) {
-        var matches = (bod.match(/.?\w*\s61(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
+        var matches = (bod.match(/.?\w*\s61(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){3,4}(\d*)(?:\d*\s){1,4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
         var buttons = (bod.match(/button(?:\d*\s){7}(\d*)/i) || [])
         var buttonId = parseInt(buttons[1]) - 1
         var loc;
@@ -325,17 +325,17 @@ function ReadPageSearch(bookId, readLarge, largeBodId, shouldGetBod) {
 
   if (readLarge) {
 
-    var largeBods = (line.match(/button\s(?:\d*\s){7},\stext\s(?:\d*\s){4},.?\w*\s61(?:\d*\s){4}\d*1062225\s(?:\d*\s){3},(.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4})?,(?:\s\w*\s\d*\s\d*\s\d*\s\d*\s,)+)+/ig) || []);
+    var largeBods = (line.match(/button\s(?:\d*\s){7},\stext\s(?:\d*\s){4},.?\w*\s61(?:\d*\s){4}\d*1062225\s(?:\d*\s){3},(.?\w*\s103(?:\d*\s){3,4}(\d*)(?:\d*\s){1,4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4})?,(?:\s\w*\s\d*\s\d*\s\d*\s\d*\s,)+)+/ig) || []);
     largeBods.forEach(function (bigBod) {
       TextWindow.Print(bigBod)
-      var innerBods = (bigBod.match(/.?\w*\s103(?:\d*\s){4}(?:\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(?:\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(?:\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(?:\d*)/ig) || []);
+      var innerBods = (bigBod.match(/.?\w*\s103(?:\d*\s){4}(?:\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(?:\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){3,4}(\d*)(?:\d*\s){1,4})?,\s\w*\s\d*\s\d*\s\d*\s(?:\d*)/ig) || []);
       var largeBod = CreateLargeBod(bookId);
 
       var buttons = (bigBod.match(/button(?:\d*\s){7}(\d*)/i) || [])
       var buttonId = parseInt(buttons[1]) - 1
 
       innerBods.forEach(function (bod) {
-        var matches = (bod.match(/.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
+        var matches = (bod.match(/.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){3,4}(\d*)(?:\d*\s){1,4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
         var loc;
         if (matches[3]) {
           loc = gump.Text(matches[4]).match(/\d*\s.\s(\d*)/i)[1];
@@ -381,6 +381,7 @@ function GetString(id) {
   return Orion.GetCliLocString(id)
 }
 
+var fillContainer
 function BodFill(bod) {
   if (bod == null) {
     var bod = SelectTarget();
@@ -392,14 +393,18 @@ function BodFill(bod) {
     gump0.Select(Orion.CreateGumpHook(4));
     Orion.Wait(100);
   }
+  if (fillContainer == null)
+    fillContainer = backpack
   if (Orion.WaitForTarget(1000))
     Orion.TargetObject(backpack);
   Orion.Wait(100);
   Orion.CancelTarget();
 }
-
+function FillAllBodsFromContainer() {
+  fillContainer = SelectTarget('Select Item Location')
+  FillAllBodsFromBackpack()
+}
 function FillAllBodsFromBackpack() {
-
   var sBods = Orion.FindTypeEx('0x2258')
     .filter(function (bod) {
       return Orion.Contains(bod.Properties(), 'Small')// && Orion.Contains(bod.Properties(),': 0')

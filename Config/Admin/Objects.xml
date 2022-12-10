@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="0" dressbag="0x00000000" catchbag="0x00000000"/>
+<data version="0" size="3" dressbag="0x00000000" catchbag="0x00000000">
+    <object name="internal_ec_from" id="0x40000AE8"/>
+    <object name="internal_ec_receiver" id="0x0000007C"/>
+    <object name="myTarget" id="0x400018EE"/>
+</data>

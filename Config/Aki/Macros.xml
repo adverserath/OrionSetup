@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="true" delay="1">
-        <action type="8" convert_type="0" waiting_time="1000" value="744"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x00001B1A" graphic="0x0122" color="0x0000"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000F2A" id="0x92E576B6" button="0"/>
+        <action type="1" convert_type="1" waiting_time="1000" serial="0x400B46AB" graphic="0x0DE1" color="0x0000"/>
     </macro>
     <macro name="PeaceArea" looped="false" delay="1">
         <action type="1" convert_type="0" waiting_time="1000" serial="0x40173554" graphic="0x14F6" color="0x0000"/>

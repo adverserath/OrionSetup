@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="1"/>
+<data version="0" size="3">
+    <ignorelist name="BagOfSending">
+        <item serial="0" graphic="any" color="any" comment="" enabled="true">
+            <property name="Charges" value_min="0" value_max="100"/>
+        </item>
+    </ignorelist>
+    <ignorelist name="StuckMobs"/>
+</data>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="0" size="4">
-    <autoloot name="Gold" container="0x40144ABE" find_list="Artis" ignore_list="Not use" check_los="true" check_weight_limit="true" started="false" selected="false"/>
+    <autoloot name="Gold" container="0x40144ABE" find_list="Gold/Treasure/Artis|HighSDI|CraftIngredient" ignore_list="Not use" check_los="true" check_weight_limit="true" started="false" selected="true"/>
     <autoloot name="Zoogie" container="0x0000BA51" find_list="mushrooms" ignore_list="Not use" check_los="true" check_weight_limit="true" started="false" selected="false"/>
     <autoloot name="Keys" container="0x40156CC9" find_list="Gold/Arrows/Artis" ignore_list="Not use" check_los="true" check_weight_limit="true" started="false" selected="false"/>
-    <autoloot name="Maps" container="0x0000BA51" find_list="JustFish" ignore_list="" check_los="true" check_weight_limit="true" started="false" selected="true"/>
+    <autoloot name="Maps" container="0x0000BA51" find_list="Gold/Arrows/Artis|JustFish|HighSDI" ignore_list="" check_los="true" check_weight_limit="true" started="false" selected="false"/>
 </data>

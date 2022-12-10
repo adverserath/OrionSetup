@@ -148,6 +148,8 @@ function WalkTo(object, distance, timeMS, walking, monitored) {
     Orion.Print('Walk to object')
     Orion.Print('finding ' + object)
     object = Orion.FindObject(object)
+    if (object == null)
+      return
     Orion.Print(object.Name())
   }
 

@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="TraveKey" looped="false" delay="1">
-        <action type="10" convert_type="2" waiting_time="300" serial="0x400A3C9B" graphic="0x2002" color="0x002A" count="1"/>
-        <action type="11" convert_type="0" waiting_time="500" x="65535" y="65535" z="0" slot="255" container="0x4003E415" relative_x="-91" relative_y="-94" relative_z="0"/>
-        <action type="10" convert_type="2" waiting_time="300" serial="0x400AE363" graphic="0x2002" color="0x0035" count="1"/>
-        <action type="11" convert_type="0" waiting_time="500" x="65535" y="65535" z="0" slot="255" container="0x4003E415" relative_x="-91" relative_y="-94" relative_z="0"/>
-        <action type="10" convert_type="2" waiting_time="300" serial="0x40098795" graphic="0x2002" color="0x0069" count="1"/>
-        <action type="11" convert_type="0" waiting_time="500" x="65535" y="65535" z="0" slot="255" container="0x4003E415" relative_x="-91" relative_y="-94" relative_z="0"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="-130"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="2"/>
-        <action type="20" convert_type="0" waiting_time="1000" value="-128"/>
-        <action type="10" convert_type="2" waiting_time="300" serial="0x4008A556" graphic="0x1012" color="0x0489" count="1"/>
-        <action type="11" convert_type="0" waiting_time="500" x="96" y="1886" z="0" slot="255" container="0xFFFFFFFF" relative_x="1" relative_y="1" relative_z="0"/>
-        <action type="10" convert_type="2" waiting_time="300" serial="0x4008A558" graphic="0x1012" color="0x0489" count="1"/>
-        <action type="11" convert_type="0" waiting_time="500" x="96" y="1886" z="0" slot="255" container="0xFFFFFFFF" relative_x="1" relative_y="1" relative_z="0"/>
-        <action type="10" convert_type="2" waiting_time="300" serial="0x4008A559" graphic="0x1012" color="0x0489" count="1"/>
-        <action type="11" convert_type="0" waiting_time="500" x="96" y="1886" z="0" slot="255" container="0xFFFFFFFF" relative_x="1" relative_y="1" relative_z="0"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000015" id="0x76903130" button="1"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000016" id="0x76903130" button="5"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000017" id="0x76903130" button="1"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000018" id="0x76903130" button="6"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000019" id="0x76903130" button="2"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001A" id="0x76903130" button="3"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001B" id="0x76903130" button="4"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001C" id="0x76903130" button="2"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001D" id="0x76903130" button="5"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001E" id="0x76903130" button="6"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001F" id="0x76903130" button="3"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000020" id="0x76903130" button="5"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000021" id="0x76903130" button="6"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000022" id="0x76903130" button="4"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000023" id="0x76903130" button="5"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000024" id="0x76903130" button="5"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000025" id="0x76903130" button="6"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000026" id="0x76903130" button="8"/>
     </macro>
 </data>

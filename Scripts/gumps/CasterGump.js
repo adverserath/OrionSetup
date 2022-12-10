@@ -9,23 +9,23 @@ var GumpButtonType = function GumpButtonType() {
     }
 }
 
-var spells = [
-    Spell('0x2084', 5, 'Magic arrow'),
-    Spell('0x2091', 18, 'Fireball'),
-    Spell('0x2093', 20, 'Poison'),
-    Spell('0x209D', 30, 'Lightning'),
-    Spell('0x20A4', 37, 'Mindblast'),
-    Spell('0x20A5', 38, 'Paralyse'),
-    Spell('0x20A9', 42, 'Energy bolt'),
-    Spell('0x20AA', 43, 'Explosion'),
-    Spell('0x20B0', 49, 'Chain lightning'),
-    Spell('0x20B2', 51, 'Flamestrike'),
-    Spell('0x20B6', 55, 'Meteor'),
-    Spell('0x20B8', 57, 'Earthquake'),
-    Spell('0x9B8B', 707, 'DeathRay')
+var gumpSpells = [
+    GumpSpell('0x2084', 5, 'Magic arrow'),
+    GumpSpell('0x2091', 18, 'Fireball'),
+    GumpSpell('0x2093', 20, 'Poison'),
+    GumpSpell('0x209D', 30, 'Lightning'),
+    GumpSpell('0x20A4', 37, 'Mindblast'),
+    GumpSpell('0x20A5', 38, 'Paralyse'),
+    GumpSpell('0x20A9', 42, 'Energy bolt'),
+    GumpSpell('0x20AA', 43, 'Explosion'),
+    GumpSpell('0x20B0', 49, 'Chain lightning'),
+    GumpSpell('0x20B2', 51, 'Flamestrike'),
+    GumpSpell('0x20B6', 55, 'Meteor'),
+    GumpSpell('0x20B8', 57, 'Earthquake'),
+    GumpSpell('0x9B8B', 707, 'DeathRay')
 ]
 //gump.AddTilePic(nextSpellX(), 0, '0x2091', 0, 18, 58);//flame
-function Spell(_image, _spellID, _name) {
+function GumpSpell(_image, _spellID, _name) {
     return {
         Image: _image,
         SpellID: _spellID,
@@ -42,7 +42,7 @@ function ColorCheck(spell) {
         return 0
 }
 function GumpCallBack(unused) {
-Orion.SetGlobal('updateGump', '1');
+    Orion.SetGlobal('updateGump', '1');
     var code = CustomGumpResponse.ReturnCode();
     if (code > 1 && code < 60 || code == 707) {
         Orion.RegWrite('activeSpell', code);
@@ -96,13 +96,13 @@ function CasterGump() {
         // if (!Orion.BuffExists('0x9BD2')) {
         gump.AddColoredPolygone(0, 0, width, height, '#FF222222', 0, 10, 0, 50002);
 
-        var text = 'Active Spell : ' + spells.filter(function (spell) {
+        var text = 'Active Spell : ' + gumpSpells.filter(function (spell) {
             return spell.SpellID == Orion.RegRead('activeSpell')
         }).shift().Name
         gump.AddText(10, -10, 0, "test", 10, textSerial++);
 
         //Create Spell Buttons
-        spells.forEach(function (spell) {
+        gumpSpells.forEach(function (spell) {
             gump.AddTilePic(nextSpellX(), 20, spell.Image, spell.Color(), spell.SpellID, spell.HoverColor);//Magic arrow
         })
 
@@ -111,7 +111,7 @@ function CasterGump() {
         var spellBarYOffset = 65
 
         targets = GetAllTarget(12)
-        
+
         targets.forEach(function (mob) {
             var column = mobNumber % columns//(columns - ((mobNumber + 1) % columns))-1
             var row = parseInt(mobNumber / (width / tileWidth))
@@ -166,14 +166,13 @@ function CasterGump() {
         })
 
         gump.Update();
-        var wait = Orion.Now()+5000
-                        Orion.Print('out'+ Orion.GetGlobal('updateGump'))
+        var wait = Orion.Now() + 5000
+        Orion.Print('out' + Orion.GetGlobal('updateGump'))
 
-        while(Orion.GetGlobal('updateGump')!=1 && wait>Orion.Now() && targets.length == GetAllTarget(12).length)
-        {
-        	Orion.Wait(50)
+        while (Orion.GetGlobal('updateGump') != 1 && wait > Orion.Now() && targets.length == GetAllTarget(12).length) {
+            Orion.Wait(50)
         }
-        Orion.SetGlobal('updateGump','0')
+        Orion.SetGlobal('updateGump', '0')
         Orion.Wait(100)
     }
 }

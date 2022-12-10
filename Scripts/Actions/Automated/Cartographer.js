@@ -299,7 +299,7 @@ function SortLoot() {
         Orion.Say("bank")
         Orion.Wait(500)
         Orion.Print('Move Gold')
-         CountGlobalValue('goldCollected', Player.Gold(), 'Gold Collected')
+        CountGlobalValue('goldCollected', Player.Gold(), 'Gold Collected')
         MoveItemTextFromTo("Gold Coin", Player.Serial(), Player.BankSerial())
         Orion.Wait(1000)
     }
@@ -320,7 +320,7 @@ function LootChest() {
             WalkTo(chest)
             Orion.Wait(500)
 
-            CastSpellOnTarget('Unlock', chest.Serial())
+            CastSpellOnTargetV2('Unlock', chest.Serial())
             //Orion.UseType('0x14FB|0x14FC', '0xFFFF');
             //if (Orion.WaitForTarget(1000)) {
             //    Orion.TargetObject(chest.Serial());
@@ -342,6 +342,7 @@ function LootChest() {
     }
 
 }
+
 
 function ReturnHomeSortLoot() {
     Orion.Print('Going to House')

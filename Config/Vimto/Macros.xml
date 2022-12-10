@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="RecallSafe" looped="true" delay="1">
-        <action type="1" convert_type="0" waiting_time="1000" serial="0x4017E3B6" graphic="0xA407" color="0x0000"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x0000671F" graphic="0x025E" color="0x847E"/>
+        <action type="1" convert_type="8" waiting_time="1000" serial="0x400B5BBF" graphic="0x14F0" color="0x0664"/>
+        <action type="3" convert_type="2" waiting_time="1000" serial="0x400403EC" graphic="0x14EF" color="0x0490"/>
     </macro>
     <macro name="TrainPet" looped="true" delay="60">
         <action type="8" convert_type="0" waiting_time="1000" value="743"/>

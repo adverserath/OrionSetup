@@ -1,4 +1,76 @@
 //#include helpers/Target.js
+function OrchardRunNewFaster() {
+    Orion.Resend()
+    TextWindow.Clear()
+
+    var startX = Player.X()
+    var startY = Player.Y()
+    var startTime = Orion.Now()
+
+    var apples = Orion.FindTypeEx('0x09D0', 'any', backpack)
+
+    var trees = Orion.FindTypeEx('0x0D01', 'any', ground, '', 40)
+        .sort(function (t1, t2) {
+            return parseInt(t1.Serial()) - parseInt(t2.Serial())
+        }).map(function (t) { return Tree(t) })
+
+    Orion.Print('total trees ' + trees.length)
+
+
+    var index = 0
+    while (trees.length > 0) {
+        var source
+        var target
+        var closest = 60
+        var closestTreeIndex
+        trees.forEach(function (tree) {
+            
+            TextWindow.Print(trees.indexOf(tree)+ ' '+tree.Serial())
+            if (tree.DistanceTo(Player.X(), Player.Y()) < closest) {
+                closest = tree.DistanceTo(Player.X(), Player.Y())
+                closestTreeIndex = trees.indexOf(tree)
+                Orion.Print('Closest index ' + closestTreeIndex)
+            }
+        })
+        if (closestTreeIndex % 2 == 0) {
+            source = trees[closestTreeIndex];
+            target = trees[closestTreeIndex + 1]
+
+            TextWindow.Print('Picking index ' + closestTreeIndex + ' ' + source.Serial())
+            TextWindow.Print('Throw index ' + (closestTreeIndex + 1) + ' ' + target.Serial())
+            trees.splice(closestTreeIndex, 2);
+
+        }
+        else {
+            source = trees[closestTreeIndex];
+            target = trees[closestTreeIndex - 1]
+            TextWindow.Print('Picking index ' + closestTreeIndex + ' ' + source.Serial())
+            TextWindow.Print('Throw index ' + (closestTreeIndex - 1) + ' ' + target.Serial())
+
+            trees.splice(closestTreeIndex - 1, 2);
+        }
+
+        WalkTo(source)
+        Orion.UseObject(source.Serial())
+        var nextAction = Orion.Now() + 750
+        WalkTo(target, 8)
+        if (Orion.Now() < nextAction)
+            Orion.Wait(750)
+        apples = Orion.FindTypeEx('0x09D0', 'any', backpack)
+
+        while (apples.length != 0 && apples[0].Exists()) {
+            Orion.Print('throwing apple')
+            if (!Orion.HaveTarget()) {
+                Orion.UseObject(apples[0].Serial())
+                if (Orion.WaitForTarget(1000)) {
+                    Orion.TargetObject(target.Serial())
+                }
+            }
+        }
+    }
+
+    Orion.Print('Finished in ' + ((Orion.Now() - startTime) / 1000) + ' seconds')
+}
 
 function OrchardRunFaster() {
     TextWindow.Clear()
@@ -14,7 +86,7 @@ function OrchardRunFaster() {
     Orion.Print('total trees ' + trees.length)
 
     while (trees.length > 0) {
-        var treesSerials = trees.map(function(t){return t.Serial()})
+        var treesSerials = trees.map(function (t) { return t.Serial() })
         TextWindow.Open()
         i = 0
         trees.forEach(function (t) {
@@ -33,10 +105,10 @@ function OrchardRunFaster() {
         var startTree
         var nextTree
         Orion.Print('total ')
-        TextWindow.Print('index '+index)
+        TextWindow.Print('index ' + index)
 
         if (index % 2 == 0) {
-            var next = index+1
+            var next = index + 1
             tree1 = trees[index]
             tree2 = trees[next]
             TextWindow.Print(index + ' to ' + next)
@@ -45,7 +117,7 @@ function OrchardRunFaster() {
             trees.splice(index, 2)
         }
         else {
-            var next = index-1
+            var next = index - 1
 
             tree1 = trees[index]
             tree2 = trees[next]
@@ -116,6 +188,38 @@ function OrchardRunFaster() {
         Orion.Wait(500)
     }
     Orion.Print('Finished in ' + ((Orion.Now() - startTime) / 1000) + ' seconds')
+}
+
+function Tree(treeobj) {
+    return {
+        x: treeobj.X(),
+        y: treeobj.Y(),
+        serial: treeobj.Serial(),
+        X: function () {
+
+            return this.x;
+        },
+        Y: function () {
+
+            return this.y;
+        },
+        Serial: function () {
+
+            return this.serial;
+        },
+        DistanceTo: function (tx, ty) {
+
+            var dx = Math.abs(tx - this.X());
+            var dy = Math.abs(ty - this.Y());
+            var min = Math.min(dx, dy);
+            var max = Math.max(dx, dy);
+
+            var diagonalSteps = min;
+            var straightSteps = max - min;
+            var ret = Math.sqrt(2) * diagonalSteps + straightSteps
+            return ret;
+        }
+    }
 }
 
 function OrchardRun() {

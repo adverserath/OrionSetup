@@ -23,6 +23,28 @@ var _bin = 'A Trash Barrel'
 var _transcendenceBook = 'Transcendence Book'
 
 //orc lighthouse X1954 Y3747
+function ProcessMibsInBox() {
+    var container = SelectTarget('box of mibs')
+    Orion.OpenContainer(container.Serial())
+    while (Orion.Count('0xA30C|0x14EE', any, container.Serial()) > 0) {
+        for (i = 0; i < 15; i++) {
+            Orion.MoveItemType('0xA30C|0x14EE', any, container.Serial(), 0, backpack)
+            Orion.Wait(800)
+        }
+		ProcessMibsInBackpack()
+        WalkTo(container)
+
+    }
+}
+function ProcessMibsInBackpack()
+{
+        Orion.FindTypeEx('0xA30C').forEach(function (mib) {
+            Orion.UseObject(mib.Serial())
+            Orion.Wait(800)
+        })
+        SortSOSToBoxes()
+}
+
 function SortSOSToBoxes() {
     ProcessAllSosInBackpack(-1, [])
 }
@@ -52,23 +74,30 @@ function AutoSOSDoerClosest() {
                 if (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0")) {
                     var soses = Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial())
                     var SosMap = []
-                    while (Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial()).length > 0) {
-                        soses.forEach(function (sos) {
-                            Orion.MoveItem(sos.Serial(), 1, backpack);
-                            Orion.Wait(1000)
-                        })
-                        Orion.Wait(1000)
+                  //  while (Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial()).length > 0) {
+                  //      soses.forEach(function (sos) {
+                  //          Orion.MoveItem(sos.Serial(), 1, backpack);
+                  //          Orion.Wait(1000)
+                  //      })
+                  //      Orion.Wait(1000)
+                  //  }
+                     while (Orion.MoveItemType('0x14EE', any,currentSOSBox.Serial())) {
+                        Orion.Wait(800)
                     }
                     ProcessAllSosInBackpack(sosLevel, SosMap)
-                    while (Orion.FindTypeEx('0x14EE', any, backpack).length > 0) {
-                        SosMap.forEach(function (sos) {
-                            Orion.MoveItem(sos[0], 1, currentSOSBox.Serial());
-                            Orion.Wait(1000)
-                        })
+                    //while (Orion.FindTypeEx('0x14EE', any, backpack).length > 0) {
+                    //    SosMap.forEach(function (sos) {
+                    //        Orion.MoveItem(sos[0], 1, currentSOSBox.Serial());
+                    //        Orion.Wait(1000)
+                    //    })
+                    //}
+                     while (Orion.MoveItemType('0x14EE', any,backpack,0,currentSOSBox.Serial())) {
+                        Orion.Wait(800)
                     }
                     //SosMap.forEach(function (sos) {
                     while (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0") && SosMap.length != 0) {
                         Orion.Print(58, currentSOSBox.Properties())
+                        Orion.Print(59, 'SOS Map Count: '+ SosMap.length)
 
                         var bx = Orion.RegRead('boatX');
                         var by = Orion.RegRead('boatY');
@@ -138,15 +167,21 @@ function DistanceTo(tx, ty, bx, by) {
 function ProcessAllSosInBackpack(sosLevel, SosMap) {
     Orion.Print('sosLevel: ' + sosLevel)
     Orion.Print('SosMap: ' + SosMap)
-    Orion.Wait(1000)
+
     Orion.FindTypeEx('0x14EE').forEach(function (sos) {
-        var pos = GetSOSLocation(sos)
+        Orion.Wait(1000)
+        var pos
+        while(pos==null)
+        {
+        	pos = GetSOSLocation(sos)
+        }
         var zone = GetZone(pos.X(), pos.Y())
         Orion.Print('Zone: ' + zone)
         Orion.Print('CHECK' + zone + ' ' + sosLevel + '  ' + (sosLevel == zone))
         if (zone == sosLevel)
             SosMap.push([sos.Serial(), pos.X(), pos.Y(), zone])
         else {
+            Orion.Wait(850)
             MoveSoSToChest(sos.Serial(), zone)
         }
     })
@@ -277,6 +312,7 @@ function GoToClosestSOS(distance) {
 ///#include soslocations.jpg
 function DoSOSInOrder() {
     Debug(' Method Entry - DoSOSInOrder')
+    PetGuard()
     var seakey = FindBackpackItemWithProperties([_seakey]).Serial()//"Ship Recall Rune"
     Orion.Print('Key ' + seakey)
     RecallRune(seakey);
@@ -481,3 +517,4 @@ function Resume() {
 //#include helpers/SOSList.js
 //#include helpers/Pet.js
 //#include Fighting/Tamer.js
+//#include helpers/Looter.js

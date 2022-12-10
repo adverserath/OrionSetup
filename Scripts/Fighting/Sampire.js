@@ -1,6 +1,9 @@
-var LMC = 0.40
-var looting = false
+var LMC = Player.LMC() / 100
+var looting = true
 
+function ShowJ() {
+    Orion.ShowJournal();
+}
 function OpenMyCorpse() {
     Orion.FindTypeEx('0x2006', any, ground, 'item', 40).filter(function (corpse) {
         return Orion.Contains(corpse.Properties(), Player.Name())
@@ -11,9 +14,8 @@ function OpenMyCorpse() {
     })
 
 }
-function ToggleJustParagons()
-{
-Orion.SetGlobal("justParagons", true)
+function ToggleJustParagons() {
+    Orion.SetGlobal("justParagons", true)
 }
 
 function SampireLoops() {
@@ -31,32 +33,22 @@ function SampireLoops() {
     Orion.Exec('SampireSpells', true);
 }
 
-function SuperLooter(corpse) {
-
-    if (!Orion.GumpExists('container', corpse.Serial())) {
-        Orion.OpenContainer(corpse.Serial(), 1000)
-
-    }
-    while (Orion.MoveItemList(lootLists, corpse.Serial())) {
-        Orion.AddHighlightCharacter(corpse.Serial(), '0x0846');
-    }
-    Orion.PrintFast(corpse.Serial(), '78', 1, 'Looted');
-
-    Orion.Ignore(corpse.Serial())
-
-}
-var lootLists = 'ImbueIngred|Gold/Arrows/Artis|Weapons'
 function OpenCorpsesWhenIdle(_) {
-    Orion.FindTypeEx('0x2006', any, ground, 'item', 10)
+
+    Orion.FindTypeEx('0x2006', any, ground, 'item|inlos', 25)
+        .filter(function (corpse) {
+            return looted.indexOf(corpse.Serial()) == -1
+        })
         .sort(function (t1, t2) {
             return t1.Distance() - t2.Distance()
         })
         .forEach(function (corpse) {
-            if (!Player.Dead()) {
+            Orion.Print('looting ' + corpse.Name())
+            if (!Player.Dead() && GetEnemiesInArea().length == 0) {
                 Orion.AddHighlightCharacter(corpse.Serial(), '0x084C');
 
                 Orion.PrintFast(corpse.Serial(), '0x0111', 1, 'Looting');
-                WalkTo(corpse.Serial(), 0)
+                WalkTo(corpse.Serial(), 1, 8000)
                 Orion.OpenContainer(corpse.Serial(), 1000)
                 SuperLooter(corpse)
             }
@@ -81,18 +73,19 @@ function GetMobType() {
 
 function LocationLoop(_) {
     var targetColor = any
-    if (Orion.GetGlobal("justParagons"))
-    {
-    Orion.Print('Killing Paragons')
-    targetColor = '0x0501' 
+    if (Orion.GetGlobal("justParagons")) {
+        Orion.Print('Killing Paragons')
+        targetColor = '0x0501'
     }
 
     if (Player.Poisoned() || Player.Hits() < Player.Hits() / 2) {
+        Orion.Print('Need to heal')
         return;
     }
-    {
+    else {
         var mobCount = Orion.FindTypeEx(GetMobType(), targetColor, ground,
-            'live|ignoreself|ignorefriends|near', 6, 'gray|criminal|red|enemy').length
+            'live|ignoreself|ignorefriends|inlos', 6, 'gray|criminal|red|enemy').length
+        Orion.Print('Count = ' + mobCount)
         Orion.Print('Checking next location')
 
         if (currentlocation >= locations.length)
@@ -103,11 +96,12 @@ function LocationLoop(_) {
             WalkTo(locations[currentlocation++])
 
             //Find Next Target Far away
-            
+
             var farMobs = Orion.FindTypeEx(GetMobType(), targetColor, ground,
-                'live|ignoreself|ignorefriends|near', 30, 'gray|criminal|red|enemy')
+                'live|ignoreself|ignorefriends|inlos', 30, 'gray|criminal|red|enemy')
             if (farMobs.length > 0) {
-                WalkTo(farMobs[0])
+                Orion.Print(56, 'Far mobs = ' + farMobs.length)
+                //WalkTo(farMobs[0])
             }
         }
 
@@ -127,30 +121,44 @@ function SampireSpells() {
                 if (ManaCheck(5, LMC) && !Orion.SpellStatus(spellName)) {
                     Orion.PrintFast(self, '0x0111', 1, spellName);
                     CastSpell(spellName);
+                    continue
                 }
 
                 //Ability
                 var mobsCount = Orion.FindTypeEx(GetMobType(), any, ground,
                     'live|ignoreself|ignorefriends', 1, 'gray|criminal|red|enemy').length
                 if (mobsCount == 1) {
-                    spellName = "Lightning Strike"
-                    if (ManaCheck(10, LMC) && !Orion.SpellStatus(spellName)) {
-                        Orion.PrintFast(self, '0x0111', 1, spellName);
-                        CastSpell(spellName)
+                    if (CanDoAbility('Double Strike')) {
+                        spellName = "Double Strike"
+                        var manaCost = 20
+                        if (Orion.InJournal('You attack with lightning speed!', any, any, any, Orion.Now() - 3000)) {
+                            manaCost *= 2
+                        }
+                        if (CanDoAbility(spellName) && ManaCheck(manaCost, LMC) && !AbilityIsActive(spellName)) {
+                            Orion.PrintFast(self, '0x0111', 1, spellName);
+                            DoAbility(spellName)
+                            continue
+                        }
                     }
-                }
-                else if (false) {
-                    spellName = "Momentum Strike"
-                    if (ManaCheck(10, LMC) && !Orion.SpellStatus(spellName)) {
-                        Orion.PrintFast(self, '0x0111', 1, spellName);
-                        CastSpell(spellName)
+                    else {
+                        spellName = "Lightning Strike"
+                        if (ManaCheck(10, LMC) && !Orion.SpellStatus(spellName)) {
+                            Orion.PrintFast(self, '0x0111', 1, spellName);
+                            CastSpell(spellName)
+                            continue
+                        }
                     }
                 }
                 else if (mobsCount > 1) {
-                    spellName = "Whirlwind"
-                    if (ManaCheck(5, LMC) && !Orion.AbilityStatus('Primary')) {
+                    spellName = "Whirlwind Attack"
+                    var manaCost = 15
+                    if (Orion.InJournal('The whirling attack strikes a target!', any, any, any, Orion.Now() - 3000)) {
+                        manaCost *= 2
+                    }
+                    if (CanDoAbility(spellName) && ManaCheck(manaCost, LMC) && !AbilityIsActive(spellName)) {
                         Orion.PrintFast(self, '0x0111', 1, spellName);
-                        Orion.UseAbility('Primary', true);
+                        DoAbility(spellName)
+                        continue
                     }
                 }
 
@@ -159,6 +167,7 @@ function SampireSpells() {
                 if (ManaCheck(15, LMC) && !Orion.BuffExists(spellName)) {
                     Orion.PrintFast(self, '0x0111', 1, spellName);
                     CastSpell(spellName);
+                    continue
                 }
                 //Consecrate Weapon
                 //      spellName = "Consecrate Weapon"
@@ -173,6 +182,7 @@ function SampireSpells() {
                     && Player.Hits() < Player.MaxHits() * 0.4) {
                     Orion.PrintFast(self, '0x0111', 1, spellName);
                     CastSpell(spellName);
+                    continue
                 }
 
             } //Has Target
@@ -182,7 +192,37 @@ function SampireSpells() {
                 } else if (Player.Hits() < Player.MaxHits() * 0.9) {
                     CastSpell('Close Wounds', self)
                 }
-                Orion.Wait(400)
+
+                Orion.Wait(500)
+
+                spellName = "Counter Attack"
+                if (ManaCheck(5, LMC) && !Orion.SpellStatus(spellName)) {
+                    Orion.PrintFast(self, '0x0111', 1, spellName);
+                    CastSpell(spellName);
+                    continue
+                }
+
+                if (CanDoAbility('Double Strike')) {
+                    spellName = "Double Strike"
+                    var manaCost = 20
+                    if (Orion.InJournal('You attack with lightning speed!', any, any, any, Orion.Now() - 3000)) {
+                        manaCost *= 2
+                    }
+                    if (CanDoAbility(spellName) && ManaCheck(manaCost, LMC) && !AbilityIsActive(spellName)) {
+                        Orion.PrintFast(self, '0x0111', 1, spellName);
+                        DoAbility(spellName)
+                        continue
+                    }
+                }
+                else {
+                    spellName = "Lightning Strike"
+                    if (ManaCheck(10, LMC) && !Orion.SpellStatus(spellName)) {
+                        Orion.PrintFast(self, '0x0111', 1, spellName);
+                        CastSpell(spellName)
+                        continue
+                    }
+                }
+
             }
         }  //while war
     } //while true
@@ -190,22 +230,28 @@ function SampireSpells() {
 
 function TargetClosest(_) {
     var targetColor = any
-    if (Orion.GetGlobal("justParagons"))
-    {
-    Orion.Print('Killing Paragons')
-    targetColor = '0x0501' 
+    if (Orion.GetGlobal("justParagons")) {
+        Orion.Print('Killing Paragons')
+        targetColor = '0x0501'
     }
-    
+
     SetLocations()
     while (true) {
-        Orion.Wait(500)
+        Orion.Wait(3000)
+        Orion.Print('Not fighting')
+        var pathDistance
         while (!Player.Dead() && Player.WarMode()) {
-            Orion.Wait(150)
+            Orion.Wait(200)
             var lastAttacker = Orion.FindObject(Orion.ClientLastAttack())
-
-            if (lastAttacker == null) {
+            if (lastAttacker != null)
+                pathDistance = Orion.GetPathArray(lastAttacker.X(), lastAttacker.Y(), lastAttacker.Z()).length
+            else
+                pathDistance = 0
+            if (lastAttacker == null || !lastAttacker.InLOS() || lastAttacker.Distance() < (pathDistance - 10) || pathDistance == 0) {
+                Orion.Print('no enemy')
+                Orion.Wait(100)
                 var closest = Orion.FindTypeEx(GetMobType(), targetColor, ground,
-                    'live|ignoreself|ignorefriends|near', 1, 'gray|criminal|red|enemy')
+                    'live|ignoreself|ignorefriends', 1, 'gray|criminal|red|enemy')
 
                 if (closest.length > 0) {
                     Orion.Exec('HonorSampire', true, [closest[0].Serial()]);
@@ -214,17 +260,19 @@ function TargetClosest(_) {
                     Orion.PrintFast(self, '0x0111', 1, closest[0].Name());
                 }
                 else {
-                    closest = Orion.FindTypeEx(GetMobType(), any, ground,
-                        'live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|red|enemy')
-                    closest.concat(Orion.FindTypeEx(any, any, ground,
-                        'live|ignoreself|ignorefriends', 12, 'gray|criminal|red|enemy')
-                        .filter(function (mob) { return mob.WarMode() }))
+                    closest = GetEnemiesInArea(10)
 
-                    closest = closest.sort(function (mobA, mobB) {
+                    //.filter(function (mob){
+                    //                    var walkDist = Orion.GetPathArray(mob.X(), mob.Y(), mob.Z()).length
+                    //                    return mob.Distance() < (walkDist - 10) || (walkDist == 0 && mob.Distance()!=0)
+                    //                    })
+
+                    closest.sort(function (mobA, mobB) {
                         return mobA.Distance() - mobB.Distance()
                     });
 
-                    if (closest.filter(function (mob) { return !mob.WarMode() }).length == 0) {
+                    //if (closest.filter(function (mob) { return !mob.WarMode() }).length == 0) {
+                    if (closest.length == 0) {
                         Orion.PrintFast(self, '0x0111', 1, 'Loot');
                         if (looting)
                             OpenCorpsesWhenIdle()
@@ -232,7 +280,9 @@ function TargetClosest(_) {
                             while (Player.Weight() > Player.MaxWeight()) {
                                 Orion.Wait(1000)
                             }
-                            LocationLoop()
+                            closest = GetEnemiesInArea()
+                            if (closest.length == 0)
+                                LocationLoop()
                         }
                     }
                     if (closest.length > 0) {
@@ -247,7 +297,9 @@ function TargetClosest(_) {
 
                         Orion.Attack(closest[0].Serial())
 
-                        WalkTo(closest[0])
+                        if (!WalkTo(closest[0])) {
+                            Orion.Ignore(closest[0].Serial())
+                        }
                         Orion.PrintFast(self, '0x0111', 1, closest[0].Name());
 
 
@@ -255,21 +307,52 @@ function TargetClosest(_) {
                 }
             }
             else {
+                Orion.Print('Fight current')
                 var mob = Orion.FindObject(Orion.ClientLastAttack())
                 if (mob != null && mob.Distance() > 1) {
-                    WalkTo(mob)
+                    if (!WalkTo(mob, 1, 6000)) {
+                        Orion.Ignore(closest[0].Serial())
+                    }
+                }
+                if (mob != null) {
+                    Orion.Wait(300)
                 }
             }
         }
     }
 }
 
+function ShowLoS() {
+    while (true) {
+        Orion.Wait(100)
+        Orion.ClearHighlightCharacters();
+        Orion.FindTypeEx(any, any, ground,
+            'live|ignoreself|ignorefriends|inlos', 30, 'gray|criminal|red|enemy')
+            .forEach(function (mob) {
+                Orion.AddHighlightCharacter(mob.Serial(), 0x0146);
+            })
+    }
+}
+function GetEnemiesInArea(distance) {
+    if (distance == null)
+        distance = 20
+    var mobs = Orion.FindTypeEx(GetMobType(), any, ground,
+        'live|ignoreself|ignorefriends|inlos', distance, 'gray|criminal|red|enemy')
+        .concat(Orion.FindTypeEx(any, any, ground,
+            'live|ignoreself|ignorefriends|inlos', distance + 5, 'gray|criminal|red|enemy')
+            .filter(function (mob) { return mob.WarMode() }))
+
+    mobs.forEach(function (mob) {
+        Orion.AddHighlightCharacter(mob.Serial(), 59);
+    })
+    return mobs
+}
 function HonorSampire(mobileSerial) {
     var mobile = Orion.FindObject(mobileSerial);
     //if target isnt honorable, get one that is
     if (mobile.Hits() != mobile.MaxHits()) {
         var closest = Orion.FindTypeEx(GetMobType(), any, ground,
-            'live|ignoreself|ignorefriends|inlos|near', 10, 'gray|criminal|red|enemy')
+            'live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|red|enemy')
             .filter(function (mob) {
                 return mob.Hits() == mob.MaxHits()
             })
@@ -295,6 +378,34 @@ function HonorSampire(mobileSerial) {
     }
 }
 
+function CanDoAbility(abilityName) {
+    return Orion.GetCurrentAbilityNames().indexOf(abilityName) > -1
+}
+
+function AbilityIsActive(abilityName) {
+    var index = Orion.GetCurrentAbilityNames().indexOf(abilityName)
+    if (index == 0) {
+        return Orion.AbilityStatus('Primary')
+    }
+    else if (index == 1) {
+        return Orion.AbilityStatus('Secondary')
+    }
+    else {
+        return false
+    }
+}
+
+function DoAbility(abilityName) {
+    var index = Orion.GetCurrentAbilityNames().indexOf(abilityName)
+    if (index == 0) {
+        Orion.UseAbility('Primary', true)
+        Orion.Wait(300)
+    }
+    else if (index == 1) {
+        Orion.UseAbility('Secondary', true)
+        Orion.Wait(300)
+    }
+}
 
 function CastSpell(spell, target) {
     if (target == null)
@@ -306,5 +417,5 @@ function CastSpell(spell, target) {
 //#include helpers/Target.js
 //#include helpers/Magic.js
 //#include helpers/Debug.js
-
+//#include helpers/Looter.js
 //#include Actions/Automated/BagOfSending.js

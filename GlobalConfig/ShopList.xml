@@ -25,6 +25,6 @@
         <shopitem enabled="true" graphic="0x1F5F" color="0x0000" name="Flamestrike" count="0" price="0" comment=""/>
     </shoplist>
     <shoplist name="Trader">
-        <shopitem enabled="true" graphic="0xFFFF" color="0xFFFF" name="Bracelet" count="0" price="0" comment="Bracelet"/>
+        <shopitem enabled="true" graphic="0x09D1" color="0xFFFF" name="Grape Bunch" count="20" price="0" comment="Grape Bunch"/>
     </shoplist>
 </data>

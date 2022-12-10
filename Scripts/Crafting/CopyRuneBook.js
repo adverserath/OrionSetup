@@ -180,8 +180,8 @@ function CopyRuneBook() {
             //Mark Rune
             var rune = runes.shift();
             Orion.Wait(100)
-			MarkRuneAndMoveToBook(rune.Serial(),locationName,newBook.Serial())
- 			Orion.Wait(500)
+            MarkRuneAndMoveToBook(rune.Serial(), locationName, newBook.Serial())
+            Orion.Wait(500)
         });
         Orion.Wait(1000)
     }
@@ -195,36 +195,18 @@ function MeditateSafely(safeSpot) {
     }
 }
 
-function MarkRuneAndMoveToBook11()
-{
-Orion.Print(Orion.HaveTarget())
-var runeSerial = SelectTarget().Serial()
-var bookSerial = SelectTarget().Serial()
-            MarkRuneAndMoveToBook(runeSerial,"test1",bookSerial);
+function MarkRuneAndMoveToBook11() {
+    Orion.Print(Orion.HaveTarget())
+    var runeSerial = SelectTarget().Serial()
+    var bookSerial = SelectTarget().Serial()
+    MarkRuneAndMoveToBook(runeSerial, "test1", bookSerial);
 }
 
-function MarkRuneAndMoveToBook(runeSerial,name,bookSerial)
-{
-            CreateMarkRune(runeSerial,name);
-            //Add Rune to new book
-            Orion.Wait(500)
-            Orion.MoveItem(runeSerial, 0, bookSerial);
-            Orion.Wait(100)
+function MarkRuneAndMoveToBook(runeSerial, name, bookSerial) {
+    CreateMarkRune(runeSerial, name);
+    //Add Rune to new book
+    Orion.Wait(500)
+    Orion.MoveItem(runeSerial, 0, bookSerial);
+    Orion.Wait(100)
 }
 
-function CreateMarkRune(runeSerial,name)
-{
-	MarkRune(runeSerial);
-	RenameRune(runeSerial,name)
-}
-function RenameRune(runeSerial,name)
-{
-            Orion.UseObject(runeSerial);
-            if (Orion.WaitForPrompt(1000)) {
-                Orion.Wait(200);
-                Orion.SendPrompt(name)
-            }
-            else{
-            	RenameRune(runeSerial,name)
-            }
-}

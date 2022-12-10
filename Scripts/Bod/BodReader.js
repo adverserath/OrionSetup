@@ -203,10 +203,11 @@ function ReadPage(bookId) {
   var gump = Orion.GetLastGump();
   var gumpinfo = gump.CommandList();
   var line = gumpinfo.join() + ','
-  var smallBods = (line.match(/.?\w*\s61(?:\d*\s){4}\d*1062224\s(?:\d*\s){3},.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4}){0,1},\s\w*\s\d*\s\d*\s\d*\s\d*/ig) || []);
+  var smallBods = (line.match(/.?\w*\s61(?:\d*\s){4}\d*1062224\s(?:\d*\s){3},.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){3,4}\d*(?:\d*\s){0,4}){0,1},\s\w*\s\d*\s\d*\s\d*\s\d*/ig) || []);
 
   smallBods.forEach(function (bod) {
-    var matches = (bod.match(/.?\w*\s61(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
+    var matches = (bod.match(/.?\w*\s61(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){3,4}(\d*)(?:\d*\s){1,4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
+
     var loc;
     if (matches[4]) {
 
@@ -221,10 +222,10 @@ function ReadPage(bookId) {
 
   var largeBods = (line.match(/.?\w*\s61(?:\d*\s){4}\d*1062225\s(?:\d*\s){3},(.?\w*\s103(?:\d*\s){4}\d*(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}\d*(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}\d*(?:\d*\s){4})?,(?:\s\w*\s\d*\s\d*\s\d*\s\d*\s,)+)+/ig) || []);
   largeBods.forEach(function (bigBod) {
-    var innerBods = (bigBod.match(/.?\w*\s103(?:\d*\s){4}(?:\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(?:\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(?:\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(?:\d*)/ig) || []);
+    var innerBods = (bigBod.match(/.?\w*\s103(?:\d*\s){4}(?:\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(?:\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){3,4}(?:\d*)(?:\d*\s){1,4})?,\s\w*\s\d*\s\d*\s\d*\s(?:\d*)/ig) || []);
     var largeBod = CreateLargeBod(bookId);
     innerBods.forEach(function (bod) {
-      var matches = (bod.match(/.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){4}(\d*)(?:\d*\s){4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
+      var matches = (bod.match(/.?\w*\s103(?:\d*\s){4}(\d*)(?:\d*\s){4},.?\w*\s235(?:\d*\s){4}(\d*)(?:\d*\s){4}(?:,.?\w*\s316(?:\d*\s){3,4}(\d*)(?:\d*\s){1,4})?,\s\w*\s\d*\s\d*\s\d*\s(\d*)/i) || [])
       var loc;
       if (matches[3]) {
         loc = gump.Text(matches[4]).match(/\d*\s.\s(\d*)/i)[1];
@@ -233,7 +234,7 @@ function ReadPage(bookId) {
       else {
         loc = gump.Text(matches[4]).match(/\d\s.\s(\d*)/i)[1];
         largeBod.Add(CreateSmallBod(GetString(matches[1]), GetString(matches[2]), '', loc, bookId))
-      } 
+      }
     })
     largeBodsLibrary.push(largeBod)
   }

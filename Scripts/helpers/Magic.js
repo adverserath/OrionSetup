@@ -1,5 +1,63 @@
 //#include helpers/Target.js
 //#include helpers/Debug.js
+function BoxHack() {
+	var sel = SelectTarget()
+	Orion.Boxhack(sel.Serial())
+}
+function telefast() {
+	while (true) {
+		Orion.Cast('ShadowJump');
+		if (Orion.WaitForTarget(1000))
+			Orion.TargetTileRelative('any', 11, 0, 1);
+		//Orion.Wait(750)
+	}
+}
+
+function Spell(name, level, lowerFC) {
+	return {
+		_name: name,
+		_level: level,
+		_lowerFC: lowerFC,
+		Name: function () {
+			return this._name;
+		},
+		Level: function () {
+
+			return this._level;
+		},
+		CastTime: function () {
+			var fc = Player.FC()
+			if (fc > 2 && this._lowerFC == true)
+				fc = 2
+			var fcDeduction = parseFloat((-1.0 * Player.FC() * 0.25))
+			var baseCast = (4 + this._level) * 0.25
+			var castTime = baseCast + fcDeduction;
+			Orion.Print(fcDeduction + ' ' + baseCast + ' ' + castTime)
+			return castTime * 1000
+		},
+		RecoveryTime: function () {
+			var fcr = Player.FCR()
+			if (fcr > 4 && this._lowerFC == true)
+				fcr = 4
+			var fcrDelay = (6 - fcr) * 250
+			Orion.Print(fcrDelay)
+			return fcrDelay;
+		}
+	}
+}
+var spellList = [
+	Spell('Magic Arrow', 1, true),
+	Spell('Harm', 2, true),
+	Spell('Fireball', 3, true),
+	Spell('Lightning', 4, true),
+	Spell('Mind Blast', 5, true),
+	Spell('Explosion', 6, true),
+	Spell('Energy Bolt', 6, true),
+	Spell('Flame Strike', 7, true),
+	Spell('Chain Lightning', 7, true),
+	Spell('Earthquake', 8, true),
+	Spell('Word of Death', 10, false)
+]
 
 function CastSpellOnTarget(spellName, targetID) {
 	Debug(' Method Entry - CastSpellOnTarget')
@@ -12,14 +70,15 @@ function CastSpellOnTarget(spellName, targetID) {
 		Orion.Wait(400)
 		Orion.Print('Frozen')
 	}
-	Orion.Wait(1500)
+	Orion.Wait(600)
 	Orion.Print('Done')
 
 	while (Orion.InJournal('You have not yet recovered', '', '0', '-1', startCastTime, Orion.Now()) != null) {
 		startCastTime = Orion.Now()
 		Orion.CastTarget(spellName, targetID);
-		Orion.Wait(600)
+		Orion.Wait(200)
 	}
+	Orion.CancelWaitTarget();
 	Orion.Wait(100);
 }
 
@@ -187,4 +246,142 @@ function getbackPackFood() {
 	var food = '0x09D1|0x097B|0x1608|0x09D0'
 	var backpackFood = Orion.FindTypeEx(food, any, backpack)
 	return backpackFood
+}
+
+function FlameRottingCorpse() {
+	var focus = Orion.FindTypeEx('0x3155')
+		.filter(function (gem) {
+			return gem.Properties().indexOf('Strength Bonus') != -1
+		}).shift()
+
+	var gemstr = (focus.Properties().match(/Strength\sBonus\s(\d)/i) || [])[1] || 0;
+	var hitmarker = parseInt(0.05 * gemstr * 25)
+	var spell = Spell('Flame strike', 7, true)
+
+	while (true) {
+		if (!Player.WarMode()) {
+			Orion.Wait(500)
+		}
+		else {
+			var mobs = Orion.FindTypeEx(any, any, ground,
+				'nothumanmobile|live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|orange|red')
+				.filter(function (enemy) {
+					return Orion.Contains(enemy.Properties(), 'The Lich King')
+				})
+
+			if (mobs.length > 0) {
+				Orion.Wait(500)
+				var mob = mobs[0]
+				while (mob.Exists()) {
+					Orion.Print(Orion.RequestName(mob.Serial()) + ' ' + mob.Hits() + ' ' + hitmarker)
+					if (mob.Hits() == 0 || mob.Hits() > hitmarker) {
+						CalculatedCastSpellOnTarget(spell, mob.Serial())
+					}
+					else if (mob.Hits() < hitmarker)
+						CalculatedCastSpellOnTarget(Spell('Word of Death', 10), mob.Serial())
+				}
+			}
+		}
+	}
+}
+
+function CastRandomSpellsOnEverything() {
+	while (true) {
+		if (!Player.WarMode()) {
+			Orion.Wait(500)
+		}
+		else {
+
+			Orion.Wait(200)
+			var mobs = Orion.FindTypeEx(any, any, ground,
+				'nothumanmobile|live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|orange|red')
+
+			Orion.Wait(200)
+
+			if (mobs.length > 0) {
+
+				var mob = mobs[0]
+				var spell = spellList[Orion.Random(1, spellList.length)]
+				CalculatedCastSpellOnTarget(spell, mob.Serial())
+
+			}
+		}
+	}
+}
+
+function ChainLightningAnything() {
+
+	var spellt = Spell('Chain Lightning', 7, true)
+
+	while (true) {
+		if (!Player.WarMode()) {
+			Orion.Wait(500)
+		}
+		else {
+			var mobs = Orion.FindTypeEx(any, any, ground,
+				'nothumanmobile|live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|orange|red')
+			if (mobs.length > 0) {
+				var mob = mobs[Orion.Random(mobs.length)]
+				CalculatedCastSpellOnTarget(spellt, mob.Serial())
+
+			}
+			else {
+				Orion.Wait(200)
+			}
+		}
+	}
+}
+
+
+function CastMagicArrowOnEverything() {
+	var spell = Spell('Magic Arrow', 1, true)
+
+	while (true) {
+		if (!Player.WarMode()) {
+			Orion.Wait(500)
+		}
+		else {
+
+			//Orion.Wait(200)
+			var mobs = Orion.FindTypeEx(any, any, ground,
+				'nothumanmobile|live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|orange|red')
+
+			//Orion.Wait(200)
+			mobs.forEach(function (mob) {
+				CalculatedCastSpellOnTarget(spell, mob.Serial())
+			})
+		}
+	}
+}
+
+function CalculatedCastSpellOnTarget(chosenSpell, targetID) {
+	//Debug(' Method Entry - CalculatedCastSpellOnTarget')
+	if (!targetID || targetID == null) {
+		Orion.Cast(chosenSpell.Name())
+		Orion.Wait(chosenSpell.CastTime())
+		Orion.Wait(chosenSpell.RecoveryTime())
+	}
+	else {
+		Orion.Print('Cast ' + chosenSpell.Name() + ' on ' + targetID)
+		Orion.CastTarget(chosenSpell.Name(), targetID);
+		Orion.Wait(chosenSpell.CastTime())
+		Orion.Print('Waited:' + chosenSpell.CastTime())
+		Orion.Wait(chosenSpell.RecoveryTime())
+		Orion.Print('Recovered:' + chosenSpell.RecoveryTime())
+	}
+}
+
+function CreateMarkRune(runeSerial, name) {
+	MarkRune(runeSerial);
+	RenameRune(runeSerial, name)
+}
+function RenameRune(runeSerial, name) {
+	Orion.UseObject(runeSerial);
+	if (Orion.WaitForPrompt(1000)) {
+		Orion.Wait(200);
+		Orion.SendPrompt(name)
+	}
+	else {
+		RenameRune(runeSerial, name)
+	}
 }

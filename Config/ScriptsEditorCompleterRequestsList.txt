@@ -1,3 +1,22 @@
+FindTypeEx
+UseObject
+forEach
+for
+OpenContainer
+else
+LMC
+TextWindow
+UdpSend
+SayWhisper
+UseType
+WaitForGump
+GetGump
+Boxhack
+WalkTo
+BuffExists
+Attack
+ItemColor
+Random
 AbilityStatus
 Abyss
 Acquire
@@ -56,14 +75,11 @@ AnimID
 Append
 Arm
 Armor
-Attack
 BandageSelf
 BandageTarget
 BankSerial
 BlockMoving
 BloodyBandageSelf
-Boxhack
-BuffExists
 BuffTimeRemaining
 BuffsCount
 ButtonList
@@ -191,7 +207,6 @@ FindListItem
 FindObject
 FindTextID
 FindType
-FindTypeEx
 FindWand
 FireResistance
 Flags
@@ -221,7 +236,6 @@ GetFriendList
 GetFriendsStatus
 GetGlobal
 GetGraphic
-GetGump
 GetGumpPosition
 GetIgnoreList
 GetLandTiledata
@@ -300,7 +314,6 @@ IsReplayed
 IsShopping
 IsStaticTile
 IsWalking
-ItemColor
 ItemGraphic
 ItemID
 ItemName
@@ -310,7 +323,6 @@ JournalCount
 JournalIgnoreCase
 JournalLine
 KeyPress
-LMC
 LRC
 Land
 LandGraphic
@@ -369,7 +381,6 @@ ObjAtLayer
 ObjectExists
 OnOffHotkeys
 Open
-OpenContainer
 OpenDoor
 OpenEnhancedMap
 OpenPaperdoll
@@ -401,7 +412,6 @@ Race
 Radio
 RadioList
 Radios
-Random
 Read
 ReadAll
 ReadLine
@@ -449,7 +459,6 @@ SayBroadcast
 SayEmote
 SayGuild
 SayParty
-SayWhisper
 SayYell
 Screenshot
 ScriptName
@@ -555,7 +564,6 @@ TestItemColor
 Text
 TextDialogCount
 TextList
-TextWindow
 Texts
 TextureId
 TilepicList
@@ -575,7 +583,6 @@ TradeName
 TradeOpponent
 Turn
 UdpRecv
-UdpSend
 UdpServersList
 Undress
 Unequip
@@ -595,10 +602,8 @@ UseFromGround
 UseFromGroundList
 UseIgnoreList
 UseItemOnMobile
-UseObject
 UseSkill
 UseSkillTarget
-UseType
 UseTypeList
 UseWrestlingDisarm
 UseWrestlingStun
@@ -613,7 +618,6 @@ WaitForAddObject
 WaitForAddType
 WaitForContainerGump
 WaitForContextMenu
-WaitForGump
 WaitForMenu
 WaitForPrompt
 WaitForShop
@@ -633,7 +637,6 @@ WaitTargetType
 WaitTargetTypeList
 WaitTextDialog
 WaitWhileTargeting
-WalkTo
 WarMode
 Weather
 Weight
@@ -652,10 +655,7 @@ catchbag
 const
 continue
 dressbag
-else
 false
-for
-forEach
 function
 ground
 harmtarget
@@ -681,3 +681,17 @@ true
 undefined
 var
 while
+BuffDescription
+ToString
+GetMultisRect
+GumpId
+GumpSerial
+GumpType
+JournalSaveName
+AddHighlightArea
+HighlightAreaTimer
+RemoveHighlightArea
+CurrentScriptDirPath
+GetContextMenu
+ItemClilocID
+ItemText

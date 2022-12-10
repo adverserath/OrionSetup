@@ -2,7 +2,7 @@
 //#include helpers/ItemManager.js
 //#include helpers/Notifier.js
 //#include helpers/Debug.js
-//#include UDP/Receiver.js
+///#include UDP/Receiver.js
 //#include helpers/Pet.js
 //#include helpers/Magic.js
 //#include helpers/Gumps.js
@@ -21,9 +21,10 @@
 //#include Actions/Automated/Orchard.js
 //#include Actions/PIrating/Pirates.js
 //#include gumps/CasterGump.js
+//#include helpers/Looter.js
 
 var hostPort = 2597;
-var clientServer = "192.168.0.2"
+var clientServer = "127.0.0.1"
 
 function DistanceFrom() {
     var t = SelectTarget()
@@ -58,14 +59,12 @@ var buttons = //x y CallBackID Text FunctionName
         [[100, 30, 6100, "Go Home", 'Sender_GoHome'], [100, 30, 6200, "Say", 'Sender_Speak'], [100, 30, 6300, "Accept Gump", 'Sender_AcceptGump']],
         [[100, 30, 7100, "Reload", 'Sender_Reload'], [100, 30, 7200, "CloseUO", 'Sender_CloseUO'], [100, 30, 7300, "RecoverCorpse", 'Sender_Method']]
     ]
-var spells =
-    [
-        [[100, 30, 8100, "Gift Of Renewal", 'Sender_CastSelf'], [100, 30, 8200, "Gift Of Life", 'Sender_CastSelf'], [100, 30, 8300, "Word Of Death", 'Sender_CastTarget']],
-        [[100, 30, 9100, 'Gift Of Renewal', 'Sender_CastMount'], [100, 30, 9200, "Gift Of Life", 'Sender_CastMount']],
-        [[75, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [75, 30, 1020, "Thunderstorm", 'Sender_Cast']
-            , [75, 30, 1030, "GotoMistas", 'Sender_Method'], [75, 30, 1040, "GotoTW", 'Sender_Method'], [75, 30, 1050, "GotoBlood", 'Sender_Method'], [75, 30, 1060, "QuestRenew", 'Sender_Method']],
-
-    ]
+var spellsButtons = [
+    [[100, 30, 8100, "Gift Of Renewal", 'Sender_CastSelf'], [100, 30, 8200, "Gift Of Life", 'Sender_CastSelf'], [100, 30, 8300, "Word Of Death", 'Sender_CastTarget']],
+    [[100, 30, 9100, 'Gift Of Renewal', 'Sender_CastMount'], [100, 30, 9200, "Gift Of Life", 'Sender_CastMount'], [100, 30, 9300, "Wraith Form", 'Sender_Cast']],
+    [[75, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [75, 30, 1020, "Thunderstorm", 'Sender_Cast'], [75, 30, 1030, "FlameRottingCorpse", 'Sender_Method'], [75, 30, 1040, "ChainLightningAnything", 'Sender_Method']]
+    //[[75, 30, 1010, 'Wildfire', 'Sender_CastTarget'], [75, 30, 1020, "Thunderstorm", 'Sender_Cast'],[75, 30, 1030, "GotoMistas", 'Sender_Method'], [75, 30, 1040, "GotoTW", 'Sender_Method'], [75, 30, 1050, "GotoBlood", 'Sender_Method'], [75, 30, 1060, "QuestRenew", 'Sender_Method']]
+]
 function Sender_CloseUO(serial) {
     Sender(serial, 'CloseUO:');
     if (serial === '*')
@@ -210,9 +209,9 @@ function Sender_Cast(serial, spellName) {
 }
 
 function Sender_Method(serial, methodName, args) {
-    Sender(serial, 'Method:' + methodName+':'+args);
+    Sender(serial, 'Method:' + methodName + ':' + args);
     if (serial === '*')
-        Orion.ToggleScript(methodName,args);
+        Orion.ToggleScript(methodName, args);
 }
 
 function Sender_CastMount(serial, spellName) {
@@ -320,7 +319,6 @@ function AutoKill(serial) {
 
 function HostCallback(_) {
     Orion.LoadScript('UDP/Sender.js')
-    Orion.Print("test")
 
     var code = CustomGumpResponse.ReturnCode();
     if (code == 0) {
@@ -338,11 +336,16 @@ function HostCallback(_) {
     var players = LoadPlayerJson()
 
     var clientSerial = '*'
-    Orion.Print(code)
     if (code.toString().length == 5) {
         var playerLocation = parseInt(code.toString()[0]) - 1
+        Orion.Print(playerLocation)
+
         clientSerial = players[playerLocation].serial
-        code = parseInt(code)//.toString().substring(1, 3)
+        Orion.Print(clientSerial)
+
+        code = parseInt(code).toString().substring(1, 5)
+        Orion.Print(code)
+
     }
     Orion.Print(code)
 
@@ -355,7 +358,7 @@ function HostCallback(_) {
             }
         })
     });
-    spells.forEach(function (rowLayer) {
+    spellsButtons.forEach(function (rowLayer) {
         rowLayer.forEach(function (button) {
             Orion.Print('Execute ' + button[2] + ' ' + code)
 
@@ -425,7 +428,8 @@ function HostGump(_) {
         row++;
     });
 
-    spells.forEach(function (rowLayer) {
+    spellsButtons.forEach(function (rowLayer) {
+        Orion.Print(rowLayer[0].toString())
         rowLayer.forEach(function (button) {
             gump.AddResizepic(gridX(column, button[0]), gridY(row, button[1]) + 30, '0x24EA', button[0], button[1], button[2], 1);
             gump.AddText(gridTX(column, button[0]), gridTY(row, button[1]) + 30, '0', button[3]);
@@ -455,6 +459,16 @@ function HostGump(_) {
             column = 0
             row++;
 
+        });
+        spellsButtons.forEach(function (rowLayer) {
+            Orion.Print(rowLayer[0].toString())
+            rowLayer.forEach(function (button) {
+                gump.AddResizepic(group - partition + gridX(column, button[0]), gridY(row, button[1]) + 30, '0x24EA', button[0], button[1], i + '' + button[2], 1);
+                gump.AddText(group - partition + gridTX(column, button[0]), gridTY(row, button[1]) + 30, '0', button[3]);
+                column++;
+            })
+            column = 0
+            row++;
         });
         row = 0
         i++;
@@ -543,4 +557,10 @@ function UdpPlayer(name, port) {
             return this._skills;
         }
     }
+}
+
+function print_____Corpses() {
+    Orion.FindTypeEx('0x2006', any, ground).forEach(function (body) {
+        TextWindow.Print(body.Properties())
+    })
 }

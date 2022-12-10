@@ -91,10 +91,10 @@ function ArmouryHelper() {
             WalkTo(fire)
             corrupt.forEach(function (cr) {
                 Orion.UseObject(cr.Serial())
-                Orion.Wait(500)
+                Orion.Wait(750)
                 Orion.TargetObject(fire.Serial())
+                Orion.Wait(750)
             })
-            Orion.Wait(500)
         }
         var purified = Orion.FindTypeEx('0x4686', '0x0000', backpack)
         if (purified.length > 0) {
@@ -106,9 +106,9 @@ function ArmouryHelper() {
                 }).shift()
                 WalkTo(am)
                 Orion.UseObject(pure.Serial())
-                Orion.Wait(500)
+                Orion.Wait(750)
                 Orion.TargetObject(am.Serial())
-                Orion.Wait(500)
+                Orion.Wait(750)
             })
         }
 
@@ -132,12 +132,15 @@ function ArmouryHelper() {
                     Orion.ClientLastAttack(target.Serial())
                 }
                 while (target.Exists()) {
+                    if(target.InLOS())
+                        Orion.CastTarget('Energy Bolt',target.Serial())
                     Orion.Wait(1000);
                 }
             }
         }
         else {
-            Orion.Forget(target.Serial());
+            if(target!=null)
+                Orion.Forget(target.Serial());
         }
     }
 }
@@ -393,11 +396,11 @@ function FountainTest() {
                 })
                 .forEach(function (fp) {
                     Orion.MoveItem(fp.Serial())
-                    Orion.Wait(300)
+                    Orion.Wait(500)
                 })
             Orion.Wait(300);
             Orion.Drop(partObj.Serial(), 1, loc.Location().X(), loc.Location().Y(), Player.Z());
-            Orion.Wait(500);
+            Orion.Wait(750);
 
             Orion.Ignore(partObj.Serial(), true)
             //Orion.Print(loc.Location().X()+':'+loc.Location().Y())

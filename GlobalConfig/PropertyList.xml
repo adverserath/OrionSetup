@@ -97,6 +97,7 @@
     <property name="Weight"/>
     <property name="Crafting Resource"/>
     <property name="Essence Of"/>
+    <property name="Charges"/>
     <ignored_property name="Physical Damage"/>
     <ignored_property name="Fire Damage"/>
     <ignored_property name="Poison Damage"/>

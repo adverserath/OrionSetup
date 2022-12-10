@@ -1,6 +1,6 @@
 function PetGuard() {
     var mount = Orion.FindObject('mount')
-    Orion.Say('All guard me')
+    //Orion.Say('All guard me')
     if (mount != null) {
         while (!Orion.Contains(Player.Properties(), "Guarded")) {
             Orion.Say('All guard me')
@@ -33,7 +33,7 @@ function PetCome() {
     var mount = Orion.FindObject('mount')
 
     if (mount != null) {
-            Orion.Say('All Come')
+        Orion.Say('All Come')
     }
 }
 
@@ -41,7 +41,7 @@ function PetFollow() {
     var mount = Orion.FindObject('mount')
 
     if (mount != null) {
-            Orion.Say('All Follow me')
+        Orion.Say('All Follow me')
     }
 }
 
@@ -49,8 +49,8 @@ function PetStay() {
     var mount = Orion.FindObject('mount')
 
     if (mount != null) {
-            Orion.Say('All Stay')
-            Orion.Wait(300)
+        Orion.Say('All Stay')
+        Orion.Wait(300)
     }
 }
 
@@ -74,7 +74,7 @@ function PetCaller() {
         Orion.Terminate('PetCaller');
     }
     var pet = Orion.FindObject('mount')
-    Orion.Print('Calling pet '+pet.Name())
+    Orion.Print('Calling pet ' + pet.Name())
     while (pet != null) {
         if (pet != null && pet.Hits() < 7 && pet.Distance() > 2) {
             PetFollow()

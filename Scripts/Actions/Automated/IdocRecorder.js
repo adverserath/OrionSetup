@@ -7,12 +7,18 @@
 //#include helpers/Debug.js
 
 function RuneWalkOption() {
-var x = Orion.InputText(60000, "Input X")
-            var y = Orion.InputText(60000, "Input Y")
-			var map = GetMap()
-            UseClosestRuneOrWalk(parseInt(x), parseInt(y), map, 0)
-
+    var x = Orion.InputText(60000, "Input X")
+    var y = Orion.InputText(60000, "Input Y")
+    var map = GetMap()
+    UseClosestRuneOrWalk(parseInt(x), parseInt(y), map, 0)
+    
+function RuneWalkMapPoint() {
+    var x = Orion.GetWorldMapPointerPosition().X() //Orion.InputText(60000, "Input X")
+    var y = Orion.GetWorldMapPointerPosition().Y()// Orion.InputText(60000, "Input Y")
+    var map = GetMap()
+    UseClosestRuneOrWalk(parseInt(x), parseInt(y), map, 0)
 }
+
 function GetMap() {
     return Orion.ObjAtLayer(21, Player.Serial()).Map()
 }
@@ -103,10 +109,10 @@ function HouseWalker(map) {
             }).filter(function (house) {
                 var diff = Math.abs(house.HouseStatus()[house.HouseStatus().length - 1].Date() - new Date());
                 var minutes = Math.floor((diff / 1000) / 60);
-                if (minutes < 120) {
+                if (minutes < 300) {
                     checkedCount++
                 }
-                return minutes > 120
+                return minutes > 300
             })
         TextWindow.Print('Checked Houses:' + checkedCount)
         if (walkroute.length == 0) {
@@ -119,7 +125,8 @@ function HouseWalker(map) {
         var houseDist = house.DistanceTo()
         TextWindow.Print('NEXT HOUSE : ' + house.Serial() + '  X' + house.X() + ' Y' + house.Y() + '\nPath:' + pathToDest + '\t Distance' + houseDist)
 
-        if (houseDist > 20 && (pathToDest == 0 || pathToDest > 100)) {
+        if (houseDist > 20 && (pathToDest == 0 || pathToDest > 20)) {
+            //     if (houseDist < pathToDest) {
             Orion.Print("Call RuneWalk")
             UseClosestRuneOrWalk(house.X(), house.Y(), house.Map(), pathToDest)
             walkroute = walkroute.slice(1)

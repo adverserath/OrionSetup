@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="0" size="3">
-    <scavenger name="Arrows" container="mount" find_list="All items" ignore_list="Not use" check_weight_limit="true" selected="false" autostart_on_login="false"/>
-    <scavenger name="MinaxFountain" container="0x0000FEFD" find_list="MinaxFountain" ignore_list="Not use" check_weight_limit="true" selected="false" autostart_on_login="false"/>
-    <scavenger name="Everything" container="0x0000FEFD" find_list="All items" ignore_list="Not use" check_weight_limit="true" selected="true" autostart_on_login="false"/>
+    <scavenger name="Arrows" container="mount" find_list="All items" ignore_list="Not use" check_weight_limit="true" started="false" selected="false"/>
+    <scavenger name="MinaxFountain" container="0x0000FEFD" find_list="MinaxFountain" ignore_list="Not use" check_weight_limit="true" started="false" selected="false"/>
+    <scavenger name="Everything" container="0x0000FEFD" find_list="All items" ignore_list="Not use" check_weight_limit="true" started="false" selected="true"/>
 </data>

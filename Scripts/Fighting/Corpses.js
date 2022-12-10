@@ -57,7 +57,7 @@ function AutoLootAssist() {
                     Orion.Print("Walking to " + corpse.Serial())
                     WalkTo(corpse, 2);
                     Orion.UseObject(corpse.Serial())
-                    Orion.Wait(3000);
+                    Orion.Wait(1000);
                     //      Orion.Hide(corpse.Serial())
                     Orion.Ignore(corpse.Serial());
                 });
@@ -214,25 +214,28 @@ function OpenParagonCorpses() {
 function OpenNearbyCorpses() {
     var corpses = Orion.FindTypeEx('0x2006', any, ground, any, 2);
     corpses.forEach(function (corpse) {
-        Orion.OpenContainer(corpse.Serial());
+        if (!Orion.GumpExists('container', corpse.Serial())) {
+            Orion.OpenContainer(corpse.Serial());
+
+        }
         // Orion.Ignore(corpse.Serial());
     });
 }
 
 function RecoverCorpse() {
-var x = Player.X()+10
-var y = Player.Y()
-    var corpses = Orion.FindTypeEx('0x2006|0x0ECC', any, ground, any, 15).filter(function (corpse){
+    var x = Player.X() + 10
+    var y = Player.Y()
+    var corpses = Orion.FindTypeEx('0x2006|0x0ECC', any, ground, any, 15).filter(function (corpse) {
         Orion.Print(corpse.Name())
-        Orion.Print(Orion.Contains(corpse.Properties(),Player.Name()))
-    
-    return Orion.Contains(corpse.Properties(),Player.Name())
+        Orion.Print(Orion.Contains(corpse.Properties(), Player.Name()))
+
+        return Orion.Contains(corpse.Properties(), Player.Name())
     })
     corpses.forEach(function (corpse) {
-        
-    	WalkTo(corpse)
-        if(Orion.OpenContainer(corpse.Serial()))
-        	Orion.Ignore(corpse.Serial());
+
+        WalkTo(corpse)
+        if (Orion.OpenContainer(corpse.Serial()))
+            Orion.Ignore(corpse.Serial());
     });
 }
 
