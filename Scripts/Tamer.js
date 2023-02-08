@@ -5,7 +5,7 @@
 //#include Fighting/SpellWeaving.js
 //#include Training/CombatTrain.js
 //#include helpers/Target.js
-//#include WIP/TestScripts.js
+//#include helpers/Generic.js
 //#include Actions/Automated/ShortCuts.js
 //#include UDP/Receiver.js
 //#include UDP/Sender.js

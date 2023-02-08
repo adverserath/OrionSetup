@@ -145,7 +145,6 @@ function GoFightLichKing() {
 					Orion.TargetObject(lichking.Serial())
 				}
 			}
-
 			//WraithForm/DeathRay/Recall to Malas??
 		}
 		openLoot = Orion.Now() + (1000 * 60 * 3)
