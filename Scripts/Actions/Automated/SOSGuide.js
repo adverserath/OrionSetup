@@ -31,18 +31,17 @@ function ProcessMibsInBox() {
             Orion.MoveItemType('0xA30C|0x14EE', any, container.Serial(), 0, backpack)
             Orion.Wait(800)
         }
-		ProcessMibsInBackpack()
+        ProcessMibsInBackpack()
         WalkTo(container)
 
     }
 }
-function ProcessMibsInBackpack()
-{
-        Orion.FindTypeEx('0xA30C').forEach(function (mib) {
-            Orion.UseObject(mib.Serial())
-            Orion.Wait(800)
-        })
-        SortSOSToBoxes()
+function ProcessMibsInBackpack() {
+    Orion.FindTypeEx('0xA30C').forEach(function (mib) {
+        Orion.UseObject(mib.Serial())
+        Orion.Wait(800)
+    })
+    SortSOSToBoxes()
 }
 
 function SortSOSToBoxes() {
@@ -74,14 +73,14 @@ function AutoSOSDoerClosest() {
                 if (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0")) {
                     var soses = Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial())
                     var SosMap = []
-                  //  while (Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial()).length > 0) {
-                  //      soses.forEach(function (sos) {
-                  //          Orion.MoveItem(sos.Serial(), 1, backpack);
-                  //          Orion.Wait(1000)
-                  //      })
-                  //      Orion.Wait(1000)
-                  //  }
-                     while (Orion.MoveItemType('0x14EE', any,currentSOSBox.Serial())) {
+                    //  while (Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial()).length > 0) {
+                    //      soses.forEach(function (sos) {
+                    //          Orion.MoveItem(sos.Serial(), 1, backpack);
+                    //          Orion.Wait(1000)
+                    //      })
+                    //      Orion.Wait(1000)
+                    //  }
+                    while (Orion.MoveItemType('0x14EE', any, currentSOSBox.Serial())) {
                         Orion.Wait(800)
                     }
                     ProcessAllSosInBackpack(sosLevel, SosMap)
@@ -91,13 +90,13 @@ function AutoSOSDoerClosest() {
                     //        Orion.Wait(1000)
                     //    })
                     //}
-                     while (Orion.MoveItemType('0x14EE', any,backpack,0,currentSOSBox.Serial())) {
+                    while (Orion.MoveItemType('0x14EE', any, backpack, 0, currentSOSBox.Serial())) {
                         Orion.Wait(800)
                     }
                     //SosMap.forEach(function (sos) {
                     while (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0") && SosMap.length != 0) {
                         Orion.Print(58, currentSOSBox.Properties())
-                        Orion.Print(59, 'SOS Map Count: '+ SosMap.length)
+                        Orion.Print(59, 'SOS Map Count: ' + SosMap.length)
 
                         var bx = Orion.RegRead('boatX');
                         var by = Orion.RegRead('boatY');
@@ -171,9 +170,8 @@ function ProcessAllSosInBackpack(sosLevel, SosMap) {
     Orion.FindTypeEx('0x14EE').forEach(function (sos) {
         Orion.Wait(1000)
         var pos
-        while(pos==null)
-        {
-        	pos = GetSOSLocation(sos)
+        while (pos == null) {
+            pos = GetSOSLocation(sos)
         }
         var zone = GetZone(pos.X(), pos.Y())
         Orion.Print('Zone: ' + zone)
@@ -393,6 +391,26 @@ function ChestRecoveryService() {
     BankAndHome()
 }
 
+function DoNets() {
+    var box = SelectTarget('storage')
+    while (true) {
+        WalkTo(box.Serial())
+        Orion.OpenContainer(box.Serial(), 1000)
+        Orion.Wait(1000)
+        Orion.MoveItemType('0x0DCA', any, box.Serial())
+        Orion.Wait(1000)
+        Orion.MoveItemType('0x0DCA', any, box.Serial())
+        ProcessNets()
+        RecallRune(seabook);
+        Orion.Wait(1000)
+        MoveAllSOSInBagToChests(true);
+        MoveMapsInBagToChests()
+        // while (Orion.MoveItemType('0x0DCA', any, box.Serial(), 5) && Player.Weight() < (Player.MaxWeight() - 60)) {
+        //     Orion.Wait(850)
+        // }
+    }
+}
+
 function BankAndHome() {
     Debug(' Method Entry - BankAndHome')
 
@@ -410,6 +428,10 @@ function BankAndHome() {
     RecallRune(seabook);
     ChestLootManager()
     Orion.Wait(1000)
+    ProcessNets()
+    RecallRune(seabook);
+    if (Orion.Count('0xA30C'))
+        ChestLootManager()
 }
 
 function HasChest() {
@@ -423,10 +445,20 @@ function HasChest() {
     return (result.length != 0)
 }
 
+function TestMoveLegendaryMajorItem() {
+    WalkTo(FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
+    MoveItemText("Legendary Artifact", FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
+    MoveItemText("Major Artifact", FindGroundItemWithProperties(["Engraved: Major"]).Serial())
+
+    //MoveItemText("Legendary Artifact", FindGroundItemWithProperties("Engraved: Legendary"]).Serial())
+    //MoveItemText("Major Artifact", FindGroundItemWithProperties("Engraved: Legendary"]).Serial())
+}
+
 function ChestLootManager() {
     Debug(' Method Entry - ChestLootManager')
     //Walk to goldchest
     Orion.WalkTo(Player.X() + 3, Player.Y() - 3)
+    // Orion.PauseScript()
     var chests = Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Name(), "Chest") })
 
     chests.forEach(function (chest) {
@@ -445,7 +477,7 @@ function ChestLootManager() {
     MoveAllSOSInBagToChests(chests.length != 0);
 
     Orion.Print("MoveStash")
-    MoveStashMapsInBagToChests();
+    MoveMapsInBagToChests();
 
 
     Orion.Print("Engraved: Sea Loot")
@@ -456,22 +488,26 @@ function ChestLootManager() {
     MoveItemText("Fabled Fishing Net", FindGroundItemWithProperties(["Engraved: Fabled Nets"]).Serial())
 
     Orion.Print("Engraved: Special Nets")
-    MoveItemText("Fishing Net", FindGroundItemWithProperties(["Engraved: Special Nets"]).Serial())
+    //MoveItemText("Fishing Net", FindGroundItemWithProperties(["Engraved: Special Nets"]).Serial())
+    // Orion.PauseScript()
+    MoveItemText("Fishing Net", backpack)
 
     Orion.Print("Engraved: Sea Loot")
     Orion.FindListEx('Fishies').forEach(function (fish) {
+        if (Orion.Contains(fish.Name(), "Special Fishing Net"))
+            return
         MoveItemsFromPlayer(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial(), fish.Graphic(), any);
     })
 
-    Orion.Print("Engraved: Sea Loot")
-    MoveItemText("Waterstained SOS|Ancient SOS|Message In|Treasure Map", FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial())
+    MoveItemText("Ancient SOS", FindGroundItemWithProperties(["Engraved: Ancient SOS"]).Serial())
+
     Orion.Wait(1000);
     var seaBin = FindGroundItemWithName("A Trash Barrel").Serial()
 
 
     //MoveItemsFromPlayer(goldChestId, '0x0EED')
     Orion.Print(_essenceBox)
-    MoveItemText("Essence|Crafting Resource", FindGroundItemWithProperties([_essenceBox]).Serial())
+    MoveItemText("Essence|Crafting Resource|Abyssal Cloth", FindGroundItemWithProperties([_essenceBox]).Serial())
     Orion.Print(_rareBox)
 
     MoveItemText("Abysmal|Enchanted|Driftwood|Backpack|Wedding|Oars|Copper Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Woven|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), true)
@@ -490,6 +526,11 @@ function ChestLootManager() {
         MoveItemText("The Shipwreck", FindGroundItemWithProperties([_rareBox]).Serial())
 
     }
+
+    WalkTo(FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
+    MoveItemText("Legendary Artifact", FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
+    MoveItemText("Major Artifact", FindGroundItemWithProperties(["Engraved: Major"]).Serial())
+
     WalkTo(FindGroundItemWithProperties([_bin]).Serial())
     MoveItemText("Shipwreck", FindGroundItemWithProperties([_bin]).Serial())
 
@@ -498,6 +539,21 @@ function ChestLootManager() {
     //   BotPush('Paused')
     //    if (Player.WarMode())
     //        Orion.PauseScript()
+}
+
+function ProcessNets() {
+    Debug(' Method Entry - ProcessNets')
+    if (Orion.Count('0x0DCA') > 0) {
+        RecallRune(FindBackpackItemWithProperties(["Magincia Dock"]).Serial())
+        Orion.Wait(1500)
+        //Orion.UseObject(FindBackpackItemWithProperties(["Fishing Net"]).Serial())
+        ThrowTheNets()
+        IgnoreAllKrakenDead()
+        Orion.Step('North')
+        Orion.Wait(18000)
+        KillAndLootOnly()
+    }
+
 }
 
 function Resume() {
@@ -513,7 +569,7 @@ function Resume() {
 //#include helpers/Map.js
 //#include helpers/SOS.js
 //#include helpers/PathFinding.js
-//#include WIP/TestScripts.js
+//#include helpers/Generic.js
 //#include helpers/SOSList.js
 //#include helpers/Pet.js
 //#include Fighting/Tamer.js

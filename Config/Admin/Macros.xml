@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="TraveKey" looped="false" delay="1">
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000015" id="0x76903130" button="1"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000016" id="0x76903130" button="5"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000017" id="0x76903130" button="1"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000018" id="0x76903130" button="6"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000019" id="0x76903130" button="2"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001A" id="0x76903130" button="3"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001B" id="0x76903130" button="4"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001C" id="0x76903130" button="2"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001D" id="0x76903130" button="5"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001E" id="0x76903130" button="6"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x0000001F" id="0x76903130" button="3"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000020" id="0x76903130" button="5"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000021" id="0x76903130" button="6"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000022" id="0x76903130" button="4"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000023" id="0x76903130" button="5"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000024" id="0x76903130" button="5"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000025" id="0x76903130" button="6"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000026" id="0x76903130" button="8"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000008" id="0xD937D1DB" button="3"/>
     </macro>
 </data>

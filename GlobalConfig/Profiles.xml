@@ -18,6 +18,7 @@
     <profile serial="0x00006EF6" file="Aki"/>
     <profile serial="0x000072B7" file="Atten_Sub2"/>
     <profile serial="0x0000813F" file="Tim"/>
+    <profile serial="0x00008DDD" file="PVPNinja"/>
     <profile serial="0x000097BB" file="Default"/>
     <profile serial="0x000097F8" file="Barnacle"/>
     <profile serial="0x000099E8" file="Atten"/>

@@ -434,7 +434,7 @@ function AddBadTile() {
 //#include helpers/Debug.js
 
 //#include helpers/Notifier.js
-//#include WIP/TestScripts.js
+//#include helpers/Generic.js
 //#include helpers/Gates.js
 
 //#include Actions/Automated/Cartographer.js

@@ -17,10 +17,10 @@ var pinkDye = 212
 var spellTalis = 213
 
 function Claim() {
-	var item = 203
+	var item = 230
 	var itemsCount = Orion.FindTypeEx(any, any, backpack).length
 	Orion.Print('items: ' + itemsCount)
-	if (itemsCount == 125) {
+	//if (itemsCount == 125) {
 		var npc = SelectTarget('Select NPC')
 		var start = Orion.Now()
 		Orion.RequestContextMenu(npc.Serial());
@@ -47,6 +47,7 @@ function Claim() {
 		}
 	}
 }
+
 function CutSomething() {
 	Orion.UseType('0x0F9F', '0xFFFF');
 	if (Orion.WaitForTarget(1000))
@@ -70,4 +71,10 @@ function PartClaim(button) {
 	}
 }
 
-
+function MoveCuttable() {
+	var item = SelectTarget().Graphic()
+	var box = SelectTarget()
+	while (Orion.Count(item, any, backpack, 1, false) > 0) {
+		Orion.MoveItemType(item, any, backpack, 0, box.Serial())
+	}
+}

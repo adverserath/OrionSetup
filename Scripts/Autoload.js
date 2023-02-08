@@ -56,9 +56,27 @@ function Login() {
 }
 
 function ShowArrowOnMap() {
-  Orion.SetWorldMapPointerPosition(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y());
+  while (true) {
+    Orion.Wait(500)
+    Orion.SetWorldMapPointerPosition(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y());
+  }
 }
+function AnnounceOrcs() {
+  var x = Player.X() - Orion.QuestArrowPosition().X()
+  var y = Player.Y() - Orion.QuestArrowPosition().Y()
+  var vDirect = " North"
+  var hDirect = " West"
+  if (y < 0) {
+    vDirect = " South"
+  }
+  if (x < 0) {
+    hDirect = " East"
+  }
 
+  Orion.SayParty('Orcs Spotted: ' + Math.abs(x) + hDirect + '  :  ' + Math.abs(y) + vDirect)
+  Orion.SetWorldMapPointerPosition(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y());
+
+}
 function TossACoin() {
   if (Orion.FindTypeEx('0x0F87', any, backpack).length == 0) {
     BotPush(Player.Name() + ' has no coins')

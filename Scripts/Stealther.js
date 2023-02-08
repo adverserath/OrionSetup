@@ -2,19 +2,23 @@
 //#include Actions/Automated/Pickup.js
 //#include helpers/Target.js
 //#include helpers/Notifier.js
+//#include helpers/Debug.js
 
 function DoorOpened() {
-    lastdoors = Orion.FindType('0x06CD', any, ground).length
-    while (true) {
-        Orion.Wait(500)
-        var doors = Orion.FindType('0x06CD', any, ground).length
-        if (doors != lastdoors) {
-            if (doors < lastdoors) {
-                BotPush('DoorOpened :' + Orion.Time())
-                lastdoors = doors
-            }
-        }
-    }
+	lastdoors = Orion.FindType('0x06CD', any, ground).length
+	while (true) {
+		Orion.Wait(500)
+		var doors = Orion.FindType('0x06CD', any, ground).length
+		if (doors != lastdoors) {
+			if (doors < lastdoors) {
+				BotPush('DoorOpened :' + Orion.Time())
+				lastdoors = doors
+			}
+		}
+	}
+}
+function ShowJou() {
+	Orion.ShowJournal()
 }
 
 function RunHiddenOwnCounter() {
@@ -44,7 +48,7 @@ function RunHiddenOwnCounter() {
 				Orion.AddDisplayTimer('hide', 10000, 'AboveChar');
 			}
 			var startTime = Orion.Now()
-			if (!Player.WarMode() && !Orion.DisplayTimerExists('hide') && lastStepNumber >=(StealthLimit-4)) {
+			if (!Player.WarMode() && !Orion.DisplayTimerExists('hide') && lastStepNumber >= (StealthLimit - 4)) {
 				Orion.UseSkill('Stealth')
 				Orion.AddDisplayTimer('hide', 10000, 'AboveChar');
 			}
@@ -55,7 +59,7 @@ function RunHiddenOwnCounter() {
 				lastStepNumber = 0
 			}
 
-			Orion.ClientOptionSet('BlockRunWhileHidden', lastStepNumber >= (StealthLimit-4));
+			Orion.ClientOptionSet('BlockRunWhileHidden', lastStepNumber >= (StealthLimit - 4));
 
 			lastStepTime = Orion.Now()
 		}

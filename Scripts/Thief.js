@@ -7,7 +7,7 @@ function StealStuff() {
 				return player.Properties().indexOf('Legacy') != -1
 					&& checkedPlayers.indexOf(player.Serial()) == -1
 			}).length == 0) {
-			Orion.Wait(50)
+			Orion.Wait(150)
 		}
 		TextWindow.Print('Player Detected')
 
@@ -44,13 +44,14 @@ function StealStuff() {
 		}
 
 		var backpackId = Orion.ObjAtLayer('backpack', player.Serial()).Serial()
+		Orion.Print('Backpack : ' + backpackId)
 		Orion.UseObject(backpackId)
 		while (Orion.FindTypeEx(any, any, backpackId).length == 0) {
 			Orion.Wait(100)
 			Orion.UseObject(backpackId)
 		}
 
-		Orion.ToggleScript('PrintContainer', true, [Orion.FindObject(backpackId), player, true]);
+		Orion.ToggleScript('PrintContainer', true, [backpackId.Serial(), player.Serial(), true]);
 		//PrintContainer(Orion.FindObject(backpackId), player, true)
 		Orion.Print('Check for Powerscroll')
 		var item = FindPowerscroll(backpackId)
@@ -272,8 +273,7 @@ function StealTarget() {
 	}
 }
 
-function FastInsure()
-{
+function FastInsure() {
 	Orion.RequestContextMenu(Player.Serial());
 	Orion.WaitContextMenuCliloc(Player.Serial(), 3006201);
 }

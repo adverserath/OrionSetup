@@ -40,7 +40,7 @@ function SelectMultipleTargets(_) {
 function SelectTarget(itemUsage) {
   Debug(' Method Entry - SelectTarget')
   if (itemUsage != null) {
-    Orion.Print("Select your" + itemUsage);
+    Orion.Print("Select your " + itemUsage);
   }
   var type = Orion.WaitForAddObject('myTarget');
   Debug('Type:' + type);
@@ -110,9 +110,16 @@ function RandomTarget(_private) {
   return nearby[Orion.Random(nearby.length)];
 }
 
-function PrintContainer(object, mobile, ignoreNonStealable) {
+function PrintContainer(objectSerial, mobileSerial, ignoreNonStealable) {
   Debug(' Method Entry - PrintContainer')
   Orion.Print('PrintContainer')
+  var mobile = Orion.FindObject(mobileSerial)
+  var object = Orion.FindObject(mobileSerial)
+  if (object == null) {
+    Orion.Print('Cannot find: ' + objectSerial)
+    return
+  }
+
   var items = ''
   if (mobile != null) {
     items = mobile.Name() + '\n'

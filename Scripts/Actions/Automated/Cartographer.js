@@ -65,10 +65,42 @@ var incompleteBox = ''
 
 var useRuneBooks = true
 
+
+function Coin1By1() {
+    var container = '0x400D5290'
+    while (Orion.FindType('0x0EED', '0xFFFF', container, 'item|fast|recurse').length > 0) {
+        var findItems0 = Orion.FindType('0x0EED', '0xFFFF', container, 'item|fast|recurse')
+
+        if (findItems0.length) {
+            Orion.DragItem(findItems0.shift(), 1);
+            Orion.Wait('300');
+        }
+        Orion.DropDraggedItem(0x00000545, 44, 77);
+        Orion.Wait('800');
+        GoldLooter()
+    }
+
+}
+function GoldLooter() {
+    lootLists = 'Gold'
+
+    if (Orion.ClientLastAttack() == '0x00000000' && Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends|inlos', 2, 'gray|criminal|orange|red').length == 0) {
+        var corpses = Orion.FindTypeEx('0x2006|0x0ECC', any, ground, any, 2)
+        Orion.Print('Found corpses: ' + corpses.length)
+        corpses.forEach(function (corpse) {
+            Orion.OpenContainer(corpse.Serial())
+            Orion.Wait(1000)
+            Orion.Ignore(corpse.Serial())
+        });
+
+    }
+}
+
 function MonitorAndDoStashBox() {
     TextWindow.Open()
     var chest = Orion.FindTypeEx('0x0E3D', any, ground, 'item', 20).filter(function (box) {
-        return Orion.Contains(box.Properties(), "T-Map Trammel Stash")
+        return Orion.Contains(box.Properties(), "Engraved: Trammel Stash")
     })[0]
     while (true) {
         Debug(' Starting New Map')
@@ -287,7 +319,10 @@ function DoAllMapsInBag(inMaps) {
             //ReturnHome
             Mount(true)
             Orion.Wait(1000)
-            SortLoot()
+            Orion.ToggleScript('SortLoot')
+            while (Orion.ScriptRunning('SortLoot') > 0) {
+                Orion.Wait(1000)
+            }
         }
     })
 }
@@ -402,6 +437,8 @@ function ReturnHomeSortLoot() {
     MoveItemTextFromTo('A Bag', backpack, Orion.FindObject(bin))
 
     MoveItemTextFromTo("Completed", backpack, bin)
+    //Move Maps
+    MoveMapsInBagToChests()
 }
 
 function GoToClosestPortal() {
@@ -561,6 +598,17 @@ function ResetContainerView() {
     }
     Orion.OpenContainer(backpack)
 }
+
+function FillScrollBinder() {
+    var binder = SelectTarget()
+    while (Orion.Count('0x14EF') && Orion.ObjectExists(binder.Serial())) {
+        Orion.UseObject(binder.Serial())
+        Orion.WaitForTarget(1000)
+        Orion.TargetType('0x14EF')
+        Orion.Wait(300)
+    }
+}
+
 //#include helpers/Target.js
 //#include helpers/Magic.js
 //#include helpers/Beetle.js
@@ -568,3 +616,4 @@ function ResetContainerView() {
 //#include helpers/ItemManager.js
 //#include helpers/Debug.js
 //#include Actions/RuneBookController.js
+//#include helpers/Looter.js

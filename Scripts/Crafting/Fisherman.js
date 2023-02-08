@@ -14,10 +14,10 @@ function SeaFish() {
                 var corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 2);
                 while (corpses.length == 0) {
                     Orion.Wait(1000)
-                      corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 16)
-    .filter(function (body) {
-      return body.Count() == 150 //sea serpent
-    })
+                    corpses = Orion.FindTypeEx('0x2006', any, ground, 'item', 16)
+                        .filter(function (body) {
+                            return body.Count() == 150 //sea serpent
+                        })
                 }
                 var startX = Player.X()
                 corpses.forEach(function (corpse) {
@@ -73,17 +73,17 @@ function SeaFish() {
                 });
             }
             Orion.FindListEx('JustFish')
-            .filter(function(fish){
-return fish.Name()!='A Big Fish' //Dont cut Big Fish
-})
-            .forEach(function (fish) {
+                .filter(function (fish) {
+                    return fish.Name() != 'A Big Fish' //Dont cut Big Fish
+                })
+                .forEach(function (fish) {
 
-                Orion.UseType(cuttingtool);
-                if (Orion.WaitForTarget(1000)) {
-                    Orion.TargetObject(fish.Serial());
-                }
-                Orion.Wait(1000)
-            })
+                    Orion.UseType(cuttingtool);
+                    if (Orion.WaitForTarget(1000)) {
+                        Orion.TargetObject(fish.Serial());
+                    }
+                    Orion.Wait(1000)
+                })
 
             if (Player.Weight() > Player.MaxWeight()) {
                 Orion.ActivateClient();
@@ -147,11 +147,10 @@ return fish.Name()!='A Big Fish' //Dont cut Big Fish
     BotPush('Fisher is dead')
 }
 
-function MobsInArea()
-{
-var mobs = Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').length
-                Orion.Print(mobs)
+function MobsInArea() {
+    var mobs = Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends', 13, 'gray|criminal|red').length
+    Orion.Print(mobs)
 }
 function SortFishLoot() {
     WalkTo(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial())
@@ -160,7 +159,7 @@ function SortFishLoot() {
     MoveItemText("Fishing Net", FindGroundItemWithProperties(["Engraved: Special Nets"]).Serial())
 
     MoveAllSOSInBagToChests();
-    MoveStashMapsInBagToChests();
+    MoveMapsInBagToChests();
 
     Orion.FindListEx('Fishies').forEach(function (fish) {
         MoveItemsFromPlayer(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial(), fish.Graphic(), any);
@@ -549,7 +548,7 @@ function GetWater2(range) {
 //#include helpers/SOS.js
 //#include helpers/SOSList.js
 //#include helpers/PathFinding.js
-//#include WIP/TestScripts.js
+//#include helpers/Generic.js
 //#include helpers/ItemManager.js
 //#include helpers/Notifier.js
 //#include helpers/Pet.js

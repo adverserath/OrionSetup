@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data cast_spells_from_book_if_not_scrolls="false">
+    <macro name="macro" looped="true" delay="0.9">
+        <action type="5" convert_type="0" waiting_time="1000" value="1"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x00007B95" graphic="0x02D0" color="0x0A99"/>
+    </macro>
+</data>

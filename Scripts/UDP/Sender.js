@@ -22,9 +22,10 @@
 //#include Actions/PIrating/Pirates.js
 //#include gumps/CasterGump.js
 //#include helpers/Looter.js
-
+//#include helpers/Generic.js
 var hostPort = 2597;
 var clientServer = "127.0.0.1"
+
 
 function DistanceFrom() {
     var t = SelectTarget()

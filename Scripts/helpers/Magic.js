@@ -226,8 +226,10 @@ function Cast(spellName, targetSerial) {
 }
 
 function ManaCheck(required, lmc) {
-	Debug(' Method Entry - ManaCheck')
-	return Player.Mana() > required * lmc
+	Debug(' Method Entry - ManaCheck ' + required + '  ' + lmc)
+	var outcome = Player.Mana() > required * lmc
+	Debug(' Result ' + outcome)
+	return outcome
 }
 
 function EatMagicFood() {
@@ -385,3 +387,48 @@ function RenameRune(runeSerial, name) {
 		RenameRune(runeSerial, name)
 	}
 }
+
+function DeathRayAllParagons() {
+	while (true) {
+		var paragons = Orion.FindTypeEx(any, '0x0501', ground, 'mobile', 10, 'gray|criminal|red')
+		if (paragons.length > 0) {
+			var paragon = paragons.shift()
+			while (paragon.Exists() && !Orion.BuffExists('0x9BD2')) {
+				var startTime = Orion.Now()
+				Orion.Cast('Death Ray')
+				if (Orion.WaitForTarget(4000)) {
+					{
+						Orion.TargetObject(paragon.Serial())
+					}
+				}
+				Orion.Wait(1000)
+			}
+			Orion.Wait(1000)
+		}
+	}
+}
+// }
+// 		if(Orion.FindTypeEx(any,'0x0501',ground,'mobile',18,'gray|criminal|red'))
+// 		if (!Orion.BuffExists('0x9BD2')) {
+// 			Orion.Cast('Death Ray')
+// 			if (Orion.WaitForTarget(4000)) {
+// 				while (Orion.BuffExists('0x9BD2')) {
+// 					if (Player.Mana() > 60 && !Orion.BuffExists('Arcane Empowerment')) {
+// 						Cast('Arcane Empowerment')
+// 						Orion.Wait(2000)
+// 					}
+// 					if (Player.Followers() < 2) {
+// 						Cast('Summon Fey')
+// 						Orion.Wait(1000)
+// 						Orion.Say('All guard')
+// 					}
+// 					Orion.CastTarget('Flame strike', lichking.Serial())
+// 					Orion.Wait(2500)
+
+// 				}
+// 				Orion.TargetObject(lichking.Serial())
+// 			}
+// 		}
+// 		//WraithForm/DeathRay/Recall to Malas??
+// 	}
+// }

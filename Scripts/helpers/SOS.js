@@ -118,26 +118,6 @@ function MoveSoSToChest(serial, zone) {
     Orion.Wait(800)
 }
 
-function MoveStashMapsInBagToChests() {
-    var foundMaps = 0
-
-    // Move stash maps to box
-    var maps = Orion.FindTypeEx('0x14EC', any, backpack).filter(function (map) {
-        return Orion.Contains(map.Properties(), "Trammel") && Orion.Contains(map.Properties(), "Stash")
-    })
-    maps.forEach(function (map) {
-        var chest = Orion.FindTypeEx('0x0E3D', any, ground, 'item', 20).filter(function (box) {
-            return Orion.Contains(box.Properties(), "T-Map Trammel Stash")
-        })[0]
-        WalkTo(chest)
-        Orion.Wait(800)
-        Orion.MoveItem(map.Serial(), 1, chest.Serial())
-        Orion.Wait(800)
-        foundMaps++
-    })
-    CountGlobalValue('foundMaps', foundMaps, 'Maps found')
-}
-
 function OpenAnyMiBs() {
     Orion.FindTypeEx('0xA30C').forEach(function (_) {
         Orion.UseObject(_.Serial())

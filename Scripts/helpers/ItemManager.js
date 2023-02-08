@@ -22,7 +22,9 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recurs
     if (toContainer.Serial() != backpack) {
         WalkTo(toContainer, 1)
     }
-    for (var attempt = 0; attempt < 2; attempt++) {
+    var tryTime = Orion.Now() + 10000
+    while (Orion.Now() < tryTime && Orion.Count(graphicIDs, color, fromContainer.Serial())) {
+
         var items = Orion.FindTypeEx(graphicIDs, color, fromContainer.Serial(), '', 'finddistance', '', recursive);
         items.forEach(function (item) {
 
@@ -147,11 +149,18 @@ function MoveItemText(text, to, alert) {
         Orion.Print('finding ' + to)
         to = Orion.FindObject(to)
     }
+
     Orion.FindTypeEx(any, any, backpack)
-        .filter(function (item) { return Orion.Contains(item.Properties(), text) })
+        .filter(function (item) {
+            return text.split('&').every(function (mustHave) {
+                return Orion.Contains(item.Properties(), mustHave)
+            })
+        })
 
         .forEach(function (loot) {
-
+            if (to.Distance() > 2) {
+                WalkTo(to, 1)
+            }
             if (alert) {
                 BotPush('Looted' + loot.Name())
             }

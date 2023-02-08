@@ -113,6 +113,13 @@ function SampireSpells() {
     while (true) {
         Orion.Wait(500)
         while (!Player.Dead() && Player.WarMode()) {
+            var allMobsLength = Orion.FindTypeEx(GetMobType(), any, ground,
+                'live|ignoreself|ignorefriends', 18, 'gray|criminal|red|enemy').length
+
+            if (allMobsLength == 0) {
+                Orion.Wait(1000)
+                continue;
+            }
             var lastAttacker = Orion.FindObject(Orion.ClientLastAttack())
             if (lastAttacker != null) {
                 Orion.Wait(200)
@@ -249,7 +256,7 @@ function TargetClosest(_) {
                 pathDistance = 0
             if (lastAttacker == null || !lastAttacker.InLOS() || lastAttacker.Distance() < (pathDistance - 10) || pathDistance == 0) {
                 Orion.Print('no enemy')
-                Orion.Wait(100)
+                Orion.Wait(300)
                 var closest = Orion.FindTypeEx(GetMobType(), targetColor, ground,
                     'live|ignoreself|ignorefriends', 1, 'gray|criminal|red|enemy')
 
@@ -396,6 +403,7 @@ function AbilityIsActive(abilityName) {
 }
 
 function DoAbility(abilityName) {
+    Orion.PrintFast(self, '0x0111', 1, 'Using ' + abilityName);
     var index = Orion.GetCurrentAbilityNames().indexOf(abilityName)
     if (index == 0) {
         Orion.UseAbility('Primary', true)
