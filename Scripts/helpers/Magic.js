@@ -151,6 +151,7 @@ function GoHome() {
 			return Orion.Contains(book.Properties(), 'Home')
 		}).shift()
 	if (runebook != null) {
+		Orion.Print("Going to:" + runebook.Serial())
 		if (Orion.SkillValue('Magery', 'base') > 40) {
 			CastSpellOnTarget("Recall", runebook.Serial());
 		}

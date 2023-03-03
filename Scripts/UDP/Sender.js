@@ -23,9 +23,9 @@
 //#include gumps/CasterGump.js
 //#include helpers/Looter.js
 //#include helpers/Generic.js
+//#include Fighting/AutoHonor.js
 var hostPort = 2597;
 var clientServer = "127.0.0.1"
-
 
 function DistanceFrom() {
     var t = SelectTarget()

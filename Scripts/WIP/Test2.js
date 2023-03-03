@@ -1,6 +1,9 @@
 //#include helpers/Target.js
 //#include helpers/Movement.js
 
+
+
+
 function testColours() {
   for (i = 0; i < 90; i++) {
     Orion.Print(i, "value;" + i)
@@ -8,28 +11,25 @@ function testColours() {
   }
 }
 
-function FindItemByName()
-{
-Orion.Print('What are you looking for')
-var text = Orion.InputText();
-Orion.FindTypeEx(any, any, ground,'item',25)
-.filter(function (item){return Orion.Contains(item.Properties(),text)})
-.forEach(function (item){
-Orion.AddFakeMapObject(Orion.Random(10000), item.Graphic(), '0xff00', item.X(), item.Y(), item.Z()+2);
-Orion.Print('found '+item.Name())
-WalkTo(item)
-Orion.UseObject(item.Serial())
-});
+function FindItemByName() {
+  Orion.Print('What are you looking for')
+  var text = Orion.InputText();
+  Orion.FindTypeEx(any, any, ground, 'item', 25)
+    .filter(function (item) { return Orion.Contains(item.Properties(), text) })
+    .forEach(function (item) {
+      Orion.AddFakeMapObject(Orion.Random(10000), item.Graphic(), '0xff00', item.X(), item.Y(), item.Z() + 2);
+      Orion.Print('found ' + item.Name())
+      WalkTo(item)
+      Orion.UseObject(item.Serial())
+    });
 }
 
-function WalkInLoop()
-{
-SetLocations()
-while(true)
-{
-LocationLoop()
-Orion.Wait(2000)
-}
+function WalkInLoop() {
+  SetLocations()
+  while (true) {
+    LocationLoop()
+    Orion.Wait(2000)
+  }
 }
 var herding = []
 function HerdEverything() {
@@ -42,8 +42,8 @@ function HerdEverything() {
       var npc = Orion.FindTypeEx(any, any, ground,
         'nothuman|ignoreself|mobile|inlos', 10, 'gray|criminal')
       //  .filter(function (mob) {
-     //     return Orion.Contains(mob.Properties(), 'Tameable') && mob.Distance() > 2
-    //    })
+      //     return Orion.Contains(mob.Properties(), 'Tameable') && mob.Distance() > 2
+      //    })
       npc.forEach(function (npc) {
         if (herding.indexOf(npc.Serial()) == -1) {
           Orion.Print(npc.Name())
@@ -105,8 +105,8 @@ function Tracking() {
     Orion.Wait(1000);
     Gump = Orion.GetLastGump();
     count++
-    if (Gump.TextList().indexOf('grubber')!=-1) {
-      Orion.Print(39,'found grubber')
+    if (Gump.TextList().indexOf('grubber') != -1) {
+      Orion.Print(39, 'found grubber')
 
     }
     Orion.Wait(3000);

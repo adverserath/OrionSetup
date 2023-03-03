@@ -43,7 +43,7 @@ var pages = [1, 8, 15, 22];
 var spellNumbers = [2, 9, 16, 23, 30, 37, 44, 51, 58, 65, 72, 79, 86, 93, 100, 107];
 var toolSet = '0x0FBF';
 var listName = 'Inscription';
-var storageBox = '0x40148DC5';
+var storageBox = '0x400F48A7';
 
 function StartInscription(scrollBox) {
     Restock(listName);

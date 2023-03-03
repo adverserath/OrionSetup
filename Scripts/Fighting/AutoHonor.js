@@ -4,7 +4,7 @@ var targetHits;
 var targetDistance;
 function AutoHonor() {
     while (true) {
-        Orion.Wait(400);
+        Orion.Wait(100);
 
         if (Orion.ClientLastAttack() != '0x00000000'
             && Orion.ObjectExists(Orion.ClientLastAttack())
@@ -14,6 +14,7 @@ function AutoHonor() {
             targetHits = target.Hits()
             targetDistance = target.Distance();
             var mobile = HonorTarget(mobile)
+            Orion.Wait(1000)
         }
     }
 }

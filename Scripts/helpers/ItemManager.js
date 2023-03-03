@@ -17,10 +17,10 @@ function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recurs
         }
     }
     if (fromContainer.Serial() != backpack) {
-        WalkTo(fromContainer, 1)
+        WalkTo(fromContainer, 2)
     }
     if (toContainer.Serial() != backpack) {
-        WalkTo(toContainer, 1)
+        WalkTo(toContainer, 2)
     }
     var tryTime = Orion.Now() + 10000
     while (Orion.Now() < tryTime && Orion.Count(graphicIDs, color, fromContainer.Serial())) {
@@ -231,4 +231,9 @@ function MoveAllGoldToBank() {
         Orion.Wait(1000)
     }
     Orion.Print('Done banking')
+}
+function MoveSelectedItemToContainer() {
+    var itemType = SelectTarget('Select Item Type').Graphic()
+    var container = SelectTarget('Container')
+    MoveItems(backpack, container, itemType, any, 0, true)
 }

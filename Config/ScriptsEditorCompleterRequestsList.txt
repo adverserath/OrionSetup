@@ -1,5 +1,9 @@
-WarMode
+ObjectExists
 Orion
+ClientOptionGet
+RequestContextMenu
+UseSkillTarget
+WarMode
 Poisoned
 MaxHits
 TargetObject
@@ -134,7 +138,6 @@ ClearTimers
 ClearVars
 Click
 ClientLastTarget
-ClientOptionGet
 ClientOptionSet
 ClientViewRange
 Close
@@ -387,7 +390,6 @@ OAOptionGet
 OAOptionSet
 OAVersion
 ObjAtLayer
-ObjectExists
 OnOffHotkeys
 Open
 OpenDoor
@@ -442,7 +444,6 @@ RenameMount
 Replayed
 ReplyID
 ReplyText
-RequestContextMenu
 RequestName
 Resend
 ResetIgnoreList
@@ -605,7 +606,6 @@ UseFromGroundList
 UseIgnoreList
 UseItemOnMobile
 UseSkill
-UseSkillTarget
 UseTypeList
 UseWrestlingDisarm
 UseWrestlingStun

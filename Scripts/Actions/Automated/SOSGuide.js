@@ -47,9 +47,22 @@ function ProcessMibsInBackpack() {
 function SortSOSToBoxes() {
     ProcessAllSosInBackpack(-1, [])
 }
+
 function AutoSOSDoerClosest() {
     var startNumber = parseInt(Orion.InputText(60000, 'Start at which number'))
-
+	Orion.Print(58, '1 = Normal (default)')
+	Orion.Print(62, '2 = Ancient')
+	Orion.Print(66, '3 = Both')
+	
+	var sosTypes = parseInt(Orion.InputText(60000, 'Which Type?'))
+	var sosColor = '0x0000'
+	if(sosTypes==1)
+		sosColor='0x0000'
+	if(sosTypes==2)
+		sosColor='0x0481'
+	if(sosTypes==3)
+		sosColor='any'
+	
     var seakey = FindBackpackItemWithProperties([_seakey]).Serial()//"Ship Recall Rune"
     RecallRune(seakey);
     Orion.Wait(2000)
@@ -70,32 +83,24 @@ function AutoSOSDoerClosest() {
                 WalkTo(currentSOSBox)
                 Orion.Wait(500)
                 Orion.OpenContainer(currentSOSBox.Serial())
-                if (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0")) {
-                    var soses = Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial())
+				var leftInBox = Orion.Count('0x14EE',sosColor,currentSOSBox.Serial())
+				
+                if (leftInBox!=0) {
+                    //var soses = Orion.FindTypeEx('0x14EE', sosColor, currentSOSBox.Serial())
                     var SosMap = []
-                    //  while (Orion.FindTypeEx('0x14EE', any, currentSOSBox.Serial()).length > 0) {
-                    //      soses.forEach(function (sos) {
-                    //          Orion.MoveItem(sos.Serial(), 1, backpack);
-                    //          Orion.Wait(1000)
-                    //      })
-                    //      Orion.Wait(1000)
-                    //  }
-                    while (Orion.MoveItemType('0x14EE', any, currentSOSBox.Serial())) {
-                        Orion.Wait(800)
+
+                    while (Orion.MoveItemType('0x14EE', sosColor, currentSOSBox.Serial())) {
+                        Orion.Wait(850)
                     }
                     ProcessAllSosInBackpack(sosLevel, SosMap)
-                    //while (Orion.FindTypeEx('0x14EE', any, backpack).length > 0) {
-                    //    SosMap.forEach(function (sos) {
-                    //        Orion.MoveItem(sos[0], 1, currentSOSBox.Serial());
-                    //        Orion.Wait(1000)
-                    //    })
-                    //}
+
                     while (Orion.MoveItemType('0x14EE', any, backpack, 0, currentSOSBox.Serial())) {
-                        Orion.Wait(800)
+                        Orion.Wait(850)
                     }
-                    //SosMap.forEach(function (sos) {
-                    while (!Orion.Contains(currentSOSBox.Properties(), "Contents: 0") && SosMap.length != 0) {
+					
+                    while (leftInBox !=0 && SosMap.length != 0) {
                         Orion.Print(58, currentSOSBox.Properties())
+                        Orion.Print(59,'Left In Box: '+ leftInBox)
                         Orion.Print(59, 'SOS Map Count: ' + SosMap.length)
 
                         var bx = Orion.RegRead('boatX');
@@ -111,32 +116,30 @@ function AutoSOSDoerClosest() {
                         Orion.OpenContainer(currentSOSBox.Serial())
                         Orion.Wait(2000)
                         Orion.Print('Doing ' + sos[0])
+                        
                         while (Orion.FindTypeEx('0x14EE', any, backpack).length == 0) {
                             Orion.MoveItem(sos[0], 1, backpack);
                             Orion.Wait(2000)
                         }
-                        Orion.ToggleScript('DoSOSInOrder', true)
-                        Orion.Wait(1000)
-                        while (Orion.ScriptRunning('DoSOSInOrder') != 0) {
-                            Orion.Wait(2000)
+                        
+                         while (Orion.FindTypeEx('0x14EE', any, backpack).length > 0) {
+                        	Orion.ToggleScript('DoSOSInOrder', true)
+	                        Orion.Wait(1000)
+                       		 while (Orion.ScriptRunning('DoSOSInOrder') != 0) {
+                            	Orion.Wait(2000)
+                        	}
                         }
-                    }
 
-                    // SosMap.forEach(function (sos) {
-                    //     WalkTo(currentSOSBox)
-                    //     Orion.OpenContainer(currentSOSBox.Serial())
-                    //     Orion.Wait(2000)
-                    //     Orion.Print('Doing ' + sos[0])
-                    //     while (Orion.FindTypeEx('0x14EE', any, backpack).length == 0) {
-                    //         Orion.MoveItem(sos[0], 1, backpack);
-                    //         Orion.Wait(2000)
-                    //     }
-                    //     Orion.ToggleScript('DoSOSInOrder', true)
-                    //     Orion.Wait(1000)
-                    //     while (Orion.ScriptRunning('DoSOSInOrder') != 0) {
-                    //         Orion.Wait(2000)
-                    //     }
-                    // })
+                        if(!Orion.ObjectExists(currentSOSBox.Serial()))
+                        {
+                        	RecallRune(seabook);
+                        	Orion.Wait(1000)
+                        }
+                        WalkTo(currentSOSBox)
+                        Orion.OpenContainer(currentSOSBox.Serial())
+                        Orion.Wait(1000)
+                        leftInBox = Orion.Count('0x14EE',sosColor,currentSOSBox.Serial())
+                    }
                 }
                 else {
                     Orion.Print("Box is empty")
@@ -425,12 +428,21 @@ function BankAndHome() {
 
         MoveAllGoldToBank()
     }
+    var doNets = (FindBackpackItemWithName('A Special Fishing Net')!= null)
+    
+    if(doNets){
+    	Orion.Print('Go Throw Nets')
+	    GoThrowTheNets();
+	    }
+    
     RecallRune(seabook);
     ChestLootManager()
     Orion.Wait(1000)
-    ProcessNets()
-    RecallRune(seabook);
-    if (Orion.Count('0xA30C'))
+    if(doNets){
+    	ProcessNets()
+    	RecallRune(seabook);
+    }
+    if (Orion.Count('0xA30C')>0)
         ChestLootManager()
 }
 
@@ -504,10 +516,7 @@ function ChestLootManager() {
     Orion.Wait(1000);
     var seaBin = FindGroundItemWithName("A Trash Barrel").Serial()
 
-
     //MoveItemsFromPlayer(goldChestId, '0x0EED')
-    Orion.Print(_essenceBox)
-    MoveItemText("Essence|Crafting Resource|Abyssal Cloth", FindGroundItemWithProperties([_essenceBox]).Serial())
     Orion.Print(_rareBox)
 
     MoveItemText("Abysmal|Enchanted|Driftwood|Backpack|Wedding|Oars|Copper Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Woven|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), true)
@@ -530,6 +539,15 @@ function ChestLootManager() {
     WalkTo(FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
     MoveItemText("Legendary Artifact", FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
     MoveItemText("Major Artifact", FindGroundItemWithProperties(["Engraved: Major"]).Serial())
+	
+	chests.forEach(function (chest) {
+	ImbueChest(chest.Serial())
+    })
+	Orion.Wait(1000)
+    Orion.Print(_essenceBox)
+    MoveItemText("Residue|Essence|Crafting Resource|Abyssal Cloth", FindGroundItemWithProperties([_essenceBox]).Serial())
+
+    MoveItemText("Ingots", FindGroundItemWithProperties([_craftingBox]).Serial())
 
     WalkTo(FindGroundItemWithProperties([_bin]).Serial())
     MoveItemText("Shipwreck", FindGroundItemWithProperties([_bin]).Serial())
@@ -541,18 +559,61 @@ function ChestLootManager() {
     //        Orion.PauseScript()
 }
 
-function ProcessNets() {
-    Debug(' Method Entry - ProcessNets')
+function ImbueChest(chestSerial)
+{
+var soulForges = Orion.FindTypeEx('0x4263',any,ground,'',15)
+if(soulForges!=null)
+{
+var soulForge = soulForges.shift()
+Orion.Print(soulForge.Serial())
+WalkTo(soulForge)
+for(var i=0;i<2;i++)
+{
+Orion.UseSkill('Imbuing')
+
+	if (Orion.WaitForGump(1000))
+	{
+		var gump0 = Orion.GetGump('last');
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x65290B89'))
+		{
+			gump0.Select(Orion.CreateGumpHook(10011));
+			Orion.Wait(100);
+		}
+	}
+	if (Orion.WaitForTarget(1000))
+		Orion.TargetObject(chestSerial);
+	if (Orion.WaitForGump(1000))
+	{
+		var gump1 = Orion.GetGump('last');
+		if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0xB73E81BB'))
+		{
+			gump1.Select(Orion.CreateGumpHook(1));
+			Orion.Wait(100);
+		}
+	}
+	Orion.Wait(1000)
+}
+}
+}
+
+function GoThrowTheNets()
+{
+    Debug(' Method Entry - GoThrowTheNets')
     if (Orion.Count('0x0DCA') > 0) {
         RecallRune(FindBackpackItemWithProperties(["Magincia Dock"]).Serial())
         Orion.Wait(1500)
         //Orion.UseObject(FindBackpackItemWithProperties(["Fishing Net"]).Serial())
         ThrowTheNets()
-        IgnoreAllKrakenDead()
-        Orion.Step('North')
-        Orion.Wait(18000)
-        KillAndLootOnly()
     }
+}
+function ProcessNets() {
+    Debug(' Method Entry - ProcessNets')
+
+        RecallRune(FindBackpackItemWithProperties(["Magincia Dock"]).Serial())
+        Orion.Wait(1500)
+		IgnoreAllKrakenDead()
+        KillAndLootOnly()
+    
 
 }
 

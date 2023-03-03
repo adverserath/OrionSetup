@@ -13,14 +13,18 @@ var copper = 223
 var purpleDye = 209
 var masterTalis = 210
 var greyDye = 211
+var shadowIron = 217
+
 var pinkDye = 212
 var spellTalis = 213
 
 function Claim() {
-	var item = 230
+for(i=0;i<10;i++)
+{
+	var item = shadowIron
 	var itemsCount = Orion.FindTypeEx(any, any, backpack).length
 	Orion.Print('items: ' + itemsCount)
-	//if (itemsCount == 125) {
+	if (itemsCount == 125) {
 		var npc = SelectTarget('Select NPC')
 		var start = Orion.Now()
 		Orion.RequestContextMenu(npc.Serial());
@@ -45,6 +49,8 @@ function Claim() {
 				}
 			}
 		}
+	}
+	Orion.Wait(1000)
 	}
 }
 

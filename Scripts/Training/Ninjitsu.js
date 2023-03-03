@@ -51,3 +51,48 @@ function TrainNinjitsuDeathstrike() {
 
     }
 }
+
+function TrainStealth() {
+    while (!Player.Dead()) {
+
+        if (Orion.SkillValue('Stealth') > 999) {
+            Orion.CloseUO();
+        }
+        var gate = Orion.FindTypeEx('0x4BCB', any, any, any, 20).shift();
+        if (gate != null) {
+
+            Orion.Wait(50);
+        }
+        WalkTo(gate, 0, 2000, 0)
+
+        Orion.UseObject(gate.Serial());
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8')) {
+                var gumpHook0 = Orion.CreateGumpHook(1);
+                gumpHook0.AddCheck(200, true);
+                gump0.Select(gumpHook0);
+            }
+        }
+        Orion.Wait(300)
+        Orion.Step('s')
+        Orion.Wait(300)
+        Orion.Step('n')
+        Orion.Say('.')
+
+    }
+}
+
+function TrainHiding() {
+    while (!Player.Dead()) {
+        Orion.Wait(500)
+        Orion.UseSkill('Hiding')
+        Orion.WalkTo(Player.X(), Player.Y() + 20, Player.Z(), 8, 8, 0);
+        Orion.UseSkill('Hiding')
+        Orion.WalkTo(Player.X(), Player.Y() - 20, Player.Z(), 8, 8, 0);
+    }
+}
+//#include helpers/Debug.js
+//#include helpers/Target.js
+//#include Stealther.js
+//#include Actions/Tricks.js

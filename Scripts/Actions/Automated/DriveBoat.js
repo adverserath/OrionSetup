@@ -124,6 +124,8 @@ function GetAStar(xLocation, yLocation, startX, startY) {
 
 var steerSize = 20;
 var boat = null
+var distanceRemaining
+
 function SteerPath(route, distance, destinationX, destinationY, steerThrough) {
   Orion.SetWorldMapPointerPosition(destinationX, destinationY)
 
@@ -137,58 +139,75 @@ function SteerPath(route, distance, destinationX, destinationY, steerThrough) {
   StartDrivingBoat();
   var lastDirection = ''
   for (var index = 0; index < route.length; index++) {
-    if (Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()) < distance) {
+    distanceRemaining = Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y())
+    if (distanceRemaining < distance) {
       TextWindow.Print('Close enough')
       break;
     }
 
     Orion.Print('Sailing to index ' + index + '/' + route.length)
-    var target = route[index];
+    var waypoint = route[index];
 
     //STOP when within 55 tiles of chest (fishable at 60)
-    if (Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()) > distance) {
+    if (distanceRemaining > distance) {
       var timerLoop = Orion.Now() + 10000
       while (
-        ((Player.X() > (target.X() + steerSize) ||
-          Player.X() < (target.X() - steerSize)) ||
-          (Player.Y() > (target.Y() + steerSize) ||
-            Player.Y() < (target.Y() - steerSize))) &&
+        ((Player.X() > (waypoint.X() + steerSize) ||
+          Player.X() < (waypoint.X() - steerSize)) ||
+          (Player.Y() > (waypoint.Y() + steerSize) ||
+            Player.Y() < (waypoint.Y() - steerSize))) &&
         Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()) > distance &&
         (timerLoop > Orion.Now())
       ) {
         var lastLoopTime = Orion.Now()
-        var targetDirection = GetDirection(target)
+        var waypointDirection = GetDirection(waypoint)
         TextWindow.Clear();
         TextWindow.Print('Player ' + Player.X() + ' ' + Player.Y())
-        TextWindow.Print('To ' + target.X() + ' ' + target.Y())
+        TextWindow.Print('Waypoint ' + waypoint.X() + ' ' + waypoint.Y())
         TextWindow.Print('Destination X:' + destinationX + ' Y:' + destinationY)
-        TextWindow.Print('Dir ' + targetDirection)
+        TextWindow.Print('Dir ' + waypointDirection)
         TextWindow.Print('Todo ' + (route.length - index))
         TextWindow.Print('Distance:' + Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()))
-        if (targetDirection != lastDirection)
-          Orion.SailOnBoat(targetDirection, true)
-        lastDirection = targetDirection
-        for (var time = 0; time < 4; time++) {
-          targetDirection = GetDirection(target)
-          if (targetDirection != lastDirection)
-            Orion.SailOnBoat(targetDirection, true)
-          lastDirection = targetDirection
-          CheckForOrcs(targetDirection)
-          var distanceTo = Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y())
-          if (distanceTo > distance) {
-            var waitTime = 300//parseInt(distance * 100)
-            //Orion.Print(waitTime)
-            Orion.Wait(waitTime)
-            TextWindow.Print('Distance:' + distanceTo)
+
+        //if (targetDirection != lastDirection)
+        Orion.SailOnBoat(waypointDirection, true)
+
+        lastDirection = waypointDirection
+        var waypointDistance = Orion.GetDistance(waypoint.X(), waypoint.Y())
+
+        while (Orion.GetDistance(waypoint.X(), waypoint.Y()) > 6) {
+          Orion.Wait(300)
+          waypointDirection = GetDirection(waypoint)
+          if (waypointDistance == Orion.GetDistance(waypoint.X(), waypoint.Y()) || waypointDirection != lastDirection) {
+            Orion.SailOnBoat(waypointDirection, true)
+            lastDirection = waypointDirection
           }
-          break;
+          CheckForOrcs(waypointDirection)
+          waypointDistance = Orion.GetDistance(waypoint.X(), waypoint.Y())
+          TextWindow.Print('Waypoint Distance:' + waypointDistance)
         }
+        // for (var time = 0; time < 4; time++) {
+        //   targetDirection = GetDirection(target)
+
+        //   if (targetDirection != lastDirection)
+        //     Orion.SailOnBoat(targetDirection, true)
+
+        //     lastDirection = targetDirection
+        //   CheckForOrcs(targetDirection)
+        //   var distanceTo = Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y())
+        //   if (distanceTo > distance) {
+        //     var waitTime = 300//parseInt(distance * 100)
+        //     Orion.Wait(waitTime)
+        //     TextWindow.Print('Distance:' + distanceTo)
+        //   }
+        //   break;
+        // }
         ////CHECK FOR STOPED MESSAGE
         var haveStopped = Orion.InJournal('stopped sir', '', '0', '-1', lastLoopTime, Orion.Now()) != null;
         if (haveStopped) {
           s__DealWithBlock(boat)
           index++
-          Orion.SailOnBoat(targetDirection, true)
+          Orion.SailOnBoat(waypointDirection, true)
         }
         lastLoopTime = Orion.Now()
       }
@@ -304,8 +323,9 @@ function SteerToObject(target, distance) {
   if (Orion.GetDistance(target.X(), target.Y()) > distance) {
     while ((Player.X() > (target.X() + distance) || Player.X() < (target.X() - distance)) ||
       (Player.Y() > (target.Y() + distance) || Player.Y() < (target.Y() - distance))) {
-
-      Orion.SailOnBoat(GetDirection(target), true)
+      var nextDirection = GetDirection(target)
+      Orion.Print('Next Direction:' + nextDirection)
+      Orion.SailOnBoat(nextDirection, true)
       Orion.Wait(800)
       Orion.StopSailOnBoat()
     }

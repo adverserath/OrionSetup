@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="31" action="2" key="122" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="0" key="123" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="3" action="1" key="120" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;Orion.Equip('0x40000997')&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="24" action="3" key="112" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="28" action="0" key="145" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="31" action="1" key="121" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="189" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//Orion.CastTarget('Recall','0x00001534')\n//Orion.UseSkillTarget('Animal Lore','0x00000534')\nOrion.UseItemOnMobile('0x4000016A','0x00000538')&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
+    <hotkey type="3" action="1" key="120" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;Orion.Equip('0x40000997')&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
+    <hotkey type="31" action="0" key="123" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="2" key="122" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="49" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;Orion.Print(Orion.Count('0x0E21', any, backpack) )\nOrion.Print(Orion.Count('0x0E21', any, Player.Serial()))\nOrion.BandageSelf()&quot;,&#10;    &quot;name&quot;: &quot;A_UDPLogout&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
 </data>

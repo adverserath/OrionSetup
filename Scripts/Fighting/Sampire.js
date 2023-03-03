@@ -177,11 +177,11 @@ function SampireSpells() {
                     continue
                 }
                 //Consecrate Weapon
-                //      spellName = "Consecrate Weapon"
-                //       if (ManaCheck(10, LMC) && !Orion.BuffExists(spellName)) {
-                //           Orion.PrintFast(self, '0x0111', 1, spellName);
-                //           CastSpell(spellName);
-                //        }
+                spellName = "Consecrate Weapon"
+                if (ManaCheck(10, LMC) && !Orion.BuffExists(spellName)) {
+                    Orion.PrintFast(self, '0x0111', 1, spellName);
+                    CastSpell(spellName);
+                }
 
                 //Curse Weapon
                 spellName = "Curse Weapon"

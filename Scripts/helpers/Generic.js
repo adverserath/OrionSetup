@@ -15,18 +15,72 @@ function MonitorLivingStatus() {
 }
 function MonitorGM() {
   while (true) {
-    Orion.Wait(1000)
+    Orion.Wait(400)
     var npc = Orion.FindTypeEx(any, any, ground,
       'mobile', 20, any).filter(function (mob) {
         return mob.Name() === 'Dan'
       })
+
+    Orion.RequestContextMenu(0x00000001)
+
     if (npc.length > 0) {
       Orion.ActivateClient();
       BotPush('Detected : ' + npc.Name())
       Orion.PlayWav('C:\\Sounds\\Windows Background.wav');
       Orion.Wait(10000)
     }
+    if (Orion.WaitForContextMenu()) {
+      Orion.ActivateClient();
+      BotPush('Detected : 0x00000001')
+      Orion.PlayWav('C:\\Sounds\\Windows Background.wav');
+      Orion.Wait(10000)
+    }
   }
+}
+
+
+function RecordPlayerSerial() {
+  while (true) {
+    Orion.Wait(1000)
+    Orion.FindTypeEx(any, any, ground,
+      'ignoreself|mobile', 24, 'blue|gray|green|criminal|red').filter(function (player) {
+        return player.Properties().indexOf('Legacy') != -1
+          && Orion.RegRead(player.Serial(), 'players') != null
+      }).forEach(function (player) {
+        Orion.RegWrite(player.Serial(), player.Name(), 'Software\\OrionAssistant\\vars\\players');
+      })
+  }
+}
+
+function MonitorEverything() {
+  Orion.Print(Orion.GumpCount())
+  Orion.Wait(1000)
+  var listSerial = []
+  Orion.FindTypeEx(any, any, ground).forEach(function (item) {
+    Orion.RequestContextMenu(item.Serial());
+    listSerial.push(item.Serial())
+  })
+  if (Orion.WaitForContextMenu()) {
+    Orion.Wait(500)
+    PrintTopContext()
+    listSerial.forEach(function (serial) {
+      var obj = Orion.FindObject(serial)
+      Orion.Print(serial + ' : ' + Orion.GumpExists('contextmenu', serial) + ' : ' + obj.Name())
+    })
+
+  }
+  Orion.Wait(2000)
+  Orion.Print(Orion.GumpCount())
+  //Orion.WaitContextMenuCliloc(Player.Serial(), 3006201);
+
+}
+
+function PrintTopContext() {
+  Orion.GetStatus(serial);
+  var serial = Orion.GetContextMenu().Serial()
+  Orion.Print(serial)
+  Orion.CancelContextMenu();
+  Orion.Print(Orion.FindObject(serial).Name())
 }
 
 function UnderworldLeverPuller() {

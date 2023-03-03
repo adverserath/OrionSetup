@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
     <profile serial="0x00000046" file="Atten"/>
-    <profile serial="0x0000007A" file="Atten"/>
+    <profile serial="0x0000007A" file="Admin"/>
     <profile serial="0x0000007C" file="Admin"/>
     <profile serial="0x0000041B" file="Hornpub"/>
     <profile serial="0x00000545" file="Kwazii"/>

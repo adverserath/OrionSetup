@@ -7,7 +7,7 @@ var gatePoints = [
     ['Jhelom', 2, 3],
     ['Yew', 3, 3],
     ['Minoc', 4, 3],
-    ['Vesper', 4, 3],
+    //['Vesper', 4, 3],
     ['Trinsic', 5, 3],
     ['Skara Brae', 6, 3],
     ['New Magincia', 7, 3],
@@ -87,65 +87,78 @@ function GetRadioNumber(name) {
     // }
 }
 
-function GateTo(placeName) {
+function UseNewGate(placeName) {
     var gate = Orion.FindTypeEx('0x4BCB|0x4B8F', any, ground, 'item|near', 15).shift()
     if (gate != null) {
         WalkTo(gate)
+        Orion.Print(58, 'Using Gate')
         Orion.UseType('0x0F6C|0x4BCB', '0xFFFF', 'ground');
-        Orion.Wait(100)
-        Orion.UseObject('0x4012F148');
+        // Orion.Wait(100)
+        //Orion.UseObject(gate.Serial());
         if (Orion.WaitForGump(2000)) {
+            Orion.Print(58, 'Open')
             var retries = 0
-            while (!Player.Hidden() || retries > 5) {
+            while (Orion.InJournal('soundecho: id=0x01FE', 'sys', 0xFFFFFFFF, any, Orion.Now() - 700) == null
+                && Orion.InJournal('You are already there', 'sys', 0xFFFFFFFF, any, Orion.Now() - 700) == null
+                && retries <= 5
+                && Player.Notoriety() != 3) {
                 retries++
                 var gump0 = Orion.GetGump('last');
                 if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8')) {
-                    Orion.Wait(200)
                     var gumpHook0 = Orion.CreateGumpHook(1);
-                    Orion.Wait(200)
+                    Orion.Print(58, 'Button:' + GetRadioNumber(placeName)[0])
                     gumpHook0.AddCheck(GetRadioNumber(placeName)[0].RadioButton(), true);
-                    Orion.Wait(200)
                     gump0.Select(gumpHook0);
                     Orion.Wait(100);
                 }
                 Orion.Wait(500)
+                Orion.Print(retries)
             }
+            Orion.Print(58, "Criminal:" + (Player.Notoriety() == 3))
+            Orion.Print(58, "Heard Sound:" + (Orion.InJournal('soundecho: id=0x01FE', 'sys', 0xFFFFFFFF, any, Orion.Now() - 700) != null))
+            Orion.Print(58, "Already there:" + (Orion.InJournal('You are already there', 'sys', 0xFFFFFFFF, any, Orion.Now() - 700) != null))
+            Orion.Print(58, "Retries:" + retries > 5)
         }
     }
 }
 
+function GateTo(placeName) {
+    Orion.OAOptionSet('SoundEcho', '1');
+    Orion.Print(58, 'Gate to ' + placeName)
+    var gump0 = Orion.GetGump(any, '0xE0E675B8');
+    if (gump0 != null) {
+        var retries = 0
+        while (Orion.InJournal('soundecho: id=0x01FE', 'sys', 0xFFFFFFFF, any, Orion.Now() - 700) == null
+            && Orion.InJournal('You are already there', 'sys', 0xFFFFFFFF, any, Orion.Now() - 700) == null
+            && retries <= 5
+            && Player.Notoriety() != 3) {
+            retries++
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8')) {
+                var gumpHook0 = Orion.CreateGumpHook(1);
+                Orion.Print(58, 'Button:' + GetRadioNumber(placeName)[0])
+                gumpHook0.AddCheck(GetRadioNumber(placeName)[0].RadioButton(), true);
+                gump0.Select(gumpHook0);
+                Orion.Wait(100);
+            }
+            Orion.Wait(500)
+        }
+        Orion.Print(58, "Criminal:" + (Player.Notoriety() == 3))
+        Orion.Print(58, "Heard Sound:" + (Orion.InJournal('soundecho: id=0x01FE', 'sys', 0xFFFFFFFF, any, Orion.Now() - 700) != null))
+        Orion.Print(58, "Already there:" + (Orion.InJournal('You are already there', 'sys', 0xFFFFFFFF, any, Orion.Now() - 700) != null))
+        Orion.Print(58, "Retries:" + retries > 5)
 
+    } else {
+        UseNewGate(placeName)
+    }
 
-// function GateTo(placeName) {
-//     var gate = Orion.FindTypeEx('0x4BCB|0x4B8F', any, ground, 'item|near', 15).shift()
-//     if (gate != null) {
-//         WalkTo(gate)
+}
 
-//         var id = gatePoints.filter(function (place) {
-//             return place[0] === placeName
-//         })
-//         if (id != null) {
-//             TextWindow.Print(id[0][0])
-//             var gateId = id[0][3]
-// var page = id[0][2]
-//             Orion.UseType('0x0F6C|0x4BCB', '0xFFFF', 'ground');
-//             if (Orion.WaitForGump(1000) || Orion.GumpExists(any, any, '0xE0E675B8')) {
-//                 var gump0 = Orion.GetGump('last');
-
-//                 if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xE0E675B8')) {
-//                  Orion.Wait(1000);
-//                     var gumpHook0 = Orion.CreateGumpHook(1);
-//                     gump0.Select(gumpHook0);
-
-//                     gumpHook0.AddCheck(gateId, true);
-//                      Orion.Wait(1000);
-//                     gump0.Select(gumpHook0);
-//                     Orion.Wait(100);
-//                 }
-//             }
-//         }
-//     }
-// }
+function LoopThoughGate() {
+    gatePoints.forEach(function (gateplace) {
+        GateTo(gateplace[0])
+        Orion.Wait(500)
+    })
+}
 
 function GoTo() {
     GateTo('Britain')
@@ -170,8 +183,7 @@ function GotoMistas() {
 }
 
 function GotoTW() {
-    if(Orion.FindObject('0x4015E476')==null)
-    {
+    if (Orion.FindObject('0x4015E476') == null) {
         GoHome()
         Orion.Wait(2000)
     }
