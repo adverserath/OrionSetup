@@ -29,6 +29,7 @@ function DriveBoatToMapPoint() {
 
 
 function SteerTo(x, y, distance) {
+  Debug(' Method Entry - SteerTo: ' + x + ' ' + y + ' ' + distance)
   Orion.Print(56, Math.abs(Player.X() - x) > (5120 / 2))
   if (Math.abs(Player.X() - x) > (5120 / 2) || Math.abs(Player.Y() - y) > (4096 / 2)) {
 
@@ -93,6 +94,8 @@ function SailDirection(direction, x, y) {
   Orion.Wait(1000)
 }
 
+//console.log(findPath(new Point(0, 0), new Point(4, 4), GRID)); // should output: [ Point { x: 0, y: 0 }, Point { x: 1, y: 1 }, Point { x: 2, y: 2 }, Point { x: 3, y: 3 }, Point { 
+
 function GetAStar(xLocation, yLocation, startX, startY) {
   Debug(' Method Entry - GetAStar')
   if (startX == null)
@@ -107,6 +110,8 @@ function GetAStar(xLocation, yLocation, startX, startY) {
   var start = graph.nodes[parseInt(startY / scale)][parseInt(startX / scale)];
   var end = graph.nodes[parseInt(yLocation / scale)][parseInt(xLocation / scale)];
   var result = astar.search(graph.nodes, start, end, astar.manhattan);
+
+
   TextWindow.Print('Player X:' + startX + ' Player Y:' + startY)
 
   result.forEach(function (tile) {
@@ -169,16 +174,21 @@ function SteerPath(route, distance, destinationX, destinationY, steerThrough) {
         TextWindow.Print('Todo ' + (route.length - index))
         TextWindow.Print('Distance:' + Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y()))
 
-        //if (targetDirection != lastDirection)
         Orion.SailOnBoat(waypointDirection, true)
 
         lastDirection = waypointDirection
         var waypointDistance = Orion.GetDistance(waypoint.X(), waypoint.Y())
 
-        while (Orion.GetDistance(waypoint.X(), waypoint.Y()) > 6) {
+        //&& Orion.GetDistance(waypoint.X(), waypoint.Y()) < 40 
+        while (Orion.GetDistance(waypoint.X(), waypoint.Y()) > 6 && Orion.InJournal('stopped sir', '', '0', '-1', lastLoopTime, Orion.Now()) == null) {
           Orion.Wait(300)
           waypointDirection = GetDirection(waypoint)
+          if (waypointDistance > 1000) {
+            waypointDirection = FlipDirection(waypointDirection)
+            Orion.ActivateClient()
+          }
           if (waypointDistance == Orion.GetDistance(waypoint.X(), waypoint.Y()) || waypointDirection != lastDirection) {
+            TextWindow.Print('Sailing to:' + waypointDirection)
             Orion.SailOnBoat(waypointDirection, true)
             lastDirection = waypointDirection
           }
@@ -186,22 +196,7 @@ function SteerPath(route, distance, destinationX, destinationY, steerThrough) {
           waypointDistance = Orion.GetDistance(waypoint.X(), waypoint.Y())
           TextWindow.Print('Waypoint Distance:' + waypointDistance)
         }
-        // for (var time = 0; time < 4; time++) {
-        //   targetDirection = GetDirection(target)
 
-        //   if (targetDirection != lastDirection)
-        //     Orion.SailOnBoat(targetDirection, true)
-
-        //     lastDirection = targetDirection
-        //   CheckForOrcs(targetDirection)
-        //   var distanceTo = Orion.GetDistance(route[(route.length - 1)].X(), route[(route.length - 1)].Y())
-        //   if (distanceTo > distance) {
-        //     var waitTime = 300//parseInt(distance * 100)
-        //     Orion.Wait(waitTime)
-        //     TextWindow.Print('Distance:' + distanceTo)
-        //   }
-        //   break;
-        // }
         ////CHECK FOR STOPED MESSAGE
         var haveStopped = Orion.InJournal('stopped sir', '', '0', '-1', lastLoopTime, Orion.Now()) != null;
         if (haveStopped) {
@@ -213,8 +208,10 @@ function SteerPath(route, distance, destinationX, destinationY, steerThrough) {
       }
       timerLoop = Orion.Now() + 10000
       Orion.Print('Stop ' + index)
-      if ((route.length - 1) == index && steerThrough) {
+      //if ((route.length - 1) == index && steerThrough) {
+      if (index >= (route.length - 3) && steerThrough) {
         SteerThrough()
+        index = route.length
       }
       //Orion.StopSailOnBoat()
     }
@@ -235,7 +232,8 @@ function SteerThrough(_) {
   var startY = Player.Y()
 
   while ((Math.abs(startX - Player.X()) + Math.abs(startY - Player.Y()) < 100)) {
-    Orion.Wait(200)
+    TextWindow.Print('Going through map')
+    Orion.Wait(500)
   }
   Orion.Wait(4000)
 }
@@ -304,27 +302,52 @@ function s__DealWithBlock(boat) {
   StartDrivingBoat()
 }
 
-function SteerToObject(target, distance) {
-  Debug(' Method Entry - SteerToObject')
+function SteerToObject(destination, distance) {
+  TextWindow.Print(' Method Entry - SteerToObject ' + destination.X() + ' ' + destination.Y() + ' Dist:' + distance)
+  var destX = destination.X()
+  var destY = destination.Y()
+
   if (distance == null || distance < 2) {
     distance = 2
   }
+  TextWindow.Print('1 Destination X :' + destination.X() + ' Y:' + destination.Y())
+
   var boat = FindGroundItemWithProperties(vessel)
+  TextWindow.Print('2 Destination X :' + destination.X() + ' Y:' + destination.Y())
+
   WalkTo(boat, 2)
+  TextWindow.Print('3 Destination X :' + destination.X() + ' Y:' + destination.Y())
 
   Orion.Print(boat.Serial())
+
   var startTime = Orion.Now()
+
   while (Orion.InJournal('You are now piloting', '', '0', '-1', (startTime), Orion.Now()) == null) {
+    TextWindow.Print('4 Destination X :' + destination.X() + ' Y:' + destination.Y())
+
     WalkTo(boat)
+    TextWindow.Print('5 Destination X :' + destination.X() + ' Y:' + destination.Y())
+
     Orion.UseObject(boat.Serial())
     Orion.Wait(1000)
   }
 
-  if (Orion.GetDistance(target.X(), target.Y()) > distance) {
-    while ((Player.X() > (target.X() + distance) || Player.X() < (target.X() - distance)) ||
-      (Player.Y() > (target.Y() + distance) || Player.Y() < (target.Y() - distance))) {
-      var nextDirection = GetDirection(target)
-      Orion.Print('Next Direction:' + nextDirection)
+  if (destination.X() == 0) {
+    destination = coordinate(destX, destY)
+  }
+
+
+  if (Orion.GetDistance(destination.X(), destination.Y()) > distance) {
+    TextWindow.Print('6 Destination X :' + destination.X() + ' Y:' + destination.Y())
+
+    while ((Player.X() > (destination.X() + distance) || Player.X() < (destination.X() - distance)) ||
+      (Player.Y() > (destination.Y() + distance) || Player.Y() < (destination.Y() - distance))) {
+
+      var nextDirection = GetDirection(destination)
+      TextWindow.Print('Next Direction:' + nextDirection)
+      TextWindow.Print('7 Destination X :' + destination.X() + ' Y:' + destination.Y())
+      TextWindow.Print('Dest X :' + destX + ' Y:' + destY)
+
       Orion.SailOnBoat(nextDirection, true)
       Orion.Wait(800)
       Orion.StopSailOnBoat()
@@ -339,11 +362,11 @@ function SteerToObject(target, distance) {
     Orion.Wait(1000)
   }
   WalkTo(boat)
-
+  TextWindow.Print('Method Exit - SteerToObject')
 }
 
 function GetDirection(item) {
-  Debug(' Method Entry - GetDirection')
+  Debug(' Method Entry - GetDirection : X:' + item.X() + ' Y:' + item.Y())
   var x = item.X()
   var y = item.Y()
   var dx = Player.X() - x;
@@ -379,6 +402,24 @@ function GetDirection(item) {
   return ret;
 }
 
+function FlipDirection(direction) {
+  if (direction == 'n')
+    return 's'
+  if (direction == 's')
+    return 'n'
+  if (direction == 'w')
+    return 'e'
+  if (direction == 'e')
+    return 'w'
+  if (direction == 'nw')
+    return 'se'
+  if (direction == 'ne')
+    return 'sw'
+  if (direction == 'se')
+    return 'nw'
+  if (direction == 'sw')
+    return 'ne'
+}
 function GetWaterMapDump() {
   Debug(' Method Entry - GetWaterMapDump')
   DumpMapToText(5105, 4096)
@@ -455,17 +496,25 @@ function SailToCorpse() {
   var startX = Player.X()
   var startY = Player.Y()
   corpses.forEach(function (corpse) {
-    SteerToObject(corpse, 2)
-    WalkTo(corpse, 2, 4000, 1, false)
-    Orion.UseObject(corpse.Serial())
-    Orion.Ignore(corpse.Serial())
-    Orion.Wait(2000)
-    var hold = FindGroundItemWithName(["Cargo Hold"])
+    if (corpse.Distance() < 15) {
+      TextWindow.Print('Sailing to corpse')
+      SteerToObject(corpse, 2)
+      WalkTo(corpse, 2, 4000, 1, false)
+      Orion.UseObject(corpse.Serial())
+      Orion.Ignore(corpse.Serial())
+      Orion.Wait(2000)
+      var hold = FindGroundItemWithName(["Cargo Hold"])
 
-    if (hold.Distance() > 1) {
-      WalkTo(hold, 2, 4000, 1, false)
+      if (hold.Distance() > 1) {
+        WalkTo(hold, 2, 4000, 1, false)
+      }
+      var coord = coordinate(startX, startY)
+      TextWindow.Print('Sailing back to last spot')
+      TextWindow.Print('X:' + startX + ' Y:' + startY)
+      TextWindow.Print('coordinate X:' + coord.X() + ' Y:' + coord.Y())
+
+      SteerToObject(coord, 1)
     }
-    SteerToObject(coordinate(startX, startY), 1)
   })
 }
 

@@ -1,3 +1,4 @@
+
 function getMyBeetle() {
     Orion.UseObject(Player.Serial())
     Orion.Wait(800)

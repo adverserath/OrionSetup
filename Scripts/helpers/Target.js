@@ -161,13 +161,13 @@ function WalkTo(object, distance, timeMS, walking, monitored) {
   }
 
   else if (parseInt(object) > 0) {
-    Orion.Print('Walk to coord')
+    TextWindow.Print('Walk to coord - Create new coordinate')
     var target = coordinate(object, distance)
     distance = 0
     object = target;
   }
 
-  if (object.hasOwnProperty('name')) {
+  if (object.hasOwnProperty('name')||object.hasOwnProperty('Name')) {
     TextWindow.Print("Walking to object ")
     TextWindow.Print(object.X() + '  ' + object.Y())
   }
@@ -197,11 +197,15 @@ function WalkTo(object, distance, timeMS, walking, monitored) {
   }
 
   var Z = 0
-  if (object.hasOwnProperty('z'))
+
+  if (object.hasOwnProperty('Z'))
+  {
+    Orion.Print(object.Z())
     Z = object.Z()
+  }
   if (monitored)
     Orion.ToggleScript('MonitorWalkBlock', true)
-  var result = Orion.WalkTo(x, y, Z, distance, 255, walking, 1, timeMS);
+  var result = Orion.WalkTo(x, y, Z, distance, 15, walking, 1, timeMS);
   return result
 }
 

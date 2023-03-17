@@ -1,3 +1,6 @@
+function
+TextWindow
+PauseScript
 ObjectExists
 Orion
 ClientOptionGet
@@ -14,11 +17,9 @@ UseFromGround
 TargetGround
 InterruptCast
 UseObject
-TextWindow
 forEach
 FindTypeEx
 ClientLastAttack
-PauseScript
 for
 OpenContainer
 else
@@ -656,7 +657,6 @@ const
 continue
 dressbag
 false
-function
 ground
 harmtarget
 helptarget

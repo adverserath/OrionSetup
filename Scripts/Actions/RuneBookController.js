@@ -161,11 +161,11 @@ function UseClosestRuneOrWalk(dX, dY, map, walkPathLength, walkToDistance) {
                 }
                 return false
             }
-            if (Orion.GetDistance(dX, dY) < 4) {
-                TextWindow.Print("I'm Close enough")
+            if (Orion.GetDistance(dX, dY) < 14) {
+                TextWindow.Print("I'm Close enough:Distance: "+Orion.GetDistance(dX, dY))
                 return false
             }
-            TextWindow.Print("Cant walk from here")
+            TextWindow.Print("Cant walk from here:Distance: "+Orion.GetDistance(dX, dY))
             return true
         })
     }

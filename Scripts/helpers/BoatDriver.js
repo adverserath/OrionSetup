@@ -64,6 +64,10 @@ function coordinate(xLoc, yLoc) {
         Y: function () {
             return this.y;
         },
+        Serial: function()
+        {
+            return "coordinate";
+        }
     }
 }
 
