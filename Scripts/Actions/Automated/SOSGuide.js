@@ -19,6 +19,10 @@ var _bin = 'A Trash Barrel'
 var _transcendenceBook = 'Transcendence Book'
 
 
+//OPTIONS
+var processNets = false
+var storeNets = false
+
 //orc lighthouse X1954 Y3747
 function ProcessMibsInBox() {
     var container = SelectTarget('box of mibs')
@@ -128,13 +132,10 @@ function AutoSOSDoerClosest() {
                             Orion.MoveItem(sos[0], 1, backpack);
                             Orion.Wait(2000)
                         }
-
+                        
                         while (Orion.FindTypeEx('0x14EE', any, backpack).length > 0) {
-                            Orion.ToggleScript('DoSOSInOrder', true)
-                            Orion.Wait(1000)
-                            while (Orion.ScriptRunning('DoSOSInOrder') != 0) {
-                                Orion.Wait(2000)
-                            }
+                            DoMethodWhileWaiting('DoSOSInOrder')
+                            Orion.Wait(4000)
                         }
 
                         while (!Orion.ObjectExists(currentSOSBox.Serial())) {
@@ -490,7 +491,7 @@ function BankAndHome() {
 
         MoveAllGoldToBank()
     }
-    var doNets = (FindBackpackItemWithName('A Special Fishing Net') != null)
+    var doNets = processNets && (FindBackpackItemWithName('A Special Fishing Net') != null)
 
     if (doNets) {
         Orion.Print('Go Throw Nets')
@@ -555,8 +556,12 @@ function ChestLootManager() {
     MoveItemText("Fabled Fishing Net", FindGroundItemWithProperties(["Engraved: Fabled Nets"]).Serial())
 
     Orion.Print("Engraved: Special Nets")
-    //MoveItemText("Fishing Net", FindGroundItemWithProperties(["Engraved: Special Nets"]).Serial())
-    MoveItemText("Fishing Net", backpack)
+    if(storeNets && !processNets)
+    {
+    	MoveItemText("Fishing Net", FindGroundItemWithProperties(["Engraved: Special Nets"]).Serial())
+  	    MoveItemText("Fishing Net", backpack)
+
+    }
 
     Orion.Print("Engraved: Sea Loot")
     Orion.FindListEx('Fishies').forEach(function (fish) {
@@ -593,6 +598,7 @@ function ChestLootManager() {
     WalkTo(FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
     MoveItemText("Legendary Artifact", FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
     MoveItemText("Major Artifact", FindGroundItemWithProperties(["Engraved: Major"]).Serial())
+    MoveItemText("Greater Artifact", FindGroundItemWithProperties(["Engraved: Greater"]).Serial())
 
     chests.forEach(function (chest) {
         ImbueChest(chest.Serial())
@@ -651,7 +657,7 @@ function ProcessNets() {
     Debug(' Method Entry - ProcessNets')
 
     RecallRune(FindBackpackItemWithProperties(["Magincia Dock"]).Serial())
-    Orion.Wait(1500)
+    Orion.Wait(2000)
     IgnoreAllKrakenDead()
     KillAndLootOnly()
 

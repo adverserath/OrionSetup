@@ -87,6 +87,7 @@ function IgnoreAllKrakenDead() {
 function KrakenLooter() {
     lootLists = 'Fishies'
     while (true) {
+        Orion.Wait(4000)
         if (Orion.ClientLastAttack() == '0x00000000' && Orion.FindTypeEx(any, any, ground,
             'nothumanmobile|live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|orange|red').length == 0) {
             var corpses = Orion.FindTypeEx('0x2006|0x0ECC', any, ground, any, 15).filter(function (corpse) {
@@ -99,23 +100,13 @@ function KrakenLooter() {
                 SuperLooter(corpse)
             });
         }
-        Orion.Wait(4000)
+        
     }
 }
 
 var location = ["Trammel", "Felucca", "Ilshenar", "Tokuno", "Malas", "Ter Mur"]
 var mapType = ["Stash", "Supply", "Cache", "Hoard", "Trove"]
 
-function MoveTestAAAAAAAAAAAAAA() {
-    location.forEach(function (loc) {
-        mapType.forEach(function (maptype) {
-            var boxName = "Engraved: " + loc + " " + maptype
-            var mapFilter = loc + "&" + maptype
-            Orion.Print(boxName)
-            MoveItemText(mapFilter, FindGroundItemWithProperties([boxName]).Serial())
-        })
-    })
-}
 var foundMaps = 0
 function MoveMapsInBagToChests() {
     // Move stash maps to box

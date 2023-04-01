@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
-    <hotkey type="31" action="3" key="121" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="47" action="0" key="16" modifiers="64" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="263" key="145" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="2" key="122" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="0" key="123" modifiers="8" override_pass_key_to_client="0"/>
     <hotkey type="31" action="1" key="120" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="12" action="37" key="103" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="3" key="121" modifiers="8" override_pass_key_to_client="0"/>
     <hotkey type="31" action="5" key="118" modifiers="8" override_pass_key_to_client="0"/>
     <hotkey type="8" action="6" key="102" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="12" action="37" key="103" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="8" action="3" key="100" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="8" action="5" key="101" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="31" action="6" key="117" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="8" action="3" key="100" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="8" action="4" key="99" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="8" action="2" key="98" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="8" action="1" key="97" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="8" action="4" key="99" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="8" action="0" key="96" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="8" action="1" key="97" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="29" action="262" key="19" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="29" action="259" key="46" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="29" action="256" key="45" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="3" action="1" key="123" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;var target = SelectTarget()\n                Orion.Hide(target.Serial())&quot;,&#10;    &quot;name&quot;: &quot;HideCorpse&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
     <hotkey type="2" action="1" key="122" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;&quot;,&#10;    &quot;name&quot;: &quot;Moon&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
-    <hotkey type="3" action="6" key="121" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//brit mint\nOrion.Say('Britain mint')\nOrion.Say('bank')&quot;,&#10;    &quot;name&quot;: &quot;AutoTame&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="3" action="1" key="123" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;var target = SelectTarget()\n                Orion.Hide(target.Serial())&quot;,&#10;    &quot;name&quot;: &quot;HideCorpse&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
     <hotkey type="3" action="1" key="120" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//Recall\n\tOrion.Cast('32');\n\tif (Orion.WaitForTarget(3000))\n\t\tOrion.TargetObject('0x400004E8');&quot;,&#10;    &quot;name&quot;: &quot;TrainTaming&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
-    <hotkey type="3" action="6" key="119" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//BeetleBackpack\nvar beetleMobile;\n        Orion.UseObject(Player.Serial());\n        Orion.Wait(200);\n        var beetles = Orion.FindTypeEx('0x0317', any, ground, 'mobile', 4).filter(function (beetle) {\n            Orion.RequestContextMenu(beetle.Serial());\n            return Orion.WaitForContextMenu(500);\n        });\n        if (beetles.length &gt; 0) {\n            beetleMobile = beetles.shift();\n            Orion.Print(beetleMobile.Serial())\n            Orion.Print(((beetleMobile.Properties().match(/Weight:\\s(\\d*)/i) || [])[1] || 0));\n        }\n                Orion.RequestContextMenu(beetleMobile.Serial());\n        Orion.WaitContextMenuCliloc(beetleMobile.Serial(), 3006145);\n        Orion.Wait(400)\n        Orion.CancelContextMenu()\n&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="3" action="6" key="121" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//brit mint\nOrion.Say('Britain mint')\nOrion.Say('bank')&quot;,&#10;    &quot;name&quot;: &quot;AutoTame&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
     <hotkey type="16" action="21" key="118" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="19" action="9" key="117" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="3" action="1" key="71" modifiers="4" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;    //#include Scripts/helpers/ItemManager.js\nOrion.Say(\&quot;Bank\&quot;)\n    MoveItemsFromPlayer(Player.BankSerial(), '0x0EED')\n    &quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
+    <hotkey type="3" action="6" key="119" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//BeetleBackpack\nvar beetleMobile;\n        Orion.UseObject(Player.Serial());\n        Orion.Wait(200);\n        var beetles = Orion.FindTypeEx('0x0317', any, ground, 'mobile', 4).filter(function (beetle) {\n            Orion.RequestContextMenu(beetle.Serial());\n            return Orion.WaitForContextMenu(500);\n        });\n        if (beetles.length &gt; 0) {\n            beetleMobile = beetles.shift();\n            Orion.Print(beetleMobile.Serial())\n            Orion.Print(((beetleMobile.Properties().match(/Weight:\\s(\\d*)/i) || [])[1] || 0));\n        }\n                Orion.RequestContextMenu(beetleMobile.Serial());\n        Orion.WaitContextMenuCliloc(beetleMobile.Serial(), 3006145);\n        Orion.Wait(400)\n        Orion.CancelContextMenu()\n&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
     <hotkey type="17" action="9" key="116" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="19" action="9" key="117" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="29" action="257" key="36" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="16" action="22" key="115" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="260" key="35" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="71" modifiers="4" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;    //#include Scripts/helpers/ItemManager.js\nOrion.Say(\&quot;Bank\&quot;)\n    MoveItemsFromPlayer(Player.BankSerial(), '0x0EED')\n    &quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
     <hotkey type="16" action="9" key="114" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="16" action="22" key="115" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="29" action="261" key="34" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="260" key="35" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="10" action="-29" key="112" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="2" action="1" key="113" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;&quot;,&#10;    &quot;name&quot;: &quot;RateTarget&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
     <hotkey type="29" action="258" key="33" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="10" action="-29" key="112" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="263" key="145" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="47" action="0" key="16" modifiers="64" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="0" key="123" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="2" key="122" modifiers="8" override_pass_key_to_client="0"/>
 </data>

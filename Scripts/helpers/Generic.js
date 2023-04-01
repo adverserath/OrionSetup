@@ -2,6 +2,14 @@
 //#include helpers/Target.js
 //#include helpers/Notifier.js
 
+function DoMethodWhileWaiting(methodName, argumentArray) {
+  Orion.ToggleScript(methodName, true, argumentArray)
+  Orion.Wait(1000)
+  while (Orion.ScriptRunning(methodName) != 0) {
+    Orion.Wait(2000)
+  }
+}
+
 function MonitorLivingStatus() {
   while (true) {
     Orion.Wait(1000)
@@ -24,20 +32,26 @@ function MonitorGM() {
     Orion.RequestContextMenu(0x00000001)
 
     if (npc.length > 0) {
+      StopAllRunningScripts()
       Orion.ActivateClient();
       BotPush('Detected : ' + npc.Name())
       Orion.PlayWav('C:\\Sounds\\Windows Background.wav');
       Orion.Wait(10000)
     }
-    if (Orion.WaitForContextMenu() && Orion.GetContextMenu().Serial()==0x00000001) {
+    if (Orion.WaitForContextMenu() && Orion.GetContextMenu().Serial() == 0x00000001) {
+      StopAllRunningScripts()
       Orion.ActivateClient();
-      BotPush('Detected : '+ Orion.GetContextMenu().Serial() +' : ' + Player.X() + ' '+Player.Y() + ' ' + Player.Map())
+      BotPush('Detected : ' + Orion.GetContextMenu().Serial() + ' : ' + Player.X() + ' ' + Player.Y() + ' ' + Player.Map())
       Orion.PlayWav('C:\\Sounds\\Windows Background.wav');
       Orion.Wait(10000)
     }
   }
 }
 
+function StopAllRunningScripts()
+{
+  Orion.PauseScript('all', 'MonitorGM');
+}
 
 function RecordPlayerSerial() {
   while (true) {

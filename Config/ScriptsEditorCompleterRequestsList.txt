@@ -1,3 +1,4 @@
+false
 function
 TextWindow
 PauseScript
@@ -656,7 +657,6 @@ catchbag
 const
 continue
 dressbag
-false
 ground
 harmtarget
 helptarget

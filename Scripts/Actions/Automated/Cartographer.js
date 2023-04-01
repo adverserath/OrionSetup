@@ -103,6 +103,14 @@ function MonitorAndDoStashBox() {
         return Orion.Contains(box.Properties(), "Engraved: Trammel Stash")
     })[0]
     while (true) {
+        if(chest==null || !WalkTo(chest))
+        {
+            RecallRune(home)
+            Orion.Wait(2000)
+            chest = Orion.FindTypeEx('0x0E3D', any, ground, 'item', 20).filter(function (box) {
+                return Orion.Contains(box.Properties(), "Engraved: Trammel Stash")
+            })[0]
+        }
         Debug(' Starting New Map')
         Orion.ClientOptionSet('BlockWalkingOnMultiStairsInWarMode', 0)
         Orion.WarMode(0)
@@ -123,7 +131,9 @@ function MonitorAndDoStashBox() {
             Orion.MoveItem(currentMap.Serial())
             Debug(' Move Map')
             Orion.Wait(800)
-            DoAllMapsInBag([currentMap])
+            //DoAllMapsInBag([currentMap])
+            DoMethodWhileWaiting('DoMapBySerial',[currentMap.Serial()])
+
         }
         else {
             Orion.Print('No Maps, Waiting for new map')
@@ -136,6 +146,12 @@ function DoSpecificMap() {
     var maps = []
     maps.push(SelectTarget())
     DoAllMapsInBag(maps)
+}
+
+function DoMapBySerial(serial)
+{
+    var map = Orion.FindObject(serial)
+    DoAllMapsInBag([map])
 }
 
 function DoAllMaps() {
@@ -319,10 +335,8 @@ function DoAllMapsInBag(inMaps) {
             //ReturnHome
             Mount(true)
             Orion.Wait(1000)
-            Orion.ToggleScript('SortLoot')
-            while (Orion.ScriptRunning('SortLoot') > 0) {
-                Orion.Wait(1000)
-            }
+            DoMethodWhileWaiting('SortLoot')
+
         }
     })
 }
@@ -338,7 +352,7 @@ function SortLoot() {
         MoveItemTextFromTo("Gold Coin", Player.Serial(), Player.BankSerial())
         Orion.Wait(1000)
     }
-    ReturnHomeSortLoot()
+    DoMethodWhileWaiting('ReturnHomeSortLoot')
 }
 
 function WalkToQuestArrow() {
@@ -364,7 +378,12 @@ function LootChest() {
             Orion.UseSkillTarget('Remove Trap', chest.Serial())
             Orion.Wait(11000);
         }
-
+        
+        MoveItemText("Legendary Artifact", backpack)
+        MoveItemText("Major Artifact", backpack)
+		MoveItemText("Greater Artifact", backpack)
+		MoveItemText("Lesser Artifact", backpack)
+		
         MoveItems(chest, backpack, '0xA331|0x0EED') //Gold
         MoveItems(chest, backpack, '0xA32F') //Reg
         MoveItems(chest, backpack, '0xA333') //Gem
@@ -427,6 +446,10 @@ function ReturnHomeSortLoot() {
     Orion.Print('Move Transendance')
     MoveItemTextFromTo('Transcendence', backpack, transcendenceBook)
 
+    WalkTo(FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
+    MoveItemText("Legendary Artifact", FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
+    MoveItemText("Major Artifact", FindGroundItemWithProperties(["Engraved: Major"]).Serial())
+
     Orion.Print('Move Recipes')
     MoveItemTextFromTo('Recipe', backpack, Orion.FindObject(recipeBox))
 
@@ -438,7 +461,7 @@ function ReturnHomeSortLoot() {
 
     MoveItemTextFromTo("Completed", backpack, bin)
     //Move Maps
-    MoveMapsInBagToChests()
+    DoMethodWhileWaiting('MoveMapsInBagToChests')
 }
 
 function GoToClosestPortal() {
@@ -617,3 +640,4 @@ function FillScrollBinder() {
 //#include helpers/Debug.js
 //#include Actions/RuneBookController.js
 //#include helpers/Looter.js
+//#include helpers/Generic.js
