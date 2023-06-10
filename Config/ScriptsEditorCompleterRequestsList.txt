@@ -1,7 +1,10 @@
+ActivateClient
+PauseScript
+Weight
+MaxWeight
 false
 function
 TextWindow
-PauseScript
 ObjectExists
 Orion
 ClientOptionGet
@@ -39,7 +42,6 @@ Random
 AbilityStatus
 Abyss
 Acquire
-ActivateClient
 AddAction
 AddArray
 AddBlending
@@ -367,7 +369,6 @@ MaxMana
 MaxStam
 MaxTextLength
 MaxValue
-MaxWeight
 MenuCount
 MinDamage
 MinMaxButton
@@ -641,7 +642,6 @@ WaitTargetTypeList
 WaitTextDialog
 WaitWhileTargeting
 Weather
-Weight
 Write
 WriteLine
 X

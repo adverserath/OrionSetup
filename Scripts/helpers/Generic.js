@@ -10,6 +10,15 @@ function DoMethodWhileWaiting(methodName, argumentArray) {
   }
 }
 
+function WaitUntilMonstersAreDead(monsters) {
+  function AnyLiving(obj) {
+    return obj.Mobile()
+  }
+  while (monsters.some(AnyLiving)) {
+    Orion.Wait(100)
+  }
+}
+
 function MonitorLivingStatus() {
   while (true) {
     Orion.Wait(1000)
@@ -48,8 +57,7 @@ function MonitorGM() {
   }
 }
 
-function StopAllRunningScripts()
-{
+function StopAllRunningScripts() {
   Orion.PauseScript('all', 'MonitorGM');
 }
 

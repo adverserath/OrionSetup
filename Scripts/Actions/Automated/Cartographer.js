@@ -1,4 +1,5 @@
 
+
 // (startX, startY, startZ, endX, endY, endZ, distanceXY, distanceZ);
 var portalLocation = [
     coordinate(1434, 1699, 2, 'britain mint'),
@@ -96,19 +97,24 @@ function GoldLooter() {
 
     }
 }
-
 function MonitorAndDoStashBox() {
+    MonitorAndDoTypeBox("Stash")
+}
+function MonitorAndDoSupplyBox() {
+    MonitorAndDoTypeBox("Supply")
+}
+
+function MonitorAndDoTypeBox(mapType) {
     TextWindow.Open()
     var chest = Orion.FindTypeEx('0x0E3D', any, ground, 'item', 20).filter(function (box) {
-        return Orion.Contains(box.Properties(), "Engraved: Trammel Stash")
+        return Orion.Contains(box.Properties(), "Engraved: Trammel " + mapType)
     })[0]
     while (true) {
-        if(chest==null || !WalkTo(chest))
-        {
+        if (chest == null || !WalkTo(chest)) {
             RecallRune(home)
             Orion.Wait(2000)
             chest = Orion.FindTypeEx('0x0E3D', any, ground, 'item', 20).filter(function (box) {
-                return Orion.Contains(box.Properties(), "Engraved: Trammel Stash")
+                return Orion.Contains(box.Properties(), "Engraved: Trammel " + mapType)
             })[0]
         }
         Debug(' Starting New Map')
@@ -121,7 +127,7 @@ function MonitorAndDoStashBox() {
         Debug(' Open Container')
         Orion.Wait(600)
         var maps = Orion.FindTypeEx('0x14EC', any, chest.Serial()).filter(function (map) {
-            return Orion.Contains(map.Properties(), "Trammel") && Orion.Contains(map.Properties(), "Stash")
+            return Orion.Contains(map.Properties(), "Trammel") && Orion.Contains(map.Properties(), mapType)
         })
         Debug(' List Maps')
         if (maps.length > 0) {
@@ -132,7 +138,7 @@ function MonitorAndDoStashBox() {
             Debug(' Move Map')
             Orion.Wait(800)
             //DoAllMapsInBag([currentMap])
-            DoMethodWhileWaiting('DoMapBySerial',[currentMap.Serial()])
+            DoMethodWhileWaiting('DoMapBySerial', [currentMap.Serial()])
 
         }
         else {
@@ -148,8 +154,7 @@ function DoSpecificMap() {
     DoAllMapsInBag(maps)
 }
 
-function DoMapBySerial(serial)
-{
+function DoMapBySerial(serial) {
     var map = Orion.FindObject(serial)
     DoAllMapsInBag([map])
 }
@@ -234,39 +239,20 @@ function DoAllMapsInBag(inMaps) {
             //Dig Chest
             Orion.Print('Dig Chest Up')
 
-            Orion.RequestContextMenu(map.Serial());
-            Orion.WaitContextMenuID(map.Serial(), 1);
-            if (Orion.WaitForTarget(1000)) {
-                Orion.TargetTile('any', Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y(), 0);
-                Orion.Wait(27000)
-                var monsters = Orion.FindTypeEx(any, any, ground,
-                    'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal|red')
-                var safePath = Orion.GetPathArray(safeSpot.X(), safeSpot.Y())
-                if (safePath.length > 11) {
-                    WalkTo(safePath[10])
-                }
-                else {
-                    WalkTo(safeSpot)
-                }
-                Orion.Print('Hide')
-                //                Orion.UseSkill('Hiding')
 
-                while (!Player.Hidden()) {
-                    Orion.CastTarget('Invisibility', self)
+            var foundChest = false
+            while (!foundChest) {
+                Orion.RequestContextMenu(map.Serial());
+                Orion.WaitContextMenuID(map.Serial(), 1);
+                if (Orion.WaitForTarget(1000)) {
+                    Orion.TargetTile('any', Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y(), 0);
                     Orion.Wait(2000)
+                    foundChest = WaitForChestToAppear()
+                    if(foundChest)
+                        KillGuardians()
                 }
-
-                Orion.Wait(1000)
-
-                Orion.Print('Fight Monsters')
-                monsters.forEach(function (closemob) {
-                    Orion.Attack(closemob.Serial())
-                    Orion.Wait(50)
-                })
-                Orion.WarMode(0);
-
-                Orion.Wait(10000)
             }
+
             Orion.WarMode(0);
             Orion.Wait(1000)
 
@@ -359,31 +345,116 @@ function WalkToQuestArrow() {
     WalkTo(coordinate(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y()))
 }
 
+function WaitForChestToAppear() {
+    var dirt = FindGroundItemWithProperties(['Dirt Patch'])
+    while (dirt == null) {
+        dirt = FindGroundItemWithProperties(['Dirt Patch'])
+        Orion.Wait(500)
+    }
+    if (dirt != null) {
+        while (dirt != null && (dirt.Graphic() == '0x0912' || dirt.Graphic() == '0x0913')) {
+            Orion.Print(dirt.Graphic())
+            Orion.Wait(500)
+        }
+        Orion.Wait(500)
+
+        Orion.Print('part 2')
+        while (dirt.Graphic() == '0x0914' && FindGroundItemWithProperties(['Treasure Chest']) == null) {
+            Orion.Print(dirt.Graphic())
+            Orion.Wait(500)
+        }
+        Orion.Print('part 3')
+        var chest = FindGroundItemWithProperties(['Treasure Chest'])
+        if (chest != null) {
+            while (Orion.Contains(chest.Properties(), 'Contents')) {
+                Orion.Wait(500)
+                Orion.Print('chest' + chest.Z())
+            }
+            Orion.Print('chest' + chest.Properties())
+
+            return true
+        }
+    }
+    return false
+}
+
+function KillGuardians() {
+    var monsters = Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal|red')
+    if (monsters.length > 0) {
+        var safePath = Orion.GetPathArray(safeSpot.X(), safeSpot.Y())
+        if (safePath.length > 11) {
+            WalkTo(safePath[10])
+        }
+        else {
+            WalkTo(safeSpot)
+        }
+        Orion.Print('Hide')
+        while (!Player.Hidden()) {
+            Orion.CastTarget('Invisibility', self)
+            Orion.Wait(2000)
+        }
+
+        Orion.Wait(1000)
+
+        Orion.Print('Fight Monsters')
+        monsters.forEach(function (closemob) {
+            Orion.Attack(closemob.Serial())
+            Orion.Wait(100)
+        })
+        Orion.WarMode(0);
+
+        WaitUntilMonstersAreDead(monsters)
+    }
+    Orion.Print('Heal Checks')
+    Heal()
+}
+function GetChestObject() {
+    return Orion.FindTypeEx(any, any, ground, 'item', 13).filter(function (item) { return Orion.Contains(item.Name(), 'Treasure Chest') }).shift()
+}
 function LootChest() {
     Orion.Print('Start Loot Script')
 
-    var chest = Orion.FindTypeEx(any, any, ground, 'item', 13).filter(function (item) { return Orion.Contains(item.Name(), 'Treasure Chest') }).shift()
+    var chest = GetChestObject()
     if (chest != null) {
         WalkTo(chest)
-        while (!Orion.OpenContainer(chest.Serial(), 1000, 'reach that|too away|appears to be trapped')) {
+        Heal()
+        //If no contents (its locked)
+        while (!Orion.Contains(chest.Properties(), 'Contents')) {
             WalkTo(chest)
             Orion.Wait(500)
-
             CastSpellOnTargetV2('Unlock', chest.Serial())
-            //Orion.UseType('0x14FB|0x14FC', '0xFFFF');
-            //if (Orion.WaitForTarget(1000)) {
-            //    Orion.TargetObject(chest.Serial());
-            //}
-            Orion.Wait(3000);
-            Orion.UseSkillTarget('Remove Trap', chest.Serial())
-            Orion.Wait(11000);
+            Orion.Wait(1000)
         }
-        
+        var startTime = Orion.Now()
+        while (!Orion.OpenContainer(chest.Serial(), 1000, 'reach that|too away|appears to be trapped')) {
+            WalkTo(chest)
+            
+            Orion.UseSkillTarget('Remove Trap', chest.Serial())
+
+            var safePath = Orion.GetPathArray(safeSpot.X(), safeSpot.Y())
+            if (safePath.length > 11) {
+                WalkTo(safePath[10])
+            }
+            else {
+                WalkTo(safeSpot)
+            }
+
+            while (!Orion.InJournal('You successfully disarm', '', 0, any, startTime) || Player.Hits() < Player.MaxHits()) {
+                Orion.Wait(400)
+            }
+            KillGuardians()
+            WalkTo(chest)
+            Orion.Wait(500)
+            Orion.OpenContainer(chest.Serial())
+            Orion.Wait(500)
+        }
+
         MoveItemText("Legendary Artifact", backpack)
         MoveItemText("Major Artifact", backpack)
-		MoveItemText("Greater Artifact", backpack)
-		MoveItemText("Lesser Artifact", backpack)
-		
+        MoveItemText("Greater Artifact", backpack)
+        MoveItemText("Lesser Artifact", backpack)
+
         MoveItems(chest, backpack, '0xA331|0x0EED') //Gold
         MoveItems(chest, backpack, '0xA32F') //Reg
         MoveItems(chest, backpack, '0xA333') //Gem

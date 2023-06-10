@@ -429,7 +429,14 @@ function ChestRecoveryService() {
     var seakey = FindBackpackItemWithProperties([_seakey, "Ship Recall Rune"]).Serial()
 
     var droppedChest = FindGroundItemWithName(["Chest|Strongbox"])
-
+	
+	if(Player.MaxWeight()<Player.Weight())
+	{
+	Orion.Print(58, "Backpack too heavy")
+	Orion.ActivateClient()
+	Orion.PauseScript()
+	}
+	
     if (droppedChest != null) {
         Orion.OpenContainer(droppedChest.Serial())
         Orion.Boxhack(droppedChest.Serial())

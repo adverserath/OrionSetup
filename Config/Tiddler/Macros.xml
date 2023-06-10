@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
     <macro name="macro" looped="true" delay="1">
-        <action type="5" convert_type="0" waiting_time="1000" value="56"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x000001AA" id="0x65290B89" button="10011"/>
-        <action type="3" convert_type="0" waiting_time="1000" serial="0x4002AA14" graphic="0xA306" color="0x0000"/>
-        <action type="15" convert_type="0" waiting_time="1000" serial="0x000001AB" id="0xB73E81BB" button="1"/>
+        <action type="8" convert_type="0" waiting_time="1000" value="744"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x00005B1E" graphic="0x0115" color="0x0000"/>
+        <action type="15" convert_type="0" waiting_time="1000" serial="0x00000021" id="0x92E576B6" button="1"/>
     </macro>
     <macro name="PeaceArea" looped="false" delay="1">
         <action type="1" convert_type="0" waiting_time="1000" serial="0x40173554" graphic="0x14F6" color="0x0000"/>
