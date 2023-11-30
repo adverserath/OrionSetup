@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="2">
+<data version="0" size="3">
     <autoloot name="Gold" container="0x40123212" find_list="Gold/Treasure/Artis|HighSDI|CraftIngredient" ignore_list="Not use" check_los="true" check_weight_limit="true" started="false" selected="false"/>
-    <autoloot name="Maps" container="0x40123212" find_list="Gold/Arrows|Maps" ignore_list="Not use" check_los="true" check_weight_limit="true" started="false" selected="true"/>
+    <autoloot name="Maps" container="0x40123212" find_list="Gold/Arrows|Maps" ignore_list="Not use" check_los="true" check_weight_limit="true" started="false" selected="false"/>
+    <autoloot name="Shame" container="0x40123212" find_list="ShameCrytal|ticket" ignore_list="" check_los="true" check_weight_limit="true" started="true" selected="true"/>
 </data>

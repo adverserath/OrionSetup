@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="33">
+<data version="0" size="35">
     <findlist name="Gold/Treasure/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0" enabled="true"/>
         <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0" enabled="true"/>
@@ -265,5 +265,17 @@
     <findlist name="Gold">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0" enabled="true"/>
         <item graphic="0x0F87" color="0x0496" comment="Lucky Coin" count="0" enabled="true"/>
+        <item graphic="any" color="any" comment="legendary artifact" count="0" enabled="true">
+            <property name="Legendary Artifact" value_min="0" value_max="100"/>
+        </item>
+        <item graphic="any" color="any" comment="Major arti" count="0" enabled="true">
+            <property name="Major Artifact" value_min="0" value_max="100"/>
+        </item>
+    </findlist>
+    <findlist name="ShameCrytal">
+        <item graphic="0x400B" color="0x0A33" comment="8 Crystal Of Shame" count="0" enabled="true"/>
+    </findlist>
+    <findlist name="ticket">
+        <item graphic="0x2D5D" color="0x066C" comment="Fall Festival Ticket" count="0" enabled="true"/>
     </findlist>
 </data>

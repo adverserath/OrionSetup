@@ -8,6 +8,7 @@
 //#include ./*.js
 //#include Bod/BodData.js
 //#include Bod/BodCleaner.js
+//#include Bod/CoinToss.js
 
 function FindCorruption() {
   while (true) {
@@ -23,22 +24,39 @@ function A_UDPLogout() {
   Orion.Wait(100)
   Orion.UdpSend('192.168.0.2', 40003, 'logout')
 }
-function Autostart() {
 
-  Orion.Wait(3000)
+function Autostart() {
   // Orion.ToggleScript('Alarm')
   //GetBods()
-  Orion.Wait(2000)
+  Orion.Wait(3000)
   //EmptyUnusableSmallsOutBODBooks()
   //MoveBodsToBooks()
   //Orion.Print('Good Bye')
   //Orion.CloseUO();
   TossACoin()
+  //Orion.PauseScript()
   Login()
 }
-function Login() {
-  var names = ['Arian', 'Bryian', 'Crian', 'Drian', 'Erian', 'Frian']
 
+function Login() {
+  var names0 = ['Xero']
+  var names1 = ['El', 'Skilles']
+  var names2 = ['Aki', 'Nyll']
+  var names3 = ['Epar Esra', 'Columbo', 'Juice', 'Crian', 'Drian', 'Erian', 'Frian']
+
+  CheckAccount(names0)
+  CheckAccount(names1)
+  CheckAccount(names2)
+  CheckAccount(names3)
+
+}
+
+function CheckAccount(names) {
+  if (names.indexOf(Player.Name()) == -1) {
+    Orion.Print('f' + names)
+    return
+  }
+  Orion.Print('s:' + names)
   for (i = 0; i < names.length; i++) {
     if (names[names.length - 1] == Player.Name()) {
       Orion.Wait(1000)
@@ -48,7 +66,8 @@ function Login() {
 
     if (names[i] == Player.Name()) {
       Orion.Wait(1000)
-      Orion.ShowJournal()
+
+      BotPush('Switching to ' + names[(i + 1)], true)
       Orion.Relogin(names[(i + 1)])
       break;
     }
@@ -76,22 +95,6 @@ function AnnounceOrcs() {
   Orion.SayParty('Orcs Spotted: ' + Math.abs(x) + hDirect + '  :  ' + Math.abs(y) + vDirect)
   Orion.SetWorldMapPointerPosition(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y());
 
-}
-function TossACoin() {
-  if (Orion.FindTypeEx('0x0F87', any, backpack).length == 0) {
-    BotPush(Player.Name() + ' has no coins')
-    Orion.PauseScript()
-  }
-  if (Player.Weight() > Player.MaxWeight()) {
-    BotPush(Player.Name() + ' cant throw coin - to heavy')
-  }
-  if (Orion.ObjAtLayer('backpack').Properties().match(/Contents..\d\d\d/) != null) {
-    BotPush(Player.Name() + ' cant throw coin - no space')
-  }
-  Orion.UseType('0x0F87', '0xFFFF');
-  if (Orion.WaitForTarget(1000))
-    Orion.TargetGround('0x173E', '0xFFFF');
-  Orion.Wait(500)
 }
 
 function Alarm() {

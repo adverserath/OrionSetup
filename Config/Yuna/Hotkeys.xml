@@ -1,48 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data version="2">
+    <hotkey type="29" action="256" key="45" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="261" key="34" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="8" modifiers="64" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;        if(Orion.GetDistance(SelectedTile.X(),SelectedTile.Y())&gt;5){\n\t\t    Orion.InterruptCast();\n        }\n        Orion.WalkTo(SelectedTile.X(), SelectedTile.Y(), SelectedTile.Z(), 0, 3, 1)&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
+    <hotkey type="29" action="260" key="35" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="29" action="258" key="33" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="34" action="1" key="122" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="2" action="1" key="123" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;var target = SelectTarget()\n                Orion.Hide(target.Serial())&quot;,&#10;    &quot;name&quot;: &quot;RateTarget&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
+    <hotkey type="18" action="35" key="36" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="9" action="405" key="120" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="9" action="116" key="121" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="34" action="1" key="122" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="2" action="1" key="123" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;var target = SelectTarget()\n                Orion.Hide(target.Serial())&quot;,&#10;    &quot;name&quot;: &quot;RateTarget&quot;,&#10;    &quot;run_once&quot;: 0&#10;}&#10;"/>
     <hotkey type="7" action="0" key="124" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="202" key="112" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="201" key="113" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="209" key="114" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="10" action="209" key="114" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="210" key="115" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="3" action="1" key="187" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;Orion.Relogin()&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
-    <hotkey type="31" action="6" key="117" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="5" key="118" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="12" action="37" key="103" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="1" key="120" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="10" action="109" key="104" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="31" action="3" key="121" modifiers="8" override_pass_key_to_client="0"/>
-    <hotkey type="8" action="1" key="97" modifiers="4" override_pass_key_to_client="0"/>
+    <hotkey type="10" action="-202" key="112" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="10" action="201" key="113" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="206" key="118" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="47" action="0" key="119" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="203" key="116" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="49" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;var lastAttacker = Orion.FindObject(Orion.ClientLastAttack())\nif (lastAttacker != null)\n    pathDistance = Orion.GetPathArray(lastAttacker.X(), lastAttacker.Y(), lastAttacker.Z()).length\nelse\n    pathDistance = 0\nif (lastAttacker == null || !lastAttacker.InLOS() || lastAttacker.Distance() &lt; (pathDistance - 10) || pathDistance == 0) {\n    Orion.Print('no enemy')\n\n    var closest = Orion.FindTypeEx(GetMobType(), any, ground,\n        'live|ignoreself|ignorefriends', 1, 'gray|criminal|red|enemy')\n\n    if (closest.length &gt; 0) {\n        Orion.Exec('HonorSampire', true, [closest[0].Serial()]);\n        Orion.Wait(100)\n        Orion.Attack(closest[0].Serial())\n        WalkTo(closest[0])\n        Orion.PrintFast(self, '0x0111', 1, closest[0].Name());\n    }\n    else {\n        closest = GetEnemiesInArea(20)\n        closest.sort(function (mobA, mobB) {\n            return mobA.Distance() - mobB.Distance()\n        });\n\n        if (closest.length == 0) {\n            Orion.PrintFast(self, '0x0111', 1, 'Loot');\n            if (looting)\n                OpenCorpsesWhenIdle()\n            if (locations.length &gt; 0) {\n                while (Player.Weight() &gt; Player.MaxWeight()) {\n                    Orion.Wait(1000)\n                }\n                closest = GetEnemiesInArea()\n                if (closest.length == 0)\n                    LocationLoop()\n            }\n        }\n        if (closest.length &gt; 0) {\n            Orion.Exec('HonorSampire', true, [closest[0].Serial()]);\n            Orion.Wait(100)\n\n            Orion.Print('0x0111', \&quot;Attack All\&quot;)\n            closest.forEach(function (mobile) {\n                Orion.Attack(mobile.Serial())\n                Orion.Wait(50)\n            })\n\n            Orion.Attack(closest[0].Serial())\n            WalkTo(closest[0])\n            if (!WalkTo(closest[0])) {\n                Orion.Ignore(closest[0].Serial())\n            }\n            Orion.PrintFast(self, '0x0111', 1, closest[0].Name());\n        }\n    }\n}\n&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
+    <hotkey type="9" action="205" key="117" modifiers="0" override_pass_key_to_client="0"/>
     <hotkey type="31" action="2" key="122" modifiers="8" override_pass_key_to_client="0"/>
     <hotkey type="8" action="2" key="98" modifiers="4" override_pass_key_to_client="0"/>
     <hotkey type="31" action="0" key="123" modifiers="8" override_pass_key_to_client="0"/>
     <hotkey type="8" action="4" key="99" modifiers="4" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="1" key="120" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="10" action="109" key="104" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="3" key="121" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="8" action="1" key="97" modifiers="4" override_pass_key_to_client="0"/>
+    <hotkey type="8" action="6" key="102" modifiers="4" override_pass_key_to_client="0"/>
     <hotkey type="8" action="3" key="100" modifiers="4" override_pass_key_to_client="0"/>
     <hotkey type="8" action="5" key="101" modifiers="4" override_pass_key_to_client="0"/>
-    <hotkey type="8" action="6" key="102" modifiers="4" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="262" key="19" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="209" key="114" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="202" key="112" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="201" key="113" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="5" key="118" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="4" key="119" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="12" action="37" key="103" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="6" key="117" modifiers="8" override_pass_key_to_client="0"/>
+    <hotkey type="9" action="734" key="83" modifiers="4" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="19" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;Orion.GetScripts().filter(function(name){\nreturn name!='ExternalCode'\n}).forEach(function(name){\nOrion.Print(name + '  ' + Orion.ScriptRunning(name))\nif(Orion.ScriptRunning(name)&gt;0){\nOrion.PauseScript(name)\n}\nelse{\nOrion.ResumeScript(name)\n}\n})&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
+    <hotkey type="0" action="1" key="221" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;can_be_looped&quot;: 0,&#10;    &quot;do_not_interrupt&quot;: 0,&#10;    &quot;name&quot;: &quot;RecallSafe&quot;&#10;}&#10;"/>
     <hotkey type="3" action="6" key="16" modifiers="64" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//#include Scripts/helpers/Target.js\nvar target = SelectTarget()\nOrion.InvokeVirtue('Honor')\nif(Orion.WaitForTarget() &amp;&amp; target.Distance()&lt;12)\n{\nOrion.TargetObject(target.Serial())\nOrion.Attack(target.Serial())\n}\n&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
     <hotkey type="29" action="263" key="145" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="734" key="83" modifiers="4" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="258" key="33" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="261" key="34" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="260" key="35" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="18" action="35" key="36" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="28" action="0" key="3" modifiers="4" override_pass_key_to_client="0"/>
     <hotkey type="41" action="7" key="111" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="29" action="256" key="45" modifiers="16" override_pass_key_to_client="0"/>
     <hotkey type="29" action="259" key="46" modifiers="16" override_pass_key_to_client="0"/>
-    <hotkey type="3" action="1" key="8" modifiers="64" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;        if(Orion.GetDistance(SelectedTile.X(),SelectedTile.Y())&gt;5){\n\t\t    Orion.InterruptCast();\n        }\n        Orion.WalkTo(SelectedTile.X(), SelectedTile.Y(), SelectedTile.Z(), 0, 3, 1)&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
-    <hotkey type="10" action="-202" key="112" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="10" action="201" key="113" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="10" action="209" key="114" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="210" key="115" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="203" key="116" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="205" key="117" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="9" action="206" key="118" modifiers="0" override_pass_key_to_client="0"/>
-    <hotkey type="47" action="0" key="119" modifiers="0" override_pass_key_to_client="0"/>
 </data>

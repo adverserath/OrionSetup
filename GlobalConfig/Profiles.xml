@@ -5,34 +5,37 @@
     <profile serial="0x0000007C" file="Admin"/>
     <profile serial="0x0000041B" file="Hornpub"/>
     <profile serial="0x00000545" file="Kwazii"/>
-    <profile serial="0x0000089E" file="Aki"/>
+    <profile serial="0x0000089E" file="Bots"/>
     <profile serial="0x00000B40" file="Atten"/>
-    <profile serial="0x00000D0D" file="Atten"/>
+    <profile serial="0x00000CC8" file="Bots"/>
+    <profile serial="0x00000D0D" file="Bots"/>
     <profile serial="0x000018D7" file="Atten_Sub1"/>
     <profile serial="0x00002D7D" file="Yuna"/>
     <profile serial="0x000045F6" file="Hornpub"/>
+    <profile serial="0x00004D98" file="Bots"/>
     <profile serial="0x00004F3B" file="Atten"/>
     <profile serial="0x00004F5C" file="Tiddler"/>
     <profile serial="0x00005DC9" file="Tyr"/>
     <profile serial="0x00006A06" file="Tyr"/>
-    <profile serial="0x00006EF6" file="Aki"/>
+    <profile serial="0x00006EF6" file="Bots"/>
     <profile serial="0x000072B7" file="Atten_Sub2"/>
     <profile serial="0x0000813F" file="Tim"/>
-    <profile serial="0x00008DDD" file="PVPNinja"/>
+    <profile serial="0x00008DDD" file="Bots"/>
     <profile serial="0x000097BB" file="Default"/>
     <profile serial="0x000097F8" file="Barnacle"/>
     <profile serial="0x000099E8" file="Atten"/>
-    <profile serial="0x0000A57A" file="BodCollector"/>
-    <profile serial="0x0000A70A" file="BodCollector"/>
-    <profile serial="0x0000A75F" file="BodCollector"/>
-    <profile serial="0x0000A78E" file="BodCollector"/>
-    <profile serial="0x0000A866" file="BodCollector"/>
+    <profile serial="0x0000A57A" file="Bots"/>
+    <profile serial="0x0000A70A" file="Bots"/>
+    <profile serial="0x0000A75F" file="Bots"/>
+    <profile serial="0x0000A78E" file="Bots"/>
+    <profile serial="0x0000A866" file="Bots"/>
     <profile serial="0x0000A893" file="Hornpub"/>
-    <profile serial="0x0000A89B" file="BodCollector"/>
+    <profile serial="0x0000A89B" file="Bots"/>
     <profile serial="0x0000A923" file="Hornpub"/>
     <profile serial="0x0000AFA4" file="Crafter"/>
-    <profile serial="0x0000C794" file="Tamer"/>
+    <profile serial="0x0000C794" file="Bots"/>
     <profile serial="0x0000C941" file="Atten"/>
+    <profile serial="0x0000CCCA" file="Bots"/>
     <profile serial="0x0000FA01" file="Vimto"/>
     <profile serial="0x0000FEFD" file="Atten"/>
     <profile serial="0x00165051" file="Crafter"/>

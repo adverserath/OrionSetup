@@ -710,5 +710,6 @@ function FillScrollBinder() {
 //#include helpers/ItemManager.js
 //#include helpers/Debug.js
 //#include Actions/RuneBookController.js
+//#include Fighting/Healing.js
 //#include helpers/Looter.js
 //#include helpers/Generic.js

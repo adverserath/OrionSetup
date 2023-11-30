@@ -1,6 +1,13 @@
 //#include helpers/Target.js
 //#include helpers/Debug.js
-
+function OpenCommodities()
+{
+while(true)
+{
+Orion.Wait(1000)
+Orion.UseType('0x14F0', '0x0592', '0x4006968E');
+}
+}
 function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recursive) {
     Debug(' Method Entry - MoveItems')
     if (typeof fromContainer === "string") {

@@ -64,7 +64,7 @@ function CastSpellOnTarget(spellName, targetID) {
 	var startCastTime = Orion.Now();
 	Orion.CancelWaitTarget();
 	Orion.Print('Cast on ' + targetID)
-	Orion.WaitTargetObject(targetID);
+	//Orion.WaitTargetObject(targetID);
 	Orion.CastTarget(spellName, targetID);
 	while (Player.Frozen()) {
 		Orion.Wait(400)
@@ -78,7 +78,7 @@ function CastSpellOnTarget(spellName, targetID) {
 		Orion.CastTarget(spellName, targetID);
 		Orion.Wait(200)
 	}
-	Orion.CancelWaitTarget();
+	//Orion.CancelWaitTarget();
 	Orion.Wait(100);
 }
 
@@ -153,10 +153,10 @@ function GoHome() {
 	if (runebook != null) {
 		Orion.Print("Going to:" + runebook.Serial())
 		if (Orion.SkillValue('Magery', 'base') > 40) {
-			CastSpellOnTarget("Recall", runebook.Serial());
+			CastSpellOnTargetV2("Recall", runebook.Serial());
 		}
 		if (Orion.SkillValue('Chivalry', 'base') > 30) {
-			CastSpellOnTarget("Sacred Journey", runebook.Serial());
+			CastSpellOnTargetV2("Sacred Journey", runebook.Serial());
 		}
 	}
 	WaitFrozen("Going Home");
@@ -407,6 +407,17 @@ function DeathRayAllParagons() {
 			Orion.Wait(1000)
 		}
 	}
+}
+
+function EquipSlayer()
+{
+//var mobType = Orion.GetObject(Orion.ClientLastAttack())).Graphic()
+var slayers = Orion.FindTypeEx('0x0EFA',any,backpack).filter(function (book){return Orion.Contains(book.Properties(),'Slayer')})
+
+			slayers.forEach(function (book) {
+				Orion.Print(book.Properties().match(/\w*\sSlayer/g))
+			})
+
 }
 // }
 // 		if(Orion.FindTypeEx(any,'0x0501',ground,'mobile',18,'gray|criminal|red'))

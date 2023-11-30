@@ -167,7 +167,7 @@ function WalkTo(object, distance, timeMS, walking, monitored) {
     object = target;
   }
 
-  if (object.hasOwnProperty('name')||object.hasOwnProperty('Name')) {
+  if (object.hasOwnProperty('name') || object.hasOwnProperty('Name')) {
     TextWindow.Print("Walking to object ")
     TextWindow.Print(object.X() + '  ' + object.Y())
   }
@@ -198,8 +198,7 @@ function WalkTo(object, distance, timeMS, walking, monitored) {
 
   var Z = 0
 
-  if (object.hasOwnProperty('Z'))
-  {
+  if (object.hasOwnProperty('Z')) {
     Orion.Print(object.Z())
     Z = object.Z()
   }
@@ -485,6 +484,37 @@ function FindGroundItemWithName(name) {
 function FindBackpackItemWithName(name) {
   return Orion.FindTypeEx(any, any, backpack, 'item', 18).filter(function (item) {
     return Orion.Contains(item.Name(), name)
+  }).shift()
+}
+
+function FindBackpackItemWithExactName(name) {
+  return Orion.FindTypeEx(any, any, backpack, 'item', 18).filter(function (item) {
+    var nameLetters = item.Name().match(/([a-zA-Z\s]+)/)[1].trim()
+    return nameLetters == name
+  }).shift()
+}
+
+function CountBackpackItemWithExactName(name) {
+  return Orion.FindTypeEx(any, any, backpack, 'item', 18).filter(function (item) {
+    var nameLetters = item.Name().match(/([a-zA-Z\s]+)/)[1].trim()
+    if(Orion.Contains(nameLetters, name))
+    {
+      Orion.Print(nameLetters + ' contains ' + name)
+    }
+    //return Orion.Contains(nameLetters, name)
+    return nameLetters == name
+  }).map(function (item) { return item.Count() }).reduce(add, 0)
+}
+function add(accumulator, a) {
+  return accumulator + a;
+}
+
+function FindContainerItemWithExactName(name, containerSerial) {
+  //Orion.OpenContainer(containerSerial)
+  Orion.Print('Finding:'+name)
+  return Orion.FindTypeEx(any, any, containerSerial, 'item', 18).filter(function (item) {
+    var nameLetters = item.Name().match(/([a-zA-Z\s]+)/)[1].trim()
+    return nameLetters.toUpperCase() === name.toUpperCase()
   }).shift()
 }
 

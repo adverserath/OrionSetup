@@ -96,10 +96,12 @@ function CasterGump() {
         // if (!Orion.BuffExists('0x9BD2')) {
         gump.AddColoredPolygone(0, 0, width, height, '#FF222222', 0, 10, 0, 50002);
 
-        var text = 'Active Spell : ' + gumpSpells.filter(function (spell) {
+        var spellText =gumpSpells.filter(function (spell) {
             return spell.SpellID == Orion.RegRead('activeSpell')
-        }).shift().Name
-        gump.AddText(10, -10, 0, "test", 10, textSerial++);
+        }).shift()//.Name()
+        var text =  'Active Spell : ' + spellText.Name
+
+        gump.AddText(10, -10, 0, text, 10, textSerial++);
 
         //Create Spell Buttons
         gumpSpells.forEach(function (spell) {

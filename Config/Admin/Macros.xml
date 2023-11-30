@@ -4,4 +4,5 @@
         <action type="16" convert_type="0" waiting_time="1000" serial="0x00000079" graphic="0x0000" color="0x0000"/>
         <action type="17" convert_type="0" waiting_time="1000" serial="0x00000079" graphic="0x0001" color="0x0000"/>
     </macro>
+    <macro name="ThrowCoin" looped="false" delay="1"/>
 </data>

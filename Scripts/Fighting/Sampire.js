@@ -1,9 +1,6 @@
 var LMC = Player.LMC() / 100
 var looting = true
 
-function ShowJ() {
-    Orion.ShowJournal();
-}
 function OpenMyCorpse() {
     Orion.FindTypeEx('0x2006', any, ground, 'item', 40).filter(function (corpse) {
         return Orion.Contains(corpse.Properties(), Player.Name())
@@ -61,9 +58,14 @@ function SetLocations(_) {
     locations = SelectMultipleLocations();
 }
 
+function resetMobType()
+{
+Orion.SetGlobal("mobType",'')
+}
+
 var mobType
 function GetMobType() {
-    if (mobType == null)
+    if (mobType == null || mobType == '')
         mobType = Orion.GetGlobal("mobType")
     if (mobType == null)
         return any
@@ -111,16 +113,24 @@ function LocationLoop(_) {
 function SampireSpells() {
     var spellName = ""
     while (true) {
-        Orion.Wait(500)
+        Orion.Wait(200)
         while (!Player.Dead() && Player.WarMode()) {
             var allMobsLength = Orion.FindTypeEx(GetMobType(), any, ground,
                 'live|ignoreself|ignorefriends', 18, 'gray|criminal|red|enemy').length
-
             if (allMobsLength == 0) {
                 Orion.Wait(1000)
                 continue;
             }
             var lastAttacker = Orion.FindObject(Orion.ClientLastAttack())
+            
+            Orion.FindTypeEx(GetMobType(), any, ground,
+                'live|ignoreself|ignorefriends', 18, 'gray|criminal|red|enemy').forEach(function (mob)
+            {
+            if(mob.Notoriety()==3){
+            Orion.Attack(mob.Serial())
+            Orion.Wait(100)
+            }
+            })
             if (lastAttacker != null) {
                 Orion.Wait(200)
                 //Counter Attack
@@ -170,18 +180,18 @@ function SampireSpells() {
                 }
 
                 //Divine Fury
-                spellName = "Divine Fury"
-                if (ManaCheck(15, LMC) && !Orion.BuffExists(spellName)) {
-                    Orion.PrintFast(self, '0x0111', 1, spellName);
-                    CastSpell(spellName);
-                    continue
-                }
+               // spellName = "Divine Fury"
+              //  if (ManaCheck(15, LMC) && !Orion.BuffExists(spellName)) {
+             //       Orion.PrintFast(self, '0x0111', 1, spellName);
+              //      CastSpell(spellName);
+             //       continue
+             //   }
                 //Consecrate Weapon
-                spellName = "Consecrate Weapon"
-                if (ManaCheck(10, LMC) && !Orion.BuffExists(spellName)) {
-                    Orion.PrintFast(self, '0x0111', 1, spellName);
-                    CastSpell(spellName);
-                }
+             //   spellName = "Consecrate Weapon"
+             //   if (ManaCheck(10, LMC) && !Orion.BuffExists(spellName)) {
+             //       Orion.PrintFast(self, '0x0111', 1, spellName);
+            //        CastSpell(spellName);
+            //    }
 
                 //Curse Weapon
                 spellName = "Curse Weapon"
@@ -235,7 +245,7 @@ function SampireSpells() {
     } //while true
 }
 
-function TargetClosest(_) {
+function TargetClosest() {
     var targetColor = any
     if (Orion.GetGlobal("justParagons")) {
         Orion.Print('Killing Paragons')
@@ -267,7 +277,7 @@ function TargetClosest(_) {
                     Orion.PrintFast(self, '0x0111', 1, closest[0].Name());
                 }
                 else {
-                    closest = GetEnemiesInArea(10)
+                    closest = GetEnemiesInArea(15)
 
                     //.filter(function (mob){
                     //                    var walkDist = Orion.GetPathArray(mob.X(), mob.Y(), mob.Z()).length
@@ -375,13 +385,15 @@ function HonorSampire(mobileSerial) {
         Orion.Print('Can Honor ' + mobile.Properties())
         while (mobile != null && mobile.Distance() > 11 ||
             !mobile.InLOS()) {
-            Orion.Wait(100)
+            Orion.Wait(200)
         }
         Orion.PrintFast(self, '0x0111', 1, 'Honor');
         Orion.WaitTargetObject(mobile.Serial());
         Orion.AddHighlightCharacter(mobile.Serial(), '0xF550', true);
 
         Orion.InvokeVirtue('Honor');
+        Orion.Wait(200)
+        Orion.CancelTarget()
     }
 }
 
@@ -427,3 +439,4 @@ function CastSpell(spell, target) {
 //#include helpers/Debug.js
 //#include helpers/Looter.js
 //#include Actions/Automated/BagOfSending.js
+//#include helpers/Generic.js

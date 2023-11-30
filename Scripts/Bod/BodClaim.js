@@ -1,5 +1,6 @@
 //#include helpers/Target.js
 //#include helpers/Debug.js
+//#include helpers/Generic.js
 
 var valorite = 239
 var ancient = 237
@@ -19,13 +20,15 @@ var pinkDye = 212
 var spellTalis = 213
 
 function Claim() {
-for(i=0;i<10;i++)
+var npc = SelectTarget('Select NPC')
+//var amount = Orion.InputText(15000,'How many to claim')
+for(i=0;i<4;i++)
 {
-	var item = shadowIron
+	var item = tail120
 	var itemsCount = Orion.FindTypeEx(any, any, backpack).length
 	Orion.Print('items: ' + itemsCount)
 	if (itemsCount == 125) {
-		var npc = SelectTarget('Select NPC')
+		
 		var start = Orion.Now()
 		Orion.RequestContextMenu(npc.Serial());
 		Orion.WaitContextMenuCliloc(npc.Serial(), 1155593);
