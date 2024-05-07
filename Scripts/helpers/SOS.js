@@ -61,18 +61,18 @@ function GetSOSLocation(sosObject) {
         gumpOpen = Orion.WaitForGump(1500)
     } while (Orion.InJournal('You must wait to perform another action.', 'sys', 0, any, Orion.Now() - 500) && !gumpOpen)
 
-    var gump0 = Orion.GetGump(any, '0x550A461B')
+    var gump0 = Orion.GetGump(any, '0xD0F40EC8')
     while (gump0 == null) {
         Orion.Print('looking for SOS gump')
         Orion.Wait(1000)
         Orion.UseObject(sosObject.Serial())
         Orion.Wait(1000)
-        gump0 = Orion.GetGump(any, '0x550A461B')
+        gump0 = Orion.GetGump(any, '0xD0F40EC8')
     }
     Orion.Print(gump0.Replayed())
     Orion.Print(gump0.ID())
 
-    if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x550A461B')) {
+    if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xD0F40EC8')) {
         var com = gump0.CommandList()[2]
         //Orion.Print(com)
         Orion.Print(com.match(/.*@(.*)@.*/i)[1])

@@ -10,7 +10,7 @@ function GetSOSLocation() {
     Orion.UseObject(sosObject.Serial())
     Orion.Wait(500)
     var gump0 = Orion.GetGump('last');
-    if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x550A461B')) {
+    if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xD0F40EC8')) {
         var com = gump0.CommandList()[2]
         //Orion.Print(com)
         Orion.Print(com.match(/.*@(.*)@.*/i)[1])

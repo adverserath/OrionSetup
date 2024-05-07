@@ -1,3 +1,26 @@
+function MoveItemsToMain(type)
+{
+Orion.FindTypeEx(type,backpack).forEach(function (item){
+Orion.MoveItem(item.Serial())
+Orion.Wait(2000)
+})
+}
+function BagOfSendingGoldOnce() {
+    var goldLimit = 1000;
+    var bags = GetBOS()
+
+            if (Player.Weight() >= (Player.MaxWeight() - 10) && Player.Gold() > goldLimit) {
+            MoveItemsToMain(0x0EED)
+                Orion.Print('sending gold')
+                bags = GetBOS()
+                if (bags.length > 0) {
+                    Orion.Print(87, 'Sending Bag')
+                    Orion.AddWaitTargetType(0x0EED, any, backpack);
+                    Orion.UseObject(bags.shift().Serial())
+                    Orion.Wait(1000)
+            }
+        }
+    }
 
 function BagOfSendingGold() {
     var goldLimit = 1000;

@@ -433,8 +433,12 @@ function ChestRecoveryService() {
 	if(Player.MaxWeight()<Player.Weight())
 	{
 	Orion.Print(58, "Backpack too heavy")
-	Orion.ActivateClient()
-	Orion.PauseScript()
+
+	BagOfSendingGoldOnce()
+	Orion.Wait(4000)
+	if(Player.MaxWeight()<Player.Weight())
+		Orion.ActivateClient()
+		Orion.PauseScript()
 	}
 	
     if (droppedChest != null) {
@@ -585,7 +589,7 @@ function ChestLootManager() {
     //MoveItemsFromPlayer(goldChestId, '0x0EED')
     Orion.Print(_rareBox)
 
-    MoveItemText("Abysmal|Enchanted|Driftwood|Backpack|Wedding|Oars|Copper Portrait|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Woven|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), true)
+    MoveItemText("Abysmal|Enchanted|Driftwood|Backpack|Wedding|Oars|Copper Portrait|Copper Ship|Copper Sunflower|Copper Wings|Opal|Silver Plated|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Woven|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), true)
     Orion.Print("scrolls")
 
     MoveScrolls(FindGroundItemWithProperties([_regBoxId]).Serial())
@@ -593,14 +597,14 @@ function ChestLootManager() {
     Orion.Print(_regBoxId)
     MoveItemText("Blood moss|Black Pearl|Garlic|Ginseng|Mandrake Root|Nightshade|Spiders' Silk|Sulfurous Ash|Grave Dust|Nox Crystal|Daemon Blood|Batwing|Pig Iron", FindGroundItemWithProperties([_regBoxId]).Serial())
 
-    if (Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Properties(), "The Shipwreck") }).length > 0) {
+  //  if (Orion.FindTypeEx(any, any, backpack).filter(function (item) { return Orion.Contains(item.Properties(), "The Shipwreck") }).length > 0) {
 
-        BotPush('ancient!!')
-        Orion.Print('ancient!!')
+       // BotPush('ancient!!')
+        //Orion.Print('ancient!!')
         //  Orion.PauseScript()
-        MoveItemText("The Shipwreck", FindGroundItemWithProperties([_rareBox]).Serial())
+       // MoveItemText("The Shipwreck", FindGroundItemWithProperties([_rareBox]).Serial())
 
-    }
+   // }
 
     WalkTo(FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
     MoveItemText("Legendary Artifact", FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
@@ -632,16 +636,18 @@ function ImbueChest(chestSerial) {
 
             if (Orion.WaitForGump(2000)) {
                 var gump0 = Orion.GetGump('last');
-                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x65290B89')) {
+                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x5B394D53')) {
                     gump0.Select(Orion.CreateGumpHook(10011));
+                    Orion.Wait(100)
                 }
             }
             if (Orion.WaitForTarget(2000))
                 Orion.TargetObject(chestSerial);
             if (Orion.WaitForGump(2000)) {
                 var gump1 = Orion.GetGump('last');
-                if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0xB73E81BB')) {
+                if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0xA307E392')) {
                     gump1.Select(Orion.CreateGumpHook(1));
+                    Orion.Wait(100)
                 }
                 Orion.Wait(1000)
                 gump1.Close();
@@ -660,6 +666,7 @@ function GoThrowTheNets() {
         ThrowTheNets()
     }
 }
+
 function ProcessNets() {
     Debug(' Method Entry - ProcessNets')
 
@@ -681,6 +688,7 @@ function Resume() {
 //#include helpers/Debug.js
 //#include helpers/ItemManager.js
 //#include Actions/Automated/DriveBoat.js
+//#include Actions/Automated/BagOfSending.js
 //#include helpers/Map.js
 //#include helpers/SOS.js
 //#include helpers/PathFinding.js
