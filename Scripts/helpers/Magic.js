@@ -153,10 +153,10 @@ function GoHome() {
 	if (runebook != null) {
 		Orion.Print("Going to:" + runebook.Serial())
 		if (Orion.SkillValue('Magery', 'base') > 40) {
-			CastSpellOnTargetV2("Recall", runebook.Serial());
+			CastSpellOnTarget("Recall", runebook.Serial());
 		}
 		if (Orion.SkillValue('Chivalry', 'base') > 30) {
-			CastSpellOnTargetV2("Sacred Journey", runebook.Serial());
+			CastSpellOnTarget("Sacred Journey", runebook.Serial());
 		}
 	}
 	WaitFrozen("Going Home");
@@ -396,12 +396,7 @@ function DeathRayAllParagons() {
 			var paragon = paragons.shift()
 			while (paragon.Exists() && !Orion.BuffExists('0x9BD2')) {
 				var startTime = Orion.Now()
-				Orion.Cast('Death Ray')
-				if (Orion.WaitForTarget(4000)) {
-					{
-						Orion.TargetObject(paragon.Serial())
-					}
-				}
+				Orion.CastTarget('Death Ray', paragon.Serial())
 				Orion.Wait(1000)
 			}
 			Orion.Wait(1000)
@@ -409,14 +404,13 @@ function DeathRayAllParagons() {
 	}
 }
 
-function EquipSlayer()
-{
-//var mobType = Orion.GetObject(Orion.ClientLastAttack())).Graphic()
-var slayers = Orion.FindTypeEx('0x0EFA',any,backpack).filter(function (book){return Orion.Contains(book.Properties(),'Slayer')})
+function EquipSlayer() {
+	//var mobType = Orion.GetObject(Orion.ClientLastAttack())).Graphic()
+	var slayers = Orion.FindTypeEx('0x0EFA', any, backpack).filter(function (book) { return Orion.Contains(book.Properties(), 'Slayer') })
 
-			slayers.forEach(function (book) {
-				Orion.Print(book.Properties().match(/\w*\sSlayer/g))
-			})
+	slayers.forEach(function (book) {
+		Orion.Print(book.Properties().match(/\w*\sSlayer/g))
+	})
 
 }
 // }

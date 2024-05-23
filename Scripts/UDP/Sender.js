@@ -186,7 +186,7 @@ function Sender_CastTarget(serial, spellName, _target) {
         target = SelectTarget().Serial();
     else
         target = _target
-
+    Orion.Print(target)
     if (target != null) {
         Sender(serial, 'Cast:' + spellName + ':' + target);
         if (serial === '*') {

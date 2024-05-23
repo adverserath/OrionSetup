@@ -5,16 +5,16 @@ var imbuegump
 const imbuechest = 0x400C5858
 var imbuebackpack = 0x400F6E24
 function testMethod() {
-var name = "Sapphire"
+	var name = "Sapphire"
 
-  Orion.FindTypeEx(any, any, 0x400C5858, 'item', 18).filter(function (item) {
-    var nameLetters = item.Name().match(/([a-zA-Z\s]+)/)[1].trim()
- if(nameLetters == name)
- Orion.Print(nameLetters + '  '+name)
-    return Orion.Contains(nameLetters, name)
- 
-  })
- 
+	Orion.FindTypeEx(any, any, 0x400C5858, 'item', 18).filter(function (item) {
+		var nameLetters = item.Name().match(/([a-zA-Z\s]+)/)[1].trim()
+		if (nameLetters == name)
+			Orion.Print(nameLetters + '  ' + name)
+		return Orion.Contains(nameLetters, name)
+
+	})
+
 
 
 
@@ -29,11 +29,11 @@ function RestockCurrentImbue() {
 			var itemName = match[0]
 			var have = CountBackpackItemWithExactName(itemName)
 			if (have < match[1]) {
-			var needed = match[1] - have
-			Orion.Print('need ' + needed + ' ' + match[0])
-			var item = FindContainerItemWithExactName(itemName, imbuechest)
-			if(item==null)
-				Orion.Print(itemName + ' not found in chest')
+				var needed = match[1] - have
+				Orion.Print('need ' + needed + ' ' + match[0])
+				var item = FindContainerItemWithExactName(itemName, imbuechest)
+				if (item == null)
+					Orion.Print(itemName + ' not found in chest')
 				Orion.MoveItem(item.Serial(), needed, imbuebackpack)
 				Orion.Wait(1000)
 			}
@@ -87,7 +87,7 @@ function UnRavelContainer(containerSerial) {
 	Orion.UseSkill('Imbuing');
 	if (Orion.WaitForGump(1000)) {
 		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x65290B89')) {
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x5B394D53')) {
 			gump0.Select(Orion.CreateGumpHook(10011));
 			Orion.Wait(100);
 		}
@@ -96,7 +96,7 @@ function UnRavelContainer(containerSerial) {
 		Orion.TargetObject(containerSerial);
 	if (Orion.WaitForGump(1000)) {
 		var gump1 = Orion.GetGump('last');
-		if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0xB73E81BB')) {
+		if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0xA307E392')) {
 			gump1.Select(Orion.CreateGumpHook(1));
 			Orion.Wait(100);
 		}

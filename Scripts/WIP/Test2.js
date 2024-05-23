@@ -1,8 +1,17 @@
 //#include helpers/Target.js
 //#include helpers/Movement.js
+//#include helpers/Debug.js
 
 
-
+function ShowJournal() {
+  Orion.ShowJournal()
+}
+function aaSpell() {
+  var t = SelectTarget()
+  //var t = Orion.FindTypeEx(any,any,ground, 'mobile|ignoreself',10, 'grey').shift()
+  Orion.CastTarget('Teleport', t.Serial())
+  //Orion.UseSkillTarget('aNIMAL tAMING', t.Serial())
+}
 
 function testColours() {
   for (i = 0; i < 90; i++) {

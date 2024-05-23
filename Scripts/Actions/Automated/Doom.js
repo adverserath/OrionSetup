@@ -176,7 +176,7 @@ function DoRoom(room) {
         if (mobile == null)
             return
 
-        
+
 
         MoveAwayFromBoss(mobile)
         Orion.Attack(mobile.Serial());
@@ -361,9 +361,9 @@ function CheckForTraps() {
     Orion.ClearBadLocations();
     Orion.Wait(500)
     Orion.FindTypeEx(traps, any, ground, 'item', 25).forEach(function (trap) {
-        Orion.AddFakeMapObject(trap.Serial(), trap.Graphic(), 58, trap.X(), trap.Y(), (trap.Z()+1));
+        Orion.AddFakeMapObject(trap.Serial(), trap.Graphic(), 58, trap.X(), trap.Y(), (trap.Z() + 1));
         Orion.SetBadLocation(trap.X(), trap.Y());
-        Orion.Print('block'+trap.X() +' ' + trap.Y())
+        Orion.Print('block' + trap.X() + ' ' + trap.Y())
 
     })
 }
@@ -402,14 +402,14 @@ function CheckArtiChance() {
     Orion.Wait(500)
     if (Orion.WaitForGump(2000)) {
         var gump0 = Orion.GetGump('last');
-        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xFC840358')) {
+        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x02EE5C01')) {
             gump0.Select(Orion.CreateGumpHook(11));
             Orion.Wait(400);
         }
     }
     if (Orion.WaitForGump(2000)) {
         var gump1 = Orion.GetGump('last');
-        if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0xFC840358')) {
+        if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x02EE5C01')) {
             Orion.Wait(400);
 
             gump1.Select(Orion.CreateGumpHook(104));
@@ -417,7 +417,7 @@ function CheckArtiChance() {
     }
     if (Orion.WaitForGump(2000)) {
         var gump3 = Orion.GetGump('last');
-        if ((gump3 !== null) && (!gump3.Replayed()) && (gump3.ID() === '0xFC840358')) {
+        if ((gump3 !== null) && (!gump3.Replayed()) && (gump3.ID() === '0x02EE5C01')) {
             var lastPoints = parseInt(Orion.RegRead('doomPoints', 'Software\\OrionAssistant\\vars\\' + Player.Name()))
             var points = parseInt(gump3.Text(14).substring(24).replace(/,/g, ''))
             Orion.RegWrite('doomPoints', points, 'Software\\OrionAssistant\\vars\\' + Player.Name());
