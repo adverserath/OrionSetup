@@ -242,6 +242,7 @@
     </findlist>
     <findlist name="keys">
         <item graphic="0x2002" color="-1" comment="Key" count="0" enabled="true"/>
+        <item graphic="0x2002" color="any" comment="Dragon Flame Key" count="0" enabled="true"/>
     </findlist>
     <findlist name="HighSDI">
         <item graphic="any" color="any" comment="SDI" count="0" enabled="true">

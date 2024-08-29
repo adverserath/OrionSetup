@@ -337,7 +337,7 @@ function ChainLightningAnything() {
 
 
 function CastMagicArrowOnEverything() {
-	var spell = Spell('Magic Arrow', 1, true)
+	var spell = Spell('Energy Bolt', 6, true)
 
 	while (true) {
 		if (!Player.WarMode()) {
@@ -347,10 +347,14 @@ function CastMagicArrowOnEverything() {
 
 			//Orion.Wait(200)
 			var mobs = Orion.FindTypeEx(any, any, ground,
-				'nothumanmobile|live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|orange|red')
+				'nothumanmobile|live|ignoreself|ignorefriends|inlos', 10, 'gray|criminal|orange|red').filter(function (mob) {
+					return reflectors.indexOf(mob.Name()) < 0
+				})
 
 			//Orion.Wait(200)
 			mobs.forEach(function (mob) {
+				TextWindow.Print(mob.Name() + ' ' + reflectors.indexOf(mob.Name()))
+
 				CalculatedCastSpellOnTarget(spell, mob.Serial())
 			})
 		}
@@ -403,6 +407,109 @@ function DeathRayAllParagons() {
 		}
 	}
 }
+
+function DeathRayAllHiryus() {
+	while (true) {
+		if (!Orion.BuffExists('0x9BD2')) {
+			ResetActiveRay()
+		}
+		Orion.Wait(100)
+		var hiryus = Orion.FindTypeEx(0x00F3, any, ground, 'mobile', 10, 'gray|criminal|red').filter(function (mob) { return !IsActiveRay(mob.Serial()) })
+		if (hiryus.length > 0)
+			DeathRayToSuccess(hiryus.shift())
+		hiryus = Orion.FindTypeEx(0x00F3, any, ground, 'mobile', 24, 'gray|criminal|red')
+		if (hiryus.length > 0) {
+
+			Orion.Wait(400)
+			if (!Orion.BuffExists('0x9BD2'))
+				WalkTo(hiryus.shift(), 10)
+
+		}
+	}
+}
+
+function DeathRayAll() {
+	while (true) {
+		if (!Orion.BuffExists('0x9BD2')) {
+			ResetActiveRay()
+		}
+		Orion.Wait(100)
+		var mobs = Orion.FindTypeEx(any, any, ground, 'mobile|inlos', 10, 'gray|criminal|red').filter(function (mob) { return !IsActiveRay(mob.Serial()) })
+		if (mobs.length > 0)
+			DeathRayToSuccess(mobs.shift())
+		mobs = Orion.FindTypeEx(any, any, ground, 'mobile|inlos', 24, 'gray|criminal|red').filter(function (mob) { return !IsActiveRay(mob.Serial()) })
+		if (mobs.length > 0) {
+
+			Orion.Wait(400)
+			if (!Orion.BuffExists('0x9BD2'))
+				WalkTo(mobs.shift(), 9)
+
+		}
+	}
+}
+
+function DeathRayAll_NoWalk() {
+	while (true) {
+		if (!Orion.BuffExists('0x9BD2')) {
+			ResetActiveRay()
+		}
+		Orion.Wait(100)
+		var nearmob = Orion.FindTypeEx(any, any, ground, 'mobile|inlos', 2, 'gray|criminal|red')
+		if ((nearmob.length == 0 && !Orion.IsWalking()) && Player.Mana() > 50) {
+			var mobs = Orion.FindTypeEx(any, any, ground, 'mobile|inlos', 10, 'gray|criminal|red').filter(function (mob) { return !IsActiveRay(mob.Serial()) && mob.Hits() > 20 })
+			if (mobs.length > 0 && !Orion.IsWalking())
+				DeathRayToSuccess(mobs.shift())
+			if (mobs.length > 0) {
+				Orion.Wait(400)
+			}
+		}
+		else {
+			Orion.Wait(600)
+		}
+	}
+}
+
+var reflectors = ['Black Order Grand Mage', 'Black Order Mage', 'Black Order High Executioner']
+var activeRays = []
+
+function AddActiveRay(serial) {
+	TextWindow.Print('add ' + serial)
+	activeRays.push(serial)
+}
+function IsActiveRay(serial) {
+	return activeRays.indexOf(serial) > -1
+}
+function ResetActiveRay() {
+	if (activeRays.length > 0) {
+		TextWindow.Print('clear')
+		activeRays = []
+	}
+}
+
+function DeathRayToSuccess(target) {
+	function Worked(t) {
+		var msg = Orion.WaitJournal('Your target is already under the effect of this ability|effectecho: type=3 src_serial=' + t.Serial() + ' src_x=' + t.X() + ' src_y=' + t.Y() + ' src_z=' + t.Z() + ' dest_serial=0x00000000 dest_x=' + t.X() + ' dest_y=' + t.Y() + ' dest_z=' + t.Z() + ' graphic=0x374A', (Orion.Now()), Orion.Now() + 2400)
+		return msg != null
+	}
+
+	do {
+		TextWindow.Print(target.Name())
+		if (reflectors.indexOf(target.Name()) < 0) {
+			TextWindow.Print('true')
+			Orion.CastTarget('Death Ray', target.Serial())
+		}
+		else {
+			TextWindow.Print('false')
+			AddActiveRay(target.Serial())
+			return
+		}
+
+	} while (target.Distance() <= 10 && target.InLOS() && !Worked(target));
+	AddActiveRay(target.Serial())
+	Orion.Wait(100)
+	Orion.SayParty('DR ' + target.Serial())
+}
+
 
 function EquipSlayer() {
 	//var mobType = Orion.GetObject(Orion.ClientLastAttack())).Graphic()

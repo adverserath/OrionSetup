@@ -4,6 +4,254 @@
 //#include helpers/ItemManager.js
 //#include helpers/Notifier.js
 //#include helpers/Detectors.js
+//#include helpers/Beetle.js
+//#include helpers/Movement.js
+//#include helpers/Generic.js
+
+var pickAxe = '0xE86|0x0F39'
+var beetleWeight = 1400
+
+var twLocations = '[{"x":1450,"y":1478,"z":-28,"visited":false,"locName":"coordinate"},{"x":1440,"y":1486,"z":-28,"visited":false,"locName":"coordinate"},{"x":1445,"y":1485,"z":-28,"visited":false,"locName":"coordinate"},{"x":1452,"y":1485,"z":-28,"visited":false,"locName":"coordinate"},{"x":1459,"y":1485,"z":-28,"visited":false,"locName":"coordinate"},{"x":1470,"y":1486,"z":-28,"visited":false,"locName":"coordinate"},{"x":1462,"y":1492,"z":-28,"visited":false,"locName":"coordinate"},{"x":1469,"y":1493,"z":-28,"visited":false,"locName":"coordinate"},{"x":1475,"y":1494,"z":-28,"visited":false,"locName":"coordinate"},{"x":1474,"y":1497,"z":-28,"visited":false,"locName":"coordinate"},{"x":1466,"y":1500,"z":-28,"visited":false,"locName":"coordinate"},{"x":1461,"y":1500,"z":-27,"visited":false,"locName":"coordinate"},{"x":1463,"y":1506,"z":-28,"visited":false,"locName":"coordinate"},{"x":1458,"y":1506,"z":-28,"visited":false,"locName":"coordinate"},{"x":1453,"y":1506,"z":-27,"visited":false,"locName":"coordinate"},{"x":1452,"y":1503,"z":-28,"visited":false,"locName":"coordinate"},{"x":1444,"y":1508,"z":-28,"visited":false,"locName":"coordinate"},{"x":1444,"y":1505,"z":-28,"visited":false,"locName":"coordinate"},{"x":1437,"y":1507,"z":-28,"visited":false,"locName":"coordinate"},{"x":1436,"y":1500,"z":-28,"visited":false,"locName":"coordinate"},{"x":1439,"y":1491,"z":-28,"visited":false,"locName":"coordinate"},{"x":1436,"y":1492,"z":-28,"visited":false,"locName":"coordinate"},{"x":1425,"y":1495,"z":-28,"visited":false,"locName":"coordinate"},{"x":1420,"y":1492,"z":-28,"visited":false,"locName":"coordinate"},{"x":1415,"y":1493,"z":-28,"visited":false,"locName":"coordinate"},{"x":1427,"y":1498,"z":-28,"visited":false,"locName":"coordinate"},{"x":1418,"y":1506,"z":-28,"visited":false,"locName":"coordinate"},{"x":1413,"y":1505,"z":-28,"visited":false,"locName":"coordinate"},{"x":1415,"y":1502,"z":-28,"visited":false,"locName":"coordinate"},{"x":1421,"y":1502,"z":-28,"visited":false,"locName":"coordinate"},{"x":1444,"y":1519,"z":-28,"visited":false,"locName":"coordinate"},{"x":1434,"y":1518,"z":-28,"visited":false,"locName":"coordinate"},{"x":1430,"y":1518,"z":-28,"visited":false,"locName":"coordinate"},{"x":1430,"y":1521,"z":-28,"visited":false,"locName":"coordinate"},{"x":1455,"y":1518,"z":-28,"visited":false,"locName":"coordinate"},{"x":1458,"y":1519,"z":-28,"visited":false,"locName":"coordinate"},{"x":1456,"y":1522,"z":-28,"visited":false,"locName":"coordinate"},{"x":1451,"y":1522,"z":-28,"visited":false,"locName":"coordinate"},{"x":1443,"y":1523,"z":-28,"visited":false,"locName":"coordinate"},{"x":1438,"y":1527,"z":-28,"visited":false,"locName":"coordinate"},{"x":1434,"y":1532,"z":-28,"visited":false,"locName":"coordinate"},{"x":1430,"y":1534,"z":-28,"visited":false,"locName":"coordinate"},{"x":1434,"y":1537,"z":-28,"visited":false,"locName":"coordinate"},{"x":1445,"y":1533,"z":-28,"visited":false,"locName":"coordinate"},{"x":1451,"y":1534,"z":-28,"visited":false,"locName":"coordinate"},{"x":1449,"y":1538,"z":-28,"visited":false,"locName":"coordinate"},{"x":1444,"y":1537,"z":-28,"visited":false,"locName":"coordinate"},{"x":1444,"y":1529,"z":-28,"visited":false,"locName":"coordinate"},{"x":1444,"y":1507,"z":-28,"visited":false,"locName":"coordinate"}]'
+
+function NiterMiner() {
+    Draw8x8()
+    var allies = NearbyAllies().length
+    Orion.Print("Allies:" + allies)
+
+    ReadLocations()
+    if (locations == null) {
+        SetLocations()
+    }
+    GoHomeCheck(true)
+
+    while (true) {
+        Orion.Wait(3000)
+        while (!Player.Dead()) {
+            CheckShovels()
+            MinerChecks()
+            Orion.UseType(pickAxe)
+            if (Orion.WaitForTarget(1000))
+                Orion.TargetTile('land');
+            Orion.Wait(750)
+
+            Orion.FindTypeEx(any, any, ground, any, 24).filter(function (item) {
+                return Orion.Contains(item.Name(), 'Niter')
+            }).forEach(function (niter) {
+
+                Orion.Print(niter.Serial())
+                MinerChecks()
+                WalkTo(niter.Serial())
+                while (Orion.ObjectExists(niter.Serial()) && niter.Distance() < 3) {
+                    Orion.Print('Digging Niter')
+                    MinerChecks()
+                    Orion.Wait(750)
+                    Orion.UseType(pickAxe)
+                    if (Orion.WaitForTarget(1000))
+                        Orion.TargetObject(niter.Serial());
+
+                }
+            }
+            )
+
+            MinerChecks()
+            LocationLoopWaitSolo(300)
+            //Orion.Wait(750)
+
+        }
+    }
+
+}
+
+function ReadLocations() {
+    allies = NearbyAllies().length
+    var locData = JSON.parse(twLocations)
+    locData.forEach(function (entry) {
+        Orion.Print('x: ' + entry.x + ' y:' + entry.y)
+        locations.push(coordinate(entry.x, entry.y, entry.z, 'coordinate'))
+        Orion.AddFakeMapObject(Orion.Random(900000), 0x051A, '0x0F00', entry.x, entry.y, Player.Z());
+
+    })
+}
+
+function CheckTinker() {
+    var tools = Orion.Count(0x1EB8)
+    Orion.Print(tools)
+    if (tools < 3) {
+        for (i = tools; i <= 3; i++) {
+            Orion.UseType('0x1EB8', '0xFFFF');
+            if (Orion.WaitForGump(1000)) {
+                var gump0 = Orion.GetGump('last');
+                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x9E26D92D')) {
+                    gump0.Select(Orion.CreateGumpHook(23));
+                    Orion.Wait(500);
+                }
+            }
+        }
+        Orion.CloseGump('generic', any, 0x9E26D92D)
+    }
+}
+
+function CheckShovels() {
+    CheckTinker()
+    var tools = Orion.Count(pickAxe)
+    Orion.Print(tools)
+    if (tools < 5) {
+        for (i = tools; i <= 5; i++) {
+            Orion.UseType('0x1EB8', '0xFFFF');
+            if (Orion.WaitForGump(1000)) {
+                var gump0 = Orion.GetGump('last');
+                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x9E26D92D')) {
+                    gump0.Select(Orion.CreateGumpHook(72));
+                    Orion.Wait(500);
+                }
+
+            }
+        }
+        Orion.CloseGump('generic', any, 0x9E26D92D)
+    }
+}
+
+function MinerChecks() {
+    CheckPickaxe()
+    if (Player.MaxWeight() < Player.Weight() + 40) {
+        Orion.Wait(750)
+        NitrateToBeetle()
+        ForgeOreOnBeetle()
+        IngotsToBeetle()
+
+        GoHomeCheck()
+    }
+
+}
+
+function GoHomeCheck(forced) {
+    var nitrateBox = 0x4006968E
+    var nitrateBoxX = 2832
+    var nitrateBoxY = 475
+
+    var beetleMobile = Orion.FindTypeEx(0x0317, 0x0000, ground, 'mobile', 3).shift()
+    if (beetleMobile != null) {
+        if (((beetleMobile.Properties().match(/Weight:\s(\d*)/i) || [])[1] || 0) > beetleWeight || forced) {
+            var returnX = Player.X()
+            var returnY = Player.Y()
+            while (returnX == Player.X() && returnY == Player.Y()) {
+                GoHome()
+                Orion.Wait(2000)
+            }
+            Orion.WalkTo(nitrateBoxX, nitrateBoxY)
+            var storage = Orion.FindObject(nitrateBox)
+            WalkTo(nitrateBox)
+            while (beetleMobile.Distance() > 2) {
+                Orion.Wait(1000)
+            }
+            var beetlebag = SnoopBeetle()
+            Orion.Boxhack(beetlebag);
+            Orion.Wait(600);
+
+            EmptyContainerToAnother(Orion.FindObject(beetlebag), storage);
+            Orion.Wait(600);
+
+            //GoBack
+            WalkTo(Orion.FindObject(0x400208C8), 1)
+            while(allies  != NearbyAllies(1).length)
+                {
+                    Orion.Wait(500);
+                }
+                WalkTo(Orion.FindObject(0x400208C8), 0)
+            Orion.Wait(1500);
+
+            GotoTwistedWeald()
+            Orion.WalkTo(returnX, returnY)
+
+        }
+    }
+}
+
+function GotoTwistedWeald() {
+    WalkTo(Orion.FindObject(0x4015E476), 0)
+
+    Orion.Wait(1500)
+    var twGump
+    
+        Orion.UseObject('0x4015E476')
+        if (Orion.WaitForGump(1000)) {
+            Orion.Wait(150);
+            while (Orion.ObjectExists(0x4015E476)) {
+            twGump = Orion.GetGump(any, 0x664E1797)
+                Orion.Wait(750);
+                Orion.Print(twGump.Serial())
+                twGump.Select(Orion.CreateGumpHook(1111825));
+                Orion.Wait(750);
+            }
+        }
+        Orion.CloseGump('generic', any, 0x664E1797)
+        Orion.Wait(3000)
+    
+}
+
+function CheckTW()
+{
+Orion.Print(Orion.GetGump(0x000049F6, 0x664E1797).Close())
+}
+
+function CheckPickaxe() {
+    var pickaxe = Orion.FindType(pickAxe);
+    if (pickaxe == null) {
+        Orion.PauseScript()
+    }
+}
+
+function Draw8x8() {
+    Orion.ClearFakeMapObjects();
+    var tiles = Orion.GetTilesInRect('land', Player.X() - 100, Player.Y() - 100, Player.X() + 100, Player.Y() + 100).filter(function (tile) {
+        return tile.X() % 8 == 0 || tile.Y() % 8 == 0
+    }).forEach(function (loc) {
+        Orion.AddFakeMapObject(Orion.Random(900000), 0x051A, '0x0000', loc.X(), loc.Y(), Player.Z());
+    })
+}
+
+function IngotsToBeetle() {
+    var ingotCount = Orion.Count(0x1BF2)
+    Orion.Print('Ingots:' + ingotCount)
+    if (ingotCount > 100) {
+        var beetle = Orion.FindObject(SnoopBeetle())//Orion.FindTypeEx(0x0317, 0x0000, ground,'mobile',3).shift()
+        if (beetle != null) {
+            Orion.Print(beetle.Serial())
+            Orion.FindTypeEx(0x1BF2, any, backpack).forEach(function (ingot) {
+                Orion.MoveItem(ingot.Serial(), -1, beetle.Serial());
+                Orion.Wait(1000)
+            })
+
+        }
+        Orion.MoveItemType(0x1BF2, 0x0000, beetle.Serial(), 40, backpack);
+    }
+}
+function TakeIngot() {
+    Orion.MoveItemType(0x1BF2, 0x0000, beetle.Serial(), 40, beetle.Serial());
+}
+function NitrateToBeetle() {
+    var beetle = Orion.FindTypeEx(0x0317, 0x0000, ground, 'mobile', 3).shift()
+    if (beetle != null) {
+        Orion.MoveItemType(0x423A, any, backpack, -1, beetle.Serial());
+        Orion.Wait(750)
+    }
+}
+
+function ForgeOreOnBeetle() {
+    var beetle = Orion.FindTypeEx(0x00A9, 0x0489, ground, 'mobile', 3).shift()
+    if (beetle != null) {
+        var ores = Orion.FindTypeEx(any, any, backpack).filter(function (item) {
+            return Orion.Contains(item.Name(), 'Ore') && item.Count() > 1
+        })
+        ores.forEach(function (ore) {
+            Orion.UseObject(ore.Serial())
+            if (Orion.WaitForTarget()) {
+                Orion.TargetObject(beetle.Serial())
+                Orion.Wait(750)
+            }
+        })
+    }
+}
 
 function StartMining() {
     //Use Mark and Recall spells to move to storage and back to last location

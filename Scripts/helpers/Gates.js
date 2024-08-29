@@ -192,7 +192,7 @@ function GotoTW() {
     if (Orion.WaitForGump(1000)) {
         Orion.Wait(300)
         var gump0 = Orion.GetGump('last');
-        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xF9A23032')) {
+        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x664E1797')) {
             gump0.Select(Orion.CreateGumpHook(1111825));
             Orion.Wait(100);
         }
@@ -206,7 +206,7 @@ function GotoBlood() {
     if (Orion.WaitForGump(1000)) {
         Orion.Wait(300)
         var gump0 = Orion.GetGump('last');
-        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xF9A23032')) {
+        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x664E1797')) {
             gump0.Select(Orion.CreateGumpHook(1078308));
             Orion.Wait(100);
         }

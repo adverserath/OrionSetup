@@ -2,6 +2,32 @@
 var currentTargetId;
 var targetHits;
 var targetDistance;
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+function AutoHonorRandom() {
+    while (true) {
+        Orion.Wait(1000);
+
+        while (!Orion.BuffExists('Honored2')) {
+            Orion.Wait(300)
+            var targets = Orion.FindTypeEx(any, any, ground, 'live|ignoreself|ignorefriends|inlos', 12, 'gray|criminal|red|enemy').filter(function (mob) {
+                return mob.Hits() == 25
+            }).forEach(function (target) {
+                if (!Orion.BuffExists('Honored2')) {
+                    targetHits = target.Hits()
+                    targetDistance = target.Distance();
+                    currentTargetId = target.Serial();
+                    HonorTarget()
+                }
+            })
+
+        }
+    }
+}
+
 function AutoHonor() {
     while (true) {
         Orion.Wait(100);
@@ -19,7 +45,7 @@ function AutoHonor() {
     }
 }
 
-function HonorTarget(target) {
+function HonorTarget(_) {
     if (!Orion.BuffExists('Honored2') &&
         targetDistance < 13) {
         Orion.AddHighlightCharacter(currentTargetId, '0xF550', true);
@@ -27,7 +53,7 @@ function HonorTarget(target) {
         if (Orion.WaitForTarget(1000)) {
             Orion.TargetObject(currentTargetId);
         }
-        Orion.Wait(4000)
+        Orion.Wait(1000)
     }
 }
 

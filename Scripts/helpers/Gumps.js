@@ -1,6 +1,6 @@
 function AcceptGump(_private) {
 	var gump0 = Orion.GetLastGump()
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xDD8B146A'))
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x4C6B9629'))
 		{
 			gump0.Select(Orion.CreateGumpHook(1));
 		}

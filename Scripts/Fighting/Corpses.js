@@ -222,6 +222,38 @@ function OpenNearbyCorpses() {
     });
 }
 
+function OpenCitadelCorpses() {
+    var x = Player.X()
+    var y = Player.Y()
+    while (true) {
+        if (Orion.FindTypeEx(any, any, ground,
+            'live|ignoreself|ignorefriends|inlos', 15, 'gray|criminal|red|enemy').length > 0) {
+            Orion.Wait(1000)
+            continue
+        }
+        var corpses = Orion.FindTypeEx('0x2006', any, ground, 'inlos', 10);
+        var names = ['A Black Order High Executioner Corpse', 'A Black Order Master Corpse', 'A Black Order Grand Mage Corpse']
+        if (corpses.length > 0) {
+            var walk = false
+            corpses.forEach(function (corpse) {
+                if (!Orion.GumpExists('container', corpse.Serial()) && names.indexOf(corpse.Properties()) != -1) {
+                    walk = true
+                    WalkTo(corpse.Serial())
+                    Orion.OpenContainer(corpse.Serial());
+                    Orion.Wait(2000)
+                    Orion.Ignore(corpse.Serial())
+                }
+                // Orion.Ignore(corpse.Serial());
+            });
+            if (walk) {
+                Orion.WalkTo(x, y)
+
+            }
+        }
+        Orion.Wait(500)
+    }
+}
+
 function RecoverCorpse() {
     var x = Player.X() + 10
     var y = Player.Y()

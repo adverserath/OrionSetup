@@ -10,6 +10,7 @@ var tail120 = 223
 var horned = 222
 var bless = 220
 var copper = 223
+var pow = 212
 //inscribe
 var purpleDye = 209
 var masterTalis = 210
@@ -24,7 +25,7 @@ var npc = SelectTarget('Select NPC')
 //var amount = Orion.InputText(15000,'How many to claim')
 for(i=0;i<4;i++)
 {
-	var item = tail120
+	var item = 215
 	var itemsCount = Orion.FindTypeEx(any, any, backpack).length
 	Orion.Print('items: ' + itemsCount)
 	if (itemsCount == 125) {
@@ -39,13 +40,13 @@ for(i=0;i<4;i++)
 				Orion.Print('Claim')
 				var gump0 = Orion.GetGump('last');
 				CutSomething()
-				if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x69DA8520')) {
+				if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x2239DAE0')) {
 					gump0.Select(Orion.CreateGumpHook(item));
 				}
 				if (Orion.WaitForGump(1000)) {
 
 					var gump1 = Orion.GetGump('last');
-					if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x1440128A')) {
+					if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x096825B9')) {
 						gump1.Select(Orion.CreateGumpHook(2));
 						Orion.Wait(100);
 					}
@@ -60,20 +61,20 @@ for(i=0;i<4;i++)
 function CutSomething() {
 	Orion.UseType('0x0F9F', '0xFFFF');
 	if (Orion.WaitForTarget(1000))
-		Orion.TargetType('0x152E|0x1515|0x1517|0x1540|0x1539', '0xFFFF', backpack);
+		Orion.TargetType('0x152E|0x1515|0x1517|0x1540|0x1539|0x1EFD', '0xFFFF', backpack);
 }
 
 function PartClaim(button) {
 	if (Orion.WaitForGump(1000)) {
 		var gump0 = Orion.GetGump('last');
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x69DA8520')) {
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x2239DAE0')) {
 			gump0.Select(Orion.CreateGumpHook(button));
 			Orion.Wait(100);
 		}
 	}
 	if (Orion.WaitForGump(1000)) {
 		var gump1 = Orion.GetGump('last');
-		if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x1440128A')) {
+		if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x096825B9')) {
 			gump1.Select(Orion.CreateGumpHook(2));
 			Orion.Wait(100);
 		}

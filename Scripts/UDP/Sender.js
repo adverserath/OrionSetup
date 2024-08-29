@@ -1,3 +1,4 @@
+//#include helpers/TotDropGump.js
 //#include helpers/Target.js
 //#include helpers/ItemManager.js
 //#include helpers/Notifier.js
@@ -24,8 +25,26 @@
 //#include helpers/Looter.js
 //#include helpers/Generic.js
 //#include Fighting/AutoHonor.js
+//#include helpers/Movement.js
+
 var hostPort = 2597;
 var clientServer = "127.0.0.1"
+
+function testlight()
+{
+Orion.HttpPost('http://192.168.0.5:8123/api/services/switch/turn_on', '{"entity_id":"switch.livingroom_lamp"}');
+
+}
+
+function _bankWithdraw()
+{
+while(true)
+{
+Orion.Wait(100)
+Orion.Say("withdraw 1")
+    Sender("*", 'S:' + "withdraw 1");
+}
+}
 
 function DistanceFrom() {
     var t = SelectTarget()
@@ -331,6 +350,7 @@ function HostCallback(_) {
         players = []
         for (var ports = 1; ports < 5; ports++) {
             Orion.UdpSend(clientServer, hostPort + ports, '*|WHO')
+            Orion.Wait(500)
         }
         return
     }

@@ -48,7 +48,7 @@ function MonitorGM() {
       Orion.Wait(10000)
     }
     if (Orion.WaitForContextMenu() && Orion.GetContextMenu().Serial() == 0x00000001) {
-      StopAllRunningScripts()
+      //StopAllRunningScripts()
       Orion.ActivateClient();
       BotPush('Detected : ' + Orion.GetContextMenu().Serial() + ' : ' + Player.X() + ' ' + Player.Y() + ' ' + Player.Map())
       Orion.PlayWav('C:\\Sounds\\Windows Background.wav');

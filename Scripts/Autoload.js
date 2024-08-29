@@ -33,9 +33,9 @@ function Autostart() {
   //MoveBodsToBooks()
   //Orion.Print('Good Bye')
   //Orion.CloseUO();
-  TossACoin()
+  //-TossACoin()
   //Orion.PauseScript()
-  Login()
+  //-Login()
 }
 
 function Login() {
@@ -131,4 +131,28 @@ function Signout() {
 
 function CreateUDPListener(port) {
   return Orion.CreateUdpServer(Player.Name(), '127.0.0.1', port);
+}
+
+function ReadInvasion() {
+	var gate = Orion.FindObject('0x4005E63A')
+
+while(true)
+{
+	while (!Orion.Contains(gate.Properties(), 'Level 2 / 3')) {
+		Orion.Wait(1000)
+	}
+	BotPush('Invasion second phase')
+	
+	while (!Orion.Contains(gate.Properties(), 'Level 3 / 3')) {
+		Orion.Wait(1000)
+	}
+	//for(var i=0;i<3:i++){
+	BotPush('Level 3: Invade the invasion')
+	Orion.Wait(1000)
+	//}
+
+	while (Orion.Contains(gate.Properties(), 'Level 3 / 3')) {
+	Orion.Wait(1000)
+}
+}
 }

@@ -4,13 +4,17 @@ function SelectMultipleLocations(_) {
   var selected;
   var selecting = true;
   while (selecting) {
-    var selectedObj = SelectCoordinate();
+    var selectedObj = SelectCoordinateAndRunes();
     if (selectedObj == null) {
       selecting = false
     }
     else {
       locations.push(selectedObj)
-      Orion.Print('added X:' + selectedObj.X() + " Y:" + selectedObj.Y())
+      if (typeof selectedObj == "string" ) 
+        { Orion.Print('added obj:' + selectedObj) }
+      else {
+        Orion.Print('added X:' + selectedObj.X() + " Y:" + selectedObj.Y())
+      }
     }
   }
   return locations;
@@ -30,8 +34,8 @@ function SelectMultipleTargets(_) {
     else {
       selected = selectedObj.Serial()
 
-      objects.push(selected)
-      Orion.Print('added ' + selected.FullName())
+      objects.push(selectedObj)
+      Orion.Print('added ' + selectedObj.Serial())
     }
   }
   return objects;
@@ -67,6 +71,23 @@ function SelectTarget(itemUsage) {
     return null
   }
 
+}
+
+function SelectCoordinateAndRunes(text) {
+  Debug(' Method Entry - SelectCoordinateAndRunes')
+  if (text != null) {
+    Orion.Print(text)
+  }
+  if (Orion.WaitForAddObject('myTarget') == 0) {
+    return null;
+  }
+  var tObj = Orion.FindObject('myTarget')
+  if (tObj != null){ // && (tObj.Graphic() == 0x22C5 || tObj.Graphic() == 0x1F14)) {
+    return tObj.Serial()
+  }
+  Orion.Wait(100)
+
+  return coordinate(SelectedTile.X(), SelectedTile.Y(), SelectedTile.Z(), 'coordinate')
 }
 
 function SelectCoordinate(text) {
@@ -204,7 +225,7 @@ function WalkTo(object, distance, timeMS, walking, monitored) {
   }
   if (monitored)
     Orion.ToggleScript('MonitorWalkBlock', true)
-  var result = Orion.WalkTo(x, y, Z, distance, 15, walking, 1, timeMS);
+  var result = Orion.WalkTo(x, y, Z, distance, 255, walking, 1, timeMS);
   return result
 }
 
@@ -497,8 +518,7 @@ function FindBackpackItemWithExactName(name) {
 function CountBackpackItemWithExactName(name) {
   return Orion.FindTypeEx(any, any, backpack, 'item', 18).filter(function (item) {
     var nameLetters = item.Name().match(/([a-zA-Z\s]+)/)[1].trim()
-    if(Orion.Contains(nameLetters, name))
-    {
+    if (Orion.Contains(nameLetters, name)) {
       Orion.Print(nameLetters + ' contains ' + name)
     }
     //return Orion.Contains(nameLetters, name)
@@ -511,7 +531,7 @@ function add(accumulator, a) {
 
 function FindContainerItemWithExactName(name, containerSerial) {
   //Orion.OpenContainer(containerSerial)
-  Orion.Print('Finding:'+name)
+  Orion.Print('Finding:' + name)
   return Orion.FindTypeEx(any, any, containerSerial, 'item', 18).filter(function (item) {
     var nameLetters = item.Name().match(/([a-zA-Z\s]+)/)[1].trim()
     return nameLetters.toUpperCase() === name.toUpperCase()

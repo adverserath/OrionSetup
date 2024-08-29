@@ -1,3 +1,4 @@
+//#include helpers/TotDropGump.js
 //#include helpers/Target.js
 //#include helpers/ItemManager.js
 //#include helpers/Notifier.js
@@ -10,6 +11,7 @@
 //#include Fighting/SpellWeaving.js
 //#include Fighting/Corpses.js
 //#include Fighting/Healing.js
+//#include Fighting/AutoHonor.js
 //#include Actions/Automated/Doom.js
 ///#include Actions/Event/PumpkinPicker.js
 //#include helpers/Gates.js
@@ -18,6 +20,7 @@
 //#include Actions/Automated/Minax.js
 //#include Actions/Automated/Orchard.js
 var udpPort = 2598;
+var updConnectedPort = Orion.GetGlobal('updport');
 
 function Autostart(_) {
     Orion.ToggleScript('Message_Receiver')
@@ -90,6 +93,12 @@ function ResponseHandler(recv) {
         if (recvp[6] != null) {
             Orion.UseObject(recvp[6])
         }
+        return
+        //    Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
+    }
+    if (command[1] == 'T') {
+        Orion.Print("Turn To")
+        Orion.Turn(recvp[1])
         return
         //    Orion.WalkTo(object.X(), object.Y(), object.Z(), distance, 255, walking, 1, timeMS);
     }
@@ -213,6 +222,7 @@ function UDPClientServer() {
         var created = Orion.CreateUdpServer(Player.Name(), '0.0.0.0', udpPort);
         if (created == 0) {
             Orion.Print('UDP server created and listening port: ' + udpPort);
+            Orion.SetGlobal('updport', udpPort);
             return true;
         }
         else {
@@ -229,7 +239,7 @@ function SendWho() {
     }
     )
 
-    Orion.UdpSend(2597, "Player:::" + '{"name":"' + Player.Name() + '", "port":' + udpPort + ', "serial":"' + Player.Serial() + '", "skills":"' + skills + '"}');
+    Orion.UdpSend(2597, "Player:::" + '{"name":"' + Player.Name() + '", "port":' + Orion.GetGlobal('updport') + ', "serial":"' + Player.Serial() + '", "skills":"' + skills + '"}');
 }
 
 function Walk(x, y, z, dir, distance) {

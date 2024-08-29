@@ -27,7 +27,7 @@ function DoQuests() {
 					Orion.Wait(2000)
 
 					var gump0 = Orion.GetGump('last');
-					if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xF9A23032')) {
+					if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x664E1797')) {
 						gump0.Select(Orion.CreateGumpHook(1078308));
 						Orion.Wait(100);
 						while (Player.X() != startX) {
@@ -56,7 +56,7 @@ function DoQuests() {
 				if (Orion.WaitForGump(2000)) {
 					Orion.Wait(2000)
 					var gump0 = Orion.GetGump('last');
-					if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xF9A23032')) {
+					if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x664E1797')) {
 						gump0.Select(Orion.CreateGumpHook(1111764));
 						Orion.Wait(100);
 						while (Player.X() != startX) {

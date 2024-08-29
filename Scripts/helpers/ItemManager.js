@@ -8,6 +8,29 @@ Orion.Wait(1000)
 Orion.UseType('0x14F0', '0x0592', '0x4006968E');
 }
 }
+
+function PrintArtis()
+{
+var container = SelectTarget()
+Orion.OpenContainer(container.Serial())
+Orion.Wait(1000)
+TextWindow.Open()
+TextWindow.Clear()
+var artis = Orion.FindTypeEx(any,any,container.Serial()).filter(function (item){
+if(Orion.Contains(item.Properties(),'Artifact'))
+	TextWindow.Print('Serial:'+item.Serial() + '\nGraphic Type:  '+item.Graphic()+' \n'+item.Properties()+'\n')
+})
+}
+
+function SortArtifacts()
+{
+    WalkTo(FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
+    MoveItemText("Legendary Artifact", FindGroundItemWithProperties(["Engraved: Legendary"]).Serial())
+    MoveItemText("Major Artifact", FindGroundItemWithProperties(["Engraved: Major"]).Serial())
+    MoveItemText("Greater Artifact", FindGroundItemWithProperties(["Engraved: Greater"]).Serial())
+
+}
+
 function MoveItems(fromContainer, toContainer, graphicIDs, color, amount, recursive) {
     Debug(' Method Entry - MoveItems')
     if (typeof fromContainer === "string") {

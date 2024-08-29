@@ -84,16 +84,17 @@ function MageryHealing() {
     var selecting = true;
     var patients = [];
     var gorTime = Orion.Now() - 60000;
-    while (selecting) {
-        selected = SelectTarget();
-        if (selected == null) {
-            selecting = false
-        }
-        else if (selected.Mobile()) {
-            patients.push(selected)
-        }
+    // while (selecting) {
+    //     selected = SelectTarget();
+    //     if (selected == null) {
+    //         selecting = false
+    //     }
+    //     else if (selected.Mobile()) {
+    //         patients.push(selected)
+    //     }
 
-    }
+    // }
+    patients = Orion.FindTypeEx(any, any, ground, 'mobile', 4, 'blue|green')
 
     patients.forEach(function (patient) {
         Orion.Print("Selected:" + patient.Name())

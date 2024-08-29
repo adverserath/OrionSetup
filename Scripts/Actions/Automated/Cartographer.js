@@ -308,7 +308,7 @@ function DoAllMapsInBag(inMaps) {
             Orion.WaitContextMenuID(chestid, 0);
             if (Orion.WaitForGump(1000)) {
                 var gump0 = Orion.GetGump('last');
-                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xC8FD1EA7')) {
+                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x2A064900')) {
                     gump0.Select(Orion.CreateGumpHook(1));
                     Orion.Wait(100);
                 }
