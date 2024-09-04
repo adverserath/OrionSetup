@@ -74,28 +74,6 @@ function CheckAccount(names) {
   }
 }
 
-function ShowArrowOnMap() {
-  while (true) {
-    Orion.Wait(500)
-    Orion.SetWorldMapPointerPosition(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y());
-  }
-}
-function AnnounceOrcs() {
-  var x = Player.X() - Orion.QuestArrowPosition().X()
-  var y = Player.Y() - Orion.QuestArrowPosition().Y()
-  var vDirect = " North"
-  var hDirect = " West"
-  if (y < 0) {
-    vDirect = " South"
-  }
-  if (x < 0) {
-    hDirect = " East"
-  }
-
-  Orion.SayParty('Orcs Spotted: ' + Math.abs(x) + hDirect + '  :  ' + Math.abs(y) + vDirect)
-  Orion.SetWorldMapPointerPosition(Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y());
-
-}
 
 function Alarm() {
   while (true) {

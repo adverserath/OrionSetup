@@ -19,6 +19,8 @@
 //#include helpers/DPSGump.js
 //#include Actions/Automated/Minax.js
 //#include Actions/Automated/Orchard.js
+//#include Actions/Pirating/Pirates.js
+
 var udpPort = 2598;
 var updConnectedPort = Orion.GetGlobal('updport');
 

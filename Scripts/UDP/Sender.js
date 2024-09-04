@@ -20,12 +20,12 @@
 //#include helpers/Quest.js
 //#include Actions/Automated/Minax.js
 //#include Actions/Automated/Orchard.js
-//#include Actions/PIrating/Pirates.js
 //#include gumps/CasterGump.js
 //#include helpers/Looter.js
 //#include helpers/Generic.js
 //#include Fighting/AutoHonor.js
 //#include helpers/Movement.js
+//#include Actions/Pirating/Pirates.js
 
 var hostPort = 2597;
 var clientServer = "127.0.0.1"
@@ -33,9 +33,11 @@ var clientServer = "127.0.0.1"
 function testlight()
 {
 Orion.HttpPost('http://192.168.0.5:8123/api/services/switch/turn_on', '{"entity_id":"switch.livingroom_lamp"}');
-
 }
 
+function serialise(){
+    TextWindow.Print(JSON.stringify(SelectTarget()))
+}
 function _bankWithdraw()
 {
 while(true)

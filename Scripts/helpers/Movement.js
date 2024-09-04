@@ -1,9 +1,29 @@
 var locations = []
+var locationJson
 var currentlocation = 0
 var allies
 function SetLocations(_) {
+    Orion.ClearFakeMapObjects();
     allies = NearbyAllies().length
-    locations = SelectMultipleLocations();
+    Orion.Print("Allies:" + allies)
+    
+    if(locationJson == null){
+        locations = SelectMultipleLocations();
+    }
+    else{
+        var locData = JSON.parse(locationJson)
+        locData.forEach(function (entry) {
+            if (typeof entry === "string") {
+                TextWindow.Print('object: ' + entry)
+                locations.push(entry)
+            }
+            else{
+                TextWindow.Print('x: ' + entry.x + ' y:' + entry.y)
+                locations.push(coordinate(entry.x, entry.y, entry.z, 'coordinate'))
+                Orion.AddFakeMapObject(Orion.Random(900000), 0x051A, '0x0F00', entry.x, entry.y, Player.Z());
+            }
+        })
+    }
     TextWindow.Open()
     TextWindow.Print(JSON.stringify(locations))
 }
@@ -26,7 +46,7 @@ function LocationLoop(_) {
     {
         var mobCount = Orion.FindTypeEx(GetMobType(), any, ground,
             'live|ignoreself|ignorefriends|near|inlos', 10, 'gray|criminal|red|enemy').length
-        Orion.Print('Checking next location')
+        Orion.Print(57, 'Checking next location: ' + currentlocation)
 
         if (currentlocation >= locations.length)
             currentlocation = 0;
@@ -37,41 +57,119 @@ function LocationLoop(_) {
                 Orion.Print('obj: ' + locations[currentlocation])
                 var obj = Orion.FindObject(locations[currentlocation])
                 if (obj != null) {
+                    Orion.Wait(1000)
+                    obj = Orion.FindObject(locations[currentlocation])
+                }
+                if (obj != null) {
+                    FightAndWait()
+                    if (obj.Serial() == Player.Serial()) {
+                        FightAndWait()
+                        Orion.Wait(2000)
+                        FightAndWait()
+                    }
                     if (udp)
                         Sender('*', 'W:' + obj.X() + ':' + obj.Y() + ':' + obj.Z() + ':' + "128");
                     WalkTo(locations[currentlocation], 0)
-
-                    if (Orion.Contains(obj.Properties(), 'Switch')) {
-                        Orion.UseObject(obj.Serial())
-                    }
+                    FightAndWait()
+                    WaitForGroup()
+                    // if (Orion.Contains(obj.Properties(), 'Switch')) {
+                    //     Orion.UseObject(obj.Serial())
+                    //     Orion.Wait(1000)
+                    // }
                     if (Orion.Contains(obj.Properties(), 'Clay Wall')) {
+                        FlipSwitches()
                         if (udp)
                             Sender('*', 'U:' + obj.Serial());
                         Orion.UseObject(obj.Serial())
+                        Orion.Wait(1500)
                     }
-                    Orion.Wait(1000)
+                    //Orion.Wait(1000)
                 }
                 else {
                     Orion.Print('obj not found : ' + locations[currentlocation])
+                    Orion.Wait(100)
+                    Orion.Print("cant see obj, try last one again")
+
+                    currentlocation--
+                    if (currentlocation == -1)
+                        currentlocation = locations.length - 1
+                    return
+
                 }
                 currentlocation++
-                // Orion.Print('Cast SJ: ' + locations[currentlocation])
-                // Orion.Cast('Sacred Journey', locations[currentlocation])
-                // Orion.Wait(2000)
-
             }
             else {
                 Orion.Print('Walk to dest')
+                FightAndWait()
+                WaitForGroup()
                 if (udp)
                     Sender('*', 'W:' + locations[currentlocation].X() + ':' + locations[currentlocation].Y() + ':' + locations[currentlocation].Z() + ':' + "128");
 
                 if (WalkTo(locations[currentlocation], 0))
                     currentlocation++
+                else {
+                    Orion.Wait(1000) //Probably teleporting
 
-                Orion.Wait(1000)
+                    if (udp)
+                        Sender('*', 'W:' + locations[currentlocation].X() + ':' + locations[currentlocation].Y() + ':' + locations[currentlocation].Z() + ':' + "128");
+
+                    if (WalkTo(locations[currentlocation], 0)) {
+                        currentlocation++
+                        Orion.Wait(200)
+                    }
+                    else {
+                        Orion.Print("cant walk to destination, try last one again")
+                        Orion.Wait(100)
+
+                        currentlocation--
+                        if (currentlocation == -1)
+                            currentlocation = locations.length - 1
+                        return
+                    }
+                }
+                FightAndWait()
+                WaitForGroup()
             }
             Orion.Print('Going to next location')
         }
+    }
+}
+
+function FlipSwitches() {
+    var switches = Orion.FindTypeEx("0x1091|0x108F", any, ground, any, 2)
+    if (switches.length > 0) {
+        Orion.UseObject(switches.shift().Serial())
+        Orion.Wait(1000)
+    }
+
+}
+function WaitForGroup(_) {
+    while (allies != NearbyAllies().length) {
+        Orion.Wait(100)
+        Orion.Wait("waiting for allies:" + NearbyAllies().length)
+    }
+}
+function FightAndWait(_) {
+    var mobs = Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends|inlos', 12, 3)
+        .filter(function (mob) {
+            return mob.Notoriety() >= 3
+                && mob.Notoriety() <= 6
+        })
+    while (mobs.length > 0) {
+        mobs = Orion.FindTypeEx(any, any, ground,
+            'nothumanmobile|live|ignoreself|ignorefriends|inlos', 12, 3)
+            .filter(function (mob) {
+                return mob.Notoriety() >= 3
+                    && mob.Notoriety() <= 6
+            })
+
+        mobs.forEach(function (mobile) {
+
+            Orion.Attack(mobile.Serial())
+        })
+        Orion.Wait(500)
+        Orion.Wait("waiting:" + mobs.length)
     }
 }
 var startLoop = Orion.Now()
@@ -125,14 +223,17 @@ function LocationLoopWaitSolo(secondsToLoop) {
         Orion.Print('Wait for pets:' + NearbyAllies().length + ' of ' + allies)
     }
 }
+function PatrolCitadel()
+{
+    locationJson = '[{"x":91,"y":1875,"z":0,"visited":false,"locName":"coordinate"},{"x":85,"y":1877,"z":0,"visited":false,"locName":"coordinate"},{"x":85,"y":1873,"z":0,"visited":false,"locName":"coordinate"},{"x":80,"y":1873,"z":0,"visited":false,"locName":"coordinate"},{"x":77,"y":1873,"z":0,"visited":false,"locName":"coordinate"},{"x":77,"y":1872,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6E8",{"x":120,"y":1897,"z":0,"visited":false,"locName":"coordinate"},{"x":115,"y":1897,"z":0,"visited":false,"locName":"coordinate"},{"x":115,"y":1902,"z":0,"visited":false,"locName":"coordinate"},{"x":115,"y":1906,"z":15,"visited":false,"locName":"coordinate"},{"x":115,"y":1907,"z":15,"visited":false,"locName":"coordinate"},{"x":119,"y":1926,"z":0,"visited":false,"locName":"coordinate"},{"x":122,"y":1927,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6EB",{"x":139,"y":1927,"z":0,"visited":false,"locName":"coordinate"},{"x":141,"y":1926,"z":0,"visited":false,"locName":"coordinate"},{"x":138,"y":1918,"z":0,"visited":false,"locName":"coordinate"},"0x0000FEFD",{"x":138,"y":1916,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6DE",{"x":90,"y":1875,"z":0,"visited":false,"locName":"coordinate"},{"x":85,"y":1875,"z":0,"visited":false,"locName":"coordinate"},{"x":80,"y":1875,"z":0,"visited":false,"locName":"coordinate"},{"x":79,"y":1880,"z":0,"visited":false,"locName":"coordinate"},{"x":79,"y":1886,"z":0,"visited":false,"locName":"coordinate"},{"x":79,"y":1890,"z":0,"visited":false,"locName":"coordinate"},{"x":72,"y":1890,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6E5",{"x":73,"y":1917,"z":0,"visited":false,"locName":"coordinate"},{"x":83,"y":1918,"z":0,"visited":false,"locName":"coordinate"},{"x":88,"y":1920,"z":-5,"visited":false,"locName":"coordinate"},{"x":90,"y":1920,"z":-14,"visited":false,"locName":"coordinate"},{"x":166,"y":1978,"z":0,"visited":false,"locName":"coordinate"},{"x":180,"y":1975,"z":0,"visited":false,"locName":"coordinate"},{"x":183,"y":1972,"z":0,"visited":false,"locName":"coordinate"},{"x":182,"y":1966,"z":0,"visited":false,"locName":"coordinate"},{"x":181,"y":1949,"z":0,"visited":false,"locName":"coordinate"},{"x":182,"y":1971,"z":0,"visited":false,"locName":"coordinate"},{"x":177,"y":1974,"z":0,"visited":false,"locName":"coordinate"},{"x":170,"y":1978,"z":0,"visited":false,"locName":"coordinate"},{"x":161,"y":1974,"z":5,"visited":false,"locName":"coordinate"},{"x":159,"y":1975,"z":15,"visited":false,"locName":"coordinate"},{"x":87,"y":1919,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6DC",{"x":100,"y":1880,"z":0,"visited":false,"locName":"coordinate"}]'
+    Patrol()
+}
 
+var allies
 function Patrol() {
-
-    var allies = NearbyAllies().length
-    Orion.Print("Allies:" + allies)
     SetLocations()
     while (true) {
-        Orion.Wait(3000)
+        Orion.Wait(1000)
         Orion.Print('Not fighting')
         var pathDistance
         while (!Player.Dead() && Player.WarMode()) {
@@ -159,7 +260,7 @@ function Patrol() {
 }
 
 function NearbyAllies(distance) {
-    if(distance == null)
+    if (distance == null)
         distance = 2
     var friendly = Orion.FindTypeEx(any, any, ground,
         'live|inlos', distance, 'blue|green').filter(function (mob) {
