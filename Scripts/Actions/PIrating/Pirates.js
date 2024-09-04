@@ -126,15 +126,36 @@ var nCulverin = '0x4218'
 
 var cannonTypes = [wCarronade, wCulverin, eCarronade, eCulverin, sCarronade, sCulverin, nCarronade, nCulverin]
 
+var showBoatTiles = false
+var showHitMarkers = false
+
 function HighlightCannonFire() {
+    // Orion.Resend()
+    // Orion.Wait(200)
+    TextWindow.Clear()
     Orion.ClearFakeMapObjects()
     GetMultis()
-    var cannon = cannonTypes.toString().split(',').join('|');
+if(playerShip){
+    var cannonGraphicList = cannonTypes.toString().split(',').join('|');
 
-    var cannons = Orion.FindTypeEx(cannon, any, ground, 'item', 8)
-    cannons.forEach(function (cannon) {
-        DetectHits(cannon)
+     var cannons = Orion.FindTypeEx(cannonGraphicList, any, ground, 'item', 24)
+     .filter(function (cannon){
+         return playerShip.Contains(cannon.X(), cannon.Y())
+     })
+    //  cannons.forEach(function (cannon) {
+    //     Orion.PrintFast(cannon.Serial(), 58, 1, "My Cannon")
+    //  })
+
+     cannons.forEach(function (cannon) {
+        if(DetectHits(cannon))
+            Orion.PrintFast(cannon.Serial(), 58, 1, "Hit")
     })
+}
+else{
+    Orion.Print("Didnt find player ship")
+    Orion.Resend()
+}
+
 }
 
 function DetectHits(cannon) {
@@ -185,22 +206,22 @@ function DetectHits(cannon) {
                 newPoint = Point2D(xLoc, yLoc);
             }
 
-            // Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x047E', xLoc, yLoc, Player.Z());
-            multiPoints.forEach(function(mp){
-                if(mp.Contains(newPoint.X(),newPoint.Y())){
+             //Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x047E', xLoc, yLoc, Player.Z());
+            otherBoats.forEach(function(otherBoat){
+                if(otherBoat.Contains(newPoint.X(),newPoint.Y())){
                     TextWindow.Print("Point In Array:" + newPoint.X() +" "+ newPoint.Y())
-                    Orion.Print(mp.GetTile(newPoint.X(),newPoint.Y()).Graphic())
-                    Orion.Print('in multi')
-                    Orion.Print(newPoint.X() +" "+ newPoint.Y())
-                    Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x0494', newPoint.X(), newPoint.Y(), -5);
+                    //Orion.Print(otherBoat.GetTile(newPoint.X(),newPoint.Y()).Graphic())
+                    if(showHitMarkers)
+                        Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x0494', newPoint.X(), newPoint.Y(), -5);
                     damageables.push(newPoint)
                 }
             })
-
-                //Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x047E', newPoint.X(), newPoint.Y(), -5);
+            if(showBoatTiles)
+                Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x047E', newPoint.X(), newPoint.Y(), -5);
 
         }
     }
+return damageables.length>0    
 }
 
 function GetFacing(cannon) {
@@ -245,31 +266,37 @@ function Point2D(xLoc, yLoc) {
 }
 
 
-var multiPoints = []
+var otherBoats = []
+var playerShip = undefined
 
 function GetMultis() {
     Orion.ClearFakeMapObjects()
     var list = Orion.GetMultisRect();
 
     for (var i = 0; i < list.length; i++) {
+        Orion.Print("Multis: "+list.length)
         var item = list[i];
         var multi = Multi(item.x, item.y, item.z, item.minX, item.minY, item.maxX, item.maxY)
 
         var color = 0x0494
         if (multi.Contains(Player.X(), Player.Y())) {
-            color = 0x0FF1
+            color = 0x0FFF
+            playerShip=multi
         }
         else {
-            multiPoints.push(multi)
+            otherBoats.push(multi)
             color = 0x0BFF
         }
-        var i = 0
-        multi.Tiles().forEach(function (tileArray) {
-            TextWindow.Print("ta"+ (i++) +": " + tileArray)
-            tileArray.forEach(function (tiles) {
-                Orion.AddFakeMapObject(Orion.Random(100000), '0x9F14', color, tiles.X(), tiles.Y(), -5);
+        otherBoats.push(multi)
+        color = 0x0BFF
+        var yLayer = 0
+        if(showBoatTiles)
+            multi.Tiles().forEach(function (tileArray) {
+                //TextWindow.Print("ta"+ (yLayer++) +": " + tileArray)
+                tileArray.forEach(function (tiles) {
+                    Orion.AddFakeMapObject(Orion.Random(100000), '0x9F14', color, tiles.X(), tiles.Y(), -5);
+                })
             })
-        })
     }
 }
 
@@ -316,10 +343,10 @@ function Multi(xLoc, yLoc, zLoc, _minX, _minY, _maxX, _maxY) {
             _y -= this.Y() + this.MinY();
 
 
-            TextWindow.Print("Y ::: "+ _y)
-            TextWindow.Print("X :::"+ _x)
-            TextWindow.Print("Width :::"+ this.Width())
-            TextWindow.Print("Height :::"+ this.Height())
+            //TextWindow.Print("Y ::: "+ _y)
+            //TextWindow.Print("X :::"+ _x)
+            //TextWindow.Print("Width :::"+ this.Width())
+            //TextWindow.Print("Height :::"+ this.Height())
 
             return _x >= 0 && _x < this.Width() && 
             _y >= 0 && _y < this.Height() && 
@@ -336,20 +363,17 @@ function Multi(xLoc, yLoc, zLoc, _minX, _minY, _maxX, _maxY) {
                 var voidTile = Orion.GetTilesInRect('any', 0, 0, -5, 0, 0, -5).shift()
                 var tileSuper = BoatArray(this.height, this.width)
                 var tileRect = Orion.GetTilesInRect('any', this.x - Math.abs(this.minX), this.y - Math.abs(this.minY), -5, this.x + this.maxX, this.y + this.maxY, -5)
-                
+
                 for (var y = 0; y <= this.Height(); y++) {
                     tileSuper.push([])
                 }
-                var slot = this.y - Math.abs(this.minY)
+                var slotY = this.y - Math.abs(this.minY)
+                var slotX = this.x - Math.abs(this.minX)
 
                 tileRect.forEach(function (tile) {
                     if (tile != null) {
-                        tileSuper[(tile.Y() - slot)].push(tile)
+                        tileSuper[(tile.Y() - slotY)][(tile.X() - slotX)]=tile
                     }
-                    else {
-                        tileSuper[(tile.Y() - slot)].push(voidTile)
-                    }
-
                 })
                 this.tiles = tileSuper
             }
