@@ -1,6 +1,7 @@
 //import Orion from "../../Orion";
 //import Player from "../../Player";
 
+
 function ReadPirateLocations() {
     while (true) {
         var startTime = Orion.Now()
@@ -46,7 +47,14 @@ function CannonFire() {
 }
 
 function CanPrep() {
-    if (Orion.GetLastGump().ButtonList().indexOf(" button 10 35 4005 4007 1 0 1 ") > -1) {
+    Orion.Print(58, "CanPrep")
+    var gump0
+    if (gumpSerial == undefined)
+        gump0 = Orion.GetLastGump()
+    else
+        gump0 = GetCannonGump(gumpSerial)
+
+    if (gump0.ButtonList().indexOf(" button 10 35 4005 4007 1 0 1 ") > -1) {
         Orion.Print(58, "Can Prep")
         return true
     }
@@ -54,7 +62,12 @@ function CanPrep() {
 }
 
 function Prep() {
-    var gump0 = Orion.GetLastGump();
+    Orion.Print(58, "Prep")
+    var gump0
+    if (gumpSerial == undefined)
+        gump0 = Orion.GetLastGump()
+    else
+        gump0 = GetCannonGump(gumpSerial)
     if ((gump0 !== null) && (!gump0.Replayed())) {
         gump0.Select(Orion.CreateGumpHook(1));
         Orion.Wait(100);
@@ -62,36 +75,128 @@ function Prep() {
 }
 
 function CanUnload() {
-    if (Orion.GetLastGump().ButtonList().indexOf(" button 10 35 4005 4007 1 0 8 ") > -1) {
+    Orion.Print(58, "CanUnload")
+    var gump0
+    if (gumpSerial == undefined)
+        gump0 = Orion.GetLastGump()
+    else
+        gump0 = GetCannonGump(gumpSerial)
+
+    if (gump0.ButtonList().indexOf(" button 10 35 4005 4007 1 0 8 ") > -1) {
         Orion.Print(58, "Can Unload")
     }
     return Orion.GetLastGump().ButtonList().indexOf(" button 10 35 4005 4007 1 0 8 ") > -1
 
 }
 
-function WaitForFire() {
-    while (Orion.GetLastGump().CommandList().indexOf(" xmfhtmlgumpcolor 10 148 230 18 1149652 0 0 32743 ") == -1 && !Player.WarMode()) {
+
+function WaitForFire(gumpSerial) {
+    Orion.Print(58, "WaitForFire")
+    var gump0
+    if (gumpSerial == undefined)
+        gump0 = Orion.GetLastGump()
+    else
+        gump0 = GetCannonGump(gumpSerial)
+    while (gump0.CommandList().indexOf(" xmfhtmlgumpcolor 10 148 230 18 1149652 0 0 32743 ") == -1 && !Player.WarMode()) {
+        gump0 = GetCannonGump(gumpSerial)
         Orion.Wait(200)
     }
     Orion.Print(58, "Can Fire")
 
 }
-function WaitForFired() {
-    while (Orion.GetLastGump().CommandList().indexOf(" xmfhtmlgumpcolor 10 148 230 18 1149691 0 0 32743 ") == -1) {
+
+function WaitForFireObj(cannon) {
+    Orion.Print(58, "WaitForFireObj")
+
+    Orion.Print(58, "Can Fire")
+    if (Orion.Contains(cannon.Properties(), "Contents: 3/3" && !(Orion.Contains(cannon.Properties(), "Charged: Yes") && Orion.Contains(cannon.Properties(), "Ammo: Cannonball") && Orion.Contains(cannon.Properties(), "Primed: Yes")))) {
+        Prep()
+    }
+    while (!(Orion.Contains(cannon.Properties(), "Charged: Yes") && Orion.Contains(cannon.Properties(), "Ammo: Cannonball") && Orion.Contains(cannon.Properties(), "Primed: Yes"))) {
+        Orion.Print("wait for cannon ready")
+        Orion.Wait(300)
+    }
+    Fire()
+    while (!(Orion.Contains(cannon.Properties(), "Charged: No") && Orion.Contains(cannon.Properties(), "Ammo: None") && Orion.Contains(cannon.Properties(), "Primed: No"))) {
+        Orion.Print("firing cannon")
+        Orion.Wait(300)
+    }
+    Prep()
+}
+
+function WaitForFired(gumpSerial) {
+    Orion.Print(58, "WaitForFired")
+
+    var gump0
+    if (gumpSerial == undefined)
+        gump0 = Orion.GetLastGump()
+    else
+        gump0 = GetCannonGump(gumpSerial)
+
+    while (gump0.CommandList().indexOf(" xmfhtmlgumpcolor 10 148 230 18 1149691 0 0 32743 ") == -1) {
+        gump0 = GetCannonGump(gumpSerial)
         Orion.Wait(200)
     }
     Orion.Print(58, "Fired")
 
 }
-function Fire() {
-    var gump0 = Orion.GetLastGump();
+
+function GetCannonGump(serial) {
+    Orion.Wait(200)
+    var gump = Orion.GetGump(serial, any)
+    while (gump == null) {
+        gump = Orion.GetGump(serial, any)
+        Orion.Wait(100)
+    }
+    return gump
+}
+
+function Fire(gumpSerial) {
+    var gump0
+    if (gumpSerial == undefined)
+        gump0 = Orion.GetLastGump()
+    else
+        gump0 = GetCannonGump(gumpSerial)
     if ((gump0 !== null) && (!gump0.Replayed())) {
         Orion.Print(58, "Fire")
         gump0.Select(Orion.CreateGumpHook(6));
     }
-    WaitForFired()
+    WaitForFired(gumpSerial)
 }
 
+function AutoCannon() {
+    var cannonGraphicList = cannonTypes.toString().split(',').join('|');
+
+    var cannons = Orion.FindTypeEx(cannonGraphicList, any, ground, 'item', 2)
+    var cannonGump = []
+    cannons.forEach(function (cannon) {
+        Orion.UseObject(cannon.Serial())
+        if (Orion.WaitForGump(1000)) {
+            var gump = Orion.GetLastGump()
+            cannonGump.push(CannonGump(cannon.Serial(), gump.Serial()))
+            Orion.Wait(1000)
+        }
+    })
+
+    while (true) {
+        while (Player.WarMode()) {
+            var hittingCannons = CannonsInRange()
+            cannonGump.forEach(function (cg) {
+                hittingCannons.forEach(function (cannon) {
+                    TextWindow.Print("cannons : " + cannon.Serial() + cg.GetCannonSerial())
+                    if (cannon.Serial() == cg.GetCannonSerial()) {
+                        Fire(cg.GetGumpSerial())
+                        Orion.Wait(200)
+                    }
+                })
+            })
+            Orion.Wait(500)
+        }
+        Orion.Wait(1000)
+    }
+
+
+}
 function ShowArrowOnMap() {
     while (true) {
         Orion.Wait(500)
@@ -129,33 +234,52 @@ var cannonTypes = [wCarronade, wCulverin, eCarronade, eCulverin, sCarronade, sCu
 var showBoatTiles = false
 var showHitMarkers = false
 
-function HighlightCannonFire() {
+function HighlightAllCannons() {
+    HighlightCannonFire(24)
+}
+
+/**
+ * List any cannons TypeEX[] that will hit a target in Players reach
+ * 
+ * @returns {object} CannonObj[]
+ */
+function CannonsInRange() {
+    return HighlightCannonFire(2)
+}
+
+function HighlightCannonFire(distanceToCannon) {
+    var hittingCannon = []
     // Orion.Resend()
     // Orion.Wait(200)
     TextWindow.Clear()
     Orion.ClearFakeMapObjects()
     GetMultis()
-if(playerShip){
-    var cannonGraphicList = cannonTypes.toString().split(',').join('|');
+    if (playerShip) {
+        var cannonGraphicList = cannonTypes.toString().split(',').join('|');
 
-     var cannons = Orion.FindTypeEx(cannonGraphicList, any, ground, 'item', 24)
-     .filter(function (cannon){
-         return playerShip.Contains(cannon.X(), cannon.Y())
-     })
-    //  cannons.forEach(function (cannon) {
-    //     Orion.PrintFast(cannon.Serial(), 58, 1, "My Cannon")
-    //  })
+        var cannons = Orion.FindTypeEx(cannonGraphicList, any, ground, 'item', distanceToCannon)
+            .filter(function (cannon) {
+                //                Orion.PrintFast(cannon.Serial(), 58, 1, "A Cannon")
+                //                TextWindow.Print("Cannon: X"+cannon.X() +" Y: "+cannon.Y())
 
-     cannons.forEach(function (cannon) {
-        if(DetectHits(cannon))
-            Orion.PrintFast(cannon.Serial(), 58, 1, "Hit")
-    })
-}
-else{
-    Orion.Print("Didnt find player ship")
-    Orion.Resend()
-}
+                return playerShip.Contains(cannon.X() - 1, cannon.Y())
+            })
+        //          cannons.forEach(function (cannon) {
+        //            Orion.PrintFast(cannon.Serial(), 58, 1, "My Cannon")
+        //         })
 
+        cannons.forEach(function (cannon) {
+            if (DetectHits(cannon)) {
+                Orion.PrintFast(cannon.Serial(), 58, 1, "Hit")
+                hittingCannon.push(cannon)
+            }
+        })
+    }
+    else {
+        Orion.Print("Didnt find player ship")
+        Orion.Resend()
+    }
+    return hittingCannon
 }
 
 function DetectHits(cannon) {
@@ -206,22 +330,22 @@ function DetectHits(cannon) {
                 newPoint = Point2D(xLoc, yLoc);
             }
 
-             //Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x047E', xLoc, yLoc, Player.Z());
-            otherBoats.forEach(function(otherBoat){
-                if(otherBoat.Contains(newPoint.X(),newPoint.Y())){
-                    TextWindow.Print("Point In Array:" + newPoint.X() +" "+ newPoint.Y())
+            //Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x047E', xLoc, yLoc, Player.Z());
+            otherBoats.forEach(function (otherBoat) {
+                if (otherBoat.Contains(newPoint.X(), newPoint.Y())) {
+                    //TextWindow.Print("Point In Array:" + newPoint.X() + " " + newPoint.Y())
                     //Orion.Print(otherBoat.GetTile(newPoint.X(),newPoint.Y()).Graphic())
-                    if(showHitMarkers)
+                    if (showHitMarkers)
                         Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x0494', newPoint.X(), newPoint.Y(), -5);
                     damageables.push(newPoint)
                 }
             })
-            if(showBoatTiles)
+            if (showBoatTiles)
                 Orion.AddFakeMapObject(Orion.Random(10000), '0x9F13', '0x047E', newPoint.X(), newPoint.Y(), -5);
 
         }
     }
-return damageables.length>0    
+    return damageables.length > 0
 }
 
 function GetFacing(cannon) {
@@ -231,22 +355,18 @@ function GetFacing(cannon) {
     var wCannonTypes = [wCarronade, wCulverin]
 
     if (nCannonTypes.indexOf(cannon.Graphic()) != -1) {
-        Orion.Print(cannon.Serial() + ' is north')
         return "N"
     }
 
     if (sCannonTypes.indexOf(cannon.Graphic()) != -1) {
-        Orion.Print(cannon.Serial() + ' is south')
         return "S"
     }
 
     if (eCannonTypes.indexOf(cannon.Graphic()) != -1) {
-        Orion.Print(cannon.Serial() + ' is east')
         return "E"
     }
 
     if (wCannonTypes.indexOf(cannon.Graphic()) != -1) {
-        Orion.Print(cannon.Serial() + ' is west')
         return "W"
     }
 }
@@ -265,23 +385,36 @@ function Point2D(xLoc, yLoc) {
     }
 }
 
-
+function CannonGump(_cannonSerial, _gumpSerial) {
+    return {
+        cannonSerial: _cannonSerial,
+        gumpSerial: _gumpSerial,
+        GetCannonSerial: function () {
+            return this.cannonSerial;
+        },
+        GetGumpSerial: function () {
+            Orion.Print(this.cannonSerial + " using " + this.gumpSerial)
+            return this.gumpSerial;
+        }
+    }
+}
 var otherBoats = []
 var playerShip = undefined
 
 function GetMultis() {
     Orion.ClearFakeMapObjects()
     var list = Orion.GetMultisRect();
+    Orion.Print("Multis Found: " + list.length)
 
     for (var i = 0; i < list.length; i++) {
-        Orion.Print("Multis: "+list.length)
+        //TextWindow.Print("Multi: "+i)
         var item = list[i];
         var multi = Multi(item.x, item.y, item.z, item.minX, item.minY, item.maxX, item.maxY)
 
         var color = 0x0494
         if (multi.Contains(Player.X(), Player.Y())) {
             color = 0x0FFF
-            playerShip=multi
+            playerShip = multi
         }
         else {
             otherBoats.push(multi)
@@ -290,10 +423,10 @@ function GetMultis() {
         otherBoats.push(multi)
         color = 0x0BFF
         var yLayer = 0
-        if(showBoatTiles)
+        if (showBoatTiles)
             multi.Tiles().forEach(function (tileArray) {
-                //TextWindow.Print("ta"+ (yLayer++) +": " + tileArray)
                 tileArray.forEach(function (tiles) {
+                    //TextWindow.Print("tile: "+ tiles.X() +" : " + tiles.Y())
                     Orion.AddFakeMapObject(Orion.Random(100000), '0x9F14', color, tiles.X(), tiles.Y(), -5);
                 })
             })
@@ -342,15 +475,9 @@ function Multi(xLoc, yLoc, zLoc, _minX, _minY, _maxX, _maxY) {
             _x -= this.X() + this.MinX();
             _y -= this.Y() + this.MinY();
 
-
-            //TextWindow.Print("Y ::: "+ _y)
-            //TextWindow.Print("X :::"+ _x)
-            //TextWindow.Print("Width :::"+ this.Width())
-            //TextWindow.Print("Height :::"+ this.Height())
-
-            return _x >= 0 && _x < this.Width() && 
-            _y >= 0 && _y < this.Height() && 
-            this.Tiles()[_y][_x] != null
+            return _x >= 0 && _x < this.Width() &&
+                _y >= 0 && _y < this.Height() &&
+                this.Tiles()[_y][_x] != null
         },
         GetTile: function (_x, _y) {
             _x -= this.X() + this.MinX();
@@ -372,30 +499,26 @@ function Multi(xLoc, yLoc, zLoc, _minX, _minY, _maxX, _maxY) {
 
                 tileRect.forEach(function (tile) {
                     if (tile != null) {
-                        tileSuper[(tile.Y() - slotY)][(tile.X() - slotX)]=tile
+                        tileSuper[(tile.Y() - slotY)][(tile.X() - slotX)] = tile
                     }
                 })
                 this.tiles = tileSuper
             }
-
-
-            Orion.Print(this.tiles.length)
             return this.tiles;
         }
     }
 }
-function BoatArray(Height, Width)
-{
+function BoatArray(Height, Width) {
     var voidTile = Orion.GetTilesInRect('any', 0, 0, -5, 0, 0, -5).shift()
-    
-        var a = [];
-        for (var i = 0; i < Height; i++) {
-            var b = []
-            for (var j = 0; j < Width; j++) {
-                b.push(undefined);
-            }
-            a.push(b);
+
+    var a = [];
+    for (var i = 0; i < Height; i++) {
+        var b = []
+        for (var j = 0; j < Width; j++) {
+            b.push(undefined);
         }
-        return a;
-    
+        a.push(b);
+    }
+    return a;
+
 }

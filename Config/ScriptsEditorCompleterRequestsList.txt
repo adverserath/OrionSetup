@@ -1,13 +1,20 @@
+else
+HttpPost
+WarMode
+function
+TargetType
+TargetObject
+WaitForTarget
+CloseGump
+GetGump
 ButtonList
 forEach
 ObjectExists
 for
 PauseScript
 TextWindow
-function
 BuffsCount
 BuffDescription
-else
 BuffExists
 UseObject
 StopWalking
@@ -128,7 +135,6 @@ ClientOptionGet
 ClientOptionSet
 ClientViewRange
 Close
-CloseGump
 CloseMenu
 ClosePaperdoll
 CloseStatusbar
@@ -240,7 +246,6 @@ GetFriendList
 GetFriendsStatus
 GetGlobal
 GetGraphic
-GetGump
 GetGumpPosition
 GetIgnoreList
 GetLandTiledata
@@ -286,7 +291,6 @@ Hide
 HighlightAreaTimer
 Hits
 HttpGet
-HttpPost
 HttpPut
 Hue
 ID
@@ -564,11 +568,9 @@ TargetByResource
 TargetGround
 TargetGroundList
 TargetLast
-TargetObject
 TargetSystemSerial
 TargetTile
 TargetTileRelative
-TargetType
 TargetTypeList
 Terminate
 TestItemColor
@@ -636,7 +638,6 @@ WaitForGump
 WaitForMenu
 WaitForPrompt
 WaitForShop
-WaitForTarget
 WaitForTextDialog
 WaitForTrade
 WaitGump
@@ -653,7 +654,6 @@ WaitTargetTypeList
 WaitTextDialog
 WaitWhileTargeting
 WalkTo
-WarMode
 Weather
 Weight
 Write

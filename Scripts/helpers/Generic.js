@@ -45,6 +45,8 @@ function MonitorGM() {
       Orion.ActivateClient();
       BotPush('Detected : ' + npc.Name())
       Orion.PlayWav('C:\\Sounds\\Windows Background.wav');
+      Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=255&r=0&b=0&g=100&transition=0', 'true')
+
       Orion.Wait(10000)
     }
     if (Orion.WaitForContextMenu() && Orion.GetContextMenu().Serial() == 0x00000001) {

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="macro" looped="true" delay="1"/>
+    <macro name="macro" looped="true" delay="1">
+        <action type="10" convert_type="2" waiting_time="300" serial="0x400E7A99" graphic="0x1BDD" color="0x0000" count="100"/>
+        <action type="11" convert_type="0" waiting_time="500" x="89" y="107" z="0" slot="73" container="0x4010C338" relative_x="74" relative_y="-111" relative_z="-22"/>
+    </macro>
 </data>

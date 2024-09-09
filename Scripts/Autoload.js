@@ -112,25 +112,24 @@ function CreateUDPListener(port) {
 }
 
 function ReadInvasion() {
-	var gate = Orion.FindObject('0x4005E63A')
+  var gate = Orion.FindObject('0x4005E63A')
 
-while(true)
-{
-	while (!Orion.Contains(gate.Properties(), 'Level 2 / 3')) {
-		Orion.Wait(1000)
-	}
-	BotPush('Invasion second phase')
-	
-	while (!Orion.Contains(gate.Properties(), 'Level 3 / 3')) {
-		Orion.Wait(1000)
-	}
-	//for(var i=0;i<3:i++){
-	BotPush('Level 3: Invade the invasion')
-	Orion.Wait(1000)
-	//}
+  while (true) {
+    while (!Orion.Contains(gate.Properties(), 'Level 2 / 3')) {
+      Orion.Wait(1000)
+    }
+    BotPush('Invasion second phase')
 
-	while (Orion.Contains(gate.Properties(), 'Level 3 / 3')) {
-	Orion.Wait(1000)
-}
-}
+    while (!Orion.Contains(gate.Properties(), 'Level 3 / 3')) {
+      Orion.Wait(1000)
+    }
+    //for(var i=0;i<3:i++){
+    BotPush('Level 3: Invade the invasion')
+    Orion.Wait(1000)
+    //}
+
+    while (Orion.Contains(gate.Properties(), 'Level 3 / 3')) {
+      Orion.Wait(1000)
+    }
+  }
 }

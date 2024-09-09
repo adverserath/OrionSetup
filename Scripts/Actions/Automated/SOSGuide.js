@@ -1,3 +1,22 @@
+
+///#include soslocations.jpg
+
+function War() {
+    var toggle = 'off'
+    while (true) {
+        Orion.Wait(100)
+        if (Orion.FindObject(Orion.ClientLastAttack()) != null && toggle != 'red') {
+            Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=255&r=100&b=0&g=0&transition=0', 'true')
+            toggle = 'red'
+        }
+        else if (Orion.FindObject(Orion.ClientLastAttack()) == null && toggle != 'blue') {
+            Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=255&r=0&b=100&g=0&transition=0', 'true')
+            toggle = 'blue'
+
+        }
+        Orion.Wait(100)
+    }
+}
 var seabook = '0x40019854'
 var _seakey = 'A ship key'
 var seaBox = '0x40055745'
@@ -20,7 +39,7 @@ var _transcendenceBook = 'Transcendence Book'
 
 
 //OPTIONS
-var processNets = false
+var processNets = true
 var storeNets = false
 
 //orc lighthouse X1954 Y3747
@@ -359,7 +378,6 @@ function GoToClosestSOS(distance) {
     return sosId
 }
 
-///#include soslocations.jpg
 function DoSOSInOrder() {
     Debug(' Method Entry - DoSOSInOrder')
     PetGuard()
@@ -430,9 +448,10 @@ function ChestRecoveryService() {
 
         BagOfSendingGoldOnce()
         Orion.Wait(4000)
-        if (Player.MaxWeight() < Player.Weight())
+        if (Player.MaxWeight() < Player.Weight()) {
             Orion.ActivateClient()
-        Orion.PauseScript()
+            Orion.PauseScript()
+        }
     }
 
     if (droppedChest != null) {
@@ -587,7 +606,7 @@ function ChestLootManager() {
     //MoveItemsFromPlayer(goldChestId, '0x0EED')
     Orion.Print(_rareBox)
 
-    MoveItemText("Abysmal|Enchanted|Driftwood|Backpack|Wedding|Oars|Copper Portrait|Copper Ship|Copper Sunflower|Copper Wings|Opal|Silver Plated|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Woven|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), true)
+    MoveItemText("Abysmal|Enchanted|Driftwood|Backpack|Wedding|Oars|Copper Portrait|Copper Ship|Copper Sunflower|Copper Wings|Opal|Silver Plated|Ocean|Salted|Live Rock|Aquarium|Polkadot|Sunflower|Wedding|Woven|Kelp|Driftwood|Valkyrie|Grape|Large Fish|Anchor|Ship In", FindGroundItemWithProperties([_rareBox]).Serial(), false)
     Orion.Print("scrolls")
 
     MoveScrolls(FindGroundItemWithProperties([_regBoxId]).Serial())
