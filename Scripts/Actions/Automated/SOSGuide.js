@@ -1,22 +1,6 @@
 
 ///#include soslocations.jpg
 
-function War() {
-    var toggle = 'off'
-    while (true) {
-        Orion.Wait(100)
-        if (Orion.FindObject(Orion.ClientLastAttack()) != null && toggle != 'red') {
-            Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=255&r=100&b=0&g=0&transition=0', 'true')
-            toggle = 'red'
-        }
-        else if (Orion.FindObject(Orion.ClientLastAttack()) == null && toggle != 'blue') {
-            Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=255&r=0&b=100&g=0&transition=0', 'true')
-            toggle = 'blue'
-
-        }
-        Orion.Wait(100)
-    }
-}
 var seabook = '0x40019854'
 var _seakey = 'A ship key'
 var seaBox = '0x40055745'

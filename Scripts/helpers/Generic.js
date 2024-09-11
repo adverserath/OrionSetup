@@ -2,6 +2,60 @@
 //#include helpers/Target.js
 //#include helpers/Notifier.js
 
+
+function War() {
+  var war = 'off'
+  while (true) {
+      Orion.Wait(100)
+      if (Orion.FindObject(Orion.ClientLastAttack()) != null && war != 'red') {
+          Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=200&transition=0', 'true')
+          war = 'red'
+      }
+      else if (Orion.FindObject(Orion.ClientLastAttack()) == null && war != 'blue') {
+          Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=150&transition=0', 'true')
+          war = 'blue'
+      }
+      Orion.Wait(100)
+  }
+}
+
+function HealthBar() {
+  var toggle = 'off'
+  var health = 100
+  var war = 'off'
+  var timer = 400
+  while (true) {
+  var healthperc = parseInt(Player.Hits()/Player.MaxHits()*100)
+      Orion.Wait(100)
+      if (Player.Poisoned() && toggle!='green') {
+          Orion.HttpPost('http://192.168.0.101/number/poisonval/set?value=1', 'true')
+          toggle = 'green'
+      }
+      else if (!Player.Poisoned() && toggle!='blue') {
+          Orion.HttpPost('http://192.168.0.101/number/poisonval/set?value=0', 'true')
+          toggle = 'blue'
+      }
+
+      if (health!=healthperc) {
+          Orion.HttpPost('http://192.168.0.101/number/healthnum/set?value='+healthperc, 'true')
+          health = healthperc
+      }
+      
+       if (Orion.FindObject(Orion.ClientLastAttack()) != null && war != 'red') {
+          Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=130&transition=0', 'true')
+          war = 'red'
+          timer=100
+      }
+      else if (Orion.FindObject(Orion.ClientLastAttack()) == null && war != 'blue') {
+          Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=50&transition=0', 'true')
+          war = 'blue'
+          timer = 500
+      }
+      Orion.Wait(timer)
+  }
+}
+
+
 function DoMethodWhileWaiting(methodName, argumentArray) {
   Orion.ToggleScript(methodName, true, argumentArray)
   Orion.Wait(1000)
