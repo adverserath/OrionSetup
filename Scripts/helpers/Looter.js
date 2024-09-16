@@ -132,7 +132,7 @@ function MoveMapsInBagToChests() {
         }).join("\n")
 
         foundMaps += maps.length
-
-        CountGlobalValue('foundMaps', foundMaps, foundList + '\nMaps found :')
+        if(foundMaps>0)
+            CountGlobalValue('foundMaps', foundMaps, foundList + '\nMaps found :')
     }
 }

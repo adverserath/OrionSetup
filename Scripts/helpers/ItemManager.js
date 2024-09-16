@@ -173,6 +173,7 @@ function listHasEmptyInBackpack(listName) {
     return GetEmptyFromListInBackpack(listName).length > 0;
 }
 
+
 function MoveItemText(text, to, alert) {
     Debug(' Method Entry - MoveItemText')
     if (typeof to === "string") {

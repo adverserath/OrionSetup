@@ -109,7 +109,8 @@ function MoveAllSOSInBagToChests(foundLast) {
         MoveSoSToChest(sos.Serial(), zone)
         foundSOS++
     })
-    CountGlobalValue('foundSOS', foundSOS, 'SOS found')
+    if(SOSs.length>0)   
+        CountGlobalValue('foundSOS', foundSOS, 'SOS found')
 }
 
 function MoveSoSToChest(serial, zone) {

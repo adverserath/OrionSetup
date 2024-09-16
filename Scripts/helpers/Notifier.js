@@ -93,13 +93,18 @@ function NotifySkill(skillName) {
 
 
 function CountGlobalValue(name, value, publishText, reset) {
+    Orion.Print(36, "update: "+ name + " : " + value)
     var globalValue = Orion.GetGlobal(name)
     if (globalValue == null || isNaN(globalValue))
         globalValue = '0'
+    
     var reportValue = parseInt(globalValue);
+
     if (reportValue == null || isNaN(reportValue) || reset)
         reportValue = 0
     reportValue += value
     Orion.SetGlobal(name, reportValue)
-    BotPush(Player.Name() + ' ' + publishText + ' = ' + reportValue, true)
+    
+    if (value != 0)
+        BotPush(Player.Name() + ' ' + publishText + ' = ' + reportValue, true)
 }
