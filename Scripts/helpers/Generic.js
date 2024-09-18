@@ -66,10 +66,13 @@ function DoMethodWhileWaiting(methodName, argumentArray) {
 
 function WaitUntilMonstersAreDead(monsters) {
   function AnyLiving(obj) {
+    if(obj.Mobile())
+      Orion.Print(50,obj.Name() + " not dead")
     return obj.Mobile()
   }
   while (monsters.some(AnyLiving)) {
-    Orion.Wait(100)
+    
+    Orion.Wait(1000)
   }
 }
 

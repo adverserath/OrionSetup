@@ -64,6 +64,9 @@ var bankRune = '0x40145441' //Runebook or Rune of Bank
 var usingPet = true;
 var incompleteBox = ''
 
+var lootGems = false
+var lootRegs = false
+
 var useRuneBooks = true
 
 
@@ -172,8 +175,16 @@ function DoAllMapsInBag(inMaps) {
 
         if (mount == null) {
             Mount(false)
+            	var savedMount = Orion.GetGlobal('mount')
+	if(Orion.ObjectExists(savedMount))
+	{
+	mount = Orion.FindObject(savedMount)
+	}
+	else{
             Orion.Print('Select Pet')
             mount = SelectTarget()
+            Orion.SetGlobal('mount', mount.Serial())
+        }
         }
         Orion.Print('Mount =' + mount.Name())
         Mount(true)
@@ -234,10 +245,10 @@ function DoAllMapsInBag(inMaps) {
                 }
             }
 
-            Orion.Print('Heal Checks')
+            Orion.Print(50, 'Heal Checks')
             Heal()
             //Dig Chest
-            Orion.Print('Dig Chest Up')
+            Orion.Print(50,'Dig Chest Up')
 
 
             var foundChest = false
@@ -256,7 +267,7 @@ function DoAllMapsInBag(inMaps) {
             Orion.WarMode(0);
             Orion.Wait(1000)
 
-            Orion.Print('Fight More Monsters')
+            Orion.Print(50,'Fight More Monsters')
             while (Orion.FindTypeEx(any, any, ground,
                 'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|orange|red')
                 .filter(function (mob) {
@@ -300,7 +311,7 @@ function DoAllMapsInBag(inMaps) {
                     })
             }
 
-            Orion.Print('Destroy Chest')
+            Orion.Print(50,'Destroy Chest')
             Orion.Wait(2000)
             // Orion.PauseScript()
             //DestroyChest
@@ -399,6 +410,7 @@ function KillGuardians() {
 
         Orion.Print('Fight Monsters')
         monsters.forEach(function (closemob) {
+        	Orion.Print(50,"monster: "+ closemob)
             Orion.Attack(closemob.Serial())
             Orion.Wait(100)
         })
@@ -421,11 +433,14 @@ function LootChest() {
         Heal()
         //If no contents (its locked)
         while (!Orion.Contains(chest.Properties(), 'Contents')) {
+        	Orion.Print(50,"chest is locked")
             WalkTo(chest)
             Orion.Wait(500)
-            CastSpellOnTargetV2('Unlock', chest.Serial())
+            //CastSpellOnTargetV2('Unlock', chest.Serial())
+            Orion.CastTarget('Unlock', chest.Serial())
             Orion.Wait(1000)
         }
+        Orion.Print(50,"chest is unlocked, untrap it")
         var startTime = Orion.Now()
         while (!Orion.OpenContainer(chest.Serial(), 1000, 'reach that|too away|appears to be trapped')) {
             WalkTo(chest)
@@ -439,10 +454,13 @@ function LootChest() {
             else {
                 WalkTo(safeSpot)
             }
-
-            while (!Orion.InJournal('You successfully disarm', '', 0, any, startTime) || Player.Hits() < Player.MaxHits()) {
-                Orion.Wait(400)
+			var timer = Orion.Now()+11000
+			var hitStart = Player.Hits()
+            while (!Orion.InJournal('You successfully disarm', '', 0, any, startTime) && Player.Hits() >= hitStart  && Orion.Now() < timer) {
+                Orion.Wait(1000)
+                Orion.Print(50,"wait for untrap and Heal")
             }
+            Orion.Print("Check for guardians")
             KillGuardians()
             WalkTo(chest)
             Orion.Wait(500)
@@ -456,12 +474,17 @@ function LootChest() {
         MoveItemText("Lesser Artifact", backpack)
 
         MoveItems(chest, backpack, '0xA331|0x0EED') //Gold
-        MoveItems(chest, backpack, '0xA32F') //Reg
-        MoveItems(chest, backpack, '0xA333') //Gem
+        if(lootRegs)
+        	MoveItems(chest, backpack, '0xA32F') //Reg
+        if(lootGems)
+	        MoveItems(chest, backpack, '0xA333') //Gem
         MoveItems(chest, backpack, '0xE75') //Artifact bag
         MoveItemTextFromTo('Woven|Transc|Treasure Map|Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', chest, backpack)
 
-        MoveItemTextFromTo('Board|Ingot|Cut Leather|Cloth', chest, backpack)
+        //MoveItemTextFromTo('Board', chest, backpack)
+        MoveItemTextFromTo('Ingot', chest, backpack)
+        MoveItemTextFromTo('Cut Leather', chest, backpack)
+        MoveItemTextFromTo('Cloth', chest, backpack)
 
         return chest.Serial()
     }
