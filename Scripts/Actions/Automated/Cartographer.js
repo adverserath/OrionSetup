@@ -166,6 +166,9 @@ function DoAllMaps() {
     DoAllMapsInBag()
 }
 
+function ResetPet() {
+    Orion.SetGlobal('mount', "")
+}
 function DoAllMapsInBag(inMaps) {
     Debug(' DoAllMapsInBag')
 
@@ -175,16 +178,15 @@ function DoAllMapsInBag(inMaps) {
 
         if (mount == null) {
             Mount(false)
-            	var savedMount = Orion.GetGlobal('mount')
-	if(Orion.ObjectExists(savedMount))
-	{
-	mount = Orion.FindObject(savedMount)
-	}
-	else{
-            Orion.Print('Select Pet')
-            mount = SelectTarget()
-            Orion.SetGlobal('mount', mount.Serial())
-        }
+            var savedMount = Orion.GetGlobal('mount')
+            if (Orion.ObjectExists(savedMount)) {
+                mount = Orion.FindObject(savedMount)
+            }
+            else {
+                Orion.Print('Select Pet')
+                mount = SelectTarget()
+                Orion.SetGlobal('mount', mount.Serial())
+            }
         }
         Orion.Print('Mount =' + mount.Name())
         Mount(true)
@@ -239,7 +241,7 @@ function DoAllMapsInBag(inMaps) {
                 Mount(false)
                 //Getting pet to guard
                 Orion.Print('Set Pet to guard')
-                while (!Orion.Contains(mount.Properties(), "Guarding")) {
+                while (!Orion.Contains(Player.Properties(), "Guarded")) {
                     Orion.Wait(100)
                     Orion.Say('All guard')
                 }
@@ -248,9 +250,9 @@ function DoAllMapsInBag(inMaps) {
             Orion.Print(50, 'Heal Checks')
             Heal()
             //Dig Chest
-            Orion.Print(50,'Dig Chest Up')
+            Orion.Print(50, 'Dig Chest Up')
 
-
+            var timer
             var foundChest = false
             while (!foundChest) {
                 Orion.RequestContextMenu(map.Serial());
@@ -259,33 +261,33 @@ function DoAllMapsInBag(inMaps) {
                     Orion.TargetTile('any', Orion.QuestArrowPosition().X(), Orion.QuestArrowPosition().Y(), 0);
                     Orion.Wait(2000)
                     foundChest = WaitForChestToAppear()
-                    if(foundChest)
+                    if (foundChest) {
+                        var chest = GetChestObject()
+                        if (chest != null && Orion.Contains(map.Properties(), "Stash")) {
+                            WalkTo(chest)
+                            Orion.CastTarget('Unlock', chest.Serial())
+                            Orion.Wait(2000)
+                            Orion.UseSkillTarget('Remove Trap', chest.Serial())
+                            timer = Orion.Now() + 11000
+                        }
                         KillGuardians()
+                    }
+                    else
+                        Orion.Print(52, "Dig again")
                 }
             }
 
             Orion.WarMode(0);
             Orion.Wait(1000)
 
-            Orion.Print(50,'Fight More Monsters')
-            while (Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|orange|red')
-                .filter(function (mob) {
-                    return mob.WarMode();
-                }).length > 0) {
-                Orion.FindTypeEx(any, any, ground,
-                    'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|orange|red')
-                    .filter(function (mob) {
-                        return mob.WarMode();
-                    }).forEach(function (mob) {
-                        if (Orion.ObjectExists(mob.Serial())) {
-                            Orion.Attack(mob.Serial())
-                            Orion.Wait(1000)
-                        }
-                    })
-            }
+            Orion.Print(50, 'Fight More Monsters')
+            FightMonsters()
 
             Heal()
+            while(timer>Orion.Now())
+            {
+                Orion.Wait(1000)
+            }
             var chestid = LootChest()
             if (chestid == null) {
                 Orion.Wait(4000)
@@ -294,24 +296,9 @@ function DoAllMapsInBag(inMaps) {
                     Orion.PauseScript()
             }
 
-            while (Orion.FindTypeEx(any, any, ground,
-                'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|orange|red')
-                .filter(function (mob) {
-                    return mob.WarMode();
-                }).length > 0) {
-                Orion.FindTypeEx(any, any, ground,
-                    'nothumanmobile|live|ignoreself|ignorefriends', 5, 'gray|criminal|orange|red')
-                    .filter(function (mob) {
-                        return mob.WarMode();
-                    }).forEach(function (mob) {
-                        if (Orion.ObjectExists(mob.Serial())) {
-                            Orion.Attack(mob.Serial())
-                            Orion.Wait(1000)
-                        }
-                    })
-            }
+            FightMonsters()
 
-            Orion.Print(50,'Destroy Chest')
+            Orion.Print(50, 'Destroy Chest')
             Orion.Wait(2000)
             // Orion.PauseScript()
             //DestroyChest
@@ -364,34 +351,55 @@ function WaitForChestToAppear() {
     }
     if (dirt != null) {
         while (dirt != null && (dirt.Graphic() == '0x0912' || dirt.Graphic() == '0x0913')) {
-            Orion.Print(dirt.Graphic())
+            Orion.Print("Digging Dirt patch: " + dirt.Graphic())
             Orion.Wait(500)
         }
         Orion.Wait(500)
 
         Orion.Print('part 2')
         while (dirt.Graphic() == '0x0914' && FindGroundItemWithProperties(['Treasure Chest']) == null) {
-            Orion.Print(dirt.Graphic())
+            Orion.Print("Digging Up Dirt, no Chest yet: " + dirt.Graphic())
             Orion.Wait(500)
         }
+        Orion.Wait(500)
         Orion.Print('part 3')
         var chest = FindGroundItemWithProperties(['Treasure Chest'])
         if (chest != null) {
-            while (Orion.Contains(chest.Properties(), 'Contents')) {
+            while (Orion.ObjectExists(chest.Serial()) && Orion.Contains(chest.Properties(), 'Contents')) {
                 Orion.Wait(500)
-                Orion.Print('chest' + chest.Z())
+                Orion.Print('Waiting for chest to load content' + chest.Z())
             }
             Orion.Print('chest' + chest.Properties())
-
-            return true
+			if(Orion.ObjectExists(chest.Serial()))
+            {
+            	return true
+            }
         }
     }
     return false
 }
 
+function GetAttackers(distance) {
+    return Orion.FindTypeEx(any, any, ground,
+        'nothumanmobile|live|ignoreself|ignorefriends', distance, 'gray|criminal|orange|red')
+        .filter(function (mob) {
+            return mob.WarMode() || Orion.Contains(mob.Properties(), "Guardian" || Orion.Contains(mob.Properties(), "Soulbound"));
+        })
+}
+
+function FightMonsters() {
+    while (GetAttackers(5).length > 0) {
+        GetAttackers(5).forEach(function (mob) {
+            if (Orion.ObjectExists(mob.Serial())) {
+                Orion.Attack(mob.Serial())
+                Orion.Wait(1000)
+            }
+        })
+    }
+}
+
 function KillGuardians() {
-    var monsters = Orion.FindTypeEx(any, any, ground,
-        'nothumanmobile|live|ignoreself|ignorefriends', 8, 'gray|criminal|red')
+    var monsters = GetAttackers(8)
     if (monsters.length > 0) {
         var safePath = Orion.GetPathArray(safeSpot.X(), safeSpot.Y())
         if (safePath.length > 11) {
@@ -410,7 +418,7 @@ function KillGuardians() {
 
         Orion.Print('Fight Monsters')
         monsters.forEach(function (closemob) {
-        	Orion.Print(50,"monster: "+ closemob)
+            Orion.Print(50, "monster: " + closemob)
             Orion.Attack(closemob.Serial())
             Orion.Wait(100)
         })
@@ -433,18 +441,17 @@ function LootChest() {
         Heal()
         //If no contents (its locked)
         while (!Orion.Contains(chest.Properties(), 'Contents')) {
-        	Orion.Print(50,"chest is locked")
+            Orion.Print(50, "chest is locked")
             WalkTo(chest)
             Orion.Wait(500)
-            //CastSpellOnTargetV2('Unlock', chest.Serial())
             Orion.CastTarget('Unlock', chest.Serial())
             Orion.Wait(1000)
         }
-        Orion.Print(50,"chest is unlocked, untrap it")
+        Orion.Print(50, "chest is unlocked, untrap it")
         var startTime = Orion.Now()
-        while (!Orion.OpenContainer(chest.Serial(), 1000, 'reach that|too away|appears to be trapped')) {
+        while (!Orion.OpenContainer(chest.Serial(), 5000, 'reach that|too away|appears to be trapped')) {
             WalkTo(chest)
-            
+
             Orion.UseSkillTarget('Remove Trap', chest.Serial())
 
             var safePath = Orion.GetPathArray(safeSpot.X(), safeSpot.Y())
@@ -454,11 +461,11 @@ function LootChest() {
             else {
                 WalkTo(safeSpot)
             }
-			var timer = Orion.Now()+11000
-			var hitStart = Player.Hits()
-            while (!Orion.InJournal('You successfully disarm', '', 0, any, startTime) && Player.Hits() >= hitStart  && Orion.Now() < timer) {
+            var timer = Orion.Now() + 11000
+            var hitStart = Player.Hits()
+            while (!Orion.InJournal('You successfully disarm', '', 0, any, startTime-10000) && Player.Hits() >= hitStart && Orion.Now() < timer) {
                 Orion.Wait(1000)
-                Orion.Print(50,"wait for untrap and Heal")
+                Orion.Print(50, "wait for untrap and Heal")
             }
             Orion.Print("Check for guardians")
             KillGuardians()
@@ -474,10 +481,10 @@ function LootChest() {
         MoveItemText("Lesser Artifact", backpack)
 
         MoveItems(chest, backpack, '0xA331|0x0EED') //Gold
-        if(lootRegs)
-        	MoveItems(chest, backpack, '0xA32F') //Reg
-        if(lootGems)
-	        MoveItems(chest, backpack, '0xA333') //Gem
+        if (lootRegs)
+            MoveItems(chest, backpack, '0xA32F') //Reg
+        if (lootGems)
+            MoveItems(chest, backpack, '0xA333') //Gem
         MoveItems(chest, backpack, '0xE75') //Artifact bag
         MoveItemTextFromTo('Woven|Transc|Treasure Map|Fragment|Cold Blood|Vine|Pardon|Phasing|Warding|Surge|Legendary|Engraving|Key|Treat|Souls|Brick|Steed|Ancient|Hearty', chest, backpack)
 

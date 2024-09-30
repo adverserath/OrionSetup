@@ -1,13 +1,13 @@
 var speed = 200
-
+var rotateTime
 function AutoCannon() {
     Orion.CancelWaitGump();
-    var myCannons = GetMyCannonsInRange(12)
+    var myCannons = GetMyCannonsInRange(10)
     var cannonGumps = []
     myCannons.forEach(function (cannon) {
         cannonGumps.push(CannonGump(cannon))
     })
-    var rotateTime = Orion.Now()
+    rotateTime = Orion.Now()
     while (true) {
         while (Player.WarMode()) {
 
@@ -21,6 +21,7 @@ function AutoCannon() {
                 return cannons.HasStartedFiring()
             })
             if (rotateTime + 5000 < Orion.Now() && firingCannons.length == 0) {
+            rotateTime = Orion.Now()
                 Orion.Say("Come about")
             }
         }
@@ -34,7 +35,8 @@ function CannonGump(_cannon) {
     return {
         cannon: _cannon,
         action: "",
-        lastActionChange: 0,
+        lastReloaded: 0,
+        lastFired: 0,
         GetCannon: function () {
             return this.cannon;
         },
@@ -49,11 +51,11 @@ function CannonGump(_cannon) {
         },
         SetStartedLoading: function () {
             this.action = 'Loading'
-            this.lastActionChange = Orion.Now()
+            this.lastReloaded = Orion.Now()
         },
         SetStartedFiring: function () {
             this.action = 'Firing'
-            this.lastActionChange = Orion.Now()
+            this.lastFired=Orion.Now()
         },
         HasStartedLoading: function () {
             return this.action === 'Loading'
@@ -62,10 +64,10 @@ function CannonGump(_cannon) {
             return this.action === 'Firing'
         },
         CanFire: function () {
-            return (this.action === 'Loading' || this.action === '') && (Orion.Contains(this.cannon.Properties(), "Charged: Yes") && Orion.Contains(this.cannon.Properties(), "Ammo: Cannonball") && Orion.Contains(this.cannon.Properties(), "Primed: Yes"))
+            return this.HasFiredTimePassed() && (Orion.Contains(this.cannon.Properties(), "Charged: Yes") && Orion.Contains(this.cannon.Properties(), "Ammo: Cannonball") && Orion.Contains(this.cannon.Properties(), "Primed: Yes"))
         },
         CanReload: function () {
-            return (this.action === 'Firing' || this.action === '') && (Orion.Contains(this.cannon.Properties(), "Charged: No") && Orion.Contains(this.cannon.Properties(), "Ammo: None") && Orion.Contains(this.cannon.Properties(), "Primed: No"))
+            return this.HasReloadTimePassed() && (Orion.Contains(this.cannon.Properties(), "Charged: No") && Orion.Contains(this.cannon.Properties(), "Ammo: None") && Orion.Contains(this.cannon.Properties(), "Primed: No"))
         },
         HasAmmo: function () {
             return Orion.Contains(this.cannon.Properties(), "Contents: 3/3")
@@ -73,8 +75,11 @@ function CannonGump(_cannon) {
         UseCannon: function () {
             Orion.UseObject(this.GetCannonSerial())
         },
-        HasActionTimePassed: function () {
-            return Orion.Now() - this.lastActionChange > 1600
+        HasReloadTimePassed: function () {
+            return (Orion.Now() - this.lastReloaded) > 5000
+        },
+        HasFiredTimePassed: function () {
+            return (Orion.Now() - this.lastFired) > 3000
         },
         Prep: function () {
             if (this.cannon.Distance() > 1) {
@@ -100,13 +105,14 @@ function CannonGump(_cannon) {
             Orion.CancelWaitGump();
             Orion.WaitGump(Orion.CreateGumpHook(6));
             Orion.Wait(50)
+            rotateTime=Orion.Now()
             this.UseCannon()
             this.SetStartedFiring()
             Orion.Wait(200)
         },
         Attack: function () {
             Orion.PrintFast(this.cannon.Serial(), 53, 1, "Attack")
-            if (this.CanReload() && this.HasActionTimePassed()) {
+            if (this.CanReload() && this.HasReloadTimePassed()) {
                 Orion.PrintFast(this.cannon.Serial(), 53, 1, "Can Reload")
                 if (!this.HasAmmo()) {
                     Orion.PrintFast(this.cannon.Serial(), 53, 1, "No Ammo")
@@ -116,7 +122,7 @@ function CannonGump(_cannon) {
                     this.Prep()
                 }
             }
-            else if (this.CanFire() && this.HasActionTimePassed()) {
+            else if (this.CanFire() && this.HasReloadTimePassed()) {
                 Orion.PrintFast(this.cannon.Serial(), 53, 1, "Loaded")
 
                 var shouldFire = DetectHits(this.GetCannon())
@@ -127,6 +133,9 @@ function CannonGump(_cannon) {
                 else {
                     Orion.PrintFast(this.cannon.Serial(), 53, 1, "No Target")
                 }
+            }
+            else{
+            Orion.PrintFast(this.cannon.Serial(), 53, 1, "Reload in: "+this.CanReload()  +"  "+this.action + "  "+ (Orion.Now() - this.lastActionChange))
             }
             // else if(this.ReloadTakingTooLong() && this.HasStartedLoading() || this.HasStartedFiring()){
             //     Orion.PrintFast(this.cannon.Serial(), 27, 1, "Reset")

@@ -94,7 +94,9 @@ function AutoSOSDoerClosest() {
         }
         TextWindow.Print("Box Found: " + currentSOSBox.Properties())
         if (currentSOSBox != null) {
-            TextWindow.Print('Walking to box')
+            //Walk To right side of chests (until i move it)
+            WalkTo(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial())
+            TextWindow.Print('Walking to SOS box')
             WalkTo(currentSOSBox)
             Orion.Wait(500)
             Orion.OpenContainer(currentSOSBox.Serial())
@@ -146,13 +148,23 @@ function AutoSOSDoerClosest() {
                         RecallRune(seabook);
                         Orion.Wait(2000)
                     }
+                    WalkTo(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial())
+                    TextWindow.Print('Walk to SOS box again')
                     WalkTo(currentSOSBox)
-                    Orion.OpenContainer(currentSOSBox.Serial())
+                    
+                    if(!Orion.OpenContainer(currentSOSBox.Serial()))
+                    {
+                    TextWindow.Print('Box didnt open, try again')
+                       WalkTo(FindGroundItemWithProperties(["Engraved: Sea Loot"]).Serial())
+                         Orion.Wait(1000)
+                    WalkTo(currentSOSBox)
+                    Orion.Wait(1000)
+                    }
                     Orion.Wait(1000)
                     leftInBox = Orion.Count('0x14EE', sosColor, currentSOSBox.Serial())
                     TextWindow.Print('Left in Box: ' + leftInBox)
                     if (leftInBox == 0 || SosMap.length == 0) {
-                        TextWindow.Print('left in box ' + leftInBox + ' and sosmap len' + SosMap.length)
+                        TextWindow.Print('left in box ' + leftInBox + ' and sosmap count: ' + SosMap.length)
                         //Orion.PauseScript()
                     }
                 }
@@ -163,7 +175,7 @@ function AutoSOSDoerClosest() {
         }
         BotPush('Going to next box')
         sosLevel.Increase()
-        //}
+        //Orion.PauseScript()
         Orion.Print(58, 'Complete Loop: Starting again')
         Orion.Wait(10000)
     }
