@@ -629,7 +629,7 @@ function ChestLootManager() {
     })
     Orion.Wait(1000)
     Orion.Print(_essenceBox)
-    MoveItemText("Residue|Essence|Crafting Resource|Abyssal Cloth", FindGroundItemWithProperties([_essenceBox]).Serial())
+    MoveItemText("Residue|Essence|Crafting Resource|Abyssal Cloth|Relic", FindGroundItemWithProperties([_essenceBox]).Serial())
 
     MoveItemText("Ingots", FindGroundItemWithProperties([_craftingBox]).Serial())
 

@@ -4,7 +4,10 @@
 //#include helpers/ItemManager.js
 //#include helpers/Notifier.js
 //#include helpers/Gumps.js
+//#include helpers/Generic.js
+
 //#include Bod/Bods.js
+//#include helpers/Teleporter.js
 //#include ./*.js
 //#include Bod/BodData.js
 //#include Bod/BodCleaner.js

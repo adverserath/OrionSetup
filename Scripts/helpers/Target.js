@@ -3,9 +3,12 @@ function SelectMultipleLocations(_) {
   var locations = [];
   var selected;
   var selecting = true;
+  var selectedObj
   while (selecting) {
-    var selectedObj = SelectCoordinateAndRunes();
-    if (selectedObj == null) {
+    selectedObj = SelectCoordinateAndRunes();
+
+
+    if (selectedObj == null || selectedObj==Player.Serial()) {
       selecting = false
     }
     else {

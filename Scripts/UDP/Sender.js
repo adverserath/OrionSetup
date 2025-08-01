@@ -26,26 +26,20 @@
 //#include Fighting/AutoHonor.js
 //#include helpers/Movement.js
 //#include Actions/Pirating/Pirates.js
-
+//#include helpers/Teleporter.js
 var hostPort = 2597;
 var clientServer = "127.0.0.1"
 
-function testlight()
-{
-Orion.HttpPost('http://192.168.0.5:8123/api/services/switch/turn_on', '{"entity_id":"switch.livingroom_lamp"}');
-}
 
-function serialise(){
+function serialise() {
     TextWindow.Print(JSON.stringify(SelectTarget()))
 }
-function _bankWithdraw()
-{
-while(true)
-{
-Orion.Wait(100)
-Orion.Say("withdraw 1")
-    Sender("*", 'S:' + "withdraw 1");
-}
+function _bankWithdraw() {
+    while (true) {
+        Orion.Wait(100)
+        Orion.Say("withdraw 1")
+        Sender("*", 'S:' + "withdraw 1");
+    }
 }
 
 function DistanceFrom() {

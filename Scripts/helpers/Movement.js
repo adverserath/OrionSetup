@@ -284,3 +284,53 @@ function GetEnemiesInArea(distance) {
     })
     return mobs
 }
+
+function walkToMobUntilInLOS() {
+    var maxRange = 15; // Maximum range to look for a target
+    var targetColor = 'gray'; // Color filter for target
+    var initialApproachDistance = 10; // Distance to approach before fine navigation
+
+    // Search for a target within the specified range
+    var targets = Orion.FindType('any', 'any', 'ground', 'mobile|live', maxRange, targetColor);
+    if (targets.length === 0) {
+        Orion.Print("No target found within range.");
+        return;
+    }
+
+    var target = targets[0]; // Select the first found target (closest)
+
+    // Initial walk to get within the defined distance
+    if (Orion.GetDistance(target) > initialApproachDistance) {
+        Orion.WalkTo(target.X(), target.Y(), target.Z(), initialApproachDistance, 255, 1, 1);
+        Orion.Wait(1000); // Wait to ensure initial movement completes
+    }
+
+    // Verify if LoS has been achieved after the initial approach
+    if (Orion.InLos(target)) {
+        Orion.Print("Target is already in line of sight.");
+        return;
+    }
+
+    // Get a precise path from the player's position to the target
+    var path = Orion.GetPathArray(Player.X(), Player.Y(), target.X(), target.Y(), 0);
+    if (path.length === 0) {
+        Orion.Print("No valid path found to the target.");
+        return;
+    }
+
+    // Follow the path until the target is in LoS
+    for (var i = 0; i < path.length; i++) {
+        // Check if target is within LoS at each step
+        if (Orion.InLos(target)) {
+            Orion.Print("Target is now in line of sight. Stopping movement.");
+            break;
+        }
+
+        // Move to the next step in the path
+        var step = path[i];
+        Orion.WalkTo(step.X, step.Y, step.Z, 1, 255, 1, 1);
+
+        // Pause to allow movement and reduce CPU load
+        Orion.Wait(200);
+    }
+}

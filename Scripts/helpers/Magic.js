@@ -205,23 +205,27 @@ function ReleaseAllSummons(_) {
 function WaitFrozen(spellname) {
 	Debug(' Method Entry - WaitFrozen')
 	while (Player.Frozen()) {
-		Orion.Print("casting " + spellname)
+		//Orion.Print("casting " + spellname)
+		Orion.AddHighlightCharacter(self, 20);
 		Orion.Wait(100)
 	}
+	Orion.RemoveHighlightCharacter(self);
 	Orion.Wait(100)
 }
 
 function Cast(spellName, targetSerial) {
-	Debug(' Method Entry - Cast')
-	Orion.Print(spellName)
+	//Debug(' Method Entry - Cast')
+	Orion.PrintFast(Player.Serial(),58,1,spellName)
 	while (Orion.ScriptRunning('Walk') == 1 || Orion.IsWalking()) {
 		Orion.Wait(400)
 	}
 	if (targetSerial == null) {
 		Orion.Cast(spellName)
+		Orion.Wait(500)
 	}
 	else {
 		Orion.CastTarget(spellName, targetSerial)
+		Orion.Wait(500)
 	}
 	WaitFrozen(spellName)
 }
@@ -455,8 +459,8 @@ function DeathRayAll_NoWalk() {
 		}
 		Orion.Wait(100)
 		var nearmob = Orion.FindTypeEx(any, any, ground, 'mobile|inlos', 2, 'gray|criminal|red')
-		if ((nearmob.length == 0 && !Orion.IsWalking()) && Player.Mana() > 50) {
-			var mobs = Orion.FindTypeEx(any, any, ground, 'mobile|inlos', 10, 'gray|criminal|red').filter(function (mob) { return !IsActiveRay(mob.Serial()) && mob.Hits() > 20 })
+		if ((nearmob.length == 0 && !Orion.IsWalking()) && Player.Mana() > 70) {
+			var mobs = Orion.FindTypeEx(any, any, ground, 'mobile|inlos', 10, 'gray|criminal|red').filter(function (mob) { return !IsActiveRay(mob.Serial()) && mob.Hits() > 10 })
 			if (mobs.length > 0 && !Orion.IsWalking())
 				DeathRayToSuccess(mobs.shift())
 			if (mobs.length > 0) {
@@ -496,7 +500,10 @@ function DeathRayToSuccess(target) {
 		TextWindow.Print(target.Name())
 		if (reflectors.indexOf(target.Name()) < 0) {
 			TextWindow.Print('true')
-			Orion.CastTarget('Death Ray', target.Serial())
+			if(Player.Mana()>60)
+				Orion.CastTarget('Death Ray', target.Serial())
+			else
+				Orion.CastTarget('Magic Arrow', target.Serial())
 		}
 		else {
 			TextWindow.Print('false')
@@ -545,3 +552,131 @@ function EquipSlayer() {
 // 		//WraithForm/DeathRay/Recall to Malas??
 // 	}
 // }
+function flamestrikeLoop() {
+    var manaCost = 40; // Approximate mana cost for Flamestrike, adjust if necessary
+    var range = 10; // Range to search for targets, adjust as needed
+    var targetColor = 'gray'; // Target color filter
+
+    while (!Player.Dead()) {
+        // Check mana and cast Flamestrike if enough mana is available
+        if (Player.Mana() >= manaCost && !Orion.HaveTarget()) {
+            Orion.Cast('Flame strike');
+            Orion.Wait(1500); // Wait for cast time
+        }
+
+        // Search for grey targets within range and in line of sight
+        var targets = Orion.FindType('any', 'any', 'ground', 'mobile|live|inlos|near', range, targetColor);
+
+        if (targets.length > 0) {
+            // Target the closest in line of sight
+            var target = targets.shift()
+            // Set target and wait to cast Flamestrike
+            if (Orion.HaveTarget()) {
+                Orion.TargetObject(target)
+                Orion.Wait(750); // Slight delay for targeting and casting
+            }
+        } else {
+            Orion.Print("No grey targets in line of sight.");
+        }
+        
+        Orion.Wait(100); // Avoid excessive CPU usage in the loop
+    }
+}
+
+function spellbookGump() {
+    var spellbookGraphic = '0x0EFA'; // Spellbook graphic ID
+    var spellbooks = Orion.FindTypeEx(spellbookGraphic, 'any', 'backpack'); // Find all spellbooks in backpack
+
+    if (spellbooks.length === 0) {
+        Orion.Print("No spellbooks found in the backpack.");
+        return;
+    }
+
+    // Collect slayer type and SDI for each spellbook
+    var spellbookOptions = [];
+    for (var i = 0; i < spellbooks.length; i++) {
+        var book = spellbooks[i];
+        var properties = book.Properties().split('\n');
+        var slayerType = "None";
+        var sdiValue = 0;
+
+        // Check each line in properties to find Slayer and SDI
+        for (var j = 0; j < properties.length; j++) {
+            var prop = properties[j];
+            if (prop.indexOf("Slayer") !== -1) {
+                slayerType = prop;
+            } else if (prop.indexOf("Spell Damage Increase") !== -1) {
+                // Extract SDI value as an integer
+                sdiValue = parseInt(prop.match(/\d+/)[0], 10);
+            }
+        }
+
+        // Create display text for dropdown item
+        var displayText = slayerType + " - SDI: " + sdiValue + "%";
+        spellbookOptions.push({ displayText: displayText, serial: book.Serial(), sdiValue: sdiValue, slayerType: slayerType });
+    }
+
+    // Sort spellbooks by SDI in descending order, then by slayer type alphabetically
+    spellbookOptions.sort(function(a, b) {
+        if (b.sdiValue !== a.sdiValue) {
+            return b.sdiValue - a.sdiValue; // Sort by SDI descending
+        }
+        return a.slayerType.localeCompare(b.slayerType); // Sort by slayer type alphabetically
+    });
+
+    // Initialize and populate the gump
+    var gump = Orion.CreateCustomGump(10000); 
+    gump.Clear();
+    gump.SetCallback('spellbookGumpCallback');
+
+    var width = 300;
+    var height = 150;
+    gump.AddResizepic(0, 0, 'a3c', width, height); // Background graphic
+
+    var colPos = 20;
+    var rowPos = 20;
+    gump.AddText(colPos, rowPos, '0x835', "Select a Spellbook by Slayer Type and SDI:");
+
+    // Create dropdown for spellbook list
+    rowPos += 30;
+    gump.AddComboBox(1, colPos, rowPos, '0x0BB8', 0, '0x0BB8', 250, -3, spellbookOptions.length);
+    for (i = 0; i < spellbookOptions.length; i++) {
+        gump.AddComboBoxText(spellbookOptions[i].displayText, 0, 0, 230, 'left');
+    }
+
+    // Add a button to confirm selection
+    colPos = 80;
+    rowPos += 40;
+    var buttonGraphic = [0xFA5, 0xFA7, 0xFA6]; // Example button graphics
+    gump.AddButton(2, colPos, rowPos, buttonGraphic[0], buttonGraphic[1], buttonGraphic[2], '0x835');
+
+    // Update the gump to show
+    gump.Update();
+
+    // Store the spellbook options globally for use in the callback
+    Shared.AddVar("spellbookOptions", spellbookOptions);
+}
+
+function spellbookGumpCallback() {
+    var code = CustomGumpResponse.ReturnCode();
+
+    if (code === 2) { // If confirm button was pressed
+        var selectedIndex = CustomGumpResponse.ComboBox(1);
+        if (selectedIndex > -1) {
+            var spellbookOptions = Shared.GetVar("spellbookOptions");
+            var selectedSpellbook = spellbookOptions[selectedIndex];
+            if (selectedSpellbook) {
+				//Orion.SetDressList('book', [selectedSpellbook.serial]);
+				//Orion.Dress('book');
+				Orion.Unequip('RightHand')
+				Orion.Wait(800)
+				Orion.DragItem(selectedSpellbook.serial)
+				//Orion.Wait(400)
+				Orion.EquipDraggedItem()
+                // Add any further actions for the selected spellbook here, like using it.
+            } else {
+                Orion.Print("No spellbook selected.");
+            }
+        }
+    }
+}

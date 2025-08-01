@@ -468,7 +468,9 @@ function CastSpell(spell, target) {
 //#include helpers/Magic.js
 //#include helpers/Debug.js
 //#include helpers/Notifier.js
+
 //#include helpers/Looter.js
 //#include Actions/Automated/BagOfSending.js
 //#include helpers/Generic.js
 //#include helpers/ItemManager.js
+//#include helpers/Teleporter.js

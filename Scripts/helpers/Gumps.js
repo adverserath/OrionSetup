@@ -1,9 +1,15 @@
 function AcceptGump(_private) {
 	var gump0 = Orion.GetLastGump()
-		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x4C6B9629'))
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x4C6B9629'||gump0.ID() === 0x30B3E974))
 		{
 			gump0.Select(Orion.CreateGumpHook(1));
 		}
+		if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0xAC28449D'))
+            {
+                gump0.Select(Orion.CreateGumpHook(4));
+                Orion.Wait(100);
+            }
+        
 }
 
 function NotEnoughResourcesGump(_private) {

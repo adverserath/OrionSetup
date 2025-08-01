@@ -1,3 +1,15 @@
+Open
+Orion
+TextWindow
+Resend
+ShowJournal
+FindObject
+PauseScript
+ObjectExists
+Find
+SetGlobal
+false
+CastTarget
 else
 HttpPost
 WarMode
@@ -9,10 +21,7 @@ CloseGump
 GetGump
 ButtonList
 forEach
-ObjectExists
 for
-PauseScript
-TextWindow
 BuffsCount
 BuffDescription
 BuffExists
@@ -20,7 +29,6 @@ UseObject
 StopWalking
 IsWalking
 Player
-ShowJournal
 OpenContainer
 Properties
 FindTypeEx
@@ -108,7 +116,6 @@ CancelWaitPrompt
 CancelWaitTarget
 CancelWaitTextDialog
 Cast
-CastTarget
 CharPrint
 CheckAgent
 CheckBox
@@ -206,14 +213,12 @@ FC
 FCR
 FakeMapObjectsList
 Female
-Find
 FindEnemy
 FindFriend
 FindItemProperty
 FindList
 FindListEx
 FindListItem
-FindObject
 FindTextID
 FindType
 FindWand
@@ -397,13 +402,11 @@ OAOptionSet
 OAVersion
 ObjAtLayer
 OnOffHotkeys
-Open
 OpenDoor
 OpenEnhancedMap
 OpenPaperdoll
 Opened
 OptionFastRotation
-Orion
 Paralyzed
 PartyMembers
 Play
@@ -454,7 +457,6 @@ ReplyID
 ReplyText
 RequestContextMenu
 RequestName
-Resend
 ResetIgnoreList
 ResetName
 ResetSearchArea
@@ -506,7 +508,6 @@ SetDressBag
 SetDressList
 SetEnabled
 SetFontColor
-SetGlobal
 SetGoodLocation
 SetGraphic
 SetItems
@@ -671,7 +672,6 @@ catchbag
 const
 continue
 dressbag
-false
 ground
 harmtarget
 helptarget
@@ -695,3 +695,7 @@ switch
 true
 undefined
 var
+JSON
+parse
+parseInt
+stringify

@@ -3,8 +3,8 @@
     <macro name="macro" looped="false" delay="1">
         <action type="15" convert_type="0" waiting_time="1000" serial="0x00001961" id="0x298268DE" button="295"/>
         <action type="15" convert_type="0" waiting_time="1000" serial="0x00001962" id="0x1440128A" button="2">
-            <checks id="-1" state="false"/>
             <checks id="0" state="true"/>
+            <checks id="-1" state="false"/>
         </action>
     </macro>
     <macro name="PeaceArea" looped="false" delay="1">

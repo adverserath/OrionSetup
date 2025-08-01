@@ -11,7 +11,7 @@ function RuneWalkOption() {
     var y = Orion.InputText(60000, "Input Y")
     var map = GetMap()
     UseClosestRuneOrWalk(parseInt(x), parseInt(y), map, 0)
-    
+    }
 function RuneWalkMapPoint() {
     var x = Orion.GetWorldMapPointerPosition().X() //Orion.InputText(60000, "Input X")
     var y = Orion.GetWorldMapPointerPosition().Y()// Orion.InputText(60000, "Input Y")
@@ -266,6 +266,7 @@ function HouseVisit(sign, jsonObject) {
             map: sign.Map(),
             x: sign.X(),
             y: sign.Y(),
+            owner: sign.Properties().match(/Owner..(.+)\n/im)[1],
             locName: sign.Properties().match(/Name..(.+)\n/im)[1],
             houseStatus: [HouseStatus(sign)],
             X: function () {
@@ -273,6 +274,9 @@ function HouseVisit(sign, jsonObject) {
             },
             Y: function () {
                 return this.y;
+            },
+            Owner: function () {
+                return this.owner;
             },
             Name: function () {
                 return this.locName;
@@ -314,6 +318,7 @@ function HouseVisit(sign, jsonObject) {
             map: jsonObject.map,
             x: jsonObject.x,
             y: jsonObject.y,
+            owner: json.Object.owner,
             locName: jsonObject.locName,
             houseStatus: HouseStatus(null, jsonObject.houseStatus),
             X: function () {
@@ -321,6 +326,9 @@ function HouseVisit(sign, jsonObject) {
             },
             Y: function () {
                 return this.y;
+            },
+            Owner: function () {
+                return this.owner;
             },
             Name: function () {
                 return this.locName;
