@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="0" size="2">
+    <group name="allreag" text="{bm} {bp} {ga} {gs} {mr} {ns} {sa} {ss} {arrow}"/>
+    <group name="default" text="UO - {name} ({server}) {barmiddle} {hp_maxhp} {mp_maxmp} {sp_maxsp} {armor} {weight_maxweight} {gold} {group allreag} {x} {y}"/>
+</data>

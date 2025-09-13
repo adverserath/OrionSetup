@@ -3,6 +3,8 @@
 //#include helpers/Debug.js
 //#include helpers/Notifier.js
 //#include helpers/Beetle.js
+//#include helpers/Magic.js
+
 
 function WarCleaveCorpses() {
     var warcleaver = Orion.FindTypeEx('0x2D2F', any, backpack).shift();
@@ -40,6 +42,20 @@ function WarCleaveCorpses() {
 
 }
 
+function A_TestLooter()
+{
+_SearchAndLoot(0x400F76E1, 'LegendaryArty')
+_SearchAndLoot(0x400F76E1, 'MajorArty')
+
+}
+
+function _SearchAndLoot(container, list)
+{
+Orion.FindListEx(list, container).forEach(function (item){
+	                    BotPush(item.Properties())
+	                    })
+}
+
 function AutoLootAssist() {
     while (!Player.Dead()) {
         Orion.Wait(1000)
@@ -55,9 +71,18 @@ function AutoLootAssist() {
                 var corpses = Orion.FindTypeEx('0x2006', any, 'ground', any, 8);
                 corpses.forEach(function (corpse) {
                     Orion.Print("Walking to " + corpse.Serial())
-                    WalkTo(corpse, 2);
+                    WalkTo(corpse, 0);
                     Orion.UseObject(corpse.Serial())
-                    Orion.Wait(1000);
+                    Orion.WaitForContainerGump();
+                    Orion.FindListEx('LegendaryArty', corpse.Serial()).forEach(function (item){
+                    if(!Orion.Contains(item.Properties(), "Cursed") && Orion.Contains(item.Properties(), "Legendary"))
+	                    BotPush(item.Properties())
+                    })
+
+                    Orion.UseObject(corpse.Serial())
+                    Orion.Wait(5000);
+                    
+
                     //      Orion.Hide(corpse.Serial())
                     Orion.Ignore(corpse.Serial());
                 });
@@ -167,6 +192,7 @@ function SwoopKiller() {
             Orion.Wait(50)
             swoops = Orion.FindTypeEx('0x0005', any, ground, any, 20);
         }
+        WalkTo(startCoordinate);
         var swoop = swoops.shift();
 
         Orion.AddWaitTargetObject(swoop.Serial());
@@ -180,11 +206,13 @@ function SwoopKiller() {
         }
         Orion.Attack(swoop.Serial());
 
+		Orion.CastTarget("Death Ray",swoop.Serial())
         while (swoop.Exists()) {
             Orion.Wait(3000)
             Orion.Print('Its alive')
         }
-        WalkTo(startCoordinate)
+        Orion.Wait(5000)
+        
     }
 
 }

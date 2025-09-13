@@ -5,6 +5,8 @@
 //#include Actions/Automated/IDOC.js
 //#include Actions/RuneBookController.js
 //#include helpers/Debug.js
+//#include helpers/Magic.js
+
 
 function RuneWalkOption() {
     var x = Orion.InputText(60000, "Input X")
@@ -112,7 +114,7 @@ function HouseWalker(map) {
                 if (minutes < 300) {
                     checkedCount++
                 }
-                return minutes > 300
+                return minutes > 600
             })
         TextWindow.Print('Checked Houses:' + checkedCount)
         if (walkroute.length == 0) {
@@ -125,7 +127,7 @@ function HouseWalker(map) {
         var houseDist = house.DistanceTo()
         TextWindow.Print('NEXT HOUSE : ' + house.Serial() + '  X' + house.X() + ' Y' + house.Y() + '\nPath:' + pathToDest + '\t Distance' + houseDist)
 
-        if (houseDist > 20 && (pathToDest == 0 || pathToDest > 20)) {
+        if (houseDist > 50 && (pathToDest == 0 || pathToDest > 50)) {
             //     if (houseDist < pathToDest) {
             Orion.Print("Call RuneWalk")
             UseClosestRuneOrWalk(house.X(), house.Y(), house.Map(), pathToDest)
@@ -226,6 +228,9 @@ function CheckHouse(sign) {
         var house = existing[0]
         var newStatus = HouseStatus(sign)
         var lastStatus = house.HouseStatus()[house.HouseStatus().length - 1]
+        TextWindow.Print('Update Owner : ' + newStatus.Owner())
+
+        house.UpdateOwner(newStatus.Owner())
         if (newStatus.Condition() != lastStatus.Condition()) {
             TextWindow.Print(sign.Serial() + ' House Changed Status')
             TextWindow.Print('OLD ' + lastStatus.Condition())
@@ -290,6 +295,12 @@ function HouseVisit(sign, jsonObject) {
             HouseStatus: function () {
                 return this.houseStatus;
             },
+            UpdateOwner: function (newOwner) {
+                this.owner = newOwner;
+            },
+            HouseStatus: function () {
+                return this.houseStatus;
+            },
             AddHouseStatus: function (newStatus) {
                 this.houseStatus.push(newStatus);
             },
@@ -313,12 +324,11 @@ function HouseVisit(sign, jsonObject) {
     }
     else {
         return {
-
             serial: jsonObject.serial,
             map: jsonObject.map,
             x: jsonObject.x,
             y: jsonObject.y,
-            owner: json.Object.owner,
+            owner: jsonObject.owner,
             locName: jsonObject.locName,
             houseStatus: HouseStatus(null, jsonObject.houseStatus),
             X: function () {
@@ -341,6 +351,9 @@ function HouseVisit(sign, jsonObject) {
             },
             HouseStatus: function () {
                 return this.houseStatus;
+            },
+            UpdateOwner: function (newOwner) {
+                this.owner = newOwner;
             },
             WriteHouseStatus: function (value) {
                 this.houseStatus = value;
@@ -374,12 +387,17 @@ function HouseStatus(sign, jsonObject) {
             epoch: nowEpoch,
             date: new Date(nowEpoch),
             condition: sign.Properties().match(/\nCondition..([\w\s]+)/im)[1],
+            owner: sign.Properties().match(/Owner..(.+)\n/im)[1],
+
             Date: function () {
                 return this.date;
             },
             Condition: function () {
                 return this.condition;
             },
+            Owner: function () {
+                return this.owner;
+            }
         }
     }
     else {
@@ -401,7 +419,8 @@ function HouseStatus(sign, jsonObject) {
     }
 }
 
-function ReadHouseFile(_private) {
+function ReadHouseFile() {
+    TextWindow.Open()
     houseList = []
     Debug(' Method Entry - ReadHouseFile')
 
@@ -420,6 +439,7 @@ function ReadHouseFile(_private) {
     file.Close();
 
     TextWindow.Open()
+    
 }
 
 function ShrinkIDOCFile() {
@@ -436,6 +456,7 @@ function WriteHouseFile(_private) {
     var file = Orion.NewFile();
     file.Remove('IDOC.json');
     if (file.Open('IDOC.json')) {
+        houseList.sort(function (a, b) { return a.HouseStatus()[a.HouseStatus().length - 1].Date() - b.HouseStatus()[b.HouseStatus().length - 1].Date() })
         houseList.forEach(function (house) {
             file.Write(JSON.stringify(house) + '\n')
         })

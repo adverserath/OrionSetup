@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data cast_spells_from_book_if_not_scrolls="false">
+    <macro name="TraveKey" looped="true" delay="0.7">
+        <action type="10" convert_type="1" waiting_time="300" serial="0x40001594" graphic="0x170D" color="0x0000" count="1"/>
+        <action type="11" convert_type="0" waiting_time="500" x="65535" y="65535" z="0" slot="5" container="0x40001557" relative_x="-2" relative_y="65" relative_z="-7"/>
+    </macro>
+    <macro name="ThrowCoin" looped="false" delay="1"/>
+    <macro name="macro" looped="false" delay="1"/>
+</data>

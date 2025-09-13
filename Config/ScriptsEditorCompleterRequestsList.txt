@@ -1,10 +1,17 @@
-Open
-Orion
+Serial
 TextWindow
+Clear
+PauseScript
+WalkTo
+Open
+forEach
+FindTypeEx
+OpenContainer
+Info
+Orion
 Resend
 ShowJournal
 FindObject
-PauseScript
 ObjectExists
 Find
 SetGlobal
@@ -20,7 +27,6 @@ WaitForTarget
 CloseGump
 GetGump
 ButtonList
-forEach
 for
 BuffsCount
 BuffDescription
@@ -29,9 +35,7 @@ UseObject
 StopWalking
 IsWalking
 Player
-OpenContainer
 Properties
-FindTypeEx
 while
 AbilityStatus
 Abyss
@@ -122,7 +126,6 @@ CheckBox
 CheckLag
 CheckboxList
 Checks
-Clear
 ClearArrays
 ClearBadLocations
 ClearEnemyList
@@ -309,7 +312,6 @@ InLOS
 InParty
 InRange
 Index
-Info
 InfoBuff
 InfoContextMenu
 InfoGump
@@ -491,7 +493,6 @@ Sell
 SellCurrent
 SellHook
 SendPrompt
-Serial
 SerialToEuo
 SetAllowedSoundsArea
 SetArm
@@ -654,7 +655,6 @@ WaitTargetType
 WaitTargetTypeList
 WaitTextDialog
 WaitWhileTargeting
-WalkTo
 Weather
 Weight
 Write
@@ -699,3 +699,5 @@ JSON
 parse
 parseInt
 stringify
+ClearGoodLocations
+GetProperties

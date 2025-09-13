@@ -4,6 +4,7 @@
 
 var valorite = 239
 var ancient = 237
+var bs120 = 230
 var mastertalis = 231
 var barbed = 224
 var tail120 = 223
@@ -23,16 +24,18 @@ var spellTalis = 213
 function Claim() {
 var npc = SelectTarget('Select NPC')
 //var amount = Orion.InputText(15000,'How many to claim')
-for(i=0;i<4;i++)
+for(i=0;i<5;i++)
 {
-	var item = 215
+	var item = bs120
 	var itemsCount = Orion.FindTypeEx(any, any, backpack).length
-	Orion.Print('items: ' + itemsCount)
+	Orion.Print('Items in bag: ' + itemsCount)
 	if (itemsCount == 125) {
-		
+		Orion.Print("Full bag")
 		var start = Orion.Now()
 		Orion.RequestContextMenu(npc.Serial());
+		Orion.Print("context")
 		Orion.WaitContextMenuCliloc(npc.Serial(), 1155593);
+		Orion.Print("Wait")
 		PartClaim(200)
 		if (Orion.WaitForGump(1000)) {
 
@@ -61,7 +64,7 @@ for(i=0;i<4;i++)
 function CutSomething() {
 	Orion.UseType('0x0F9F', '0xFFFF');
 	if (Orion.WaitForTarget(1000))
-		Orion.TargetType('0x152E|0x1515|0x1517|0x1540|0x1539|0x1EFD', '0xFFFF', backpack);
+		Orion.TargetType('0x152E|0x1515|0x1517|0x1540|0x1539|0x1EFD|0x1515', '0x0000', backpack);
 }
 
 function PartClaim(button) {

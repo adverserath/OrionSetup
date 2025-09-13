@@ -30,6 +30,10 @@
 var hostPort = 2597;
 var clientServer = "127.0.0.1"
 
+function Aaaaatest()
+{
+Orion.CastTarget('teleport','0x7FFFC8DF')
+}
 
 function serialise() {
     TextWindow.Print(JSON.stringify(SelectTarget()))

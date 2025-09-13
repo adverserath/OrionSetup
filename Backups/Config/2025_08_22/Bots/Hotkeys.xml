@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="2">
+    <hotkey type="33" action="0" key="144" modifiers="16" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="1" key="116" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;\nOrion.CastTarget('teleport','0x7FFFC8DF')&quot;,&#10;    &quot;name&quot;: &quot;FindCorruption&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
+    <hotkey type="62" action="1" key="103" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;text&quot;: &quot;Brieg buy&quot;&#10;}&#10;"/>
+    <hotkey type="31" action="1" key="121" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="3" action="2" key="120" modifiers="0" override_pass_key_to_client="0" meta="{&#10;    &quot;external_code&quot;: &quot;//Attack everything 15 tiles\nOrion.Print('Started')\nwhile(true)\n{\nOrion.FindTypeEx(any, any, ground,\n        'nothumanmobile|live|ignoreself|ignorefriends', 24, 3)\n        .filter(function (mob) {\n            return mob.Notoriety() &gt;= 3\n                &amp;&amp; mob.Notoriety() &lt;= 6\n        }).forEach(function (mobile) {\n\nOrion.Attack(mobile.Serial())\n    })\n    Orion.Wait(300)\n    }&quot;,&#10;    &quot;name&quot;: &quot;&quot;,&#10;    &quot;run_once&quot;: 0,&#10;    &quot;script_file_path&quot;: &quot;&quot;,&#10;    &quot;use_script_file&quot;: 0&#10;}&#10;"/>
+    <hotkey type="31" action="0" key="123" modifiers="0" override_pass_key_to_client="0"/>
+    <hotkey type="31" action="2" key="122" modifiers="0" override_pass_key_to_client="0"/>
+</data>
