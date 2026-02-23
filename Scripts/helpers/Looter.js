@@ -1,6 +1,6 @@
 //#include helpers/Target.js
 
-var lootLists = 'ImbueIngred|Maps|Gold'
+var lootLists = 'ShameCrytal|Maps'//'ImbueIngred|Maps|Gold'
 var looted = []
 
 function SuperLooter(corpse) {

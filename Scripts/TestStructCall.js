@@ -1,3 +1,20 @@
+function GeneratedScript_123207()
+{
+		var gump1 = Orion.GetGump(any,0x8EF8CA0B);
+		if ((gump1 !== null))
+		{
+			gump1.Select(Orion.CreateGumpHook(101));
+		}
+		var gump0 = Orion.GetGump(any,0x676CCAA8);
+		if ((gump0 !== null))
+		{
+			gump0.Select(Orion.CreateGumpHook(1));
+		}
+	
+
+
+	
+}
 
 function TestPoly() {
   var ts

@@ -104,14 +104,14 @@ function MonitorGM() {
       Orion.PlayWav('C:\\Sounds\\Windows Background.wav');
       Orion.HttpPost('http://192.168.0.101/light/boysroom_alex_light/turn_on?brightness=255&r=0&b=0&g=100&transition=0', 'true')
 
-      Orion.Wait(10000)
+      Orion.Wait(1000)
     }
     if (Orion.WaitForContextMenu() && Orion.GetContextMenu().Serial() == 0x00000001) {
       //StopAllRunningScripts()
       Orion.ActivateClient();
       BotPush('Detected : ' + Orion.GetContextMenu().Serial() + ' : ' + Player.X() + ' ' + Player.Y() + ' ' + Player.Map())
       Orion.PlayWav('C:\\Sounds\\Windows Background.wav');
-      Orion.Wait(10000)
+      Orion.Wait(1000)
     }
   }
 }

@@ -250,6 +250,28 @@ function OpenNearbyCorpses() {
     });
 }
 
+function OpenCorpsesWhenIdle(_) {
+
+    Orion.FindTypeEx('0x2006', any, ground, 'item|inlos', 25)
+        .filter(function (corpse) {
+            return looted.indexOf(corpse.Serial()) == -1
+        })
+        .sort(function (t1, t2) {
+            return t1.Distance() - t2.Distance()
+        })
+        .forEach(function (corpse) {
+            Orion.Print('looting ' + corpse.Name())
+            if (!Player.Dead() && GetEnemiesInArea().length == 0) {
+                Orion.AddHighlightCharacter(corpse.Serial(), '0x084C');
+
+                Orion.PrintFast(corpse.Serial(), '0x0111', 1, 'Looting');
+                WalkTo(corpse.Serial(), 1, 8000)
+                Orion.OpenContainer(corpse.Serial(), 1000)
+                SuperLooter(corpse)
+            }
+        })
+}
+
 function OpenCitadelCorpses() {
     var x = Player.X()
     var y = Player.Y()

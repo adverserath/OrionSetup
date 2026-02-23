@@ -154,3 +154,30 @@ function MountPet(getOn) {
 
     }
 }
+
+function StayInLineOfSightOfPet() {
+    var maxDistance = 6
+    Orion.Print('Running StayInLineOfSightOfPet')
+
+    if (Orion.ScriptRunning('StayInLineOfSightOfPet') > 1) {
+        Orion.Print('Stop StayInLineOfSightOfPet')
+        Orion.Terminate('StayInLineOfSightOfPet');
+    }
+    var pet = Orion.FindObject('mount')
+    Orion.Print('Stay near pet ' + pet.Name() + ' maxDistance:' + maxDistance)
+
+    while (pet != null) {
+        if (pet != null && pet.Distance() > maxDistance) {
+            var distance = pet.Distance()
+            Orion.Print('Pet is too far distance:' + distance)
+            while(!Orion.BuffExists('0x9BD2') && (pet.Distance()>4 || (!pet.InLOS() && pet.Distance()>maxDistance))){
+                distance--
+                Orion.Print('Walking to pet distance:' + distance)
+                WalkTo(pet.Serial(), distance)
+                Orion.Wait(100)
+            }
+        }
+        Orion.Wait(1000)
+    }
+
+}

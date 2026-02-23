@@ -20,6 +20,7 @@
 //#include helpers/Quest.js
 //#include Actions/Automated/Minax.js
 //#include Actions/Automated/Orchard.js
+//#include Actions/Automated/Umbra2025.js
 //#include gumps/CasterGump.js
 //#include helpers/Looter.js
 //#include helpers/Generic.js
@@ -30,21 +31,6 @@
 var hostPort = 2597;
 var clientServer = "127.0.0.1"
 
-function Aaaaatest()
-{
-Orion.CastTarget('teleport','0x7FFFC8DF')
-}
-
-function serialise() {
-    TextWindow.Print(JSON.stringify(SelectTarget()))
-}
-function _bankWithdraw() {
-    while (true) {
-        Orion.Wait(100)
-        Orion.Say("withdraw 1")
-        Sender("*", 'S:' + "withdraw 1");
-    }
-}
 
 function DistanceFrom() {
     var t = SelectTarget()

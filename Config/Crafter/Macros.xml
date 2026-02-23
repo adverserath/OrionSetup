@@ -5,8 +5,8 @@
         <action type="17" convert_type="0" waiting_time="1000" serial="0x0000A4CF" graphic="0x0003" color="0x0000"/>
         <action type="15" convert_type="0" waiting_time="1000" serial="0x00002203" id="0x2239DAE0" button="200"/>
         <action type="15" convert_type="0" waiting_time="1000" serial="0x00002204" id="0x096825B9" button="2">
-            <checks id="-1" state="false"/>
             <checks id="0" state="true"/>
+            <checks id="-1" state="false"/>
         </action>
     </macro>
     <macro name="AnimalLore" looped="true" delay="1">

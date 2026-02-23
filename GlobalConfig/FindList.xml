@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data version="0" size="38">
+<data version="0" size="39">
     <findlist name="Gold/Treasure/Artis">
         <item graphic="0x0EED" color="0x0000" comment="Gold Coin" count="0" enabled="false"/>
         <item graphic="0x14EC" color="0x0000" comment="Treasure Map" count="0" enabled="true"/>
@@ -310,5 +310,10 @@
         <item graphic="any" color="any" comment="Legendary Arti" count="0" enabled="true">
             <property name="Legendary Artifact" value_min="100" value_max="100"/>
         </item>
+    </findlist>
+    <findlist name="Umbra">
+        <item graphic="0xB12C" color="0x0000" comment="Umbra Corruption" count="0" enabled="true"/>
+        <item graphic="0xB14F" color="0x0000" comment="Umbra Corruption" count="0" enabled="true"/>
+        <item graphic="0xB134" color="0x0000" comment="Umbra Corruption" count="0" enabled="true"/>
     </findlist>
 </data>

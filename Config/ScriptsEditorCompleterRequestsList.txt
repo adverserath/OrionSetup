@@ -1,3 +1,6 @@
+Attack
+Print
+JSON
 Serial
 TextWindow
 Clear
@@ -96,7 +99,6 @@ AnimID
 Append
 Arm
 Armor
-Attack
 BandageSelf
 BandageTarget
 BankSerial
@@ -418,7 +420,6 @@ PoisonResistance
 Poisoned
 PrevMessage
 Price
-Print
 PrintFast
 Profile
 ProfileReceived
@@ -695,7 +696,6 @@ switch
 true
 undefined
 var
-JSON
 parse
 parseInt
 stringify

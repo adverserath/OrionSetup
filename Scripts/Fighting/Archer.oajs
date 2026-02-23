@@ -1,0 +1,128 @@
+// ============================
+// Party-aware Archer AI
+// Stay within range of party leader
+// ============================
+
+var SCAN_RADIUS = 6;        // how many tiles around leader to scan
+var MAX_TARGET_RANGE = 18;  // max mob agro range
+var FOLLOW_DISTANCE = 5;    // preferred distance to party leader
+
+var PARTY_LEADER_NAME = "a sheep"; // replace with the leader's character name
+
+// Find the party leader
+function getPartyLeader() {
+    var chars = Orion.FindTypeEx('any', any, ground, 'mobile|live|inlos', 50, 'gray|blue|red');
+    for (var i = 0; i < chars.length; i++) {
+        if (chars[i].Name() === PARTY_LEADER_NAME) return chars[i];
+    }
+    return null;
+}
+
+// Aggro mob finder
+function getAggroMobs() {
+    var mobs = Orion.FindTypeEx('any', any, ground, 'mobile|live|inlos', MAX_TARGET_RANGE, 'red|criminal|orange');
+    var aggro = [];
+    for (var i = 0; i < mobs.length; i++) {
+        var mob = mobs[i];
+        if (!mob.Dead()) aggro.push(mob);
+    }
+    return aggro;
+}
+
+// Evaluate tile safety
+function evaluatePosition(x, y, mobs) {
+    var score = 0;
+    for (var i = 0; i < mobs.length; i++) {
+        var mob = mobs[i];
+        var dist = Orion.GetDistance(x, y, mob.X(), mob.Y());
+        score += Math.max(0, (MAX_TARGET_RANGE - dist));
+    }
+    return score;
+}
+
+// Check if tile is accessible
+function isTileAccessible(x, y, z) {
+    for (var dir = 0; dir < 8; dir++) {
+        if (Orion.CanWalk(dir, Player.X(), Player.Y(), z)) return true;
+    }
+    return false;
+}
+
+// Find safest tile near party leader
+function findSafeTileNearLeader(leader) {
+    if (!leader) return { x: Player.X(), y: Player.Y() };
+
+    var leaderX = leader.X();
+    var leaderY = leader.Y();
+    var leaderZ = leader.Z();
+    var mobs = getAggroMobs();
+
+    var bestScore = 999999;
+    var bestX = leaderX;
+    var bestY = leaderY;
+
+    for (var dx = -SCAN_RADIUS; dx <= SCAN_RADIUS; dx++) {
+        for (var dy = -SCAN_RADIUS; dy <= SCAN_RADIUS; dy++) {
+            var testX = leaderX + dx;
+            var testY = leaderY + dy;
+
+            // stay within FOLLOW_DISTANCE of leader
+            var distToLeader = Orion.GetDistance(testX, testY, leaderX, leaderY);
+            if (distToLeader > FOLLOW_DISTANCE) continue;
+
+            if (!isTileAccessible(testX, testY, leaderZ)) continue;
+
+            var score = evaluatePosition(testX, testY, mobs);
+            if (score < bestScore) {
+                bestScore = score;
+                bestX = testX;
+                bestY = testY;
+            }
+        }
+    }
+
+    return { x: bestX, y: bestY };
+}
+
+// Gradual move
+function moveToTile(targetX, targetY) {
+    while (Player.X() !== targetX || Player.Y() !== targetY) {
+        var dx = targetX - Player.X();
+        var dy = targetY - Player.Y();
+        var dir = -1;
+
+        if (dx === 0 && dy < 0) dir = 0;       // N
+        else if (dx > 0 && dy < 0) dir = 1;    // NE
+        else if (dx > 0 && dy === 0) dir = 2;  // E
+        else if (dx > 0 && dy > 0) dir = 3;    // SE
+        else if (dx === 0 && dy > 0) dir = 4;  // S
+        else if (dx < 0 && dy > 0) dir = 5;    // SW
+        else if (dx < 0 && dy === 0) dir = 6;  // W
+        else if (dx < 0 && dy < 0) dir = 7;    // NW
+
+        if (dir >= 0 && Orion.CanWalk(dir, Player.X(), Player.Y(), Player.Z())) {
+            Orion.Step(dir, true);
+            Orion.Wait(150);
+        } else {
+            Orion.Print("Blocked! Cannot move toward leader.");
+            break;
+        }
+    }
+}
+
+// ============================
+// Dynamic AI Loop
+// ============================
+function SafeDistance(){
+while (!Player.Dead()) {
+    var leader = getPartyLeader();
+    if (leader) {
+        var safeTile = findSafeTileNearLeader(leader);
+        moveToTile(safeTile.x, safeTile.y);
+    } else {
+        Orion.Print("Party leader not found!");
+    }
+
+    Orion.Wait(500); // recalc every half second
+}
+}

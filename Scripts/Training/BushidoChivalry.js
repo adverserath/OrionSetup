@@ -70,3 +70,55 @@ if(!Orion.SpellStatus('Momentum Strike')){
   Orion.Attack('0x00000000');
 }
 }
+
+// ===============================
+// Bushido Momentum Strike Trainer
+// Archery (Correct Cast Version)
+// ===============================
+
+// SETTINGS
+var SEARCH_RANGE = 8;     // Tile radius to check
+var MIN_TARGETS = 2;     // Required for Momentum Strike
+var WAIT_DELAY = 250;
+var MIN_MANA = 10;
+
+function BushidoMomentumTrainer()
+{
+    Orion.Print("Bushido Momentum Strike Trainer started.");
+
+    while (!Player.Dead())
+    {
+        // Ensure weapon equipped
+        if (Orion.ObjAtLayer('LeftHand') == null)
+        {
+            Orion.Wait(500);
+            continue;
+        }
+
+        // Find hostile mobs
+        var mobs = Orion.FindTypeEx(
+            'any',
+            -1,
+            'ground',
+            'mobile|live|inlos|ignorefriends',
+            SEARCH_RANGE,
+            'gray|criminal|orange|red'
+        );
+
+        // Momentum Strike requires 2+
+        if (mobs.length >= MIN_TARGETS)
+        {
+            if (Player.Mana() >= MIN_MANA && !Orion.SpellStatus('Momentum Strike'))
+            {
+                // Cast Bushido Momentum Strike
+                Orion.Cast('Momentum Strike');
+                Orion.Wait(100);
+
+                // Attack nearest mob
+                Orion.Attack(mobs[0].Serial());
+            }
+        }
+
+        Orion.Wait(WAIT_DELAY);
+    }
+}

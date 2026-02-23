@@ -9,13 +9,14 @@ var eodon = 5
 var places = [
     { serial: 0x4000121A, name: "T2A Champ Island Skull", mapID: felucca },
     { serial: 0x4005AC56, name: "T2A Champ Island Teleporter", mapID: felucca },
+    { serial: 0x4001A316, name: "DanHouse", mapID: -1 },
 
     { serial: 0x400A3F92, name: "T2A Ice", mapID: felucca },
     { serial: 0x4001A117, name: "tomb teleporter", mapID: malas },
     { serial: 0x00000003, name: "Forest", mapID: trammel },
     { serial: 0x00000003, name: "Forest", mapID: eodon },
     { serial: 0x00000004, name: "(X)Minoc Town Sheriff", mapID: felucca },
-
+{ serial: 0x400A6C8F, name: "teleport spot", mapID: -1 },
     { serial: 0x00000002, name: "unknown", mapID: -1 }
 
 ];
@@ -63,4 +64,9 @@ function gumpCallback(_) {
             Orion.Print("No place selected.");
         }
     }
+}
+
+function ChooseTeleportLocation() {
+    var target = SelectTarget('teleport location');
+    Orion.CastTarget('Teleport', target.Serial());
 }

@@ -228,6 +228,17 @@ function PatrolCitadel()
     locationJson = '[{"x":91,"y":1875,"z":0,"visited":false,"locName":"coordinate"},{"x":85,"y":1877,"z":0,"visited":false,"locName":"coordinate"},{"x":85,"y":1873,"z":0,"visited":false,"locName":"coordinate"},{"x":80,"y":1873,"z":0,"visited":false,"locName":"coordinate"},{"x":77,"y":1873,"z":0,"visited":false,"locName":"coordinate"},{"x":77,"y":1872,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6E8",{"x":120,"y":1897,"z":0,"visited":false,"locName":"coordinate"},{"x":115,"y":1897,"z":0,"visited":false,"locName":"coordinate"},{"x":115,"y":1902,"z":0,"visited":false,"locName":"coordinate"},{"x":115,"y":1906,"z":15,"visited":false,"locName":"coordinate"},{"x":115,"y":1907,"z":15,"visited":false,"locName":"coordinate"},{"x":119,"y":1926,"z":0,"visited":false,"locName":"coordinate"},{"x":122,"y":1927,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6EB",{"x":139,"y":1927,"z":0,"visited":false,"locName":"coordinate"},{"x":141,"y":1926,"z":0,"visited":false,"locName":"coordinate"},{"x":138,"y":1918,"z":0,"visited":false,"locName":"coordinate"},"0x0000FEFD",{"x":138,"y":1916,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6DE",{"x":90,"y":1875,"z":0,"visited":false,"locName":"coordinate"},{"x":85,"y":1875,"z":0,"visited":false,"locName":"coordinate"},{"x":80,"y":1875,"z":0,"visited":false,"locName":"coordinate"},{"x":79,"y":1880,"z":0,"visited":false,"locName":"coordinate"},{"x":79,"y":1886,"z":0,"visited":false,"locName":"coordinate"},{"x":79,"y":1890,"z":0,"visited":false,"locName":"coordinate"},{"x":72,"y":1890,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6E5",{"x":73,"y":1917,"z":0,"visited":false,"locName":"coordinate"},{"x":83,"y":1918,"z":0,"visited":false,"locName":"coordinate"},{"x":88,"y":1920,"z":-5,"visited":false,"locName":"coordinate"},{"x":90,"y":1920,"z":-14,"visited":false,"locName":"coordinate"},{"x":166,"y":1978,"z":0,"visited":false,"locName":"coordinate"},{"x":180,"y":1975,"z":0,"visited":false,"locName":"coordinate"},{"x":183,"y":1972,"z":0,"visited":false,"locName":"coordinate"},{"x":182,"y":1966,"z":0,"visited":false,"locName":"coordinate"},{"x":181,"y":1949,"z":0,"visited":false,"locName":"coordinate"},{"x":182,"y":1971,"z":0,"visited":false,"locName":"coordinate"},{"x":177,"y":1974,"z":0,"visited":false,"locName":"coordinate"},{"x":170,"y":1978,"z":0,"visited":false,"locName":"coordinate"},{"x":161,"y":1974,"z":5,"visited":false,"locName":"coordinate"},{"x":159,"y":1975,"z":15,"visited":false,"locName":"coordinate"},{"x":87,"y":1919,"z":0,"visited":false,"locName":"coordinate"},"0x4001A6DC",{"x":100,"y":1880,"z":0,"visited":false,"locName":"coordinate"}]'
     Patrol()
 }
+function PatrolShameTop()
+{
+    locationJson = '[{"x":5410,"y":92,"z":10,"visited":false,"locName":"coordinate"},{"x":5397,"y":91,"z":17,"visited":false,"locName":"coordinate"},{"x":5388,"y":82,"z":20,"visited":false,"locName":"coordinate"},{"x":5386,"y":48,"z":20,"visited":false,"locName":"coordinate"},{"x":5389,"y":29,"z":20,"visited":false,"locName":"coordinate"},{"x":5399,"y":29,"z":20,"visited":false,"locName":"coordinate"},{"x":5408,"y":26,"z":20,"visited":false,"locName":"coordinate"},{"x":5418,"y":19,"z":10,"visited":false,"locName":"coordinate"},{"x":5433,"y":16,"z":0,"visited":false,"locName":"coordinate"},{"x":5457,"y":10,"z":0,"visited":false,"locName":"coordinate"},{"x":5467,"y":12,"z":0,"visited":false,"locName":"coordinate"},{"x":5478,"y":15,"z":-12,"visited":false,"locName":"coordinate"},{"x":5479,"y":19,"z":-17,"visited":false,"locName":"coordinate"},{"x":5478,"y":21,"z":-28,"visited":false,"locName":"coordinate"},{"x":5477,"y":39,"z":-2,"visited":false,"locName":"coordinate"},{"x":5477,"y":58,"z":20,"visited":false,"locName":"coordinate"},{"x":5475,"y":65,"z":20,"visited":false,"locName":"coordinate"},{"x":5478,"y":76,"z":35,"visited":false,"locName":"coordinate"},{"x":5478,"y":78,"z":35,"visited":false,"locName":"coordinate"},{"x":5486,"y":88,"z":35,"visited":false,"locName":"coordinate"},{"x":5491,"y":92,"z":35,"visited":false,"locName":"coordinate"},{"x":5486,"y":85,"z":35,"visited":false,"locName":"coordinate"},{"x":5486,"y":85,"z":35,"visited":false,"locName":"coordinate"},{"x":5478,"y":77,"z":35,"visited":false,"locName":"coordinate"},{"x":5455,"y":87,"z":20,"visited":false,"locName":"coordinate"},{"x":5433,"y":92,"z":20,"visited":false,"locName":"coordinate"},{"x":5414,"y":92,"z":10,"visited":false,"locName":"coordinate"}]'
+    Patrol()
+}
+
+function PatrolShame2nd()
+{
+    locationJson = '[{"x":5527,"y":12,"z":0,"visited":false,"locName":"coordinate"},{"x":5560,"y":13,"z":0,"visited":false,"locName":"coordinate"},{"x":5544,"y":37,"z":0,"visited":false,"locName":"coordinate"},{"x":5527,"y":42,"z":0,"visited":false,"locName":"coordinate"},{"x":5549,"y":47,"z":0,"visited":false,"locName":"coordinate"},{"x":5554,"y":62,"z":0,"visited":false,"locName":"coordinate"},{"x":5543,"y":39,"z":0,"visited":false,"locName":"coordinate"},{"x":5563,"y":37,"z":0,"visited":false,"locName":"coordinate"},{"x":5560,"y":14,"z":0,"visited":false,"locName":"coordinate"},{"x":5577,"y":17,"z":0,"visited":false,"locName":"coordinate"},{"x":5588,"y":22,"z":0,"visited":false,"locName":"coordinate"},{"x":5598,"y":19,"z":10,"visited":false,"locName":"coordinate"},{"x":5607,"y":22,"z":10,"visited":false,"locName":"coordinate"},{"x":5594,"y":19,"z":5,"visited":false,"locName":"coordinate"},{"x":5588,"y":35,"z":0,"visited":false,"locName":"coordinate"},{"x":5586,"y":55,"z":0,"visited":false,"locName":"coordinate"},{"x":5592,"y":64,"z":0,"visited":false,"locName":"coordinate"},{"x":5602,"y":58,"z":2,"visited":false,"locName":"coordinate"},{"x":5605,"y":44,"z":2,"visited":false,"locName":"coordinate"},{"x":5585,"y":53,"z":0,"visited":false,"locName":"coordinate"},{"x":5586,"y":36,"z":0,"visited":false,"locName":"coordinate"},{"x":5565,"y":35,"z":0,"visited":false,"locName":"coordinate"},{"x":5555,"y":36,"z":0,"visited":false,"locName":"coordinate"},{"x":5551,"y":24,"z":0,"visited":false,"locName":"coordinate"}]'
+    Patrol()
+}
 
 var allies
 function Patrol() {
@@ -248,10 +259,15 @@ function Patrol() {
                 var closest = GetEnemiesInArea(15)
 
                 if (closest.length == 0 && allies == NearbyAllies().length) {
+                    
                     Orion.Print('no enemy')
+                    OpenCorpsesWhenIdle() 
                     LocationLoop()
                 }
                 else {
+                    if(NearbyAllies(8)<0){
+                    WalkTo(allies[0], 4)
+                    }
                     Orion.Wait(2000)
                 }
             }
@@ -263,7 +279,7 @@ function NearbyAllies(distance) {
     if (distance == null)
         distance = 2
     var friendly = Orion.FindTypeEx(any, any, ground,
-        'live|inlos', distance, 'blue|green').filter(function (mob) {
+        'live|inlos|ignoreself', distance, 'blue|green').filter(function (mob) {
 
             return Orion.Contains(mob.Properties(), 'Legacy') || Orion.Contains(mob.Properties(), 'bonded')
         })
@@ -334,3 +350,5 @@ function walkToMobUntilInLOS() {
         Orion.Wait(200);
     }
 }
+
+//#include helpers/Looter.js

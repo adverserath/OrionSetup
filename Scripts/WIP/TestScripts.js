@@ -3,6 +3,7 @@
 
 function SuitFinder()
 {
+DumpEquippedItems()
 var ring = SelectTarget('ring')
 var bracelet = SelectTarget('bracelet')
 var head = SelectTarget('head')
@@ -14,9 +15,6 @@ var legs = SelectTarget('legs')
 var shield = SelectTarget('shield')
 var weapon = SelectTarget('weapon')
 
-
-TextWindow.Open()
-TextWindow.Clear()
 
 PrintBox(ring,'ring')
 PrintBox(bracelet,'bracelet')
@@ -30,21 +28,70 @@ PrintBox(shield,'shield')
 PrintBox(weapon, 'weapon')
 }
 
+function DumpEquippedItems()
+{
+    var layers = [
+        { id: 1,  name: "RightHand (1H weapon)" },
+        { id: 2,  name: "LeftHand (2H / Shield)" },
+        { id: 3,  name: "Shoes" },
+        { id: 4,  name: "Pants" },
+        { id: 5,  name: "Shirt" },
+        { id: 6,  name: "Helmet" },
+        { id: 7,  name: "Gloves" },
+        { id: 8,  name: "Ring" },
+        { id: 9,  name: "Talisman" },
+        { id: 10, name: "Necklace" },
+        { id: 11, name: "Hair" },
+        { id: 12, name: "Waist" },
+        { id: 13, name: "InnerTorso" },
+        { id: 14, name: "Bracelet" },
+        { id: 15, name: "Face" },
+        { id: 16, name: "Beard" },
+        { id: 17, name: "MidTorso" },
+        { id: 18, name: "Earrings" },
+        { id: 19, name: "Arms" },
+        { id: 20, name: "Cloak" },
+        { id: 22, name: "Robe" },
+        { id: 24, name: "Legs" }
+    ];
+
+    TextWindow.Open();
+    TextWindow.Clear();
+
+    for (var i = 0; i < layers.length; i++)
+    {
+        var obj = Orion.ObjAtLayer(layers[i].id);
+
+        if (obj)
+        {
+            TextWindow.Print(
+                layers[i].name +
+                ": 0x" + obj.Serial().toString(16).toUpperCase() +
+                 " (" + obj.Properties() + ")\n"
+            );
+        }
+        else
+        {
+            Orion.Print(layers[i].name + ": EMPTY");
+        }
+    }
+}
+
+
 function PrintBox(box,type)
 {
-TextWindow.Print('---'+type+'---')
-Orion.Wait(1000)
-WalkTo(box.Serial())
-Orion.OpenContainer(box.Serial())
-
-Orion.FindTypeEx(any, any, box.Serial()).forEach(function (item){
-TextWindow.Print(item.Serial())
-TextWindow.Print(item.Properties())
-TextWindow.Print('------')
-
-})
-
+	TextWindow.Print('---Box of '+type+'---')
+	Orion.Wait(1000)
+	WalkTo(box.Serial())
+	Orion.OpenContainer(box.Serial())
+	
+	Orion.FindTypeEx(any, any, box.Serial()).forEach(function (item){
+		TextWindow.Print(item.Serial() + " ["+type+"]")
+		TextWindow.Print(item.Properties())
+		TextWindow.Print('------')
+	})
 }
+
 // Function to parse item properties
 function parseProperties(item) {
     var properties = {};

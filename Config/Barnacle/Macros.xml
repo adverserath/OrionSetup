@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data cast_spells_from_book_if_not_scrolls="false">
-    <macro name="macro" looped="true" delay="1"/>
+    <macro name="macro" looped="true" delay="1">
+        <action type="5" convert_type="0" waiting_time="1000" value="48"/>
+        <action type="3" convert_type="0" waiting_time="1000" serial="0x40048D26" graphic="0xA306" color="0x0000"/>
+    </macro>
     <macro name="PeaceArea" looped="false" delay="1"/>
     <macro name="Moongate" looped="true" delay="0.5">
         <action type="1" convert_type="0" waiting_time="1000" serial="0x400D0669" graphic="0x14F6" color="0x0000"/>
